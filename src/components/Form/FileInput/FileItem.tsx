@@ -64,17 +64,17 @@ export default function FileItem({
       {state === "error" ? (
         <div className="flex flex-1 flex-col items-start gap-1">
           <div className="flex flex-col">
-            <span className="text-error-700 dark:text-error-400 text-sm font-medium">
+            <span className="text-error-700 text-sm font-medium">
               Upload failed, please try again.
             </span>
-            <span className="text-error-600 dark:text-error-500 text-sm">
+            <span className="text-error-600 text-sm">
               {name}
             </span>
           </div>
 
           <button
             type="button"
-            className="text-error-700 hover:text-error-900 dark:text-error-400 dark:hover:text-error-300 text-sm font-semibold"
+            className="text-error-700 hover:text-error-900 text-sm font-semibold"
           >
             Try again
           </button>
@@ -82,18 +82,18 @@ export default function FileItem({
       ) : (
         <div className="flex flex-1 flex-col items-start gap-1">
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-100">
+            <span className="text-sm font-medium text-zinc-700">
               {name}
             </span>
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+            <span className="text-sm text-zinc-500">
               {formatBytes(size)}
             </span>
           </div>
 
           <div className="flex w-full items-center gap-3">
-            <div className="h-2 flex-1 rounded-full bg-zinc-100 dark:bg-zinc-600">
+            <div className="h-2 flex-1 rounded-full bg-zinc-100">
               <motion.div
-                className="h-2 rounded-full bg-brand-600 dark:bg-brand-400"
+                className="h-2 rounded-full bg-brand-600"
                 initial={{ width: 0 }}
                 animate={{
                   width: `${progress ?? (state === "complete" ? 100 : 0)}%`,
@@ -101,7 +101,7 @@ export default function FileItem({
                 transition={{ duration: 0.2 }}
               />
             </div>
-            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <span className="text-sm font-medium text-zinc-700">
               {progress ?? (state === "complete" ? 100 : 0)}%
             </span>
           </div>
