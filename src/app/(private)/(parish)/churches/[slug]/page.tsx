@@ -10,6 +10,7 @@ import {
   Trigger as FileInputTrigger,
   FileList as FileInputFileList,
   Control as FileInputControl,
+  ImagePreview,
 } from '@/components/Form/FileInput';
 import {
   Root as InputRoot,
@@ -85,12 +86,13 @@ export default function EditChurchPage() {
         <div className="lg:grid-cols-form flex flex-col gap-3 pb-5 lg:grid">
           <label htmlFor="cover" className="text-md font-medium text-brand-800">
             Capa
-            <span className="mt-0.5 block text-sm font-normal text-brand-800">
+            <span className="mt-0.5 mb-4 block text-sm font-normal text-brand-800">
               Esta imagem será exibida publicamente.
             </span>
+            <ImagePreview url={community?.coverUrl} />
           </label>
           <FileInputRoot>
-            <FileInputTrigger />
+            <FileInputTrigger actionLabel="Clique aqui para alterar" />
             <FileInputFileList />
             <FileInputControl />
           </FileInputRoot>

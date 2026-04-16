@@ -4,20 +4,30 @@ import { User } from "lucide-react";
 import { useMemo } from "react";
 import { useFileInputStore } from "@/stores/useFileInputStore";
 
-export const ImagePreview = () => {
+export const ImagePreview = ({
+  url: initialPreviewURL, 
+  variant = 'reactangular'
+}: {
+  url?: string; 
+  variant?: 'reactangular' | 'circular'
+}) => {
   const { files } = useFileInputStore();
 
   const previewURL = useMemo(() => {
-    if (files.length === 0) {
+    if (files.length === 0 && !initialPreviewURL) {
       return null;
     }
 
-    return URL.createObjectURL(files[0].file);
-  }, [files]);
+    if (files.length > 0) {
+      return URL.createObjectURL(files[0].file);
+    }
+
+    return initialPreviewURL
+  }, [files, initialPreviewURL]);
 
   if (previewURL === null) {
     return (
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-50">
+      <div className={`${variant === 'reactangular' ? 'h-16 w-24' : 'h-16 w-16' } ${variant === 'circular' ? 'rounded-full' : 'rounded' } flex items-center justify-center bg-brand-50`}>
         <User className="h-8 w-8 text-brand-500" />
       </div>
     );
@@ -28,7 +38,7 @@ export const ImagePreview = () => {
     <img
       src={previewURL}
       alt=""
-      className="h-16 w-16 rounded-full object-cover"
+      className={`${variant === 'reactangular' ? 'h-16 w-24' : 'h-16 w-16' } ${variant === 'circular' ? 'rounded-full' : 'rounded' } object-cover`}
     />
   );
 };

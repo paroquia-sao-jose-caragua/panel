@@ -3,7 +3,7 @@
 import { UploadCloud } from "lucide-react";
 import { useFileInput } from "./Root";
 
-export const Trigger = () => {
+export const Trigger = ({actionLabel}: {actionLabel?: string; }) => {
   const { id } = useFileInput();
 
   return (
@@ -18,9 +18,9 @@ export const Trigger = () => {
       <div className="flex flex-col items-center gap-1">
         <span className="text-sm">
           <span className="font-semibold text-brand-700">
-            Clique para enviar
+            {actionLabel || 'Clique para enviar'}
           </span>{" "}
-          a capa da igreja
+          a imagem
         </span>
         <span className="text-xs">PNG, JPG or JPEG (max. 900x600px)</span>
       </div>
