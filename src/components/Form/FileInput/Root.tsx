@@ -7,6 +7,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useId,
 } from "react";
 
@@ -31,7 +32,7 @@ const FileInputContext = createContext({} as FileInputContextType);
 
 export function Root(props: RootProps) {
   const id = useId();
-  const { addFiles, updateFile } = useFileInputStore();
+  const { addFiles, updateFile, resetFiles } = useFileInputStore();
 
   const uploadFiles = useCallback(
     async (filesToUpload: FileItem[]) => {
@@ -74,6 +75,10 @@ export function Root(props: RootProps) {
     },
     [addFiles, uploadFiles],
   );
+
+  useEffect(() => {
+    resetFiles();
+  }, [])
 
   return (
     <FileInputContext.Provider value={{ id, onFilesSelected }}>
