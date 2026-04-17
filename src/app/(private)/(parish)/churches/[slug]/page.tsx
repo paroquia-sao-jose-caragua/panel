@@ -59,8 +59,8 @@ export default function EditChurchPage() {
         { id: community?.id!, ...values },
         {
           onSuccess: ({ community, statusCode, message }) => {
-            if (community && statusCode === 201) {
-              // TODO: show success message
+            if (community && statusCode === 200) {
+              showAlert('Alterações salvas com sucesso!');
             } else {
               showAlert(`Erro ao salvar comunidade: ${message}`);
             }

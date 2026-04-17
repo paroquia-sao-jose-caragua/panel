@@ -1,4 +1,5 @@
 import { listCommunityMassSchedules } from '@/api/communities/mass-schedules/list';
+import Button from '@/components/Button';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { useQuery } from '@tanstack/react-query';
@@ -46,10 +47,17 @@ export const ChurchCard = ({ community }: ChurchCardProps) => {
           alt=""
           className="rounded-full object-cover w-12 h-12"
         />
-        <span className="font-medium text-brand-900">{community.name}</span>
+        <span className="font-medium text-lg text-brand-900">{community.name}</span>
         <ChevronDown className="ml-auto h-5 w-5 text-brand-500 group-hover:text-brand-500 group-data-[state=open]:rotate-180 transition-transform" />
       </Collapsible.Trigger>
-      <Collapsible.Content ref={parent}></Collapsible.Content>
+      <Collapsible.Content ref={parent}>
+        <div className='p-2'>
+          <div className='rounded-lg border border-zinc-200 flex flex-row items-center justify-between px-3 py-3'>
+            <span className="text-md">Missas Regulares</span>
+            <Button>Adicionar</Button>
+          </div>
+        </div>
+      </Collapsible.Content>
     </Collapsible.Root>
   );
 };
