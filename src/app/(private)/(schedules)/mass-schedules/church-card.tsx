@@ -1,11 +1,11 @@
 import { listCommunityMassSchedules } from '@/api/communities/mass-schedules/list';
-import Button from '@/components/Button';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import AddRegularMassDialog from './add-regular-mass-dialog';
 
 export interface ChurchCardProps {
   community: {
@@ -54,7 +54,7 @@ export const ChurchCard = ({ community }: ChurchCardProps) => {
         <div className='p-2'>
           <div className='rounded-lg border border-zinc-200 flex flex-row items-center justify-between px-3 py-3'>
             <span className="text-md">Missas Regulares</span>
-            <Button>Adicionar</Button>
+            <AddRegularMassDialog community={community} />
           </div>
         </div>
       </Collapsible.Content>
