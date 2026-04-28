@@ -1,24 +1,22 @@
-import { Plus } from "lucide-react";
-import type { ElementType } from "react";
+import { Plus } from 'lucide-react';
 
 interface AddCardProps {
   title: string;
   subtitle: string;
-  icon: ElementType;
 }
 
-export const AddCard = ({ title, subtitle, icon: Icon }: AddCardProps) => {
+export const AddCard = ({ title, subtitle }: AddCardProps) => {
   return (
-    <div className="py-6 px-6 shadow-sm h-68 rounded-xl bg-white flex flex-col items-center justify-center gap-6 hover:ring-1 hover:ring-brand-300 transition cursor-pointer outline-none focus:ring-2 focus:ring-brand-300 focus:ring-offset-2">
-      <div className="relative w-28 h-28 bg-brand-0 rounded-full flex items-center justify-center">
-        <Icon className="text-brand-700 w-14 h-14" strokeWidth={1.5} />
-        <div className="absolute flex items-center justify-center w-10 h-10 bg-white rounded-full border border-brand-100 shadow-sm -right-1 -bottom-1">
-          <Plus className="text-brand-600 w-5 h-5" />
-        </div>
+    <div className="group py-6 px-6 shadow-sm xl:aspect-square rounded-xl bg-white flex flex-col items-center justify-center gap-6 cursor-pointer outline-none focus:ring-2 focus:ring-brand-300 focus:ring-offset-2 overflow-hidden relative transform-transition border-dashed border-2 border-zinc-200">
+      <div className="group-hover:bg-zinc-100 relative w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center">
+        <Plus className="text-zinc-400 w-8 h-8" strokeWidth={2} />
       </div>
-      <p className="text-brand-700 text-center">
-        <span className="font-semibold">{title}</span> {subtitle}
-      </p>
+      <div>
+        <p className="text-zinc-900 text-center text-lg font-semibold">
+          {title}
+        </p>
+        <p className="text-zinc-600 text-center text-sm mt-2">{subtitle}</p>
+      </div>
     </div>
   );
 };

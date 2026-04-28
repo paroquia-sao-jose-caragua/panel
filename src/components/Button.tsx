@@ -1,30 +1,30 @@
-import type { ComponentProps } from "react";
-import { tv, type VariantProps } from "tailwind-variants";
+import type { ComponentProps } from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 const button = tv({
   base: [
-    "cursor-pointer rounded-lg h-9 px-4 py-2 text-sm font-semibold outline-none shadow-sm",
-    "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-violet-500",
-    "active:opacity-80",
+    'cursor-pointer rounded-lg h-9 px-4 py-2 text-sm font-semibold outline-none shadow-sm',
+    'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-violet-500',
+    'active:opacity-80',
   ],
 
   variants: {
     variant: {
       primary:
-        "bg-brand-800 text-white hover:bg-brand-900 focus-visible:ring-4 focus-visible:ring-brand-100 focus-visible:ring-offset-1",
+        'bg-brand-800 text-white hover:bg-brand-900 focus-visible:ring-4 focus-visible:ring-brand-100 focus-visible:ring-offset-1',
       ghost:
-        "rounded-md px-2 hover:bg-brand-50 text-zinc-500 shadow-none hover:text-brand-600 focus-visible:ring-4 focus-visible:ring-brand-100 focus-visible:ring-offset-1",
+        'rounded-md px-2 hover:bg-brand-50 text-zinc-500 shadow-none hover:text-brand-600 focus-visible:ring-4 focus-visible:ring-brand-100 focus-visible:ring-offset-1',
       outline:
-        "bg-white border border-brand-300 text-zinc-700 hover:bg-brand-0 hover:border-brand-300 focus-visible:ring-4 focus-visible:ring-brand-100 focus-visible:ring-offset-1",
+        'bg-white border border-brand-300 text-zinc-700 hover:bg-brand-0 hover:border-brand-300 focus-visible:ring-4 focus-visible:ring-brand-100 focus-visible:ring-offset-1',
     },
   },
 
   defaultVariants: {
-    variant: "primary",
+    variant: 'primary',
   },
 });
 
-export type ButtonProps = ComponentProps<"button"> &
+export type ButtonProps = ComponentProps<'button'> &
   VariantProps<typeof button>;
 
 export default function Button({ variant, className, ...props }: ButtonProps) {
@@ -35,10 +35,10 @@ export default function Button({ variant, className, ...props }: ButtonProps) {
         variant,
         className: [
           className,
-          props.disabled ? "opacity-50 cursor-not-allowed" : "",
+          props.disabled ? 'opacity-50 cursor-not-allowed' : '',
         ]
           .filter(Boolean)
-          .join(" "),
+          .join(' '),
       })}
     />
   );

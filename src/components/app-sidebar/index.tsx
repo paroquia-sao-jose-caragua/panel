@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Calendar,
@@ -8,14 +8,14 @@ import {
   LifeBuoy,
   Menu,
   MessageSquare,
-} from "lucide-react";
-import { Logo } from "./Logo";
-import * as Collapsible from "@radix-ui/react-collapsible";
-import { NavItem } from "./NavItem";
-import { Profile } from "./Profile";
-import { useState } from "react";
+} from 'lucide-react';
+import { Logo } from './Logo';
+import * as Collapsible from '@radix-ui/react-collapsible';
+import { NavItem } from './NavItem';
+import { Profile } from './Profile';
+import { useState } from 'react';
 
-export function Sidebar() {
+export default function AppSidebar() {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);
@@ -50,16 +50,16 @@ export function Sidebar() {
             icon={Church}
             links={[
               {
-                title: "Igrejas",
-                href: "/churches",
+                title: 'Igrejas',
+                href: '/churches',
               },
               {
-                title: "Autoridades",
-                href: "/clergies",
+                title: 'Autoridades',
+                href: '/clergies',
               },
               {
-                title: "Pastorais",
-                href: "/pastorals",
+                title: 'Pastorais',
+                href: '/pastorals',
               },
             ]}
             onLinkClick={handleClose}
@@ -69,16 +69,16 @@ export function Sidebar() {
             icon={Calendar}
             links={[
               {
-                title: "Horários de Missa",
-                href: "/mass-schedules",
+                title: 'Horários de Missa',
+                href: '/mass-schedules',
               },
               {
-                title: "Eventos",
-                href: "/events",
+                title: 'Eventos',
+                href: '/events',
               },
               {
-                title: "Programação Completa",
-                href: "/full-schedule",
+                title: 'Programação Completa',
+                href: '/full-schedule',
               },
             ]}
             onLinkClick={handleClose}
@@ -88,16 +88,16 @@ export function Sidebar() {
             icon={MessageSquare}
             links={[
               {
-                title: "Avisos",
-                href: "/notices",
+                title: 'Avisos',
+                href: '/notices',
               },
               {
-                title: "Notícias",
-                href: "/news",
+                title: 'Notícias',
+                href: '/news',
               },
               {
-                title: "Artigos",
-                href: "/articles",
+                title: 'Artigos',
+                href: '/articles',
               },
             ]}
             onLinkClick={handleClose}
@@ -107,16 +107,16 @@ export function Sidebar() {
             icon={Image}
             links={[
               {
-                title: "Fotos",
-                href: "/photos",
+                title: 'Fotos',
+                href: '/photos',
               },
               {
-                title: "Vídeos",
-                href: "/videos",
+                title: 'Vídeos',
+                href: '/videos',
               },
               {
-                title: "Álbuns",
-                href: "/albums",
+                title: 'Álbuns',
+                href: '/albums',
               },
             ]}
             onLinkClick={handleClose}
@@ -132,8 +132,8 @@ export function Sidebar() {
               icon={LifeBuoy}
               links={[
                 {
-                  title: "FAQ",
-                  href: "/faq",
+                  title: 'FAQ',
+                  href: '/faq',
                 },
               ]}
               onLinkClick={handleClose}
@@ -143,12 +143,12 @@ export function Sidebar() {
               icon={Cog}
               links={[
                 {
-                  title: "Alterar Senha",
-                  href: "/change-password",
+                  title: 'Alterar Senha',
+                  href: '/change-password',
                 },
                 {
-                  title: "Gerenciar Acessos",
-                  href: "/manage-access",
+                  title: 'Gerenciar Acessos',
+                  href: '/manage-access',
                 },
               ]}
               onLinkClick={handleClose}

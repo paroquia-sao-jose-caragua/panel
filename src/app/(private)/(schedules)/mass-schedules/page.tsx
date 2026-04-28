@@ -24,7 +24,7 @@ export default function MassSchedules() {
         edite informações existentes e mantenha os dados atualizados.
       </Describe>
 
-      <div className="py-6">
+      <div className="flex flex-col gap-6 py-6">
         {communities
           .sort((a, b) =>
             a.type === 'parish_church' && b.type === 'chapel' ? -1 : 1

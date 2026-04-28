@@ -1,8 +1,7 @@
-import { ChevronDown } from "lucide-react";
-import Link from "next/link";
-import { useState, type ElementType } from "react";
-import * as Collapsible from "@radix-ui/react-collapsible";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import { useState, type ElementType } from 'react';
+import * as Collapsible from '@radix-ui/react-collapsible';
 
 export interface NavItemProps {
   title: string;
@@ -22,8 +21,6 @@ export function NavItem({
 }: NavItemProps) {
   const [open, setOpen] = useState(false);
 
-  const [parent] = useAutoAnimate();
-
   return (
     <Collapsible.Root open={open} onOpenChange={setOpen}>
       <Collapsible.Trigger className="group w-full group flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-brand-700/30 focus-visible:ring-2 focus-visible:ring-brand-400 outline-none transition-colors">
@@ -33,7 +30,7 @@ export function NavItem({
         </span>
         <ChevronDown className="ml-auto h-5 w-5 text-brand-300 group-hover:text-brand-300 group-data-[state=open]:rotate-180 transition-transform" />
       </Collapsible.Trigger>
-      <Collapsible.Content ref={parent}>
+      <Collapsible.Content>
         <nav className="pl-7.5 pr-3 mt-1 space-y-1 pb-2">
           {links.map((link) => (
             <Link

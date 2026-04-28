@@ -1,13 +1,13 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
   --grid-template-columns-app: minmax(22.5rem, 20rem) 1fr;
   --grid-template-columns-profile: max-content 1fr min-content;
-  --grid-template-columns-card: repeat(auto-fit, minmax(20rem, 20.5rem));
+  --grid-template-columns-card: repeat(auto-fit, minmax(20rem, 1fr));
   --grid-template-columns-form: minmax(7.5rem, 17.5rem) minmax(25rem, 1fr)
     minmax(0, 15rem);
 
@@ -136,6 +136,7 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --font-sans: var(--font-inter);
 }
 
 .dark {
