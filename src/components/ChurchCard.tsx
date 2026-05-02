@@ -19,10 +19,10 @@ export interface ChurchCardProps {
 export const ChurchCard = ({ community }: ChurchCardProps) => {
   return (
     <Link href={`/churches/${community.slug}`}>
-      <div className="w-full rounded-lg shadow-sm bg-white flex flex-col sm:flex-row sm:items-center xl:items-start justify-start xl:aspect-square xl:flex-col hover:ring-brand-300 cursor-pointer outline-none focus:ring-2 focus:ring-brand-300 focus:ring-offset-2 overflow-hidden relative hover:shadow-lg hover:-translate-y-1 transition-transform">
+      <div className="w-full rounded-lg shadow-lg bg-white flex flex-col sm:flex-row sm:items-center xl:items-start justify-start xl:aspect-square xl:flex-col hover:ring-brand-300 cursor-pointer outline-none focus:ring-2 focus:ring-brand-300 focus:ring-offset-2 overflow-hidden relative hover:shadow-lg hover:-translate-y-1 transition-transform">
         {community.type === 'parish_church' && (
           <div className="ml-3 mt-3 sm:mt-0 sm:absolute sm:top-2 sm:right-2 sm:z-10">
-            <span className="px-2.5 py-1.5 text-xs rounded-md w-fit-content bg-brand-700 text-white font-semibold">
+            <span className="px-2.5 py-1.5 text-xs rounded-md w-fit-content bg-brand-800 text-white font-semibold">
               Igreja Matriz
             </span>
           </div>

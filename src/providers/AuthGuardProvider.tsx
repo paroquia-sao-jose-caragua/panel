@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 
-import useAuthStore from "@/stores/useAuthStore";
-import { refresh } from "@/api/users/refresh";
-import { routeUtils } from "@/utils/routeUtils";
-import { useNavigate } from "@/hooks/useNavigate";
-import { FullLoading } from "@/components/Loadings/FullLoading";
+import useAuthStore from '@/stores/useAuthStore';
+import { refresh } from '@/api/users/refresh';
+import { routeUtils } from '@/utils/routeUtils';
+import { useNavigate } from '@/hooks/useNavigate';
+import { FullLoading } from '@/components/Loadings/FullLoading';
 
 const AuthGuardProvider = () => {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ const AuthGuardProvider = () => {
 
   const { mutate } = useMutation({
     mutationFn: (signal: AbortSignal) => refresh(signal),
-    networkMode: "always",
+    networkMode: 'always',
     retry: 3,
   });
 
@@ -39,7 +39,8 @@ const AuthGuardProvider = () => {
         setSessionChecked(true);
       },
       onError: (error) => {
-        console.error(`Initialization Error:  ${JSON.stringify(error)}`);
+        console.info('Session refresh failed, user is not authenticated.');
+        console.error(error);
         setSessionChecked(true);
       },
     });
@@ -53,10 +54,10 @@ const AuthGuardProvider = () => {
     if (!sessionChecked) return;
 
     const isAuthRoute = routeUtils.isAuthRoute(pathname);
-    const isConfirmCodePage = pathname.includes("/confirm-code");
+    const isConfirmCodePage = pathname.includes('/confirm-code');
 
     if (isLogged && token && isAuthRoute) {
-      navigate.replace("/");
+      navigate.replace('/');
       return;
     }
 
@@ -64,7 +65,7 @@ const AuthGuardProvider = () => {
       (!isLogged && !isAuthRoute) ||
       (isConfirmCodePage && !email && !isAuthRoute)
     ) {
-      navigate.replace("/login");
+      navigate.replace('/login');
     }
   }, [sessionChecked, isLogged, email, pathname, navigate, token]);
 

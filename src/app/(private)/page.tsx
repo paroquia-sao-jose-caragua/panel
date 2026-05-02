@@ -1,5 +1,5 @@
-import { Describe } from "@/components/Typographies/Describe";
-import { Title } from "@/components/Typographies/Title";
+import { Describe } from '@/components/typography/Describe';
+import { Title } from '@/components/typography/Title';
 
 export default function Home() {
   return (

@@ -1,16 +1,8 @@
-import { communityApi } from "../utils/communityApi";
+import type { Community } from '@/entities/Community';
+import { communityApi } from '../utils/communityApi';
 
 interface GetCommunityBySlugResponse {
-  community: {
-    id: string;
-    name: string;
-    slug: string;
-    createdAt: string;
-    type: "parish_church" | "chapel";
-    address: string;
-    coverId: string;
-    coverUrl: string;
-  }
+  community: Community;
 }
 
 export const getCommunityBySlug = async (slug: string) => {

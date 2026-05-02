@@ -1,6 +1,6 @@
-import { DevNoticeCard } from "@/components/DevNoticeCard";
-import { Describe } from "@/components/Typographies/Describe";
-import { Title } from "@/components/Typographies/Title";
+import { DevNoticeCard } from '@/components/DevNoticeCard';
+import { Describe } from '@/components/typography/Describe';
+import { Title } from '@/components/typography/Title';
 
 export default function Clergies() {
   return (

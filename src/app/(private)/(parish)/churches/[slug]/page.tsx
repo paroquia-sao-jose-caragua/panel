@@ -1,170 +1,107 @@
 'use client';
 
-import { getCommunityBySlug } from '@/api/communities/get';
-import { BackButton } from '@/components/BackButton';
-import { Title } from '@/components/Typographies/Title';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
-import {
-  Root as FileInputRoot,
-  Trigger as FileInputTrigger,
-  FileList as FileInputFileList,
-  Control as FileInputControl,
-  ImagePreview,
-} from '@/components/Form/FileInput';
-import {
-  Root as InputRoot,
-  Control as InputControl,
-} from '@/components/Form/Input';
-import { Select } from '@/components/Form/Select';
-import { SelectItem } from '@/components/Form/Select/SelectItem';
-import Button from '@/components/Button';
-import { Spinner } from '@/components/Loadings/Spinner';
-import useChurchSchema from '@/schemas/useChurchSchema';
-import { useFormik } from 'formik';
-import { useFileInputStore } from '@/stores/useFileInputStore';
-import { updateCommunity } from '@/api/communities/update';
-import { showAlert } from '@/utils/showAlert';
+import { AppBreadcrumb } from '@/components/app/breadcrumb';
+import { TypographyH1 } from '@/components/typography/h1';
+import { TypographyH3 } from '@/components/typography/h3';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useCommunity } from '@/api/communities/use-community';
+import { Church, MapPin, Pen, Plus } from 'lucide-react';
+import Link from 'next/link';
 
-export default function EditChurchPage() {
-  const validationSchema = useChurchSchema();
-  const { files } = useFileInputStore();
-  const coverId = files.find((f) => f.state === 'complete')?.id;
-
-  const { slug } = useParams<{ slug: string }>();
-
-  const { data } = useQuery({
-    queryKey: ['communities', slug],
-    queryFn: () => getCommunityBySlug(slug),
-  });
-
-  const community = data?.community;
-
-  const { mutate, isPending } = useMutation({
-    networkMode: 'always',
-    mutationFn: updateCommunity,
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      name: community?.name || '',
-      type: community?.type || 'chapel',
-      address: community?.address || '',
-      coverId: coverId || community?.coverId || '',
-    },
-    validationSchema,
-    enableReinitialize: true,
-    onSubmit: (values) => {
-      mutate(
-        { id: community?.id!, ...values },
-        {
-          onSuccess: ({ community, statusCode, message }) => {
-            if (community && statusCode === 200) {
-              showAlert('Alterações salvas com sucesso!');
-            } else {
-              showAlert(`Erro ao salvar comunidade: ${message}`);
-            }
-          },
-          onError: (error) => {
-            showAlert(`Erro ao salvar comunidade: ${error.message}`);
-          },
-        }
-      );
-    },
-  });
+export default function ChurchPage() {
+  const { community } = useCommunity();
 
   return (
-    <>
-      <BackButton href="/churches" />
+    <main className="max-w-300 w-full px-4 pt-30 pb-12 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
+      <AppBreadcrumb
+        links={[
+          {
+            key: 'churched',
+            href: '/churches',
+            title: 'Igrejas',
+            icon: Church,
+          },
+          {
+            key: 'church',
+            title: community?.name,
+            href: `/churches/${community?.slug}`,
+          },
+        ]}
+      />
 
-      <Title>Editar Igreja</Title>
-
-      <form
-        id="settings"
-        className="mt-6 flex w-full flex-col gap-5 divide-y divide-brand-100/60"
-      >
-        <div className="lg:grid-cols-form flex flex-col gap-3 pb-5 lg:grid">
-          <label htmlFor="cover" className="text-md font-medium text-brand-800">
-            Capa
-            <span className="mt-0.5 mb-4 block text-sm font-normal text-brand-800">
-              Esta imagem será exibida publicamente.
-            </span>
-            <ImagePreview url={community?.coverUrl} />
-          </label>
-          <FileInputRoot>
-            <FileInputTrigger actionLabel="Clique aqui para alterar" />
-            <FileInputFileList />
-            <FileInputControl />
-          </FileInputRoot>
+      <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden mb-8">
+        <div
+          style={{
+            backgroundImage: community?.coverUrl
+              ? `url('${community?.coverUrl}')`
+              : '',
+          }}
+          className="relative w-full h-80 bg-cover bg-center aspect-4/3"
+        >
+          {community?.type === 'parish_church' && (
+            <div className="sm:absolute sm:top-4 sm:left-4 sm:z-10">
+              <span className="px-2.5 py-1.5 text-sm rounded-md w-fit-content bg-brand-800 text-white font-semibold">
+                Igreja Matriz
+              </span>
+            </div>
+          )}
         </div>
-
-        <div className="lg:grid-cols-form flex flex-col gap-3 pb-5 lg:grid">
-          <label htmlFor="name" className="text-sm font-medium text-brand-800">
-            Nome da Comunidade
-          </label>
-          <InputRoot>
-            <InputControl
-              id="name"
-              name="name"
-              type="text"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-            />
-          </InputRoot>
-        </div>
-
-        <div className="lg:grid-cols-form flex flex-col gap-3 pb-5 lg:grid">
-          <label htmlFor="name" className="text-sm font-medium text-brand-800">
-            Classificação
-          </label>
-          <Select
-            name="type"
-            placeholder=""
-            defaultValue="chapel"
-            value={formik.values.type}
-            onValueChange={(newValue: string) => {
-              formik.setFieldValue('type', newValue);
-            }}
-          >
-            <SelectItem value="chapel" text="Comunidade" defaultChecked />
-            <SelectItem value="parish_church" text="Matriz" />
-          </Select>
-        </div>
-
-        <div className="lg:grid-cols-form flex flex-col gap-3 pb-5 lg:grid">
-          <label
-            htmlFor="address"
-            className="text-sm font-medium text-brand-800"
-          >
-            Endereço
-          </label>
-          <InputRoot>
-            <InputControl
-              id="address"
-              name="address"
-              type="text"
-              value={formik.values.address}
-              onChange={formik.handleChange}
-            />
-          </InputRoot>
-        </div>
-      </form>
-
-      <div className="lg:grid lg:grid-cols-form flex gap-3 pt-4 lg:justify-end items-center border-t border-brand-100/60">
-        <div className="flex lg:justify-end col-start-2">
-          <Button
-            disabled={isPending}
-            className="w-36"
-            onClick={formik.submitForm}
-          >
-            {isPending ? (
-              <Spinner className="border-brand-300 border-2 w-5 h-5" />
+        <div className="flex flex-col p-6 sm:flex-row gap-6">
+          <div className="flex-1">
+            {community ? (
+              <div className="flex flex-row items-center gap-2">
+                <TypographyH1>{community.name}</TypographyH1>
+              </div>
             ) : (
-              'Salvar Alterações'
+              <Skeleton className="h-8 w-62.5" />
             )}
-          </Button>
+            {community ? (
+              <div className="flex flex-row items-start gap-2 mt-3">
+                <MapPin className="text-zinc-400" />
+                <span className="flex-1 text-lg text-zinc-600">
+                  {community.address}
+                </span>
+              </div>
+            ) : (
+              <Skeleton className="h-8 w-62.5" />
+            )}
+          </div>
+
+          <Link href={`/churches/${community?.slug}/edit`}>
+            <Button size="lg" variant="outline">
+              <Pen />
+              Editar
+            </Button>
+          </Link>
         </div>
       </div>
-    </>
+
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
+          <div className="flex flex-row items-center justify-between p-6">
+            <TypographyH3>Missas Regulares</TypographyH3>
+            <Link href={`/churches/${community?.slug}/add-ordinary-mass`}>
+              <Button size="lg">
+                <Plus />
+                Adicionar
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
+          <div className="flex flex-row items-center justify-between p-6">
+            <TypographyH3>Missas Devocionais</TypographyH3>
+            <Link href={`/churches/${community?.slug}/edit`}>
+              <Button size="lg">
+                <Plus />
+                Adicionar
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

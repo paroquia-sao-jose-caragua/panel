@@ -12,7 +12,7 @@
     minmax(0, 15rem);
 
   /* Brand scale */
-  --color-brand-0: #fbf6f3;
+  --color-brand-0: #fcf8f6;
   --color-brand-50: #f5ede4;
   --color-brand-100: #e8dacb;
   --color-brand-200: #e8c4a8;
@@ -24,6 +24,7 @@
   --color-brand-800: #6b3e1c;
   --color-brand-900: #4a2e13; /* novo menu bg */
 
+  --color-divider: #e4e4e4;
   --color-black-a9: rgba(0, 0, 0, 0.7);
 
   --animate-slide-down: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);

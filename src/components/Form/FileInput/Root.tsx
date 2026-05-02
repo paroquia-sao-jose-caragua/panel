@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { uploadFileWithProgress } from "@/api/attachments/images/upload";
-import { useFileInputStore } from "@/stores/useFileInputStore";
+import { uploadFileWithProgress } from '@/api/attachments/images/upload';
+import { useFileInputStore } from '@/stores/useFileInputStore';
 import {
   type ComponentProps,
   createContext,
@@ -9,11 +9,11 @@ import {
   useContext,
   useEffect,
   useId,
-} from "react";
+} from 'react';
 
-export type RootProps = ComponentProps<"div">;
+export type RootProps = ComponentProps<'div'>;
 
-type FileState = "progress" | "complete" | "error";
+type FileState = 'progress' | 'complete' | 'error';
 
 type FileItem = {
   file: File;
@@ -41,30 +41,30 @@ export function Root(props: RootProps) {
           try {
             const result = await uploadFileWithProgress(
               fileItem.file,
-              (percent) => updateFile(fileItem.id, { progress: percent }),
+              (percent) => updateFile(fileItem.id, { progress: percent })
             );
             updateFile(fileItem.id, {
-              state: "complete",
+              state: 'complete',
               id: result.attachmentId,
             });
           } catch (err) {
             updateFile(fileItem.id, {
-              state: "error",
+              state: 'error',
               error: String(err),
               progress: 0,
             });
           }
-        }),
+        })
       );
     },
-    [updateFile],
+    [updateFile]
   );
 
   const onFilesSelected = useCallback(
     (selectedFiles: File[], multiple: boolean) => {
       const newFileItems = selectedFiles.map((file) => ({
         file,
-        state: "progress" as FileState,
+        state: 'progress' as FileState,
         id: crypto.randomUUID(),
         progress: 0,
       }));
@@ -73,12 +73,12 @@ export function Root(props: RootProps) {
 
       uploadFiles(newFileItems);
     },
-    [addFiles, uploadFiles],
+    [addFiles, uploadFiles]
   );
 
   useEffect(() => {
     resetFiles();
-  }, [])
+  }, []);
 
   return (
     <FileInputContext.Provider value={{ id, onFilesSelected }}>
