@@ -1,29 +1,27 @@
 'use client';
 
 import { BackButton } from '@/components/BackButton';
-import { Title } from '@/components/typography/Title';
-
 import {
   Root as FileInputRoot,
   Trigger as FileInputTrigger,
   FileList as FileInputFileList,
   Control as FileInputControl,
-} from '@/components/Form/FileInput';
+} from '@/components/ui/file-input';
 import Button from '@/components/Button';
-import { Select } from '@/components/Form/Select';
-import { SelectItem } from '@/components/Form/Select/SelectItem';
+import { Select, SelectItem } from '@/components/common/select';
 import {
   Root as InputRoot,
   Control as InputControl,
-} from '@/components/Form/Input';
+} from '@/components/common/input';
 import useChurchSchema from '@/schemas/useChurchSchema';
 import { useFormik } from 'formik';
 import { useMutation } from '@tanstack/react-query';
 import { createCommunity } from '@/api/communities/create';
-import { useNavigate } from '@/hooks/useNavigate';
+import { useNavigate } from '@/hooks/use-navigate';
 import { showAlert } from '@/utils/showAlert';
-import { Spinner } from '@/components/Loadings/Spinner';
+import { Spinner } from '@/components/ui/loading/spinner';
 import { useFileInputStore } from '@/stores/useFileInputStore';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function AddChurch() {
   const validationSchema = useChurchSchema();
@@ -66,7 +64,7 @@ export default function AddChurch() {
     <main className="max-w-300 w-full px-4 pt-30 pb-12 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
       <BackButton href="/churches" />
 
-      <Title>Adicionar Igreja</Title>
+      <TypographyH1>Adicionar Igreja</TypographyH1>
 
       <form
         id="settings"

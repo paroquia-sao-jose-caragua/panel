@@ -1,11 +1,11 @@
 import { DevNoticeCard } from '@/components/DevNoticeCard';
-import { Describe } from '@/components/typography/Describe';
-import { Title } from '@/components/typography/Title';
+import { Describe } from '@/components/ui/typography/describe';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function Events() {
   return (
     <>
-      <Title>Eventos</Title>
+      <TypographyH1>Eventos</TypographyH1>
 
       <Describe>
         Gerencie os eventos da sua paróquia, adicione novos eventos, edite

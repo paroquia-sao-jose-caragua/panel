@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { logout } from "@/api/users/logout";
-import { useNavigate } from "@/hooks/useNavigate";
-import useTranslator from "@/hooks/useTranslator";
-import useAuthStore from "@/stores/useAuthStore";
-import { showAlert } from "@/utils/showAlert";
-import { useMutation } from "@tanstack/react-query";
-import { LogOut } from "lucide-react";
-import { useCallback } from "react";
+import { logout } from '@/api/users/logout';
+import { useNavigate } from '@/hooks/use-navigate';
+import useTranslator from '@/hooks/use-translator';
+import useAuthStore from '@/stores/useAuthStore';
+import { showAlert } from '@/utils/showAlert';
+import { useMutation } from '@tanstack/react-query';
+import { LogOut } from 'lucide-react';
+import { useCallback } from 'react';
 
 export const LogoutButton = () => {
   const { t } = useTranslator();
@@ -19,13 +19,13 @@ export const LogoutButton = () => {
     onSuccess: ({ statusCode }) => {
       if (statusCode === 200) {
         setLoggedOut();
-        navigate.replace("/login");
+        navigate.replace('/login');
       } else {
-        showAlert(t("error-logging-out"));
+        showAlert(t('error-logging-out'));
       }
     },
     onError: () => {
-      showAlert(t("error-logging-out"));
+      showAlert(t('error-logging-out'));
     },
   });
 

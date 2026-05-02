@@ -1,5 +1,6 @@
+import { TooltipProvider } from '@/components/ui/tooltip';
 import '../globals.css';
-import { AppSidebar } from '@/components/app/sidebar/AppSidebar';
+import { AppSidebar } from '@/components/common/sidebar';
 
 export default function Layout({
   children,
@@ -9,7 +10,7 @@ export default function Layout({
   return (
     <div className=" min-h-screen bg-zinc-100 lg:grid-cols-app lg:grid">
       <AppSidebar />
-      {children}
+      <TooltipProvider>{children}</TooltipProvider>
     </div>
   );
 }

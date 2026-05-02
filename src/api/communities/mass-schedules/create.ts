@@ -1,14 +1,29 @@
 import { communityApi } from '@/api/utils/communityApi';
 
 interface CreateMassScheduleResponse {
-  community: {
+  massSchedule: {
     id: string;
-    name: string;
-    slug: string;
-    createdAt: string;
-    type: 'parish' | 'chapel';
-    address: string;
-    coverId: string;
+    communityId: string;
+    type: 'ordinary' | 'devotional' | 'solemnity';
+    isPrecept: boolean;
+    recurrenceType: 'weekly' | 'monthly' | 'yearly';
+    dayOfWeek?: number;
+    active: boolean;
+    startDate: string;
+    times: [
+      {
+        id: string;
+        scheduleId: string;
+        startTime: string;
+        endTime: string;
+      },
+      {
+        id: string;
+        scheduleId: string;
+        startTime: string;
+        endTime: string;
+      },
+    ];
   };
 }
 

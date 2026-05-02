@@ -7,8 +7,8 @@ import { useMutation } from '@tanstack/react-query';
 import useAuthStore from '@/stores/useAuthStore';
 import { refresh } from '@/api/users/refresh';
 import { routeUtils } from '@/utils/routeUtils';
-import { useNavigate } from '@/hooks/useNavigate';
-import { FullLoading } from '@/components/Loadings/FullLoading';
+import { useNavigate } from '@/hooks/use-navigate';
+import { FullLoading } from '@/components/ui/loading/full-loading';
 
 const AuthGuardProvider = () => {
   const pathname = usePathname();

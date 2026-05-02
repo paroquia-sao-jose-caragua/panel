@@ -1,10 +1,10 @@
 import { AddCard } from '@/components/AddCard';
-import { Describe } from '@/components/typography/Describe';
-import { Title } from '@/components/typography/Title';
+import { Describe } from '@/components/ui/typography/describe';
 import Link from 'next/link';
 import { CommunitiesList } from './list';
-import { AppBreadcrumb } from '@/components/app/breadcrumb';
+import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { Church } from 'lucide-react';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function Churches() {
   return (
@@ -15,7 +15,7 @@ export default function Churches() {
         ]}
       />
 
-      <Title>Igrejas</Title>
+      <TypographyH1>Igrejas</TypographyH1>
 
       <Describe>
         Gerencie as igrejas da sua paróquia, adicione novas igrejas, edite

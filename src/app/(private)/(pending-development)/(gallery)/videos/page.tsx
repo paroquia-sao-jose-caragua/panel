@@ -1,11 +1,11 @@
 import { DevNoticeCard } from '@/components/DevNoticeCard';
-import { Describe } from '@/components/typography/Describe';
-import { Title } from '@/components/typography/Title';
+import { Describe } from '@/components/ui/typography/describe';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function Videos() {
   return (
     <>
-      <Title>Vídeos</Title>
+      <TypographyH1>Vídeos</TypographyH1>
 
       <Describe>Adicione, edite e gerencie os vídeos da sua paróquia.</Describe>
 

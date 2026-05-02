@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { Lock, Mail } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import { login } from "@/api/users/login";
-import useTranslator from "@/hooks/useTranslator";
-import useLoginSchema from "@/schemas/useLoginSchema";
-import useAuthStore from "@/stores/useAuthStore";
-import { useNavigate } from "@/hooks/useNavigate";
-import { handleFieldErrors } from "@/utils/fieldsUtils";
-import { useFormik } from "formik";
-import * as Input from "@/components/Form/Input";
-import Button from "@/components/Button";
-import { showAlert } from "@/utils/showAlert";
+import { Lock, Mail } from 'lucide-react';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '@/api/users/login';
+import useTranslator from '@/hooks/use-translator';
+import useLoginSchema from '@/schemas/useLoginSchema';
+import useAuthStore from '@/stores/useAuthStore';
+import { useNavigate } from '@/hooks/use-navigate';
+import { handleFieldErrors } from '@/utils/fieldsUtils';
+import { useFormik } from 'formik';
+import * as Input from '@/components/common/input';
+import Button from '@/components/Button';
+import { showAlert } from '@/utils/showAlert';
 
 export const Form = () => {
   const { t } = useTranslator();
@@ -24,23 +24,23 @@ export const Form = () => {
     onSuccess: ({ message, statusCode, token, user, fields }) => {
       if (statusCode === 200) {
         setLogged({ token, user });
-        navigate.push("/");
+        navigate.push('/');
       } else if (fields) {
         handleFieldErrors(fields, formik.setFieldError);
       } else {
-        showAlert(message || t("something-went-wrong"));
+        showAlert(message || t('something-went-wrong'));
       }
     },
     onError: (error) => {
       console.error(error);
-      showAlert(t("something-went-wrong"));
+      showAlert(t('something-went-wrong'));
     },
   });
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     validationSchema,
     onSubmit: (values) => {

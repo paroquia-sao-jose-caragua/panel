@@ -8,14 +8,13 @@ import {
   FileList as FileInputFileList,
   Control as FileInputControl,
   ImagePreview,
-} from '@/components/Form/FileInput';
+} from '@/components/ui/file-input';
 import {
   Root as InputRoot,
   Control as InputControl,
-} from '@/components/Form/Input';
-import { Select } from '@/components/Form/Select';
-import { SelectItem } from '@/components/Form/Select/SelectItem';
-import { Spinner } from '@/components/Loadings/Spinner';
+} from '@/components/common/input';
+import { Select, SelectItem } from '@/components/common/select';
+import { Spinner } from '@/components/ui/loading/spinner';
 import useChurchSchema from '@/schemas/useChurchSchema';
 import { useFormik } from 'formik';
 import { useFileInputStore } from '@/stores/useFileInputStore';
@@ -23,7 +22,7 @@ import { updateCommunity } from '@/api/communities/update';
 import { showAlert } from '@/utils/showAlert';
 import { Button } from '@/components/ui/button';
 import { useCommunity } from '@/api/communities/use-community';
-import { TypographyH1 } from '@/components/typography/h1';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function EditChurchPage() {
   const validationSchema = useChurchSchema();

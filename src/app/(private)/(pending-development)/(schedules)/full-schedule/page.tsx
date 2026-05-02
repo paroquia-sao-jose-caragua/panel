@@ -1,11 +1,11 @@
 import { DevNoticeCard } from '@/components/DevNoticeCard';
-import { Describe } from '@/components/typography/Describe';
-import { Title } from '@/components/typography/Title';
+import { Describe } from '@/components/ui/typography/describe';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function FullSchedule() {
   return (
     <>
-      <Title>Programação Completa</Title>
+      <TypographyH1>Programação Completa</TypographyH1>
 
       <Describe>
         Consulte a programação completa da sua paróquia, desmarque ou adicione

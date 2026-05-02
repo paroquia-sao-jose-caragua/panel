@@ -1,11 +1,11 @@
 import { DevNoticeCard } from '@/components/DevNoticeCard';
-import { Describe } from '@/components/typography/Describe';
-import { Title } from '@/components/typography/Title';
+import { Describe } from '@/components/ui/typography/describe';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function ChangePassword() {
   return (
     <>
-      <Title>Alterar Senha</Title>
+      <TypographyH1>Alterar Senha</TypographyH1>
 
       <Describe>
         Gerencie a segurança da sua conta alterando sua senha regularmente.

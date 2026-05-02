@@ -1,8 +1,8 @@
 'use client';
 
-import { AppBreadcrumb } from '@/components/app/breadcrumb';
-import { TypographyH1 } from '@/components/typography/h1';
-import { TypographyH3 } from '@/components/typography/h3';
+import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { TypographyH1 } from '@/components/ui/typography/h1';
+import { TypographyH3 } from '@/components/ui/typography/h3';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunity } from '@/api/communities/use-community';

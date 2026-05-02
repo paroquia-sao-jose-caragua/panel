@@ -1,11 +1,11 @@
 import { DevNoticeCard } from '@/components/DevNoticeCard';
-import { Describe } from '@/components/typography/Describe';
-import { Title } from '@/components/typography/Title';
+import { Describe } from '@/components/ui/typography/describe';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function Albums() {
   return (
     <>
-      <Title>Álbuns</Title>
+      <TypographyH1>Álbuns</TypographyH1>
 
       <Describe>
         Crie e gerencie os álbuns da sua paróquia, adicione novas fotos e

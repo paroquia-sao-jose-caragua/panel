@@ -1,4 +1,4 @@
-import { Describe } from '@/components/typography/Describe';
+import { Describe } from '@/components/ui/typography/describe';
 import Image from 'next/image';
 import { Form } from './form';
 

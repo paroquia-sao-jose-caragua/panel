@@ -1,11 +1,11 @@
 import { DevNoticeCard } from '@/components/DevNoticeCard';
-import { Describe } from '@/components/typography/Describe';
-import { Title } from '@/components/typography/Title';
+import { Describe } from '@/components/ui/typography/describe';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function Clergies() {
   return (
     <>
-      <Title>Autoridades</Title>
+      <TypographyH1>Autoridades</TypographyH1>
 
       <Describe>
         Gerencie as autoridades da sua paróquia, adicione novas autoridades,

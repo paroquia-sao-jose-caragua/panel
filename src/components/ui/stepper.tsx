@@ -2,6 +2,7 @@ import type * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
+import { Check } from 'lucide-react';
 
 const stepVariants = cva(
   'flex items-center justify-center w-8 h-8 rounded-full',
@@ -47,7 +48,9 @@ function Step({
   return (
     <div className="flex flex-col sm:flex-row  items-center justify-center gap-2">
       <div className={cn(stepVariants({ variant, className }))}>
-        <span className="font-bold text-sm">{step}</span>
+        <span className="font-bold text-sm">
+          {variant === 'completed' ? <Check className="w-5 h-5" /> : step}
+        </span>
       </div>
       <span className={cn(labelVariants({ variant, className }))}>{label}</span>
     </div>

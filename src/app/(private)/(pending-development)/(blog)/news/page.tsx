@@ -1,11 +1,11 @@
 import { DevNoticeCard } from '@/components/DevNoticeCard';
-import { Describe } from '@/components/typography/Describe';
-import { Title } from '@/components/typography/Title';
+import { Describe } from '@/components/ui/typography/describe';
+import { TypographyH1 } from '@/components/ui/typography/h1';
 
 export default function News() {
   return (
     <>
-      <Title>Notícias</Title>
+      <TypographyH1>Notícias</TypographyH1>
 
       <Describe>
         Gerencie as notícias da sua paróquia, adicione novas notícias, edite
