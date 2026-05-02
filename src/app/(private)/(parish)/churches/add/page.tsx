@@ -1,6 +1,6 @@
 'use client';
 
-import { BackButton } from '@/components/BackButton';
+import { BackButton } from '@/components/common/back-button';
 import {
   Root as FileInputRoot,
   Trigger as FileInputTrigger,

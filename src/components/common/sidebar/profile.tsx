@@ -1,7 +1,7 @@
 'use client';
 
 import useAuthStore from '@/stores/useAuthStore';
-import { LogoutButton } from '../../LogoutButton';
+import { LogoutButton } from './logout-button';
 
 export function Profile() {
   const { user } = useAuthStore();

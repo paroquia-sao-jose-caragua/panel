@@ -1,4 +1,4 @@
-import { DevNoticeCard } from '@/components/DevNoticeCard';
+import { DevNoticeCard } from '@/components/common/dev-notice-card';
 import { Describe } from '@/components/ui/typography/describe';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import { BackButton } from '@/components/BackButton';
+import { BackButton } from '@/components/common/back-button';
 import { Button } from '@/components/ui/button';
 import { useCommunity } from '@/api/communities/use-community';
 import { ImagePreview } from '@/components/ui/file-input/image-preview';
@@ -9,9 +9,9 @@ import Link from 'next/link';
 import { TypographyH2 } from '@/components/ui/typography/h2';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
-import { ConfirmStep } from '@/components/domain/communities/add-ordinary-mass/confirm-step';
-import { useCreateMassSchedule } from '@/components/domain/communities/use-create-mass-schedule';
-import { InfoStep } from '@/components/domain/communities/add-ordinary-mass/info-step';
+import { ConfirmStep } from '@/components/features/churches/add-ordinary-mass/confirm-step';
+import { useCreateMassSchedule } from '@/components/features/churches/use-create-mass-schedule';
+import { InfoStep } from '@/components/features/churches/add-ordinary-mass/info-step';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 

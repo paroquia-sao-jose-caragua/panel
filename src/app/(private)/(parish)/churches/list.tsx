@@ -1,7 +1,7 @@
 'use client';
 
 import { listCommunities } from '@/api/communities/list';
-import { ChurchCard } from '@/components/ChurchCard';
+import { ChurchCard } from '@/components/features/churches/church-card';
 import useCommunitiesStore from '@/stores/useCommunitiesStore';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';

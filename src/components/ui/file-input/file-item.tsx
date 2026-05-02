@@ -1,36 +1,36 @@
-import Button from "@/components/Button";
-import { formatBytes } from "@/utils/formatBytes";
-import { CheckCircle2, Trash2 } from "lucide-react";
-import { tv, type VariantProps } from "tailwind-variants";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { useCallback } from "react";
-import { useFileInputStore } from "@/stores/useFileInputStore";
+import { formatBytes } from '@/utils/formatBytes';
+import { CheckCircle2, Trash2 } from 'lucide-react';
+import { tv, type VariantProps } from 'tailwind-variants';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useCallback } from 'react';
+import { useFileInputStore } from '@/stores/useFileInputStore';
+import { Button } from '../button';
 
 const fileItem = tv({
   slots: {
     container:
-      "bg-white group flex items-start gap-4 rounded-lg border border-zinc-200 p-4",
-    icon: "rounded-full border-4 border-brand-100 bg-brand-200 p-2 text-brand-600",
-    deleteButton: "",
+      'bg-white group flex items-start gap-4 rounded-lg border border-zinc-200 p-4',
+    icon: 'rounded-full border-4 border-brand-100 bg-brand-200 p-2 text-brand-600',
+    deleteButton: '',
   },
 
   variants: {
     state: {
       progress: {
-        container: "",
+        container: '',
       },
-      complete: { container: "border-brand-500" },
+      complete: { container: 'border-brand-500' },
       error: {
-        container: "bg-error-25 border-error-300",
-        icon: "border-error-50 bg-error-100 text-error-600",
-        deleteButton: "text-error-700 hover:text-error-900",
+        container: 'bg-error-25 border-error-300',
+        icon: 'border-error-50 bg-error-100 text-error-600',
+        deleteButton: 'text-error-700 hover:text-error-900',
       },
     },
   },
 
   defaultVariants: {
-    state: "progress",
+    state: 'progress',
   },
 });
 
@@ -61,15 +61,13 @@ export default function FileItem({
     <div className={container()}>
       <Image src={url} width={70} height={50} alt="" className="rounded" />
 
-      {state === "error" ? (
+      {state === 'error' ? (
         <div className="flex flex-1 flex-col items-start gap-1">
           <div className="flex flex-col">
             <span className="text-error-700 text-sm font-medium">
               Upload failed, please try again.
             </span>
-            <span className="text-error-600 text-sm">
-              {name}
-            </span>
+            <span className="text-error-600 text-sm">{name}</span>
           </div>
 
           <button
@@ -82,12 +80,8 @@ export default function FileItem({
       ) : (
         <div className="flex flex-1 flex-col items-start gap-1">
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-zinc-700">
-              {name}
-            </span>
-            <span className="text-sm text-zinc-500">
-              {formatBytes(size)}
-            </span>
+            <span className="text-sm font-medium text-zinc-700">{name}</span>
+            <span className="text-sm text-zinc-500">{formatBytes(size)}</span>
           </div>
 
           <div className="flex w-full items-center gap-3">
@@ -96,19 +90,19 @@ export default function FileItem({
                 className="h-2 rounded-full bg-brand-600"
                 initial={{ width: 0 }}
                 animate={{
-                  width: `${progress ?? (state === "complete" ? 100 : 0)}%`,
+                  width: `${progress ?? (state === 'complete' ? 100 : 0)}%`,
                 }}
                 transition={{ duration: 0.2 }}
               />
             </div>
             <span className="text-sm font-medium text-zinc-700">
-              {progress ?? (state === "complete" ? 100 : 0)}%
+              {progress ?? (state === 'complete' ? 100 : 0)}%
             </span>
           </div>
         </div>
       )}
 
-      {state === "complete" ? (
+      {state === 'complete' ? (
         <Button
           type="button"
           variant="ghost"

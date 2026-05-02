@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import type { ElementType, ReactNode } from 'react';
-import { BackButton } from '../BackButton';
+import { BackButton } from './back-button';
 
 interface AppBreadcrumbProps {
   links: {

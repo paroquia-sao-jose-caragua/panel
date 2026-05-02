@@ -1,6 +1,5 @@
-import { AddCard } from '@/components/AddCard';
+import { AddCardNavigation } from '@/components/common/add-card-navigation';
 import { Describe } from '@/components/ui/typography/describe';
-import Link from 'next/link';
 import { CommunitiesList } from './list';
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { Church } from 'lucide-react';
@@ -24,14 +23,12 @@ export default function Churches() {
 
       <div className="grid xl:grid xl:grid-cols-card gap-6 py-6">
         <CommunitiesList />
-        <Link href="/churches/add">
-          <AddCard
-            title="Adicione uma igreja"
-            subtitle="para
-            gerenciar a programação e as informações de cada comunidade da
-            paróquia."
-          />
-        </Link>
+
+        <AddCardNavigation
+          title="Adicione uma igreja"
+          subtitle="para gerenciar a programação e as informações de cada comunidade da paróquia."
+          href="/churches/add"
+        />
       </div>
     </main>
   );
