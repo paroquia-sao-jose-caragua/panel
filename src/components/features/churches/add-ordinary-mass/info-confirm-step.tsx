@@ -15,7 +15,7 @@ interface ConfirmStepProps {
   times: { startTime: string; endTime: string }[];
 }
 
-export const ConfirmStep = ({
+export const InfoConfirmStep = ({
   recurrenceType,
   isPrecept,
   startDate,

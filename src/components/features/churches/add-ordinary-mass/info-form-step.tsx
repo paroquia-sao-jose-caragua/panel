@@ -1,6 +1,5 @@
 import { Select } from '@/components/common/select';
 import { SelectItem } from '@/components/common/select';
-import { Calendar } from '@/components/ui/calendar';
 import { FieldLabel } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -37,7 +36,7 @@ interface InfoStepProps {
   formik: ReturnType<typeof useCreateMassSchedule>['formik'];
 }
 
-export const InfoStep = ({ formik }: InfoStepProps) => {
+export const InfoFormStep = ({ formik }: InfoStepProps) => {
   const startTimeRef = React.useRef<HTMLInputElement>(null);
   const endTimeRef = React.useRef<HTMLInputElement>(null);
 
@@ -65,7 +64,7 @@ export const InfoStep = ({ formik }: InfoStepProps) => {
           }
         >
           <div
-            className={`flex items-center gap-4 border-2 ${formik.values.recurrenceType === 'weekly' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
+            className={`flex items-center gap-4 border ${formik.values.recurrenceType === 'weekly' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
           >
             <RadioGroupItem value="weekly" id="r1" />
 
@@ -81,7 +80,7 @@ export const InfoStep = ({ formik }: InfoStepProps) => {
           </div>
 
           <div
-            className={`flex items-center gap-3 border-2 ${formik.values.recurrenceType === 'monthly' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
+            className={`flex items-center gap-3 border ${formik.values.recurrenceType === 'monthly' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
           >
             <RadioGroupItem value="monthly" id="r2" />
 
@@ -132,7 +131,7 @@ export const InfoStep = ({ formik }: InfoStepProps) => {
       {formik.values.recurrenceType === 'monthly' && (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
           <FieldLabel htmlFor="day-of-month">
-            <Calendar className="text-zinc-400" />
+            <CalendarIcon className="text-zinc-400" />
             Quando
           </FieldLabel>
           <div className="flex flex-col gap-2">

@@ -10,8 +10,8 @@ import { useNavigate } from '@/hooks/use-navigate';
 import { handleFieldErrors } from '@/utils/fieldsUtils';
 import { useFormik } from 'formik';
 import * as Input from '@/components/common/input';
-import Button from '@/components/Button';
 import { showAlert } from '@/utils/showAlert';
+import { Button } from '@/components/ui/button';
 
 export const Form = () => {
   const { t } = useTranslator();

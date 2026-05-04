@@ -1,7 +1,7 @@
 'use client';
 
 import { FieldDescription } from '@/components/ui/field';
-import { createContext, type ComponentProps } from 'react';
+import { createContext, useContext, type ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 type RootProps = ComponentProps<'div'> & {
@@ -14,7 +14,9 @@ type InputContextType = {
   showError: boolean;
 };
 
-const InputContext = createContext({} as InputContextType);
+const InputContext = createContext({
+  showError: false,
+} as InputContextType);
 
 export const Root = ({ error, touched, helperText, ...props }: RootProps) => {
   const showError = Boolean(error && touched);
@@ -56,10 +58,12 @@ export const Root = ({ error, touched, helperText, ...props }: RootProps) => {
 type ControlProps = ComponentProps<'input'>;
 
 export const Control = (props: ControlProps) => {
+  const { showError } = useContext(InputContext);
+
   return (
     <input
       className={twMerge([
-        'flex-1 border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-600 outline-none',
+        `${showError ? 'focus-error' : ''} flex-1 border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-600 outline-none`,
       ])}
       {...props}
     />

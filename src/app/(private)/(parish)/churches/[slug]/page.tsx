@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunity } from '@/api/communities/use-community';
 import { Church, MapPin, Pen, Plus } from 'lucide-react';
 import Link from 'next/link';
+import { OrdinaryMass } from './ordinary-mass';
 
 export default function ChurchPage() {
   const { community } = useCommunity();
@@ -69,7 +70,7 @@ export default function ChurchPage() {
           </div>
 
           <Link href={`/churches/${community?.slug}/edit`}>
-            <Button size="lg" variant="outline">
+            <Button variant="outline">
               <Pen />
               Editar
             </Button>
@@ -78,23 +79,13 @@ export default function ChurchPage() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-8">
-        <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
-          <div className="flex flex-row items-center justify-between p-6">
-            <TypographyH3>Missas Regulares</TypographyH3>
-            <Link href={`/churches/${community?.slug}/add-ordinary-mass`}>
-              <Button size="lg">
-                <Plus />
-                Adicionar
-              </Button>
-            </Link>
-          </div>
-        </div>
+        <OrdinaryMass />
 
         <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
           <div className="flex flex-row items-center justify-between p-6">
             <TypographyH3>Missas Devocionais</TypographyH3>
             <Link href={`/churches/${community?.slug}/edit`}>
-              <Button size="lg">
+              <Button>
                 <Plus />
                 Adicionar
               </Button>

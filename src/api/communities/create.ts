@@ -1,4 +1,4 @@
-import { communityApi } from "../utils/communityApi";
+import { communityApi } from '../utils/communityApi';
 
 interface CreateCommunityResponse {
   community: {
@@ -6,9 +6,10 @@ interface CreateCommunityResponse {
     name: string;
     slug: string;
     createdAt: string;
-    type: "parish" | "chapel";
+    type: 'parish_church' | 'chapel';
     address: string;
     coverId: string;
+    coverUrl: string;
   };
 }
 
@@ -18,8 +19,8 @@ export const createCommunity = async (values: {
   address: string;
   coverId?: string;
 }) => {
-  const result = await communityApi<CreateCommunityResponse>("/", {
-    method: "POST",
+  const result = await communityApi<CreateCommunityResponse>('/', {
+    method: 'POST',
     body: JSON.stringify(values),
   });
 

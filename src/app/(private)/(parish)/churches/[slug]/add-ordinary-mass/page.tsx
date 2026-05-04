@@ -9,11 +9,12 @@ import Link from 'next/link';
 import { TypographyH2 } from '@/components/ui/typography/h2';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
-import { ConfirmStep } from '@/components/features/churches/add-ordinary-mass/confirm-step';
 import { useCreateMassSchedule } from '@/components/features/churches/use-create-mass-schedule';
-import { InfoStep } from '@/components/features/churches/add-ordinary-mass/info-step';
+import { InfoConfirmStep } from '@/components/features/churches/add-ordinary-mass/info-confirm-step';
+import { InfoFormStep } from '@/components/features/churches/add-ordinary-mass/info-form-step';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import { Spinner } from '@/components/ui/spinner';
 
 dayjs.locale('pt-br');
 
@@ -74,7 +75,7 @@ export default function AddOrdinaryMassPage() {
       <main className="w-full max-w-200 px-4 pt-8 pb-12 mx-auto lg:px-8">
         {activeStep === 1 && (
           <>
-            <InfoStep formik={formik} />
+            <InfoFormStep formik={formik} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
               <Link href={`/churches/${community?.slug}`}>
                 <Button variant="outline" size="lg">
@@ -90,7 +91,7 @@ export default function AddOrdinaryMassPage() {
 
         {activeStep === 2 && (
           <>
-            <ConfirmStep {...formik.values} />
+            <InfoConfirmStep {...formik.values} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
               <Button variant="outline" size="lg" onClick={handlePrevStep}>
                 Voltar
@@ -100,7 +101,11 @@ export default function AddOrdinaryMassPage() {
                 disabled={isPending}
                 onClick={formik.submitForm}
               >
-                Adicionar Missa
+                {isPending ? (
+                  <Spinner className="border-brand-300 border-2 w-5 h-5" />
+                ) : (
+                  'Adicionar Missa'
+                )}
               </Button>
             </div>
           </>
