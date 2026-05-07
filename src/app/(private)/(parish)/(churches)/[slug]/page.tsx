@@ -19,14 +19,14 @@ export default function ChurchPage() {
         links={[
           {
             key: 'churched',
-            href: '/churches',
+            href: '/',
             title: 'Igrejas',
             icon: Church,
           },
           {
             key: 'church',
             title: community?.name,
-            href: `/churches/${community?.slug}`,
+            href: `/${community?.slug}`,
           },
         ]}
       />
@@ -69,7 +69,7 @@ export default function ChurchPage() {
             )}
           </div>
 
-          <Link href={`/churches/${community?.slug}/edit`}>
+          <Link href={`/${community?.slug}/edit`}>
             <Button variant="outline">
               <Pen />
               Editar
@@ -84,7 +84,7 @@ export default function ChurchPage() {
         <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
           <div className="flex flex-row items-center justify-between p-6">
             <TypographyH3>Missas Devocionais</TypographyH3>
-            <Link href={`/churches/${community?.slug}/edit`}>
+            <Link href={`/${community?.slug}/edit`}>
               <Button>
                 <Plus />
                 Adicionar

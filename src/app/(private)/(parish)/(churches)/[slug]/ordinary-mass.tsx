@@ -14,7 +14,7 @@ export const OrdinaryMass = () => {
     <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
       <div className="flex flex-row items-center justify-between p-6">
         <TypographyH3>Missas Regulares</TypographyH3>
-        <Link href={`/churches/${community?.slug}/add-ordinary-mass`}>
+        <Link href={`/${community?.slug}/add-ordinary-mass`}>
           <Button>
             <Plus />
             Adicionar

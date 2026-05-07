@@ -50,10 +50,6 @@ export const AppSidebar = () => {
             icon={Church}
             links={[
               {
-                title: 'Igrejas',
-                href: '/churches',
-              },
-              {
                 title: 'Autoridades',
                 href: '/clergies',
               },
@@ -64,14 +60,10 @@ export const AppSidebar = () => {
             ]}
             onLinkClick={handleClose}
           />
-          <NavItem
+          {/* <NavItem
             title="Agenda"
             icon={Calendar}
             links={[
-              {
-                title: 'Horários de Missa',
-                href: '/mass-schedules',
-              },
               {
                 title: 'Eventos',
                 href: '/events',
@@ -120,11 +112,11 @@ export const AppSidebar = () => {
               },
             ]}
             onLinkClick={handleClose}
-          />
+          /> */}
         </div>
 
         <div className="mt-auto flex flex-col gap-6 ">
-          <div className="h-px bg-brand-700/30" />
+          {/* <div className="h-px bg-brand-700/30" />
 
           <nav className="space-y-0.5 px-4">
             <NavItem
@@ -153,7 +145,7 @@ export const AppSidebar = () => {
               ]}
               onLinkClick={handleClose}
             />
-          </nav>
+          </nav> */}
 
           <div className="h-px bg-brand-700/30" />
 

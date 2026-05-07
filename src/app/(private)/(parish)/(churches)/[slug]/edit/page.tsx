@@ -66,7 +66,7 @@ export default function EditChurchPage() {
 
   return (
     <main className="max-w-300 w-full px-4 pt-30 pb-12 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-      <BackButton href={`/churches/${community?.slug}`} />
+      <BackButton href={`/${community?.slug}`} />
 
       {/* <TypographyH1>Editar Igreja</TypographyH1> */}
       <div className="flex flex-row items-center gap-4 mb-8">

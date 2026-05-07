@@ -53,7 +53,7 @@ export default function AddChurchPage() {
     <div className="w-full lg:col-start-2">
       <header className="bg-white mt-16.25 md:mt-20.25 lg:mt-0">
         <div className="mx-auto w-full max-w-200 px-4 lg:px-8 py-4">
-          <BackButton href={'/churches/'} />
+          <BackButton href={'/'} />
 
           <div className="flex flex-row items-center gap-4">
             <div>
@@ -84,7 +84,7 @@ export default function AddChurchPage() {
           <>
             <InfoFormStep formik={formik} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
-              <Link href={'/churches'}>
+              <Link href={'/'}>
                 <Button variant="outline" size="lg">
                   Cancelar
                 </Button>
