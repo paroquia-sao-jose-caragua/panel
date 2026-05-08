@@ -54,7 +54,7 @@
       },
     },
     "production": {
-      "name": "panel",
+      "name": "panel-staging",
       "workers_dev": false,
       "preview_urls": false,
       "route": {
