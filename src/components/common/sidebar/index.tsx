@@ -63,7 +63,7 @@ export const AppSidebar = () => {
             icon={Calendar}
             links={[
               {
-                title: 'Agenda',
+                title: 'schedule',
                 href: '/calendar',
               },
             ]}
