@@ -18,13 +18,9 @@ export default function Clergies() {
         links={[{ key: 'origin', href: '/', title: 'Paróquia', icon: Church }]}
       />
 
-      <TypographyH1>Bem-vindo à Paróquia São José!</TypographyH1>
+      <TypographyH1>Autoridades</TypographyH1>
 
-      <Describe>
-        Gerencie as igrejas da sua paróquia, adicione novas igrejas, edite
-        informações existentes e mantenha os dados atualizados.
-      </Describe>
-
+  
       <div className="grid xl:grid xl:grid-cols-card gap-6 py-6">
        
 
