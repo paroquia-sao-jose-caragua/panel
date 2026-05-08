@@ -10,17 +10,19 @@ import {
   Control as InputControl,
 } from '@/components/common/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { FullAddressForm } from '../../full-address-form';
-import type { useCreateChurch } from './use-create-church';
-import { useFileInputStore } from '@/stores/useFileInputStore';
 import { FieldSection } from '@/components/ui/field-section';
+import { useFileInputStore } from '@/stores/useFileInputStore';
+import { useCommunity } from '@/api/communities/use-community';
+import { FullAddressForm } from '../../full-address-form';
+import type { useCreateChurch } from '../add-church/use-create-church';
 
-interface InfoStepProps {
+interface EditInfoFormStepProps {
   formik: ReturnType<typeof useCreateChurch>['formik'];
 }
 
-export const InfoFormStep = ({ formik }: InfoStepProps) => {
+export const InfoFormStep = ({ formik }: EditInfoFormStepProps) => {
   const { files } = useFileInputStore();
+  const { community } = useCommunity();
 
   const fileError = files.find((f) => f.state === 'error');
 
@@ -28,13 +30,13 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
     <form autoComplete="off" className="flex w-full flex-col gap-8">
       <FieldSection
         title="Foto da Igreja"
-        description="Recomendamos uma imagem retangular de pelo menos 400x300px"
+        description="Esta imagem será exibida publicamente"
       >
         <div className="flex flex-col sm:flex-row gap-4">
-          <ImagePreview size="lg" />
+          <ImagePreview url={community?.coverUrl} size="lg" />
           <div className="flex-1">
             <FileInputRoot className="flex-1">
-              <FileInputTrigger />
+              <FileInputTrigger actionLabel="Clique aqui para alterar" />
               <FileInputControl accept="image/png,image/jpeg" />
             </FileInputRoot>
             {((formik.touched.coverId && formik.errors.coverId) ||
@@ -64,14 +66,13 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
           </InputRoot>
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 mt-4">
           <span className="block mb-2 text-sm text-zinc-700 font-semibold">
             Tipo
           </span>
 
           <RadioGroup
             name="type"
-            defaultValue="chapel"
             value={formik.values.type}
             className="w-full flex flex-col sm:flex-row items-start gap-4"
             onValueChange={(newValue) => formik.setFieldValue('type', newValue)}

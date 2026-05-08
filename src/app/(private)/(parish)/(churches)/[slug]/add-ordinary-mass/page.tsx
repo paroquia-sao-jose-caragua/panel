@@ -4,9 +4,7 @@ import React, { useCallback } from 'react';
 import { BackButton } from '@/components/common/back-button';
 import { Button } from '@/components/ui/button';
 import { useCommunity } from '@/api/communities/use-community';
-import { ImagePreview } from '@/components/ui/file-input/image-preview';
 import Link from 'next/link';
-import { TypographyH2 } from '@/components/ui/typography/h2';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
 import { useCreateMassSchedule } from '@/components/features/churches/use-create-mass-schedule';
@@ -15,6 +13,8 @@ import { InfoFormStep } from '@/components/features/churches/add-ordinary-mass/i
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { Spinner } from '@/components/ui/spinner';
+import { TypographyH1 } from '@/components/ui/typography/h1';
+import { CoverImage } from '@/components/common/cover-image';
 
 dayjs.locale('pt-br');
 
@@ -44,13 +44,13 @@ export default function AddOrdinaryMassPage() {
           <BackButton href={`/${community?.slug}`} />
 
           <div className="flex flex-row items-center gap-4">
-            <ImagePreview url={community?.coverUrl} className="h-20 w-24" />
+            <CoverImage url={community?.coverUrl} className="h-20 w-24" />
 
             <div>
-              <TypographyH2 className="pb-1">
-                Adicionar Missa Regular
-              </TypographyH2>
-              <span className="text-md font-medium">{community?.name}</span>
+              <TypographyH1>Adicionar Missa Regular</TypographyH1>
+              <span className="text-md font-medium text-zinc-600">
+                {community?.name}
+              </span>
             </div>
           </div>
         </div>
