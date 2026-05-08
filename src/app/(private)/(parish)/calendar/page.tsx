@@ -13,7 +13,7 @@ export default function Calendar() {
 
       <TypographyH1>Agenda</TypographyH1>
 
-      <div className="grid xl:grid xl:grid-cols-card gap-6 py-6"></div>
+      <div className="grid xl:grid xl:grid-cols-card gap-6 py-6" />
     </main>
   );
 }
