@@ -64,7 +64,7 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Agenda',
-                href: '/schedules',
+                href: '/calendar',
               },
             ]}
             onLinkClick={handleClose}
