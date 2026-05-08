@@ -12,7 +12,7 @@ export interface ChurchCardProps {
     type: 'parish_church' | 'chapel';
     address: string;
     coverId: string;
-    coverUrl: string;
+    coverUrl: string;   
   };
 }
 

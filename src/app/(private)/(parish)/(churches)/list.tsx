@@ -31,5 +31,5 @@ export const CommunitiesList = () => {
           <ChurchCard key={community.id} community={community} />
         ))}
     </>
-  );
-};
+    );
+  };
