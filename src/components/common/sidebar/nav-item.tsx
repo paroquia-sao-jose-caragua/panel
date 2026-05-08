@@ -21,6 +21,22 @@ export function NavItem({
 }: NavItemProps) {
   const [open, setOpen] = useState(false);
 
+  // Se tem apenas um link, renderizar como link direto
+  if (links.length === 1) {
+    return (
+      <Link
+        href={links[0].href}
+        className="group flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-brand-700/30 focus-visible:ring-2 focus-visible:ring-brand-400 outline-none transition-colors"
+        onClick={onLinkClick}
+      >
+        <Icon className="h-5 w-5 text-brand-300" />
+        <span className="font-medium text-brand-100 group-hover:text-brand-50">
+          {title}
+        </span>
+      </Link>
+    );
+  }
+
   return (
     <Collapsible.Root open={open} onOpenChange={setOpen}>
       <Collapsible.Trigger className="group w-full group flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-brand-700/30 focus-visible:ring-2 focus-visible:ring-brand-400 outline-none transition-colors">

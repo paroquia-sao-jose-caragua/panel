@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 
 interface UseCreateMassScheduleProps {
-  type: 'ordinary';
+  type: 'ordinary' | 'devotional';
 }
 
 export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {

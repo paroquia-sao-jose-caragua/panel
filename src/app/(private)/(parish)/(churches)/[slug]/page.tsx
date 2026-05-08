@@ -2,13 +2,12 @@
 
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { TypographyH1 } from '@/components/ui/typography/h1';
-import { TypographyH3 } from '@/components/ui/typography/h3';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunity } from '@/api/communities/use-community';
-import { Church, MapPin, Pen, Plus } from 'lucide-react';
+import { Church, MapPin, Pen } from 'lucide-react';
 import Link from 'next/link';
-import { OrdinaryMass } from './ordinary-mass';
+import { MassSchedulesList } from '@/components/features/churches/mass-schedules/list';
 
 export default function ChurchPage() {
   const { community } = useCommunity();
@@ -20,7 +19,7 @@ export default function ChurchPage() {
           {
             key: 'churched',
             href: '/',
-            title: 'Igrejas',
+            title: 'Início',
             icon: Church,
           },
           {
@@ -79,19 +78,9 @@ export default function ChurchPage() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-8">
-        <OrdinaryMass />
+        <MassSchedulesList type="ordinary" />
 
-        <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
-          <div className="flex flex-row items-center justify-between p-6">
-            <TypographyH3>Missas Devocionais</TypographyH3>
-            <Link href={`/${community?.slug}/edit`}>
-              <Button>
-                <Plus />
-                Adicionar
-              </Button>
-            </Link>
-          </div>
-        </div>
+        <MassSchedulesList type="devotional" />
       </div>
     </main>
   );

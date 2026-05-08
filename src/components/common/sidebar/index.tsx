@@ -4,10 +4,12 @@ import {
   Calendar,
   Church,
   Cog,
+  Home,
   Image,
   LifeBuoy,
   Menu,
   MessageSquare,
+  Users,
 } from 'lucide-react';
 import { Logo } from './logo';
 import * as Collapsible from '@radix-ui/react-collapsible';
@@ -46,11 +48,22 @@ export const AppSidebar = () => {
 
         <div className="space-y-0.5 px-4">
           <NavItem
-            title="Paróquia"
+            title="Início"
             icon={Church}
             links={[
               {
-                title: 'Autoridades',
+                title: 'Início',
+                href: '/',
+              },
+            ]}
+            onLinkClick={handleClose}
+          />
+          <NavItem
+            title="Ministérios"
+            icon={Users}
+            links={[
+              {
+                title: 'Clérigos',
                 href: '/clergies',
               },
               {

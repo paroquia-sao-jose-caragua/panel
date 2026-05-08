@@ -98,7 +98,7 @@ export default function EditOrdinaryMassPage() {
 
         {activeStep === 2 && (
           <>
-            <ConfirmStep {...formik.values} />
+            <ConfirmStep mode="edit" {...formik.values} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
               <Button variant="outline" size="lg" onClick={handlePrevStep}>
                 Voltar

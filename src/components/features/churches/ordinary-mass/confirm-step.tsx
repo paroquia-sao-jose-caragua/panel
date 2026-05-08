@@ -8,6 +8,7 @@ import { useCommunity } from '@/api/communities/use-community';
 dayjs.locale('pt-br');
 
 interface ConfirmStepProps {
+  mode?: 'edit' | 'add';
   recurrenceType: 'weekly' | 'monthly';
   isPrecept: boolean;
   startDate: string;
@@ -16,6 +17,7 @@ interface ConfirmStepProps {
 }
 
 export const ConfirmStep = ({
+  mode = 'add',
   recurrenceType,
   isPrecept,
   startDate,
@@ -33,7 +35,8 @@ export const ConfirmStep = ({
         <div>
           <TypographyH2 className="text-center">Confirmação</TypographyH2>
           <p className="text-center text-zinc-600 mt-3">
-            Revise as informações antes de adicionar
+            Revise as informações antes de{' '}
+            {mode === 'add' ? 'adicionar' : 'alterar'}
           </p>
         </div>
         <div className="w-full max-w-100 divide-y divide-divider">
