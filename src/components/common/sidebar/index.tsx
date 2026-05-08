@@ -59,6 +59,17 @@ export const AppSidebar = () => {
             onLinkClick={handleClose}
           />
           <NavItem
+            title="Agenda"
+            icon={Calendar}
+            links={[
+              {
+                title: 'Agenda',
+                href: '/schedules',
+              },
+            ]}
+            onLinkClick={handleClose}
+          />
+          <NavItem
             title="Ministérios"
             icon={Users}
             links={[
