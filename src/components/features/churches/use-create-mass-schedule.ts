@@ -43,7 +43,7 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
         {
           onSuccess: ({ massSchedule, fields, statusCode, message }) => {
             if (massSchedule) {
-              navigate.replace(`/churches/${community?.slug}`);
+              navigate.replace(`/${community?.slug}`);
             }
           },
         }

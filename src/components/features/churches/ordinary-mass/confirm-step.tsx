@@ -15,7 +15,7 @@ interface ConfirmStepProps {
   times: { startTime: string; endTime: string }[];
 }
 
-export const InfoConfirmStep = ({
+export const ConfirmStep = ({
   recurrenceType,
   isPrecept,
   startDate,
@@ -27,7 +27,7 @@ export const InfoConfirmStep = ({
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-6 sm:py-8 flex flex-col gap-4 pb-5">
       <div className="flex flex-col items-center justify-center gap-4">
-        <div className="flex items-center justify-center h-16 w-16 rounded-full bg-brand-0 text-brand-700">
+        <div className="flex items-center justify-center h-16 w-16 rounded-full bg-brand-50 text-brand-700">
           <Check className="w-8 h-8" />
         </div>
         <div>

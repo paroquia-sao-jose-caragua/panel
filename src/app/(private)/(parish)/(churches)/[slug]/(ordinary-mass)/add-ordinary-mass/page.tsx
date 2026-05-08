@@ -8,8 +8,8 @@ import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
 import { useCreateMassSchedule } from '@/components/features/churches/use-create-mass-schedule';
-import { InfoConfirmStep } from '@/components/features/churches/add-ordinary-mass/info-confirm-step';
-import { InfoFormStep } from '@/components/features/churches/add-ordinary-mass/info-form-step';
+import { ConfirmStep } from '@/components/features/churches/ordinary-mass/confirm-step';
+import { InfoFormStep } from '@/components/features/churches/ordinary-mass/info-form-step';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { Spinner } from '@/components/ui/spinner';
@@ -91,7 +91,7 @@ export default function AddOrdinaryMassPage() {
 
         {activeStep === 2 && (
           <>
-            <InfoConfirmStep {...formik.values} />
+            <ConfirmStep {...formik.values} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
               <Button variant="outline" size="lg" onClick={handlePrevStep}>
                 Voltar

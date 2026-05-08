@@ -93,5 +93,12 @@
   "successfully-logged-out": "Successfully logged out!",
   "tel": "Tel",
   "verification-code": "Verification Code",
+  "week-day-0": "Sunday",
+  "week-day-1": "Monday",
+  "week-day-2": "Tuesday",
+  "week-day-3": "Wednesday",
+  "week-day-4": "Thursday",
+  "week-day-5": "Friday",
+  "week-day-6": "Saturday",
   "yes-logout": "Yes, log out"
 }
