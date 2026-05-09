@@ -7,7 +7,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunity } from '@/api/communities/use-community';
 import { Church, MapPin, Pen } from 'lucide-react';
 import Link from 'next/link';
-import { MassSchedulesList } from '@/components/features/churches/mass-schedules/list';
+import { OrdinaryMassesList } from '@/components/features/churches/mass-schedules/ordinary-mass/list';
+import { DevotionalMassesList } from '@/components/features/churches/mass-schedules/devotional-mass/list';
 
 export default function ChurchPage() {
   const { community } = useCommunity();
@@ -77,10 +78,10 @@ export default function ChurchPage() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
-        <MassSchedulesList type="ordinary" />
+      <div className="flex flex-col lg:flex-row gap-8">
+        <OrdinaryMassesList />
 
-        <MassSchedulesList type="devotional" />
+        <DevotionalMassesList />
       </div>
     </main>
   );

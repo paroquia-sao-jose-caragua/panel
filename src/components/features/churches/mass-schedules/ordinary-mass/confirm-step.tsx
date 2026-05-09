@@ -9,7 +9,7 @@ dayjs.locale('pt-br');
 
 interface ConfirmStepProps {
   mode?: 'edit' | 'add';
-  recurrenceType: 'weekly' | 'monthly';
+  recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
   isPrecept: boolean;
   startDate: string;
   endDate?: string;
@@ -46,7 +46,7 @@ export const ConfirmStep = ({
           </div>
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
             <span className="text-zinc-600">Tipo</span>
-            <span className="text-right font-medium">Missa Regular</span>
+            <span className="text-right font-medium">Missa Paroquial</span>
           </div>
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
             <span className="text-zinc-600">Recorrência</span>

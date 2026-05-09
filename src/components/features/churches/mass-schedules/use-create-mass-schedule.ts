@@ -25,20 +25,27 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       startDate: dayjs().format('YYYY-MM-DD'),
       times: [],
     } as {
+      title?: string;
       isPrecept: boolean;
-      recurrenceType: 'weekly' | 'monthly';
+      recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
       dayOfWeek?: number;
       dayOfMonth?: number;
+      weekOfMonth?: number;
       startDate: string;
       endDate?: string;
       times: { startTime: string; endTime: string }[];
+      orientations?: string;
     },
     onSubmit: (values) => {
       mutate(
         {
+          ...values,
           communityId: community?.id as string,
           type,
-          ...values,
+          recurrenceType:
+            values.recurrenceType === 'week-of-month'
+              ? 'weekly'
+              : values.recurrenceType,
         },
         {
           onSuccess: ({ massSchedule, fields, statusCode, message }) => {

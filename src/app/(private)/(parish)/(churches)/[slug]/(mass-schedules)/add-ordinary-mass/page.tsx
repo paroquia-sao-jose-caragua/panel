@@ -7,9 +7,9 @@ import { useCommunity } from '@/api/communities/use-community';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
-import { useCreateMassSchedule } from '@/components/features/churches/use-create-mass-schedule';
-import { ConfirmStep } from '@/components/features/churches/ordinary-mass/confirm-step';
-import { InfoFormStep } from '@/components/features/churches/ordinary-mass/info-form-step';
+import { useCreateMassSchedule } from '@/components/features/churches/mass-schedules/use-create-mass-schedule';
+import { ConfirmStep } from '@/components/features/churches/mass-schedules/ordinary-mass/confirm-step';
+import { InfoFormStep } from '@/components/features/churches/mass-schedules/ordinary-mass/info-form-step';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { Spinner } from '@/components/ui/spinner';
@@ -47,7 +47,7 @@ export default function AddOrdinaryMassPage() {
             <CoverImage url={community?.coverUrl} className="h-20 w-24" />
 
             <div>
-              <TypographyH1>Adicionar Missa Regular</TypographyH1>
+              <TypographyH1>Adicionar Missa Paroquial</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {community?.name}
               </span>
