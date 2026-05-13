@@ -11,15 +11,15 @@ import { useEditMassSchedule } from '@/components/features/churches/mass-schedul
 import { Spinner } from '@/components/ui/spinner';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { CoverImage } from '@/components/common/cover-image';
-import { InfoFormStep } from '@/components/features/churches/mass-schedules/ordinary-mass/info-form-step';
-import { ConfirmStep } from '@/components/features/churches/mass-schedules/ordinary-mass/confirm-step';
+import { InfoFormStep } from '@/components/features/churches/mass-schedules/devotional-mass/info-form-step';
+import { ConfirmStep } from '@/components/features/churches/mass-schedules/devotional-mass/confirm-step';
 
 export default function EditOrdinaryMassPage() {
   const [activeStep, setActiveStep] = React.useState(1);
 
   const { community } = useCommunity();
 
-  const { formik, isPending } = useEditMassSchedule({ type: 'ordinary' });
+  const { formik, isPending } = useEditMassSchedule({ type: 'devotional' });
 
   const handleNextStep = useCallback(async () => {
     const errors = await formik.validateForm();
@@ -54,7 +54,7 @@ export default function EditOrdinaryMassPage() {
             <CoverImage url={community?.coverUrl} className="h-20 w-24" />
 
             <div>
-              <TypographyH1>Editar Missa Cotidiana</TypographyH1>
+              <TypographyH1>Editar Missa Devocional</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {community?.name}
               </span>

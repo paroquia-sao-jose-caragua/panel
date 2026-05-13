@@ -47,7 +47,7 @@ export default function AddOrdinaryMassPage() {
             <CoverImage url={community?.coverUrl} className="h-20 w-24" />
 
             <div>
-              <TypographyH1>Adicionar Missa Paroquial</TypographyH1>
+              <TypographyH1>Adicionar Missa Coditiana</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {community?.name}
               </span>

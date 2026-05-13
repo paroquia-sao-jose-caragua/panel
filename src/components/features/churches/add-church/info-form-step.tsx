@@ -82,7 +82,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             >
               <RadioGroupItem value="parish_church" id="r1" />
 
-              <div className="flex flex-col items-start text-zinc-700 text-md font-semibold gap-0">
+              <div className="flex flex-col items-start text-zinc-700 text-md gap-0">
                 Igreja Matriz
                 <span className="block text-sm text-zinc-500 font-normal">
                   Sede da Paróquia

@@ -7,33 +7,26 @@ import { useCommunity } from '@/api/communities/use-community';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
-import { useEditMassSchedule } from '@/components/features/churches/mass-schedules/use-edit-mass-schedule';
+import { useCreateMassSchedule } from '@/components/features/churches/mass-schedules/use-create-mass-schedule';
+import { ConfirmStep } from '@/components/features/churches/mass-schedules/annual-mass/confirm-step';
+import { InfoFormStep } from '@/components/features/churches/mass-schedules/annual-mass/info-form-step';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
 import { Spinner } from '@/components/ui/spinner';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { CoverImage } from '@/components/common/cover-image';
-import { InfoFormStep } from '@/components/features/churches/mass-schedules/ordinary-mass/info-form-step';
-import { ConfirmStep } from '@/components/features/churches/mass-schedules/ordinary-mass/confirm-step';
 
-export default function EditOrdinaryMassPage() {
+dayjs.locale('pt-br');
+
+export default function AddAnnualMassPage() {
   const [activeStep, setActiveStep] = React.useState(1);
 
   const { community } = useCommunity();
 
-  const { formik, isPending } = useEditMassSchedule({ type: 'ordinary' });
+  const { formik, isPending } = useCreateMassSchedule({ type: 'ordinary' });
 
-  const handleNextStep = useCallback(async () => {
-    const errors = await formik.validateForm();
-    const hasErrors = Object.keys(errors).length > 0;
-
-    if (hasErrors) {
-      formik.setTouched({
-        isPrecept: true,
-        recurrenceType: true,
-        dayOfWeek: true,
-        dayOfMonth: true,
-        startDate: true,
-        endDate: true,
-      });
+  const handleNextStep = useCallback(() => {
+    if (!formik.isValid) {
       return;
     }
 
@@ -54,7 +47,7 @@ export default function EditOrdinaryMassPage() {
             <CoverImage url={community?.coverUrl} className="h-20 w-24" />
 
             <div>
-              <TypographyH1>Editar Missa Cotidiana</TypographyH1>
+              <TypographyH1>Adicionar Missa Anual</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {community?.name}
               </span>
@@ -98,7 +91,7 @@ export default function EditOrdinaryMassPage() {
 
         {activeStep === 2 && (
           <>
-            <ConfirmStep mode="edit" {...formik.values} />
+            <ConfirmStep {...formik.values} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
               <Button variant="outline" size="lg" onClick={handlePrevStep}>
                 Voltar
@@ -109,12 +102,9 @@ export default function EditOrdinaryMassPage() {
                 onClick={formik.submitForm}
               >
                 {isPending ? (
-                  <>
-                    <Spinner className="w-4 h-4 mr-2" />
-                    Salvando...
-                  </>
+                  <Spinner className="border-brand-300 border-2 w-5 h-5" />
                 ) : (
-                  'Salvar Alterações'
+                  'Adicionar Missa'
                 )}
               </Button>
             </div>

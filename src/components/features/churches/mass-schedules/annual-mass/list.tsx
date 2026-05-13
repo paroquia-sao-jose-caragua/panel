@@ -14,14 +14,14 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { ListItem } from './list-item';
 
-export const OrdinaryMassesList = () => {
+export const AnnualMassesList = () => {
   const { t } = useTranslator();
   const { community } = useCommunity();
   const { massSchedules } = useMassSchedules();
 
   const massSchedulesOfType = useMemo(
     () =>
-      massSchedules.filter((massSchedule) => massSchedule.type === 'ordinary'),
+      massSchedules.filter((massSchedule) => massSchedule.type === 'solemnity'),
     [massSchedules]
   );
 
@@ -29,9 +29,9 @@ export const OrdinaryMassesList = () => {
     <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
       <div className="p-6">
         <div className="flex flex-row items-center justify-between">
-          <TypographyH3>{t('ordinary-masses')}</TypographyH3>
+          <TypographyH3>{t('annual-masses')}</TypographyH3>
 
-          <Link href={`/${community?.slug}/add-ordinary-mass`}>
+          <Link href={`/${community?.slug}/add-annual-mass`}>
             <Button>
               <Plus />
               Adicionar

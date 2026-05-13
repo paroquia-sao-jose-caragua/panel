@@ -4,27 +4,35 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { formatTimeDifference } from '@/utils/formatTime';
 import { useCommunity } from '@/api/communities/use-community';
+import useTranslator from '@/hooks/use-translator';
 
 dayjs.locale('pt-br');
 
 interface ConfirmStepProps {
   mode?: 'edit' | 'add';
   recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
+  isSolemn: boolean;
   isPrecept: boolean;
   startDate: string;
   endDate?: string;
+  monthOfYear?: number;
+  dayOfMonth?: number;
   times: { startTime: string; endTime: string }[];
 }
 
 export const ConfirmStep = ({
   mode = 'add',
   recurrenceType,
+  isSolemn,
   isPrecept,
   startDate,
   endDate,
+  monthOfYear,
+  dayOfMonth,
   times,
 }: ConfirmStepProps) => {
   const { community } = useCommunity();
+  const { t } = useTranslator();
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-6 sm:py-8 flex flex-col gap-4 pb-5">
@@ -46,12 +54,18 @@ export const ConfirmStep = ({
           </div>
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
             <span className="text-zinc-600">Tipo</span>
-            <span className="text-right font-medium">Missa Cotidiana</span>
+            <span className="text-right font-medium">Missa Anual</span>
           </div>
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
             <span className="text-zinc-600">Recorrência</span>
-            <span className="text-right font-medium">
-              {recurrenceType === 'weekly' ? 'Semanal' : 'Mensal'}
+            <span className="text-right font-medium">{`${String(dayOfMonth).padStart(2, '0')}/${String(monthOfYear).padStart(2, '0')}`}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4 pt-6 py-3">
+            <span className="text-zinc-600">Missa de Solenidade</span>
+            <span
+              className={`text-right font-medium ${isSolemn ? 'text-green-600' : ''}`}
+            >
+              {isSolemn ? 'Sim' : 'Não'}
             </span>
           </div>
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
