@@ -4,12 +4,13 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { formatTimeDifference } from '@/utils/formatTime';
 import { useCommunity } from '@/api/communities/use-community';
+import useTranslator from '@/hooks/use-translator';
 
 dayjs.locale('pt-br');
 
 interface ConfirmStepProps {
   mode?: 'edit' | 'add';
-  recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
+  dayOfWeek?: 0 | 2 | 1 | 3 | 4 | 5 | 6;
   isPrecept: boolean;
   startDate: string;
   endDate?: string;
@@ -18,12 +19,13 @@ interface ConfirmStepProps {
 
 export const ConfirmStep = ({
   mode = 'add',
-  recurrenceType,
+  dayOfWeek,
   isPrecept,
   startDate,
   endDate,
   times,
 }: ConfirmStepProps) => {
+  const { t } = useTranslator();
   const { community } = useCommunity();
 
   return (
@@ -51,7 +53,7 @@ export const ConfirmStep = ({
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
             <span className="text-zinc-600">Recorrência</span>
             <span className="text-right font-medium">
-              {recurrenceType === 'weekly' ? 'Semanal' : 'Mensal'}
+              {`${dayOfWeek !== undefined && [0, 6].includes(dayOfWeek) ? 'Todo os ' : 'Todas às '} ${dayOfWeek !== undefined ? t(`week-day-${dayOfWeek}`).toLowerCase() : ''}s`}
             </span>
           </div>
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">

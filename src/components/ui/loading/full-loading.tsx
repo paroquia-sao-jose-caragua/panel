@@ -40,7 +40,7 @@ export function FullLoading({
         />
         <ParishLogoIcon className="w-28 h-28 z-10" />
       </div>
-      <div className="text-center mt-14">
+      <div className="text-center mt-10">
         <p className="text-xl font-semibold" style={{ color: cream }}>
           {message}
         </p>
