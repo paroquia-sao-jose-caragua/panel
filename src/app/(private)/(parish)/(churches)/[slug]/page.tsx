@@ -7,9 +7,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunity } from '@/api/communities/use-community';
 import { Church, MapPin, Pen } from 'lucide-react';
 import Link from 'next/link';
-import { OrdinaryMassesList } from '@/components/features/churches/mass-schedules/ordinary-mass/list';
-import { DevotionalMassesList } from '@/components/features/churches/mass-schedules/devotional-mass/list';
-import { AnnualMassesList } from '@/components/features/churches/mass-schedules/annual-mass/list';
+import { OrdinaryMassesList } from '@/components/features/mass-schedules/ordinary-mass/list';
+import { DevotionalMassesList } from '@/components/features/mass-schedules/devotional-mass/list';
+import { AnnualMassesList } from '@/components/features/mass-schedules/annual-mass/list';
 
 export default function ChurchPage() {
   const { community } = useCommunity();
