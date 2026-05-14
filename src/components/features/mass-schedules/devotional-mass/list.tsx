@@ -13,6 +13,7 @@ export const DevotionalMassesList = () => {
       typeFilter="devotional"
       addHref={`/${community?.slug}/add-devotional-mass`}
       editHrefPattern={(id) => `/${community?.slug}/devotional-mass/${id}/edit`}
+      info={t('devotional-mass-info')}
     />
   );
 };

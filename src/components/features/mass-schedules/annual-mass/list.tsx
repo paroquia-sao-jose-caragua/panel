@@ -13,6 +13,7 @@ export const AnnualMassesList = () => {
       typeFilter="solemnity"
       addHref={`/${community?.slug}/add-annual-mass`}
       editHrefPattern={(id) => `/${community?.slug}/annual-mass/${id}/edit`}
+      info={t('annual-mass-info')}
     />
   );
 };
