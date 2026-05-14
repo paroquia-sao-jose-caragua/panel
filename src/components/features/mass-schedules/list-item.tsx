@@ -1,3 +1,5 @@
+'use client';
+
 import { deleteMassSchedule } from '@/api/mass-schedules/delete';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,14 +25,20 @@ import { useMutation } from '@tanstack/react-query';
 import { PencilIcon, Trash2Icon } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback } from 'react';
+import {
+  formatMassScheduleDescription,
+  type MassScheduleType,
+} from './utils/format-mass-schedule-description';
 
 interface ListItemProps {
   massSchedule: MassSchedule;
+  type: MassScheduleType;
+  editHref: string;
 }
 
-export const ListItem = ({ massSchedule }: ListItemProps) => {
+export const ListItem = ({ massSchedule, type, editHref }: ListItemProps) => {
   const { t } = useTranslator();
-  const { community, removeMassSchedule } = useCommunityStore();
+  const { removeMassSchedule } = useCommunityStore();
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteMassSchedule,
@@ -59,6 +67,12 @@ export const ListItem = ({ massSchedule }: ListItemProps) => {
     );
   }, [massSchedule, mutate, removeMassSchedule]);
 
+  const description = formatMassScheduleDescription({
+    massSchedule,
+    type,
+    t,
+  });
+
   return (
     <div
       key={massSchedule.id}
@@ -69,9 +83,13 @@ export const ListItem = ({ massSchedule }: ListItemProps) => {
           <span className="text-md font-medium text-zinc-700">
             {massSchedule.title}
           </span>
-          <span className="text-sm text-zinc-500">
-            {`Dia ${massSchedule.dayOfMonth} de ${massSchedule.monthOfYear ? t(`month-${massSchedule.monthOfYear}`).toLowerCase() : ''}`}
-          </span>
+          {description && (
+            <span
+              className={`${massSchedule.title ? 'text-sm text-zinc-500' : 'text-md font-medium text-zinc-700'}`}
+            >
+              {description}
+            </span>
+          )}
         </div>
 
         <span className="text-md font-medium text-brand-800 mt-2 md:mt-0">
@@ -80,10 +98,7 @@ export const ListItem = ({ massSchedule }: ListItemProps) => {
       </div>
 
       <div className="flex items-center">
-        <Link
-          href={`/${community?.slug}/ordinary-mass/${massSchedule.id}/edit`}
-          className="ml-4"
-        >
+        <Link href={editHref} className="ml-4">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button type="button" variant="ghost" size="icon-lg">

@@ -31,7 +31,9 @@ function Select({ children, placeholder, ...props }: SelectProps) {
           sideOffset={8}
           className="animate-slide-down-and-fade z-10 w-(--radix-select-trigger-width) overflow-hidden rounded-lg border border-input bg-white shadow-sm"
         >
-          <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
+          <SelectPrimitive.Viewport className="max-h-60 overflow-y-auto">
+            {children}
+          </SelectPrimitive.Viewport>
         </SelectPrimitive.Content>
       </SelectPrimitive.Portal>
     </SelectPrimitive.Root>

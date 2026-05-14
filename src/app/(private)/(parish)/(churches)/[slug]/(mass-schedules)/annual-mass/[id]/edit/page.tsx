@@ -7,26 +7,38 @@ import { useCommunity } from '@/api/communities/use-community';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
-import { useCreateMassSchedule } from '@/components/features/mass-schedules/use-create-mass-schedule';
-import { ConfirmStep } from '@/components/features/mass-schedules/devotional-mass/confirm-step';
-import { InfoFormStep } from '@/components/features/mass-schedules/devotional-mass/info-form-step';
-import dayjs from 'dayjs';
-import 'dayjs/locale/pt-br';
+import { useEditMassSchedule } from '@/components/features/mass-schedules/use-edit-mass-schedule';
 import { Spinner } from '@/components/ui/spinner';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { CoverImage } from '@/components/common/cover-image';
+import { InfoFormStep } from '@/components/features/mass-schedules/annual-mass/info-form-step';
+import { ConfirmStep } from '@/components/features/mass-schedules/annual-mass/confirm-step';
 
-dayjs.locale('pt-br');
-
-export default function AddDevotionalMassPage() {
+export default function EditOrdinaryMassPage() {
   const [activeStep, setActiveStep] = React.useState(1);
 
   const { community } = useCommunity();
 
-  const { formik, isPending } = useCreateMassSchedule({ type: 'devotional' });
+  const { formik, isPending } = useEditMassSchedule({ type: 'ordinary' });
 
-  const handleNextStep = useCallback(() => {
-    if (!formik.isValid) {
+  const handleNextStep = useCallback(async () => {
+    const errors = await formik.validateForm();
+    const hasErrors = Object.keys(errors).length > 0;
+
+    if (hasErrors) {
+      formik.setTouched({
+        isPrecept: true,
+        recurrenceType: true,
+        dayOfWeek: true,
+        dayOfMonth: true,
+        startDate: true,
+        endDate: true,
+        isSolemn: true,
+        orientations: true,
+        times: [{ startTime: true, endTime: true }],
+        title: true,
+        weekOfMonth: true,
+      });
       return;
     }
 
@@ -47,7 +59,7 @@ export default function AddDevotionalMassPage() {
             <CoverImage url={community?.coverUrl} className="h-20 w-24" />
 
             <div>
-              <TypographyH1>Adicionar Missa Devocional</TypographyH1>
+              <TypographyH1>Editar Missa Anual</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {community?.name}
               </span>
@@ -91,7 +103,7 @@ export default function AddDevotionalMassPage() {
 
         {activeStep === 2 && (
           <>
-            <ConfirmStep {...formik.values} />
+            <ConfirmStep mode="edit" {...formik.values} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
               <Button variant="outline" size="lg" onClick={handlePrevStep}>
                 Voltar
@@ -102,9 +114,12 @@ export default function AddDevotionalMassPage() {
                 onClick={formik.submitForm}
               >
                 {isPending ? (
-                  <Spinner className="border-brand-300 border-2 w-5 h-5" />
+                  <>
+                    <Spinner className="w-4 h-4 mr-2" />
+                    Salvando...
+                  </>
                 ) : (
-                  'Adicionar Missa'
+                  'Salvar Alterações'
                 )}
               </Button>
             </div>

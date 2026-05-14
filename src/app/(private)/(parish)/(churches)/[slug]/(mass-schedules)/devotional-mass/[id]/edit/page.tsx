@@ -7,12 +7,12 @@ import { useCommunity } from '@/api/communities/use-community';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
-import { useEditMassSchedule } from '@/components/features/churches/mass-schedules/use-edit-mass-schedule';
+import { useEditMassSchedule } from '@/components/features/mass-schedules/use-edit-mass-schedule';
 import { Spinner } from '@/components/ui/spinner';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { CoverImage } from '@/components/common/cover-image';
-import { InfoFormStep } from '@/components/features/churches/mass-schedules/devotional-mass/info-form-step';
-import { ConfirmStep } from '@/components/features/churches/mass-schedules/devotional-mass/confirm-step';
+import { InfoFormStep } from '@/components/features/mass-schedules/devotional-mass/info-form-step';
+import { ConfirmStep } from '@/components/features/mass-schedules/devotional-mass/confirm-step';
 
 export default function EditOrdinaryMassPage() {
   const [activeStep, setActiveStep] = React.useState(1);
