@@ -1,4 +1,4 @@
-import { updateMassSchedule } from '@/api/communities/mass-schedules/update';
+import { updateMassSchedule } from '@/api/mass-schedules/update';
 import { useCommunity } from '@/api/communities/use-community';
 import { useNavigate } from '@/hooks/use-navigate';
 import { showAlert } from '@/utils/showAlert';
@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation';
 import useCommunityStore from '@/stores/useCommunityStore';
 
 interface UseCreateMassScheduleProps {
-  type: 'ordinary';
+  type: 'ordinary' | 'devotional';
 }
 
 export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
@@ -28,12 +28,13 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
 
   const formik = useFormik({
     initialValues: {
+      title: massSchedule?.title,
+      orientations: massSchedule?.orientations,
       isPrecept: Boolean(massSchedule?.isPrecept),
-      recurrenceType:
-        (massSchedule?.recurrenceType as 'weekly' | 'monthly') ||
-        ('weekly' as const),
+      recurrenceType: massSchedule?.recurrenceType || 'weekly',
       dayOfWeek: massSchedule?.dayOfWeek,
       dayOfMonth: massSchedule?.dayOfMonth,
+      weekOfMonth: massSchedule?.weekOfMonth,
       startDate: massSchedule?.startDate
         ? dayjs(massSchedule.startDate).format('YYYY-MM-DD')
         : dayjs().format('YYYY-MM-DD'),
@@ -42,10 +43,13 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
         : undefined,
       times: massSchedule?.times || [],
     } as {
+      title?: string;
+      orientations?: string;
       isPrecept: boolean;
-      recurrenceType: 'weekly' | 'monthly';
-      dayOfWeek?: number;
+      recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
+      dayOfWeek?: 0 | 2 | 1 | 3 | 4 | 5 | 6;
       dayOfMonth?: number;
+      weekOfMonth?: number;
       startDate: string;
       endDate?: string;
       times: { startTime: string; endTime: string }[];
@@ -54,9 +58,13 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
     onSubmit: (values) => {
       mutate(
         {
+          ...values,
           massScheduleId: params.id,
           type,
-          ...values,
+          recurrenceType:
+            values.recurrenceType === 'week-of-month'
+              ? 'weekly'
+              : values.recurrenceType,
         },
         {
           onSuccess: ({ massSchedule, statusCode, message }) => {

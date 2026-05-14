@@ -30,7 +30,8 @@ import { DatePicker } from '@/components/ui/date-picker';
 import { formatTimeDifference } from '@/utils/formatTime';
 import React from 'react';
 import { Switch } from '@/components/ui/switch';
-import type { useCreateMassSchedule } from '../use-create-mass-schedule';
+import type { useCreateMassSchedule } from '../mass-schedules/use-create-mass-schedule';
+import { Textarea } from '@/components/ui/textarea';
 
 interface InfoStepProps {
   formik: ReturnType<typeof useCreateMassSchedule>['formik'];
@@ -45,6 +46,20 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
       id="add-ordinary-mass"
       className="flex w-full flex-col gap-8 divide-y divide-divider"
     >
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
+        <FieldLabel htmlFor="title">Título da Devoção</FieldLabel>
+        <div className="flex flex-col gap-2">
+          <InputRoot helperText='Exemplo: "Sagrado Coração de Jesus"'>
+            <InputControl
+              id="title"
+              name="title"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+            />
+          </InputRoot>
+        </div>
+      </div>
+
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
         <div className="flex-1">
           <FieldLabel htmlFor="recurrence-type">Tipo de Recorrência</FieldLabel>
@@ -74,7 +89,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             >
               Dia da semana
               <span className="block text-sm text-zinc-500 font-normal">
-                Toda semana no mesmo dia (ex: todo domingo)
+                Toda semana no mesmo dia (ex: toda quinta-feira)
               </span>
             </Label>
           </div>
@@ -90,7 +105,24 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             >
               Dia do mês
               <span className="block text-sm text-zinc-500 font-normal">
-                Todo mês no mesmo dia (ex: dia 19 de cada mês)
+                Todo mês no mesmo dia (ex: dia 13 de cada mês)
+              </span>
+            </Label>
+          </div>
+
+          <div
+            className={`flex items-center gap-3 border ${formik.values.recurrenceType === 'week-of-month' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
+          >
+            <RadioGroupItem value="week-of-month" id="r3" />
+
+            <Label
+              htmlFor="r3"
+              className="flex flex-col items-start text-zinc-700 text-md font-medium gap-0"
+            >
+              Semana específica do mês
+              <span className="block text-sm text-zinc-500 font-normal">
+                Todo mês em uma semana específica (ex: toda primeira semana do
+                mês)
               </span>
             </Label>
           </div>
@@ -103,6 +135,66 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             <CalendarIcon className="text-zinc-400" />
             Quando
           </FieldLabel>
+          <div className="flex flex-col gap-2">
+            <Label className="text-sm text-zinc-700 font-semibold">
+              Dia da semana
+            </Label>
+            <Select
+              name="type"
+              placeholder="Selecione o dia"
+              defaultValue="chapel"
+              value={String(formik.values.dayOfWeek)}
+              onValueChange={(newValue: string) => {
+                formik.setFieldValue('dayOfWeek', Number(newValue));
+              }}
+            >
+              <SelectItem value="0" text="Domingo" />
+              <SelectItem value="1" text="Segunda-feira" />
+              <SelectItem value="2" text="Terça-feira" />
+              <SelectItem value="3" text="Quarta-feira" />
+              <SelectItem value="4" text="Quinta-feira" />
+              <SelectItem value="5" text="Sexta-feira" />
+              <SelectItem value="6" text="Sábado" />
+            </Select>
+          </div>
+        </div>
+      )}
+
+      {formik.values.recurrenceType === 'week-of-month' && (
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
+          <div>
+            <FieldLabel htmlFor="day-of-week">
+              <CalendarIcon className="text-zinc-400" />
+              Quando
+            </FieldLabel>
+
+            <span className="block text-zinc-600 mt-2">
+              Escolha a semana do mês e o dia da semana em que essa missa
+              acontece (ex: toda primeira semana do mês, às quintas-feiras)
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label className="text-sm text-zinc-700 font-semibold">
+              Semana específica do mês
+            </Label>
+            <Select
+              name="type"
+              placeholder="Selecione o dia"
+              defaultValue="chapel"
+              value={String(formik.values.dayOfWeek)}
+              onValueChange={(newValue: string) => {
+                formik.setFieldValue('dayOfWeek', Number(newValue));
+              }}
+            >
+              <SelectItem value="1" text="1ª semana do mês" />
+              <SelectItem value="2" text="2ª semana do mês" />
+              <SelectItem value="3" text="3ª semana do mês" />
+              <SelectItem value="4" text="4ª semana do mês" />
+              <SelectItem value="5" text="Última semana do mês" />
+            </Select>
+          </div>
+
           <div className="flex flex-col gap-2">
             <Label className="text-sm text-zinc-700 font-semibold">
               Dia da semana
@@ -310,6 +402,26 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             label="Despublicar a partir de"
             value={formik.values.endDate}
             onChange={(newValue) => formik.setFieldValue('endDate', newValue)}
+          />
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 pb-5">
+        <div>
+          <FieldLabel htmlFor="day-of-month">Orientações</FieldLabel>
+          <span className="block text-zinc-600 mt-2">
+            Essas orientações aparecerão na página de detalhes da devoção.
+          </span>
+        </div>
+
+        <div className="w-full flex flex-col sm:flex-row gap-4">
+          <Textarea
+            name="orientations"
+            value={formik.values.orientations}
+            onChange={formik.handleChange}
+            placeholder="Exemplo: 'Trazer o terço, chegar 15 minutos antes, etc...'"
+            maxLength={255}
+            className="h-30 max-h-30"
           />
         </div>
       </div>

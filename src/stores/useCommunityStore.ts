@@ -11,6 +11,7 @@ type State = {
 type Action = {
   setCommunity: (community: Community) => void;
   setMassSchedules: (massSchedules: MassSchedule[]) => void;
+  removeMassSchedule: (massScheduleId: string) => void;
 };
 
 const useCommunityStore = create<State & Action>()(
@@ -20,6 +21,12 @@ const useCommunityStore = create<State & Action>()(
       massSchedules: [],
       setCommunity: (community) => set({ community }),
       setMassSchedules: (massSchedules) => set({ massSchedules }),
+      removeMassSchedule: (massScheduleId) =>
+        set((state) => ({
+          massSchedules: state.massSchedules.filter(
+            (ms) => ms.id !== massScheduleId
+          ),
+        })),
     }),
     {
       name: 'community-store',

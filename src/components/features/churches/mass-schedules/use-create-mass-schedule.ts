@@ -21,24 +21,45 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
   const formik = useFormik({
     initialValues: {
       isPrecept: false,
+      isSolemn: false,
       recurrenceType: 'weekly',
       startDate: dayjs().format('YYYY-MM-DD'),
       times: [],
     } as {
+      title?: string;
       isPrecept: boolean;
-      recurrenceType: 'weekly' | 'monthly';
-      dayOfWeek?: number;
+      isSolemn: boolean;
+      recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
+      dayOfWeek?: 0 | 2 | 1 | 3 | 4 | 5 | 6;
       dayOfMonth?: number;
+      monthOfYear?: number;
+      weekOfMonth?: number;
       startDate: string;
       endDate?: string;
       times: { startTime: string; endTime: string }[];
+      orientations?: string;
     },
     onSubmit: (values) => {
       mutate(
         {
           communityId: community?.id as string,
-          type,
-          ...values,
+          type: values.isSolemn ? 'solemnity' : type,
+          title: values?.title,
+          isPrecept: values.isPrecept,
+          recurrenceType:
+            values.recurrenceType === 'week-of-month'
+              ? 'weekly'
+              : values.isSolemn
+                ? 'yearly'
+                : values.recurrenceType,
+          dayOfWeek: values?.dayOfWeek,
+          dayOfMonth: values?.dayOfMonth,
+          weekOfMonth: values?.weekOfMonth,
+          monthOfYear: values?.monthOfYear,
+          startDate: values.startDate,
+          endDate: values?.endDate,
+          times: values.times,
+          orientations: values?.orientations,
         },
         {
           onSuccess: ({ massSchedule, fields, statusCode, message }) => {

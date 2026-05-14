@@ -7,7 +7,7 @@
 @theme {
   --grid-template-columns-app: minmax(22.5rem, 20rem) 1fr;
   --grid-template-columns-profile: max-content 1fr min-content;
-  --grid-template-columns-card: repeat(auto-fit, minmax(20rem, 362px));
+  --grid-template-columns-card: repeat(3, minmax(16rem, 1fr));
   --grid-template-columns-form: minmax(7.5rem, 17.5rem) minmax(25rem, 1fr)
     minmax(0, 15rem);
 
