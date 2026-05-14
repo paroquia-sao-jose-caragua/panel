@@ -138,6 +138,12 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --font-sans: var(--font-inter);
+
+  --paroquia-brown: oklch(0.38 0.06 50);
+  --paroquia-brown-deep: oklch(0.32 0.055 48);
+  --paroquia-brown-light: oklch(0.55 0.08 55);
+  --paroquia-cream: oklch(0.97 0.015 80);
+  --paroquia-gold: oklch(0.78 0.12 80);
 }
 
 .dark {

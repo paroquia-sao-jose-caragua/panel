@@ -1,11 +1,16 @@
-export function ParishLogoIcon() {
+interface ParishLogoIconProps {
+  variant?: 'default' | 'outline';
+  className?: string;
+}
+
+export function ParishLogoIcon({ variant, className }: ParishLogoIconProps) {
   return (
     <svg
       viewBox="0 0 83 83"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      className="w-13 h-13"
+      className={className || 'w-13 h-13'}
     >
       <title>São José e o Menino Jesus segurando um lírio branco na mão</title>
       <rect
@@ -14,8 +19,8 @@ export function ParishLogoIcon() {
         width="79"
         height="79"
         rx="39.5"
-        className="stroke-brand-800"
-        strokeWidth="4"
+        className={variant === 'outline' ? 'stroke-brand-800' : ''}
+        strokeWidth={variant === 'outline' ? '4' : ''}
       />
       <path
         d="M79 41.5C79 62.2107 62.2107 79 41.5 79C20.7893 79 4 62.2107 4 41.5C4 20.7893 20.7893 4 41.5 4C62.2107 4 79 20.7893 79 41.5Z"
