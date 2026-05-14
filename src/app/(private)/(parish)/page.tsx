@@ -6,7 +6,7 @@ import { CommunitiesList } from './(churches)/list';
 
 export default function Churches() {
   return (
-    <main className="max-w-300 w-full px-4 pt-30 pb-12 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
+    <main className="max-w-300 w-full px-4 pt-20 pb-12 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
       <AppBreadcrumb
         links={[{ key: 'origin', href: '/', title: 'Início', icon: Church }]}
       />
