@@ -13,6 +13,7 @@ export const OrdinaryMassesList = () => {
       typeFilter="ordinary"
       addHref={`/${community?.slug}/add-ordinary-mass`}
       editHrefPattern={(id) => `/${community?.slug}/ordinary-mass/${id}/edit`}
+      info={t('ordinary-mass-info')}
     />
   );
 };

@@ -6,10 +6,15 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { TypographyH3 } from '@/components/ui/typography/h3';
-import { ClockIcon, Plus } from 'lucide-react';
+import { ClockIcon, InfoIcon, Plus } from 'lucide-react';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { ListItem } from './list-item';
 import type { MassScheduleType } from './utils/format-mass-schedule-description';
 
@@ -19,6 +24,7 @@ interface MassSchedulesListProps {
   typeFilter: string;
   addHref: string;
   editHrefPattern: (id: string) => string;
+  info: string;
 }
 
 export const MassSchedulesList = ({
@@ -27,8 +33,10 @@ export const MassSchedulesList = ({
   typeFilter,
   addHref,
   editHrefPattern,
+  info,
 }: MassSchedulesListProps) => {
   const { massSchedules } = useMassSchedules();
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const massSchedulesOfType = useMemo(
     () =>
@@ -40,7 +48,29 @@ export const MassSchedulesList = ({
     <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
       <div className="p-6">
         <div className="flex flex-row items-center justify-between">
-          <TypographyH3>{title}</TypographyH3>
+          <div className="flex items-center gap-2">
+            <TypographyH3>{title}</TypographyH3>
+            <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  className="h-5 w-5 p-0 hover:bg-transparent"
+                  onMouseEnter={() => setIsPopoverOpen(true)}
+                  onMouseLeave={() => setIsPopoverOpen(false)}
+                >
+                  <InfoIcon className="h-4 w-4 text-zinc-500 hover:text-zinc-700" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent side="bottom" align="start" className="w-80">
+                <div className="flex flex-col gap-2">
+                  <p className="font-semibold text-sm text-zinc-900">{title}</p>
+                  <p className="text-sm text-zinc-600">{info}</p>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
 
           <Link href={addHref}>
             <Button>
