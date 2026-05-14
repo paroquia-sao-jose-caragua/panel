@@ -1,11 +1,13 @@
 'use client';
 
-import type { CalendarSchedule } from '@/entities/CalendarSchedule';
+import type { CalendarSchedule, Schedule } from '@/entities/CalendarSchedule';
 import { ScheduleItem } from './schedule-item';
 import useTranslator from '@/hooks/use-translator';
 import { Plus } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import { useMutation } from '@tanstack/react-query';
+import { createMassScheduleException } from '@/api/mass-schedules/create-exception';
 
 interface CalendarViewProps {
   schedules: CalendarSchedule[];
@@ -49,6 +51,7 @@ export const CalendarView = ({ schedules, isPending }: CalendarViewProps) => {
               {group.schedules.map((schedule, idx) => (
                 <ScheduleItem
                   key={`${group.date}-${schedule.type}-${idx}`}
+                  exceptionDate={group.date}
                   schedule={schedule}
                 />
               ))}

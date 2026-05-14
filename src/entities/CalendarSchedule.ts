@@ -1,6 +1,7 @@
 import type { Community } from './Community';
 
 type MassSchedule = {
+  massScheduleId: string;
   type: 'mass';
   title?: string;
   massType: 'ordinary' | 'devotional' | 'solemnity';
@@ -46,7 +47,7 @@ type EventSchedule = {
   };
 };
 
-type Schedule = MassSchedule | EventSchedule;
+export type Schedule = MassSchedule | EventSchedule;
 
 export type CalendarSchedule = {
   date: string;
