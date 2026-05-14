@@ -57,7 +57,7 @@ export default function CalendarPage() {
         defaultValue={months[0].toString()}
         onValueChange={handleChangeMonth}
       >
-        <TabsList>
+        <TabsList variant="line" className="w-full border-b border-separate">
           {months.map((month) => (
             <TabsTrigger key={String(month)} value={month.toString()}>
               {t(`month-${month}`)}

@@ -3,6 +3,7 @@
 import type { CalendarSchedule } from '@/entities/CalendarSchedule';
 import { ScheduleItem } from './schedule-item';
 import useTranslator from '@/hooks/use-translator';
+import { Plus } from 'lucide-react';
 
 interface CalendarViewProps {
   schedules: CalendarSchedule[];
@@ -33,31 +34,42 @@ export const CalendarView = ({ schedules, isPending }: CalendarViewProps) => {
   }
 
   return (
-    <div className="w-full space-y-4">
-      {schedules.map((day) => (
-        <div
-          key={day.date}
-          className="rounded-lg shadow-sm bg-white overflow-hidden"
-        >
-          <div className="bg-gradient-to-r from-brand-50 to-brand-25 px-6 py-3 border-b border-brand-100">
-            <p className="font-semibold text-zinc-900">
-              {t(`week-day-${day.dayOfWeek}`)},{' '}
-              {new Date(day.date).toLocaleDateString('pt-BR', {
-                day: 'numeric',
-                month: 'long',
-              })}
-            </p>
-          </div>
+    <div className="w-full space-y-8">
+      {schedules.map((group) => (
+        <section key={group.date} className="flex flex-col items-start gap-4">
+          <h2 className="text-lg font-medium text-primary">
+            {t(`week-day-${group.dayOfWeek}`)},{' '}
+            {new Date(group.date).toLocaleDateString('pt-BR', {
+              day: 'numeric',
+              month: 'long',
+            })}
+          </h2>
 
-          <div className="grid gap-3 p-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {day.schedules.map((schedule, idx) => (
-              <ScheduleItem
-                key={`${day.date}-${schedule.type}-${idx}`}
-                schedule={schedule}
-              />
-            ))}
-          </div>
-        </div>
+          {group.schedules.length > 0 && (
+            <ul className="space-y-4 flex-1 w-full">
+              {group.schedules.map((schedule, idx) => (
+                <ScheduleItem
+                  key={`${group.date}-${schedule.type}-${idx}`}
+                  schedule={schedule}
+                />
+              ))}
+            </ul>
+          )}
+
+          {group.schedules.length === 0 && (
+            <p className="text-zinc-500 mb-2">
+              Nenhum agendamento para este dia
+            </p>
+          )}
+
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 rounded-md border border-dashed border-border bg-transparent px-3.5 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+          >
+            <Plus className="h-4 w-4" />
+            Novo Compromisso Eventual
+          </button>
+        </section>
       ))}
     </div>
   );
