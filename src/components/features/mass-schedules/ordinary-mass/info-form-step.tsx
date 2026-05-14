@@ -2,7 +2,6 @@ import { Select } from '@/components/common/select';
 import { SelectItem } from '@/components/common/select';
 import { FieldLabel } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Root as InputRoot,
   Control as InputControl,
@@ -47,111 +46,37 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
     >
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
         <div className="flex-1">
-          <FieldLabel htmlFor="recurrence-type">Tipo de Recorrência</FieldLabel>
-          <span className="block text-zinc-600 mt-2">
-            Escolha se essa missa acontece toda semana no mesmo dia ou todo mês
-            no mesmo dia.
-          </span>
-        </div>
-
-        <RadioGroup
-          name="recurrenceType"
-          defaultValue="monthly"
-          value={formik.values.recurrenceType}
-          className="w-full"
-          onValueChange={(newValue) =>
-            formik.setFieldValue('recurrenceType', newValue)
-          }
-        >
-          <div
-            className={`flex items-center gap-4 border ${formik.values.recurrenceType === 'weekly' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
-          >
-            <RadioGroupItem value="weekly" id="r1" />
-
-            <Label
-              htmlFor="r1"
-              className="flex flex-col items-start text-zinc-700 text-md font-semibold gap-0"
-            >
-              Dia da semana
-              <span className="block text-sm text-zinc-500 font-normal">
-                Toda semana no mesmo dia (ex: todo domingo)
-              </span>
-            </Label>
-          </div>
-
-          <div
-            className={`flex items-center gap-3 border ${formik.values.recurrenceType === 'monthly' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
-          >
-            <RadioGroupItem value="monthly" id="r2" />
-
-            <Label
-              htmlFor="r2"
-              className="flex flex-col items-start text-zinc-700 text-md font-medium gap-0"
-            >
-              Dia do mês
-              <span className="block text-sm text-zinc-500 font-normal">
-                Todo mês no mesmo dia (ex: dia 19 de cada mês)
-              </span>
-            </Label>
-          </div>
-        </RadioGroup>
-      </div>
-
-      {formik.values.recurrenceType === 'weekly' && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
           <FieldLabel htmlFor="day-of-week">
             <CalendarIcon className="text-zinc-400" />
             Quando
           </FieldLabel>
-          <div className="flex flex-col gap-2">
-            <Label className="text-sm text-zinc-700 font-semibold">
-              Dia da semana
-            </Label>
-            <Select
-              name="dayOfWeek"
-              placeholder="Selecione o dia"
-              value={String(formik.values.dayOfWeek)}
-              onValueChange={(newValue: string) => {
-                formik.setFieldValue('dayOfWeek', Number(newValue));
-              }}
-            >
-              <SelectItem value="0" text="Domingo" />
-              <SelectItem value="1" text="Segunda-feira" />
-              <SelectItem value="2" text="Terça-feira" />
-              <SelectItem value="3" text="Quarta-feira" />
-              <SelectItem value="4" text="Quinta-feira" />
-              <SelectItem value="5" text="Sexta-feira" />
-              <SelectItem value="6" text="Sábado" />
-            </Select>
-          </div>
+          <span className="block text-zinc-600 mt-2">
+            Escolha o dia da semana em que essa missa acontece (ex: todas as
+            quartas-feiras)
+          </span>
         </div>
-      )}
-
-      {formik.values.recurrenceType === 'monthly' && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
-          <FieldLabel htmlFor="day-of-month">
-            <CalendarIcon className="text-zinc-400" />
-            Quando
-          </FieldLabel>
-          <div className="flex flex-col gap-2">
-            <Label className="text-sm text-zinc-700 font-semibold">
-              Dia do mês
-            </Label>
-            <InputRoot helperText='Exemplo: Digite 19 para "todo dia 19 do mês"'>
-              <InputControl
-                id="day-of-month"
-                name="dayOfMonth"
-                type="number"
-                inputMode="numeric"
-                max={31}
-                min={1}
-                value={formik.values.dayOfMonth}
-                onChange={formik.handleChange}
-              />
-            </InputRoot>
-          </div>
+        <div className="flex flex-col gap-2">
+          <Label className="text-sm text-zinc-700 font-semibold">
+            Dia da semana
+          </Label>
+          <Select
+            name="dayOfWeek"
+            placeholder="Selecione o dia"
+            value={String(formik.values.dayOfWeek)}
+            onValueChange={(newValue: string) => {
+              formik.setFieldValue('dayOfWeek', Number(newValue));
+            }}
+          >
+            <SelectItem value="0" text="Domingo" />
+            <SelectItem value="1" text="Segunda-feira" />
+            <SelectItem value="2" text="Terça-feira" />
+            <SelectItem value="3" text="Quarta-feira" />
+            <SelectItem value="4" text="Quinta-feira" />
+            <SelectItem value="5" text="Sexta-feira" />
+            <SelectItem value="6" text="Sábado" />
+          </Select>
         </div>
-      )}
+      </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-row gap-4 pb-5">
         <div className="flex-1">
