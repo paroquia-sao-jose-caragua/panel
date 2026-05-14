@@ -67,7 +67,7 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
           type: values.isSolemn ? 'solemnity' : type,
           recurrenceType:
             values.recurrenceType === 'week-of-month'
-              ? 'weekly'
+              ? 'monthly'
               : values.isSolemn
                 ? 'yearly'
                 : values.recurrenceType,

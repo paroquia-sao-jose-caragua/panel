@@ -4,6 +4,8 @@ import type { CalendarSchedule } from '@/entities/CalendarSchedule';
 import { ScheduleItem } from './schedule-item';
 import useTranslator from '@/hooks/use-translator';
 import { Plus } from 'lucide-react';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
 
 interface CalendarViewProps {
   schedules: CalendarSchedule[];
@@ -39,10 +41,7 @@ export const CalendarView = ({ schedules, isPending }: CalendarViewProps) => {
         <section key={group.date} className="flex flex-col items-start gap-4">
           <h2 className="text-lg font-medium text-primary">
             {t(`week-day-${group.dayOfWeek}`)},{' '}
-            {new Date(group.date).toLocaleDateString('pt-BR', {
-              day: 'numeric',
-              month: 'long',
-            })}
+            {dayjs(group.date).locale('pt-br').format('D [de] MMMM')}
           </h2>
 
           {group.schedules.length > 0 && (

@@ -48,7 +48,7 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
           isPrecept: values.isPrecept,
           recurrenceType:
             values.recurrenceType === 'week-of-month'
-              ? 'weekly'
+              ? 'monthly'
               : values.isSolemn
                 ? 'yearly'
                 : values.recurrenceType,
