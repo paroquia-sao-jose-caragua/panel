@@ -52,7 +52,7 @@ export const AppSidebar = () => {
             ]}
             onLinkClick={handleClose}
           />
-          {/* <NavItem
+          <NavItem
             title="Agenda"
             icon={Calendar}
             links={[
@@ -63,7 +63,7 @@ export const AppSidebar = () => {
             ]}
             onLinkClick={handleClose}
           />
-          <NavItem
+          {/* <NavItem
             title="Ministérios"
             icon={Users}
             links={[

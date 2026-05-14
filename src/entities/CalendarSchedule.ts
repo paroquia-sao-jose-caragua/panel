@@ -1,3 +1,5 @@
+import type { Community } from './Community';
+
 type MassSchedule = {
   type: 'mass';
   title?: string;
@@ -8,6 +10,7 @@ type MassSchedule = {
   endTime: string;
   community: {
     id: string;
+    type: Community['type'];
     name: string;
     address: string;
   };
@@ -37,6 +40,7 @@ type EventSchedule = {
   endTime?: string;
   community: {
     id: string;
+    type: Community['type'];
     name: string;
     address: string;
   };
