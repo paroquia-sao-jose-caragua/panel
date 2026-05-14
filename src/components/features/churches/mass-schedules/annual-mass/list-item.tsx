@@ -81,7 +81,7 @@ export const ListItem = ({ massSchedule }: ListItemProps) => {
 
       <div className="flex items-center">
         <Link
-          href={`/${community?.slug}/ordinary-mass/${massSchedule.id}/edit`}
+          href={`/${community?.slug}/annual-mass/${massSchedule.id}/edit`}
           className="ml-4"
         >
           <Tooltip>

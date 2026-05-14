@@ -31,10 +31,12 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       title: massSchedule?.title,
       orientations: massSchedule?.orientations,
       isPrecept: Boolean(massSchedule?.isPrecept),
+      isSolemn: massSchedule?.type === 'solemnity',
       recurrenceType: massSchedule?.recurrenceType || 'weekly',
       dayOfWeek: massSchedule?.dayOfWeek,
       dayOfMonth: massSchedule?.dayOfMonth,
       weekOfMonth: massSchedule?.weekOfMonth,
+      monthOfYear: massSchedule?.monthOfYear,
       startDate: massSchedule?.startDate
         ? dayjs(massSchedule.startDate).format('YYYY-MM-DD')
         : dayjs().format('YYYY-MM-DD'),
@@ -44,12 +46,14 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       times: massSchedule?.times || [],
     } as {
       title?: string;
-      orientations?: string;
       isPrecept: boolean;
+      isSolemn: boolean;
+      orientations?: string;
       recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
       dayOfWeek?: 0 | 2 | 1 | 3 | 4 | 5 | 6;
       dayOfMonth?: number;
       weekOfMonth?: number;
+      monthOfYear?: number;
       startDate: string;
       endDate?: string;
       times: { startTime: string; endTime: string }[];
@@ -60,11 +64,13 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
         {
           ...values,
           massScheduleId: params.id,
-          type,
+          type: values.isSolemn ? 'solemnity' : type,
           recurrenceType:
             values.recurrenceType === 'week-of-month'
               ? 'weekly'
-              : values.recurrenceType,
+              : values.isSolemn
+                ? 'yearly'
+                : values.recurrenceType,
         },
         {
           onSuccess: ({ massSchedule, statusCode, message }) => {
