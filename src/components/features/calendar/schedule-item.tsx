@@ -26,7 +26,7 @@ export const ScheduleItem = ({ schedule }: ScheduleItemProps) => {
           <X className="h-3 w-3" />
         </button>
       </div>
-      <div className="flex items-end justify-between gap-4 mt-2">
+      <div className="flex items-end justify-between gap-4 mt-2 flex-wrap">
         <div>
           <p className="mt-1 text-base font-semibold text-foreground">
             {isMass ? 'Santa Missa' : 'Compromisso Eventual'}
