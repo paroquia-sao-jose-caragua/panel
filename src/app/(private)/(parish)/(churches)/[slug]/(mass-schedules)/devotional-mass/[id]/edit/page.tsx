@@ -33,6 +33,10 @@ export default function EditOrdinaryMassPage() {
         dayOfMonth: true,
         startDate: true,
         endDate: true,
+        orientations: true,
+        times: [{ endTime: true, startTime: true }],
+        title: true,
+        weekOfMonth: true,
       });
       return;
     }

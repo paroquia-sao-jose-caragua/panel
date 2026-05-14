@@ -31,6 +31,7 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       title: massSchedule?.title,
       orientations: massSchedule?.orientations,
       isPrecept: Boolean(massSchedule?.isPrecept),
+      isSolemn: massSchedule?.type === 'solemnity',
       recurrenceType: massSchedule?.recurrenceType || 'weekly',
       dayOfWeek: massSchedule?.dayOfWeek,
       dayOfMonth: massSchedule?.dayOfMonth,
@@ -46,6 +47,7 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       title?: string;
       orientations?: string;
       isPrecept: boolean;
+      isSolemn: boolean;
       recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
       dayOfWeek?: 0 | 2 | 1 | 3 | 4 | 5 | 6;
       dayOfMonth?: number;
