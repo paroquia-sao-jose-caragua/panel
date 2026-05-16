@@ -1,6 +1,6 @@
 'use client';
 
-import { createMassScheduleException } from '@/api/mass-schedules/create-exception';
+import { deleteMassScheduleException } from '@/api/mass-schedules/delete-exception';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,94 +12,61 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { FieldGroup } from '@/components/ui/field';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import type { CalendarSchedule } from '@/entities/CalendarSchedule';
+import type { ExceptionSchedule } from '@/entities/CalendarSchedule';
 import useCalendarStore from '@/stores/useCalendarStore';
 import { showAlert } from '@/utils/showAlert';
 import { useMutation } from '@tanstack/react-query';
-import { useFormik } from 'formik';
-import { MapPin, X } from 'lucide-react';
+import { CornerRightUpIcon, MapPin, X } from 'lucide-react';
 import { useState } from 'react';
 
-type Schedule =
-  | CalendarSchedule['schedules']['active'][number]
-  | CalendarSchedule['schedules']['exceptions'][number];
-
-interface ScheduleItemProps {
-  exceptionDate: string;
-  schedule: Schedule;
+interface ScheduleExceptionItemProps {
+  schedule: ExceptionSchedule;
 }
 
-export const ScheduleItem = ({
-  exceptionDate,
+export const ScheduleExceptionItem = ({
   schedule,
-}: ScheduleItemProps) => {
+}: ScheduleExceptionItemProps) => {
   const [openConfirmCancel, setOpenConfirmCancel] = useState(false);
-  const { moveScheduleToException } = useCalendarStore();
+  const { moveExceptionToSchedule } = useCalendarStore();
 
   const isMass = schedule.type === 'mass';
 
   const { mutate, isPending } = useMutation({
-    mutationFn: createMassScheduleException,
+    mutationFn: deleteMassScheduleException,
     networkMode: 'always',
   });
 
-  const formik = useFormik({
-    initialValues: {
-      reason: '',
-    },
-    onSubmit: (values) => {
-      if (schedule.type !== 'mass') return;
-
-      mutate(
-        {
-          massScheduleId: schedule.massScheduleId,
-          exceptionDate,
-          startTime: schedule.startTime,
-          reason: values.reason,
-        },
-        {
-          onSuccess: ({
-            massScheduleException,
-            statusCode,
-            errors,
-            message,
-          }) => {
-            if (massScheduleException) {
-              moveScheduleToException(massScheduleException);
-              setOpenConfirmCancel(false);
-            } else if (statusCode === 400 && errors) {
-              for (const error of errors) {
-                formik.setFieldError(error.field, error.message);
-              }
-            } else {
-              showAlert(
-                message ||
-                  'Ocorreu um erro ao tentar desmarcar a missa. Tente novamente mais tarde.'
-              );
-            }
-          },
-          onError: (error) => {
-            showAlert(
-              'Ocorreu um erro ao tentar desmarcar a missa. Tente novamente mais tarde.'
-            );
-            console.error(error);
-          },
-        }
-      );
-    },
-  });
-
   const handleCancel = () => {
-    formik.submitForm();
+    mutate(
+      {
+        exceptionId: schedule.exception.id,
+      },
+      {
+        onSuccess: ({ statusCode, message }) => {
+          if (statusCode === 200) {
+            moveExceptionToSchedule(schedule.exception);
+            setOpenConfirmCancel(false);
+          } else {
+            showAlert(
+              message ||
+                'Ocorreu um erro ao tentar remarcar a missa. Tente novamente mais tarde.'
+            );
+          }
+        },
+        onError: (error) => {
+          showAlert(
+            'Ocorreu um erro ao tentar remarcar a missa. Tente novamente mais tarde.'
+          );
+          console.error(error);
+        },
+      }
+    );
   };
 
   return (
-    <li className="group rounded-xl border border-brand-100 bg-brand-0 p-4 transition sm:p-5">
+    <li className="group rounded-xl border border-zinc-200/60 bg-zinc-100/60 p-4 transition sm:p-5 -z-10">
       <div className="flex items-start justify-between gap-4">
-        <p className="font-mono text-sm tabular-nums text-muted-foreground">
+        <p className="font-mono text-sm tabular-nums text-muted-foreground/80">
           {schedule.startTime} — {schedule.endTime}
         </p>
 
@@ -108,20 +75,18 @@ export const ScheduleItem = ({
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:border-destructive/40 hover:text-destructive"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-border bg-brand-700 px-2.5 py-1 text-xs font-medium text-white transition hover:opacity-80"
               >
-                Desmarcar
-                <X className="h-3 w-3" />
+                Remarcar
+                <CornerRightUpIcon className="h-3 w-3" />
               </button>
             </DialogTrigger>
-
             <DialogContent className="sm:max-w-sm">
               <DialogHeader>
-                <DialogTitle>Desmarcar Agendamento</DialogTitle>
-
+                <DialogTitle>Remarcar Agendamento</DialogTitle>
                 <DialogDescription>
-                  Você está prester a desmarcar o agendamento abaixo. Confirme
-                  os dados e informe o motivo do cancelamento.
+                  Você está prestes a remarcar o agendamento abaixo. Confirme os
+                  dados.
                 </DialogDescription>
               </DialogHeader>
 
@@ -150,7 +115,6 @@ export const ScheduleItem = ({
                       : ''}
                   </span>
                 </div>
-
                 {schedule.title && (
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-sm font-medium text-muted-foreground">
@@ -161,7 +125,6 @@ export const ScheduleItem = ({
                     </span>
                   </div>
                 )}
-
                 <div className="flex items-start justify-between gap-2">
                   <span className="text-sm font-medium text-muted-foreground">
                     Local:
@@ -174,23 +137,6 @@ export const ScheduleItem = ({
                   </span>
                 </div>
               </div>
-
-              <FieldGroup className="px-4 pb-4 gap-2">
-                <Label
-                  htmlFor="reason"
-                  className="text-sm text-zinc-700 font-semibold"
-                >
-                  Motivo do Cancelamento
-                </Label>
-                <Textarea
-                  id="reason"
-                  name="reason"
-                  placeholder="Digite o motivo do cancelamento aqui..."
-                  value={formik.values.reason}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </FieldGroup>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button variant="outline">Cancelar</Button>
@@ -200,15 +146,14 @@ export const ScheduleItem = ({
                   onClick={handleCancel}
                   disabled={isPending}
                 >
-                  Desmarcar
+                  Remarcar
                 </Button>
               </DialogFooter>
             </DialogContent>
           </form>
         </Dialog>
       </div>
-
-      <div className="flex items-end justify-between gap-4 flex-wrap">
+      <div className="flex items-end justify-between gap-4 flex-wrap opacity-60">
         <div>
           <p className="mt-1 text-base font-semibold text-foreground">
             {isMass ? 'Santa Missa' : 'Compromisso Eventual'}

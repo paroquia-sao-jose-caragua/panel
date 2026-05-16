@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Church, Menu, Users, X } from 'lucide-react';
+import { Calendar, Church, Menu, X } from 'lucide-react';
 import { Logo } from './logo';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { NavItem } from './nav-item';

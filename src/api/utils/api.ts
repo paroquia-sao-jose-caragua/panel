@@ -1,14 +1,15 @@
-import useLocaleConfigStore from "@/stores/useLocaleConfigStore";
-import useAuthStore from "@/stores/useAuthStore";
-import { logout } from "../users/logout";
-import { refresh } from "../users/refresh";
+import useLocaleConfigStore from '@/stores/useLocaleConfigStore';
+import useAuthStore from '@/stores/useAuthStore';
+import { logout } from '../users/logout';
+import { refresh } from '../users/refresh';
 
 export const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_API_URL as string;
 
 interface ResponseErrorFields<K extends string> {
-  fields?: {
-    [P in K]: { message: string }[];
-  };
+  errors?: {
+    field: K;
+    message: string;
+  }[];
 }
 
 export const api = async <ResponseData, K extends string = never>(
@@ -17,7 +18,7 @@ export const api = async <ResponseData, K extends string = never>(
   options?: {
     apiBaseUrl?: string;
     retry?: boolean;
-  },
+  }
 ): Promise<
   ResponseErrorFields<K> &
     ResponseData & {
@@ -31,10 +32,10 @@ export const api = async <ResponseData, K extends string = never>(
   const endpoint = `${options?.apiBaseUrl || apiBaseUrl}${path}`;
 
   const headers = {
-    "Accept-Language": lang,
-    "Content-Type": "application/json",
-    "X-Timezone-Offset": timezoneOffset,
-    "X-Timezone": timezone,
+    'Accept-Language': lang,
+    'Content-Type': 'application/json',
+    'X-Timezone-Offset': timezoneOffset,
+    'X-Timezone': timezone,
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...init?.headers,
   };
@@ -44,7 +45,7 @@ export const api = async <ResponseData, K extends string = never>(
 
   if (
     response.status === 401 &&
-    typeof options?.retry === "boolean" &&
+    typeof options?.retry === 'boolean' &&
     options.retry !== false
   ) {
     const { statusCode, token: newToken } = await refresh();
@@ -52,7 +53,7 @@ export const api = async <ResponseData, K extends string = never>(
     if (statusCode !== 200) {
       setLoggedOut();
       await logout();
-      if (typeof window !== "undefined") window.location.href = "/login";
+      if (typeof window !== 'undefined') window.location.href = '/login';
       return new Promise<never>(() => {});
     }
 
@@ -68,7 +69,7 @@ export const api = async <ResponseData, K extends string = never>(
           Authorization: `Bearer ${newToken}`,
         },
       },
-      { ...options, retry: false },
+      { ...options, retry: false }
     );
   }
 
