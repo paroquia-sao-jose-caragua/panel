@@ -10,6 +10,7 @@ import { useMemo, useState } from 'react';
 import useTranslator from '@/hooks/use-translator';
 import { useQuery } from '@tanstack/react-query';
 import { listCalendarSchedules } from '@/api/calendar/list';
+import { Spinner } from '@/components/ui/spinner';
 
 type Month = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
@@ -67,7 +68,16 @@ export default function CalendarPage() {
       </Tabs>
 
       <div className="mt-8">
-        <CalendarView schedules={data?.calendar ?? []} isPending={isPending} />
+        {isPending && (
+          <div className="w-full rounded-lg bg-white p-6 py-10 border border-dashed border-border">
+            <div className="flex items-center justify-center gap-2">
+              <p className="text-zinc-500">Carregando agenda</p>
+              <Spinner className="text-zinc-500" />
+            </div>
+          </div>
+        )}
+
+        {!isPending && <CalendarView schedules={data?.calendar ?? []} />}
       </div>
     </main>
   );

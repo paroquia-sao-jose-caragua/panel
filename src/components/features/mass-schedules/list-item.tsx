@@ -112,18 +112,18 @@ export const ListItem = ({ massSchedule, type, editHref }: ListItemProps) => {
         </Link>
 
         <Dialog>
-          <DialogTrigger>
-            <Tooltip>
-              <TooltipTrigger asChild>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
                 <Button type="button" variant="ghost" size="icon-lg">
                   <Trash2Icon />
                 </Button>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">
-                <p>Excluir</p>
-              </TooltipContent>
-            </Tooltip>
-          </DialogTrigger>
+              </DialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Excluir</p>
+            </TooltipContent>
+          </Tooltip>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Excluir horário de missa?</DialogTitle>
@@ -132,7 +132,7 @@ export const ListItem = ({ massSchedule, type, editHref }: ListItemProps) => {
                 relacionadas a este horário de missa serão perdidas.
               </DialogDescription>
             </DialogHeader>
-            <DialogFooter className="sm:justify-start">
+            <DialogFooter>
               <DialogClose asChild>
                 <Button
                   type="button"

@@ -12,10 +12,9 @@ import { ScheduleExceptionItem } from './schedule-exception-item';
 
 interface CalendarViewProps {
   schedules: CalendarSchedule[];
-  isPending: boolean;
 }
 
-export const CalendarView = ({ schedules, isPending }: CalendarViewProps) => {
+export const CalendarView = ({ schedules }: CalendarViewProps) => {
   const { t } = useTranslator();
   const { calendar, setCalendar } = useCalendarStore();
 
@@ -24,16 +23,6 @@ export const CalendarView = ({ schedules, isPending }: CalendarViewProps) => {
       setCalendar(schedules);
     }
   }, [schedules, setCalendar]);
-
-  if (isPending) {
-    return (
-      <div className="w-full rounded-lg shadow-sm bg-white p-6">
-        <div className="flex items-center justify-center min-h-96">
-          <p className="text-zinc-500">Carregando agenda...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (schedules.length === 0) {
     return (

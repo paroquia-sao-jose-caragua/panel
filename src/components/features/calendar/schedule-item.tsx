@@ -70,6 +70,7 @@ export const ScheduleItem = ({
             if (massScheduleException) {
               moveScheduleToException(massScheduleException);
               setOpenConfirmCancel(false);
+              formik.resetForm();
             } else if (statusCode === 400 && errors) {
               for (const error of errors) {
                 formik.setFieldError(error.field, error.message);
