@@ -123,6 +123,9 @@ export const MassScheduleItem = ({
           {schedule.massType === 'devotional' ? ' (Devocional)' : ''}
           {schedule.massType === 'solemnity' ? ' (Solenidade)' : ''}
         </p>
+        {schedule.title && (
+          <p className="mt-1 text-sm text-muted-foreground">{schedule.title}</p>
+        )}
         {schedule.orientations && (
           <p className="mt-1 text-sm text-muted-foreground">
             {schedule.orientations}
