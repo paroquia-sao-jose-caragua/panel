@@ -73,8 +73,12 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
       <div className="mt-2 flex items-end justify-between gap-4 flex-wrap">
         <p className="text-base font-semibold text-foreground">
           {isMass ? 'Santa Missa' : schedule.title}
-          {schedule?.massType === 'devotional' ? ' (Devocional)' : ''}
-          {schedule?.massType === 'solemnity' ? ' (Solenidade)' : ''}
+          {schedule.massType === 'devotional'
+            ? ` Devocional - ${schedule.title}`
+            : ''}
+          {schedule.massType === 'solemnity'
+            ? ` Solene - ${schedule.title}`
+            : ''}
         </p>
         {schedule.orientations && (
           <p className="mt-1 text-sm text-muted-foreground">
