@@ -117,17 +117,18 @@ export const MassScheduleItem = ({
         />
       </div>
 
-      <div className="flex items-end justify-between gap-4 flex-wrap">
+      <div className="flex flex-col items-start gap-2 flex-wrap">
         <p className="text-base font-semibold text-foreground">
           Santa Missa
-          {schedule.massType === 'devotional' ? ' (Devocional)' : ''}
-          {schedule.massType === 'solemnity' ? ' (Solenidade)' : ''}
+          {schedule.massType === 'devotional'
+            ? ` Devocional - ${schedule.title}`
+            : ''}
+          {schedule.massType === 'solemnity'
+            ? ` Solene - ${schedule.title}`
+            : ''}
         </p>
-        {schedule.title && (
-          <p className="mt-1 text-sm text-muted-foreground">{schedule.title}</p>
-        )}
         {schedule.orientations && (
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             {schedule.orientations}
           </p>
         )}

@@ -1,6 +1,7 @@
 'use client';
 
 import { deleteMassScheduleException } from '@/api/mass-schedules/delete-exception';
+import { CoverImage } from '@/components/common/cover-image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -64,29 +65,39 @@ export const MassScheduleExceptionItem = ({
 
   return (
     <li className="group rounded-xl border border-zinc-200/60 bg-zinc-100/60 p-4 transition sm:p-5 -z-10">
-      <div className="flex items-start gap-4">
-        <p className="font-mono text-sm tabular-nums text-muted-foreground/80">
-          {schedule.startTime} — {schedule.endTime}
-        </p>
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-start gap-4">
+          <p className="font-mono text-sm tabular-nums text-muted-foreground/80">
+            {schedule.startTime} — {schedule.endTime}
+          </p>
 
-        <Badge>
-          <RepeatIcon />
-          Recorrente
-        </Badge>
+          <Badge>
+            <RepeatIcon />
+            Recorrente
+          </Badge>
+        </div>
+
+        <CoverImage
+          variant="circular"
+          size="xs"
+          url={schedule.community.coverUrl}
+        />
       </div>
 
-      <div className="mt-2 flex items-end justify-between gap-4 flex-wrap opacity-60">
+      <div className="flex flex-col items-start gap-2 flex-wrap">
         <p className="text-base font-semibold text-foreground">
           Santa Missa
-          {schedule.type === 'mass' && schedule.massType === 'devotional'
-            ? ' (Devocional)'
+          {schedule.massType === 'devotional'
+            ? ` Devocional - ${schedule.title}`
             : ''}
-          {schedule.type === 'mass' && schedule.massType === 'solemnity'
-            ? ' (Solenidade)'
+          {schedule.massType === 'solemnity'
+            ? ` Solene - ${schedule.title}`
             : ''}
         </p>
-        {schedule.title && (
-          <p className="text-sm text-muted-foreground">{schedule.title}</p>
+        {schedule.orientations && (
+          <p className="text-sm text-muted-foreground">
+            {schedule.orientations}
+          </p>
         )}
       </div>
 
