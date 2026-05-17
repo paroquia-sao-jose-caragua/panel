@@ -11,7 +11,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { stringUtils } from '@/utils/stringUtils';
 import type { useCreateChurch } from './churches/add-church/use-create-church';
 import { FieldSection } from '../ui/field-section';
-import type { useCreateEventSchedule } from './calendar/add-event-schedule/use-create-event-schedule';
+import type { useCreateEventSchedule } from './event-schedules/use-create-event-schedule';
 
 interface FormAddressProps {
   formik: ReturnType<

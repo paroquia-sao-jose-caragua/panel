@@ -1,7 +1,7 @@
 import type { Community } from './Community';
 import type { MassScheduleException } from './MassScheduleException';
 
-type MassSchedule = {
+export type MassSchedule = {
   massScheduleId: string;
   type: 'mass';
   title?: string;
@@ -19,7 +19,8 @@ type MassSchedule = {
   };
 };
 
-type EventSchedule = {
+export type EventSchedule = {
+  eventScheduleId: string;
   type: 'event';
   title: string;
   eventType:
@@ -37,6 +38,8 @@ type EventSchedule = {
     | 'ordination'
     | 'community_event'
     | 'other';
+  massType?: 'ordinary' | 'devotional' | 'solemnity' | 'sacramental';
+  isPrecept?: boolean;
   customLocation?: string;
   orientations?: string;
   startTime: string;

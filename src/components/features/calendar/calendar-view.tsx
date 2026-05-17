@@ -1,15 +1,16 @@
 'use client';
 
 import type { CalendarSchedule } from '@/entities/CalendarSchedule';
-import { ScheduleItem } from './schedule-item';
+import { MassScheduleItem } from './mass-schedule-item';
 import useTranslator from '@/hooks/use-translator';
 import useCalendarStore from '@/stores/useCalendarStore';
 import { Plus } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { useEffect } from 'react';
-import { ScheduleExceptionItem } from './schedule-exception-item';
+import { MassScheduleExceptionItem } from './mass-schedule-exception-item';
 import Link from 'next/link';
+import { EventScheduleItem } from './event-schedule-item';
 
 interface CalendarViewProps {
   schedules: CalendarSchedule[];
@@ -50,13 +51,20 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
 
             {active.length > 0 && (
               <ul className="space-y-4 flex-1 w-full">
-                {active.map((schedule, idx) => (
-                  <ScheduleItem
-                    key={`${group.date}-${schedule.type}-active-${idx}`}
-                    exceptionDate={group.date}
-                    schedule={schedule}
-                  />
-                ))}
+                {active.map((schedule, idx) =>
+                  schedule.type === 'mass' ? (
+                    <MassScheduleItem
+                      key={`${group.date}-${schedule.type}-active-${idx}`}
+                      exceptionDate={group.date}
+                      schedule={schedule}
+                    />
+                  ) : (
+                    <EventScheduleItem
+                      key={`${group.date}-${schedule.type}-active-${idx}`}
+                      schedule={schedule}
+                    />
+                  )
+                )}
               </ul>
             )}
 
@@ -83,7 +91,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
                 </p>
                 <ul className="space-y-4 flex-1 w-full">
                   {exceptions.map((schedule, idx) => (
-                    <ScheduleExceptionItem
+                    <MassScheduleExceptionItem
                       key={`${group.date}-${schedule.type}-exception-${idx}`}
                       schedule={schedule}
                     />

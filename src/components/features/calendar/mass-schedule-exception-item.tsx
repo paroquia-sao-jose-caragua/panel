@@ -16,20 +16,18 @@ import type { ExceptionSchedule } from '@/entities/CalendarSchedule';
 import useCalendarStore from '@/stores/useCalendarStore';
 import { showAlert } from '@/utils/showAlert';
 import { useMutation } from '@tanstack/react-query';
-import { CornerRightUpIcon, MapPin, X } from 'lucide-react';
+import { CornerRightUpIcon, MapPin } from 'lucide-react';
 import { useState } from 'react';
 
 interface ScheduleExceptionItemProps {
   schedule: ExceptionSchedule;
 }
 
-export const ScheduleExceptionItem = ({
+export const MassScheduleExceptionItem = ({
   schedule,
 }: ScheduleExceptionItemProps) => {
   const [openConfirmCancel, setOpenConfirmCancel] = useState(false);
   const { moveExceptionToSchedule } = useCalendarStore();
-
-  const isMass = schedule.type === 'mass';
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteMassScheduleException,
@@ -104,7 +102,7 @@ export const ScheduleExceptionItem = ({
                     Tipo:
                   </span>
                   <span className="text-sm font-medium text-foreground text-right">
-                    {isMass ? 'Santa Missa' : 'Compromisso Eventual'}
+                    Santa Missa
                     {schedule.type === 'mass' &&
                     schedule.massType === 'devotional'
                       ? ' (Devocional)'
@@ -153,10 +151,11 @@ export const ScheduleExceptionItem = ({
           </form>
         </Dialog>
       </div>
-      <div className="flex items-end justify-between gap-4 flex-wrap opacity-60">
+
+      <div className="mt-2 flex items-end justify-between gap-4 flex-wrap opacity-60">
         <div>
-          <p className="mt-1 text-base font-semibold text-foreground">
-            {isMass ? 'Santa Missa' : 'Compromisso Eventual'}
+          <p className="text-base font-semibold text-foreground">
+            Santa Missa
             {schedule.type === 'mass' && schedule.massType === 'devotional'
               ? ' (Devocional)'
               : ''}
@@ -165,9 +164,7 @@ export const ScheduleExceptionItem = ({
               : ''}
           </p>
           {schedule.title && (
-            <p className="mt-1 text-sm text-muted-foreground">
-              {schedule.title}
-            </p>
+            <p className="text-sm text-muted-foreground">{schedule.title}</p>
           )}
         </div>
         <div className="flex justify-end">

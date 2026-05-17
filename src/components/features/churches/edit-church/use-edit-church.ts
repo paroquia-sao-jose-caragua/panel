@@ -39,7 +39,7 @@ export const useEditChurch = () => {
           name: values.name,
           type: values.type,
           coverId: coverId || community?.coverId,
-          address: formatFullAddress(values),
+          address: formatFullAddress(values) as string,
         },
         {
           onSuccess: ({ community, statusCode, message }) => {

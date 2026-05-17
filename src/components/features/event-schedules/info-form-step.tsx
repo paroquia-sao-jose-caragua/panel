@@ -14,7 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { useCommunities } from '@/api/communities/use-communities';
 import type { useCreateEventSchedule } from './use-create-event-schedule';
 import useTranslator from '@/hooks/use-translator';
-import { FullAddressForm } from '../../full-address-form';
+import { FullAddressForm } from '../full-address-form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 

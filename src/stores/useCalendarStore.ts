@@ -13,6 +13,7 @@ type Action = {
   setCalendar: (calendar: CalendarSchedule[]) => void;
   moveScheduleToException: (exception: MassScheduleException) => void;
   moveExceptionToSchedule: (exception: MassScheduleException) => void;
+  removeEventSchedule: (eventScheduleId: string) => void;
   clearCalendar: () => void;
 };
 
@@ -121,6 +122,28 @@ const useCalendarStore = create<State & Action>()((set) => ({
           schedules: {
             active: updatedActive,
             exceptions: updatedExceptions,
+          },
+        };
+      }),
+    }));
+  },
+
+  removeEventSchedule: (eventScheduleId) => {
+    set((state) => ({
+      calendar: state.calendar.map((day) => {
+        const updatedActive = day.schedules.active.filter(
+          (schedule) =>
+            !(
+              schedule.type === 'event' &&
+              schedule.eventScheduleId === eventScheduleId
+            )
+        );
+
+        return {
+          ...day,
+          schedules: {
+            ...day.schedules,
+            active: updatedActive,
           },
         };
       }),

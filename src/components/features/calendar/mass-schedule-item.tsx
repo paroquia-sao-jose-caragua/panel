@@ -1,6 +1,7 @@
 'use client';
 
 import { createMassScheduleException } from '@/api/mass-schedules/create-exception';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,7 +16,7 @@ import {
 import { FieldGroup } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { CalendarSchedule } from '@/entities/CalendarSchedule';
+import type { MassSchedule } from '@/entities/CalendarSchedule';
 import useCalendarStore from '@/stores/useCalendarStore';
 import { showAlert } from '@/utils/showAlert';
 import { useMutation } from '@tanstack/react-query';
@@ -23,23 +24,20 @@ import { useFormik } from 'formik';
 import { MapPin, X } from 'lucide-react';
 import { useState } from 'react';
 
-type Schedule =
-  | CalendarSchedule['schedules']['active'][number]
-  | CalendarSchedule['schedules']['exceptions'][number];
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
 
 interface ScheduleItemProps {
   exceptionDate: string;
-  schedule: Schedule;
+  schedule: MassSchedule;
 }
 
-export const ScheduleItem = ({
+export const MassScheduleItem = ({
   exceptionDate,
   schedule,
 }: ScheduleItemProps) => {
   const [openConfirmCancel, setOpenConfirmCancel] = useState(false);
   const { moveScheduleToException } = useCalendarStore();
-
-  const isMass = schedule.type === 'mass' || schedule.eventType === 'mass';
 
   const { mutate, isPending } = useMutation({
     mutationFn: createMassScheduleException,
@@ -51,8 +49,6 @@ export const ScheduleItem = ({
       reason: '',
     },
     onSubmit: (values) => {
-      if (schedule.type !== 'mass') return;
-
       mutate(
         {
           massScheduleId: schedule.massScheduleId,
@@ -121,12 +117,24 @@ export const ScheduleItem = ({
                 <DialogTitle>Desmarcar Agendamento</DialogTitle>
 
                 <DialogDescription>
-                  Você está prester a desmarcar o agendamento abaixo. Confirme
-                  os dados e informe o motivo do cancelamento.
+                  Você está prester a desmarcar o agendamento recorrente de
+                  Missa do dia{' '}
+                  <strong>
+                    {dayjs(exceptionDate).locale('pt-br').format('D [de] MMMM')}
+                  </strong>
+                  . Por favor, confirme se deseja continuar com esta ação.
                 </DialogDescription>
               </DialogHeader>
 
               <div className="mx-4 rounded-lg border border-brand-100 bg-brand-0 p-3 mb-5 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-muted-foreground">
+                    Data:
+                  </span>
+                  <span className="font-mono text-sm font-medium text-foreground">
+                    {dayjs(exceptionDate).locale('pt-br').format('D [de] MMMM')}
+                  </span>
+                </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-muted-foreground">
                     Horário:
@@ -140,7 +148,7 @@ export const ScheduleItem = ({
                     Tipo:
                   </span>
                   <span className="text-sm font-medium text-foreground text-right">
-                    {isMass ? 'Santa Missa' : 'Compromisso Eventual'}
+                    Santa Missa
                     {schedule.type === 'mass' &&
                     schedule.massType === 'devotional'
                       ? ' (Devocional)'
@@ -209,16 +217,12 @@ export const ScheduleItem = ({
         </Dialog>
       </div>
 
-      <div className="flex items-end justify-between gap-4 flex-wrap">
+      <div className="mt-2 flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <p className="mt-1 text-base font-semibold text-foreground">
-            {isMass ? 'Santa Missa' : schedule.title}
-            {schedule.type === 'mass' && schedule.massType === 'devotional'
-              ? ' (Devocional)'
-              : ''}
-            {schedule.type === 'mass' && schedule.massType === 'solemnity'
-              ? ' (Solenidade)'
-              : ''}
+          <p className="text-base font-semibold text-foreground">
+            Santa Missa
+            {schedule.massType === 'devotional' ? ' (Devocional)' : ''}
+            {schedule.massType === 'solemnity' ? ' (Solenidade)' : ''}
           </p>
           {schedule.orientations && (
             <p className="mt-1 text-sm text-muted-foreground">
@@ -235,6 +239,10 @@ export const ScheduleItem = ({
             <MapPin className="h-3 w-3" />
           </span>
         </div>
+      </div>
+
+      <div className="mt-4 flex items-center gap-2">
+        <Badge>Agendamento Recorrente</Badge>
       </div>
     </li>
   );

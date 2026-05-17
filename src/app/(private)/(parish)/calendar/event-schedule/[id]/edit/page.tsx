@@ -10,18 +10,13 @@ import Link from 'next/link';
 import { InfoFormStep } from '@/components/features/event-schedules/info-form-step';
 import { Spinner } from '@/components/ui/spinner';
 import { focusFirstFieldError } from '@/utils/focusFirstFieldError';
-import { useSearchParams } from 'next/navigation';
-import { useCreateEventSchedule } from '@/components/features/event-schedules/use-create-event-schedule';
 import { ConfirmStep } from '@/components/features/event-schedules/confirm-step';
+import { useEditEventSchedule } from '@/components/features/event-schedules/use-edit-event-schedule';
 
-export default function AddEventSchedulePage() {
-  const searchParams = useSearchParams();
-
+export default function EditEventSchedulePage() {
   const [activeStep, setActiveStep] = React.useState(1);
 
-  const { formik, isPending } = useCreateEventSchedule({
-    eventDate: searchParams.get('date') || undefined,
-  });
+  const { formik, isPending } = useEditEventSchedule();
 
   const handleNextStep = useCallback(async () => {
     const errors = await formik.validateForm();
@@ -51,7 +46,7 @@ export default function AddEventSchedulePage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Adicionar Compromisso Eventual</TypographyH1>
+              <TypographyH1>Editar Compromisso Eventual</TypographyH1>
             </div>
           </div>
         </div>
@@ -105,7 +100,7 @@ export default function AddEventSchedulePage() {
                 {isPending ? (
                   <Spinner className="border-brand-300 border-2 w-5 h-5" />
                 ) : (
-                  'Adicionar Compromisso'
+                  'Salvar Alterações'
                 )}
               </Button>
             </div>

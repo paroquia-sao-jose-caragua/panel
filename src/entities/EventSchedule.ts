@@ -16,6 +16,8 @@ export type EventSchedule = {
     | 'ordination' // Ordenações sacerdotais ou diaconais
     | 'community_event' // Eventos culturais ou sociais, promovidos pela paróquia, como almoços,  apresentações musicais, peças teatrais, exposições de arte sacra, etc.
     | 'other';
+  massType?: 'ordinary' | 'devotional' | 'solemnity' | 'sacramental'; // Apenas para eventos do tipo 'mass', para indicar o tipo de missa
+  isPrecept?: boolean; // Apenas para eventos do tipo 'mass', para indicar se é uma missa de preceito
   eventDate: string;
   startTime: string;
   endTime?: string;
