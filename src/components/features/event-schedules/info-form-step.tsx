@@ -55,7 +55,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             Igreja
           </FieldLabel>
           <span className="block text-zinc-600 mt-2">
-            Qual comunidade será responsável por este agendamento?
+            Qual comunidade será responsável por este evento?
           </span>
         </div>
 
@@ -93,7 +93,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
         <div className="flex-1">
           <FieldLabel htmlFor="day-of-week">Categoria</FieldLabel>
           <span className="block text-zinc-600 mt-2">
-            Qual o tipo de compromisso eventual que você deseja agendar?
+            Qual o tipo de evento que você deseja agendar?
           </span>
         </div>
 
@@ -118,7 +118,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
 
           <FieldDescription>
             Escolha {'\"Outro\"'} se nenhuma das categorias se encaixar no
-            compromisso que você deseja agendar.
+            agendamento que você deseja agendar.
           </FieldDescription>
         </div>
       </div>
@@ -293,7 +293,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             Horário
           </FieldLabel>
           <span className="block text-zinc-600 mt-2">
-            Informe o horário de início e término do evento.
+            Informe o horário de início e término deste evento.
           </span>
         </div>
 

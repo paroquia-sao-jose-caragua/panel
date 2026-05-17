@@ -14,6 +14,7 @@ export type MassSchedule = {
   community: {
     id: string;
     type: Community['type'];
+    coverUrl: string;
     name: string;
     address: string;
   };

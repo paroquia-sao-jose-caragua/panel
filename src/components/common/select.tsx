@@ -29,7 +29,7 @@ function Select({ children, placeholder, ...props }: SelectProps) {
           side="bottom"
           position="popper"
           sideOffset={8}
-          className="animate-slide-down-and-fade z-10 w-(--radix-select-trigger-width) overflow-hidden rounded-lg border border-input bg-white shadow-sm"
+          className="animate-slide-down-and-fade z-50 w-(--radix-select-trigger-width) overflow-hidden rounded-lg border border-input bg-white shadow-sm"
         >
           <SelectPrimitive.Viewport className="max-h-60 overflow-y-auto">
             {children}
@@ -53,9 +53,7 @@ function SelectItem({ text, description, ...props }: SelectItemProps) {
     >
       <div className="flex items-center w-full justify-between">
         <BaseSelect.ItemText asChild>
-          <div className="flex flex-col gap-1">
-            <span className="text-zinc-900">{text}</span>
-          </div>
+          <span className="text-zinc-900 text-left">{text}</span>
         </BaseSelect.ItemText>
 
         <BaseSelect.ItemIndicator>

@@ -51,7 +51,7 @@ export default function AddEventSchedulePage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Adicionar Compromisso Eventual</TypographyH1>
+              <TypographyH1>Adicionar Evento</TypographyH1>
             </div>
           </div>
         </div>

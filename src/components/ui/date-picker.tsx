@@ -68,7 +68,7 @@ export function DatePicker({
           >
             {date ? (
               <span className="flex-1 text-left">
-                {dayjs(date).format('DD/MM/YYYY')}
+                {dayjs(date).format('DD [de] MMMM [de] YYYY')}
               </span>
             ) : (
               <span className="flex-1 text-left text-zinc-600">

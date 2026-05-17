@@ -14,18 +14,19 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { FieldGroup } from '@/components/ui/field';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import type { MassSchedule } from '@/entities/CalendarSchedule';
 import useCalendarStore from '@/stores/useCalendarStore';
 import { showAlert } from '@/utils/showAlert';
 import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
-import { MapPin, X } from 'lucide-react';
+import { MapPin, RepeatIcon, X } from 'lucide-react';
 import { useState } from 'react';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import { Select, SelectItem } from '@/components/common/select';
+import useTranslator from '@/hooks/use-translator';
+import { CoverImage } from '@/components/common/cover-image';
 
 interface ScheduleItemProps {
   exceptionDate: string;
@@ -36,6 +37,8 @@ export const MassScheduleItem = ({
   exceptionDate,
   schedule,
 }: ScheduleItemProps) => {
+  const { t } = useTranslator();
+
   const [openConfirmCancel, setOpenConfirmCancel] = useState(false);
   const { moveScheduleToException } = useCalendarStore();
 
@@ -46,15 +49,16 @@ export const MassScheduleItem = ({
 
   const formik = useFormik({
     initialValues: {
-      reason: '',
+      reason: '' as `mass-schedule-cancel-reason-${1 | 2 | 3}`,
     },
+    enableReinitialize: true,
     onSubmit: (values) => {
       mutate(
         {
           massScheduleId: schedule.massScheduleId,
           exceptionDate,
           startTime: schedule.startTime,
-          reason: values.reason,
+          reason: t(values.reason),
         },
         {
           onSuccess: ({
@@ -66,7 +70,6 @@ export const MassScheduleItem = ({
             if (massScheduleException) {
               moveScheduleToException(massScheduleException);
               setOpenConfirmCancel(false);
-              formik.resetForm();
             } else if (statusCode === 400 && errors) {
               for (const error of errors) {
                 formik.setFieldError(error.field, error.message);
@@ -95,17 +98,53 @@ export const MassScheduleItem = ({
 
   return (
     <li className="group rounded-xl border border-brand-100 bg-brand-0 p-4 transition sm:p-5">
-      <div className="flex items-start justify-between gap-4">
-        <p className="font-mono text-sm tabular-nums text-muted-foreground">
-          {schedule.startTime} — {schedule.endTime}
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-4">
+          <p className="font-mono text-sm tabular-nums text-muted-foreground">
+            {schedule.startTime} — {schedule.endTime}
+          </p>
+
+          <Badge>
+            <RepeatIcon />
+            Recorrente
+          </Badge>
+        </div>
+
+        <CoverImage
+          variant="circular"
+          size="xs"
+          url={schedule.community.coverUrl}
+        />
+      </div>
+
+      <div className="flex items-end justify-between gap-4 flex-wrap">
+        <p className="text-base font-semibold text-foreground">
+          Santa Missa
+          {schedule.massType === 'devotional' ? ' (Devocional)' : ''}
+          {schedule.massType === 'solemnity' ? ' (Solenidade)' : ''}
         </p>
+        {schedule.orientations && (
+          <p className="mt-1 text-sm text-muted-foreground">
+            {schedule.orientations}
+          </p>
+        )}
+      </div>
+
+      <div className="mt-4 flex items-center justify-between gap-2 border-t border-brand-100/50 pt-3">
+        <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
+          {schedule.community.type === 'parish_church'
+            ? 'Paróquia '
+            : 'Capela '}
+          {schedule.community.name}
+          <MapPin className="h-3 w-3" />
+        </span>
 
         <Dialog open={openConfirmCancel} onOpenChange={setOpenConfirmCancel}>
           <form>
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:border-destructive/40 hover:text-destructive"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-md py-1 text-xs font-medium text-muted-foreground transition hover:border-destructive/40 hover:text-destructive"
               >
                 Desmarcar
                 <X className="h-3 w-3" />
@@ -117,12 +156,8 @@ export const MassScheduleItem = ({
                 <DialogTitle>Desmarcar Agendamento</DialogTitle>
 
                 <DialogDescription>
-                  Você está prester a desmarcar o agendamento recorrente de
-                  Missa do dia{' '}
-                  <strong>
-                    {dayjs(exceptionDate).locale('pt-br').format('D [de] MMMM')}
-                  </strong>
-                  . Por favor, confirme se deseja continuar com esta ação.
+                  Você está prester a desmarcar um agendamento recorrente.
+                  Confirme os dados abaixo.
                 </DialogDescription>
               </DialogHeader>
 
@@ -185,20 +220,31 @@ export const MassScheduleItem = ({
               </div>
 
               <FieldGroup className="px-4 pb-4 gap-2">
-                <Label
-                  htmlFor="reason"
-                  className="text-sm text-zinc-700 font-semibold"
-                >
-                  Motivo do Cancelamento
-                </Label>
-                <Textarea
-                  id="reason"
+                <span className="block text-primary font-semibold mt-2">
+                  Motivo do cancelamento
+                </span>
+                <Select
                   name="reason"
-                  placeholder="Digite o motivo do cancelamento aqui..."
+                  placeholder="Selecione o motivo do cancelamento"
                   value={formik.values.reason}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
+                  defaultValue="mass-schedule-cancel-reason-2"
+                  onValueChange={(newValue) =>
+                    formik.setFieldValue('reason', newValue)
+                  }
+                >
+                  <SelectItem
+                    value="mass-schedule-cancel-reason-1"
+                    text={t('mass-schedule-cancel-reason-1')}
+                  />
+                  <SelectItem
+                    value="mass-schedule-cancel-reason-2"
+                    text={t('mass-schedule-cancel-reason-2')}
+                  />
+                  <SelectItem
+                    value="mass-schedule-cancel-reason-3"
+                    text={t('mass-schedule-cancel-reason-3')}
+                  />
+                </Select>
               </FieldGroup>
               <DialogFooter>
                 <DialogClose asChild>
@@ -215,34 +261,6 @@ export const MassScheduleItem = ({
             </DialogContent>
           </form>
         </Dialog>
-      </div>
-
-      <div className="mt-2 flex items-end justify-between gap-4 flex-wrap">
-        <div>
-          <p className="text-base font-semibold text-foreground">
-            Santa Missa
-            {schedule.massType === 'devotional' ? ' (Devocional)' : ''}
-            {schedule.massType === 'solemnity' ? ' (Solenidade)' : ''}
-          </p>
-          {schedule.orientations && (
-            <p className="mt-1 text-sm text-muted-foreground">
-              {schedule.orientations}
-            </p>
-          )}
-        </div>
-        <div className="flex justify-end">
-          <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
-            {schedule.community.type === 'parish_church'
-              ? 'Paróquia '
-              : 'Capela '}
-            {schedule.community.name}
-            <MapPin className="h-3 w-3" />
-          </span>
-        </div>
-      </div>
-
-      <div className="mt-4 flex items-center gap-2">
-        <Badge>Agendamento Recorrente</Badge>
       </div>
     </li>
   );
