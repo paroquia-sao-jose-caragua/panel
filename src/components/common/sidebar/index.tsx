@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Church, Menu, Users, X } from 'lucide-react';
+import { Calendar, Church, Menu, X } from 'lucide-react';
 import { Logo } from './logo';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { NavItem } from './nav-item';
@@ -52,7 +52,7 @@ export const AppSidebar = () => {
             ]}
             onLinkClick={handleClose}
           />
-          {/* <NavItem
+          <NavItem
             title="Agenda"
             icon={Calendar}
             links={[
@@ -62,7 +62,7 @@ export const AppSidebar = () => {
               },
             ]}
             onLinkClick={handleClose}
-          /> */}
+          />
           {/* <NavItem
             title="Ministérios"
             icon={Users}

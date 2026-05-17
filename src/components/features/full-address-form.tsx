@@ -11,12 +11,21 @@ import { Spinner } from '@/components/ui/spinner';
 import { stringUtils } from '@/utils/stringUtils';
 import type { useCreateChurch } from './churches/add-church/use-create-church';
 import { FieldSection } from '../ui/field-section';
+import type { useCreateEventSchedule } from './event-schedules/use-create-event-schedule';
 
 interface FormAddressProps {
-  formik: ReturnType<typeof useCreateChurch>['formik'];
+  formik: ReturnType<
+    typeof useCreateChurch | typeof useCreateEventSchedule
+  >['formik'];
+  isOptional?: boolean;
+  description?: string;
 }
 
-export const FullAddressForm = ({ formik }: FormAddressProps) => {
+export const FullAddressForm = ({
+  formik,
+  isOptional,
+  description,
+}: FormAddressProps) => {
   const [lastValidatedAddress, setLastValidatedAddress] = React.useState({
     zipCode: '',
     street: '',
@@ -80,6 +89,8 @@ export const FullAddressForm = ({ formik }: FormAddressProps) => {
     <FieldSection
       title="Endereço Completo"
       icon={<MapPinIcon className="text-zinc-400" />}
+      isOptional={isOptional}
+      description={description}
     >
       <div className="flex-1">
         <span className="block mb-2 text-sm text-zinc-700 font-semibold">
@@ -166,7 +177,6 @@ export const FullAddressForm = ({ formik }: FormAddressProps) => {
           </span>
           <InputRoot touched={formik.touched.city} error={formik.errors.city}>
             <InputControl
-              disabled
               name="city"
               type="text"
               value={formik.values.city}
@@ -181,7 +191,6 @@ export const FullAddressForm = ({ formik }: FormAddressProps) => {
           </span>
           <InputRoot touched={formik.touched.state} error={formik.errors.state}>
             <InputControl
-              disabled
               name="state"
               type="text"
               value={formik.values.state}

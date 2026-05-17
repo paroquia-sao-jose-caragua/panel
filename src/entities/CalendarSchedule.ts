@@ -1,6 +1,8 @@
 import type { Community } from './Community';
+import type { MassScheduleException } from './MassScheduleException';
 
-type MassSchedule = {
+export type MassSchedule = {
+  massScheduleId: string;
   type: 'mass';
   title?: string;
   massType: 'ordinary' | 'devotional' | 'solemnity';
@@ -8,15 +10,18 @@ type MassSchedule = {
   isPrecept: boolean;
   startTime: string;
   endTime: string;
+  cancellationReason?: string;
   community: {
     id: string;
     type: Community['type'];
+    coverUrl: string;
     name: string;
     address: string;
   };
 };
 
-type EventSchedule = {
+export type EventSchedule = {
+  eventScheduleId: string;
   type: 'event';
   title: string;
   eventType:
@@ -34,10 +39,13 @@ type EventSchedule = {
     | 'ordination'
     | 'community_event'
     | 'other';
+  massType?: 'ordinary' | 'devotional' | 'solemnity' | 'sacramental';
+  isPrecept?: boolean;
   customLocation?: string;
   orientations?: string;
   startTime: string;
   endTime?: string;
+  cancellationReason?: string;
   community: {
     id: string;
     type: Community['type'];
@@ -46,11 +54,18 @@ type EventSchedule = {
   };
 };
 
-type Schedule = MassSchedule | EventSchedule;
+export type Schedule = MassSchedule | EventSchedule;
+
+export type ExceptionSchedule = Schedule & {
+  exception: MassScheduleException;
+};
 
 export type CalendarSchedule = {
   date: string;
   dayOfWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   dayOfWeekLabel: string;
-  schedules: Schedule[];
+  schedules: {
+    active: Schedule[];
+    exceptions: ExceptionSchedule[];
+  };
 };

@@ -8,10 +8,12 @@ interface ListCalendarSchedulesResponse {
 export const listCalendarSchedules = async (values: {
   month: number;
   year: number;
+  communityId?: string;
 }) => {
   const searchParams = new URLSearchParams({
     month: String(values.month),
     year: String(values.year),
+    ...(values?.communityId ? { communityId: values.communityId } : {}),
   });
 
   const result = await calendarApi<ListCalendarSchedulesResponse>(

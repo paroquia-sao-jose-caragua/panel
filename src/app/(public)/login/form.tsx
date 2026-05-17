@@ -7,7 +7,6 @@ import useTranslator from '@/hooks/use-translator';
 import useLoginSchema from '@/schemas/useLoginSchema';
 import useAuthStore from '@/stores/useAuthStore';
 import { useNavigate } from '@/hooks/use-navigate';
-import { handleFieldErrors } from '@/utils/fieldsUtils';
 import { useFormik } from 'formik';
 import * as Input from '@/components/common/input';
 import { showAlert } from '@/utils/showAlert';
@@ -21,12 +20,14 @@ export const Form = () => {
 
   const { mutate } = useMutation({
     mutationFn: login,
-    onSuccess: ({ message, statusCode, token, user, fields }) => {
+    onSuccess: ({ message, statusCode, token, user, errors }) => {
       if (statusCode === 200) {
         setLogged({ token, user });
         navigate.push('/');
-      } else if (fields) {
-        handleFieldErrors(fields, formik.setFieldError);
+      } else if (errors) {
+        for (const error of errors) {
+          formik.setFieldError(error.field, error.message);
+        }
       } else {
         showAlert(message || t('something-went-wrong'));
       }

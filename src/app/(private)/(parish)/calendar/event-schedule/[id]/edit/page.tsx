@@ -7,17 +7,16 @@ import React, { useCallback } from 'react';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
 import Link from 'next/link';
-import { InfoFormStep } from '@/components/features/churches/add-church/info-form-step';
-import { useCreateChurch } from '@/components/features/churches/add-church/use-create-church';
+import { InfoFormStep } from '@/components/features/event-schedules/info-form-step';
 import { Spinner } from '@/components/ui/spinner';
-import { InfoConfirmStep } from '@/components/features/churches/add-church/info-confirm-step';
-import { formatFullAddress } from '@/utils/formatFullAddress';
 import { focusFirstFieldError } from '@/utils/focusFirstFieldError';
+import { ConfirmStep } from '@/components/features/event-schedules/confirm-step';
+import { useEditEventSchedule } from '@/components/features/event-schedules/use-edit-event-schedule';
 
-export default function AddChurchPage() {
+export default function EditEventSchedulePage() {
   const [activeStep, setActiveStep] = React.useState(1);
 
-  const { formik, isPending } = useCreateChurch();
+  const { formik, isPending } = useEditEventSchedule();
 
   const handleNextStep = useCallback(async () => {
     const errors = await formik.validateForm();
@@ -25,17 +24,7 @@ export default function AddChurchPage() {
     const hasErrors = Object.keys(errors).length > 0;
 
     if (hasErrors) {
-      formik.setTouched({
-        name: true,
-        type: true,
-        street: true,
-        number: true,
-        district: true,
-        city: true,
-        state: true,
-        zipCode: true,
-        coverId: true,
-      });
+      formik.setTouched({});
 
       focusFirstFieldError();
 
@@ -53,11 +42,11 @@ export default function AddChurchPage() {
     <div className="w-full lg:col-start-2">
       <header className="bg-white mt-16.25 md:mt-20.25 lg:mt-0">
         <div className="mx-auto w-full max-w-200 px-4 lg:px-8 py-4">
-          <BackButton href={'/'} />
+          <BackButton href={'/calendar'} />
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Adicionar Igreja</TypographyH1>
+              <TypographyH1>Editar Evento</TypographyH1>
             </div>
           </div>
         </div>
@@ -84,7 +73,7 @@ export default function AddChurchPage() {
           <>
             <InfoFormStep formik={formik} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
-              <Link href={'/'}>
+              <Link href={'/calendar'}>
                 <Button variant="outline" size="lg">
                   Cancelar
                 </Button>
@@ -98,11 +87,7 @@ export default function AddChurchPage() {
 
         {activeStep === 2 && (
           <>
-            <InfoConfirmStep
-              name={formik.values.name}
-              type={formik.values.type}
-              address={formatFullAddress(formik.values) as string}
-            />
+            <ConfirmStep {...formik.values} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
               <Button variant="outline" size="lg" onClick={handlePrevStep}>
                 Voltar
@@ -115,7 +100,7 @@ export default function AddChurchPage() {
                 {isPending ? (
                   <Spinner className="border-brand-300 border-2 w-5 h-5" />
                 ) : (
-                  'Adicionar Igreja'
+                  'Salvar Alterações'
                 )}
               </Button>
             </div>
