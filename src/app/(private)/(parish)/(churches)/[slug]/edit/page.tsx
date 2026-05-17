@@ -103,7 +103,7 @@ export default function EditChurchPage() {
             <ConfirmStep
               name={formik.values.name}
               type={formik.values.type}
-              address={formatFullAddress(formik.values)}
+              address={formatFullAddress(formik.values) as string}
             />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
               <Button variant="outline" size="lg" onClick={handlePrevStep}>
