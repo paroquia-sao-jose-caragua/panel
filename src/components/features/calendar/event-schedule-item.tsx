@@ -17,13 +17,7 @@ import type { EventSchedule } from '@/entities/CalendarSchedule';
 import useCalendarStore from '@/stores/useCalendarStore';
 import { showAlert } from '@/utils/showAlert';
 import { useMutation } from '@tanstack/react-query';
-import {
-  CircleDotIcon,
-  MapPin,
-  PencilIcon,
-  SparklesIcon,
-  Trash2Icon,
-} from 'lucide-react';
+import { CircleDotIcon, MapPin, PencilIcon, Trash2Icon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 

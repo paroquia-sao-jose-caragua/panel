@@ -33,7 +33,6 @@ import { FieldGroup } from '@/components/ui/field';
 import { Select, SelectItem } from '@/components/common/select';
 import { useFormik } from 'formik';
 import { useCommunities } from '@/api/communities/use-communities';
-import { Badge } from '@/components/ui/badge';
 import {
   Tooltip,
   TooltipContent,
