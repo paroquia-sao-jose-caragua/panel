@@ -14,7 +14,7 @@ export const formatFullAddress = ({
   state?: string;
 }) => {
   if (!street || !number || !district || !zipCode || !city || !state) {
-    return undefined;
+    return '';
   }
 
   return `${street}, ${number} - ${district}, ${city} - ${state}, ${zipCode}`;
