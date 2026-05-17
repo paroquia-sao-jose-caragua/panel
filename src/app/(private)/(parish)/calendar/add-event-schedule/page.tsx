@@ -78,7 +78,7 @@ export default function AddEventSchedulePage() {
           <>
             <InfoFormStep formik={formik} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
-              <Link href={'/'}>
+              <Link href={'/calendar'}>
                 <Button variant="outline" size="lg">
                   Cancelar
                 </Button>
