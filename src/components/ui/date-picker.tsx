@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils';
 dayjs.locale('pt-br');
 
 interface DatePickerProps {
-  label: string;
+  label?: string;
   value?: string;
   helperText?: string;
   error?: string;
@@ -52,16 +52,19 @@ export function DatePicker({
 
   return (
     <div className={cn('flex flex-col flex-1 gap-0', className)}>
-      <span className="block mb-2 text-sm text-zinc-700 font-semibold">
-        {label}
-      </span>
+      {label && (
+        <span className="block mb-2 text-sm text-zinc-700 font-semibold">
+          {label}
+        </span>
+      )}
+
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             size="lg"
             id="date"
-            className="justify-between font-normal px-3 text-md"
+            className="justify-between font-normal px-3 text-md shadow-none"
           >
             {date ? (
               <span className="flex-1 text-left">

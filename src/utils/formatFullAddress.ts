@@ -6,13 +6,17 @@ export const formatFullAddress = ({
   district,
   city,
 }: {
-  zipCode: string;
-  street: string;
-  number: string;
-  district: string;
-  city: string;
-  state: string;
+  zipCode?: string;
+  street?: string;
+  number?: string;
+  district?: string;
+  city?: string;
+  state?: string;
 }) => {
+  if (!street || !number || !district || !zipCode || !city || !state) {
+    return undefined;
+  }
+
   return `${street}, ${number} - ${district}, ${city} - ${state}, ${zipCode}`;
 };
 

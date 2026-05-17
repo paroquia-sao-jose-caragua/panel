@@ -39,7 +39,7 @@ export const ScheduleItem = ({
   const [openConfirmCancel, setOpenConfirmCancel] = useState(false);
   const { moveScheduleToException } = useCalendarStore();
 
-  const isMass = schedule.type === 'mass';
+  const isMass = schedule.type === 'mass' || schedule.eventType === 'mass';
 
   const { mutate, isPending } = useMutation({
     mutationFn: createMassScheduleException,
@@ -212,7 +212,7 @@ export const ScheduleItem = ({
       <div className="flex items-end justify-between gap-4 flex-wrap">
         <div>
           <p className="mt-1 text-base font-semibold text-foreground">
-            {isMass ? 'Santa Missa' : 'Compromisso Eventual'}
+            {isMass ? 'Santa Missa' : schedule.title}
             {schedule.type === 'mass' && schedule.massType === 'devotional'
               ? ' (Devocional)'
               : ''}
@@ -220,9 +220,9 @@ export const ScheduleItem = ({
               ? ' (Solenidade)'
               : ''}
           </p>
-          {schedule.title && (
+          {schedule.orientations && (
             <p className="mt-1 text-sm text-muted-foreground">
-              {schedule.title}
+              {schedule.orientations}
             </p>
           )}
         </div>

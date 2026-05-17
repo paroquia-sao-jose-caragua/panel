@@ -42,21 +42,30 @@ function Select({ children, placeholder, ...props }: SelectProps) {
 
 export type SelectItemProps = BaseSelect.SelectItemProps & {
   text: string;
+  description?: string;
 };
 
-function SelectItem({ text, ...props }: SelectItemProps) {
+function SelectItem({ text, description, ...props }: SelectItemProps) {
   return (
     <BaseSelect.Item
-      className="flex items-center justify-between gap-2 px-3 py-2.5 outline-none data-highlighted:bg-zinc-50"
+      className="flex flex-col items-start gap-0.5 px-3 py-2.5 outline-none data-highlighted:bg-zinc-50"
       {...props}
     >
-      <BaseSelect.ItemText asChild>
-        <span className="text-zinc-900">{text}</span>
-      </BaseSelect.ItemText>
+      <div className="flex items-center w-full justify-between">
+        <BaseSelect.ItemText asChild>
+          <div className="flex flex-col gap-1">
+            <span className="text-zinc-900">{text}</span>
+          </div>
+        </BaseSelect.ItemText>
 
-      <BaseSelect.ItemIndicator>
-        <Check className="h-4 w-4 text-brand-500" />
-      </BaseSelect.ItemIndicator>
+        <BaseSelect.ItemIndicator>
+          <Check className="h-4 w-4 text-brand-500" />
+        </BaseSelect.ItemIndicator>
+      </div>
+
+      {description && (
+        <span className="text-sm text-zinc-500">{description}</span>
+      )}
     </BaseSelect.Item>
   );
 }

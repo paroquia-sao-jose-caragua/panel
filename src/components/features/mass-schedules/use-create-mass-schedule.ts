@@ -62,7 +62,7 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
           orientations: values?.orientations,
         },
         {
-          onSuccess: ({ massSchedule, fields, statusCode, message }) => {
+          onSuccess: ({ massSchedule, statusCode, message }) => {
             if (massSchedule) {
               navigate.replace(`/${community?.slug}`);
             }
