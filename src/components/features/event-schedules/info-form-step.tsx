@@ -50,12 +50,70 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
     >
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
         <div className="flex-1">
-          <FieldLabel htmlFor="day-of-week">
-            <ChurchIcon className="text-zinc-400" />
-            Igreja
+          <FieldLabel htmlFor="eventDate">
+            <CalendarIcon className="text-zinc-400" />
+            Quando
           </FieldLabel>
           <span className="block text-zinc-600 mt-2">
-            Qual comunidade será responsável por este evento?
+            Para quando você deseja agendar este evento?
+          </span>
+        </div>
+
+        <DatePicker
+          value={formik.values.eventDate}
+          onChange={(newValue) => formik.setFieldValue('eventDate', newValue)}
+        />
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 pb-5">
+        <div>
+          <FieldLabel htmlFor="day-of-month">
+            <ClockIcon className="text-zinc-400" />
+            Horário
+          </FieldLabel>
+          <span className="block text-zinc-600 mt-2">
+            Informe o horário de início e término deste evento.
+          </span>
+        </div>
+
+        <div className="w-full flex flex-wrap gap-4 items-end">
+          <div className="flex-1">
+            <span className="block mb-2 text-sm text-zinc-700 font-semibold">
+              Início
+            </span>
+            <InputRoot>
+              <InputControl
+                name="startTime"
+                type="time"
+                value={formik.values.startTime}
+                onChange={formik.handleChange}
+              />
+            </InputRoot>
+          </div>
+          <div className="flex-1">
+            <span className="block mb-2 text-sm text-zinc-700 font-semibold">
+              Fim
+            </span>
+            <InputRoot>
+              <InputControl
+                name="endTime"
+                type="time"
+                value={formik.values.endTime}
+                onChange={formik.handleChange}
+              />
+            </InputRoot>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
+        <div className="flex-1">
+          <FieldLabel htmlFor="day-of-week">
+            <ChurchIcon className="text-zinc-400" />
+            Comunidade Responsável
+          </FieldLabel>
+          <span className="block text-zinc-600 mt-2">
+            Qual comunidade irá gerenciar este evento?
           </span>
         </div>
 
@@ -268,64 +326,6 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
           />
         </div>
       )}
-
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
-        <div className="flex-1">
-          <FieldLabel htmlFor="eventDate">
-            <CalendarIcon className="text-zinc-400" />
-            Quando
-          </FieldLabel>
-          <span className="block text-zinc-600 mt-2">
-            Para quando você deseja agendar este evento?
-          </span>
-        </div>
-
-        <DatePicker
-          value={formik.values.eventDate}
-          onChange={(newValue) => formik.setFieldValue('eventDate', newValue)}
-        />
-      </div>
-
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 pb-5">
-        <div>
-          <FieldLabel htmlFor="day-of-month">
-            <ClockIcon className="text-zinc-400" />
-            Horário
-          </FieldLabel>
-          <span className="block text-zinc-600 mt-2">
-            Informe o horário de início e término deste evento.
-          </span>
-        </div>
-
-        <div className="w-full flex flex-wrap gap-4 items-end">
-          <div className="flex-1">
-            <span className="block mb-2 text-sm text-zinc-700 font-semibold">
-              Início
-            </span>
-            <InputRoot>
-              <InputControl
-                name="startTime"
-                type="time"
-                value={formik.values.startTime}
-                onChange={formik.handleChange}
-              />
-            </InputRoot>
-          </div>
-          <div className="flex-1">
-            <span className="block mb-2 text-sm text-zinc-700 font-semibold">
-              Fim
-            </span>
-            <InputRoot>
-              <InputControl
-                name="endTime"
-                type="time"
-                value={formik.values.endTime}
-                onChange={formik.handleChange}
-              />
-            </InputRoot>
-          </div>
-        </div>
-      </div>
 
       <FullAddressForm
         formik={formik}

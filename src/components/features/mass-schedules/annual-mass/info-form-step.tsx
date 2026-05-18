@@ -50,7 +50,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
         <FieldLabel htmlFor="title">Título da Celebração</FieldLabel>
         <div className="flex flex-col gap-2">
-          <InputRoot helperText='Exemplo: "Solenidade de São José", "Natal do Senhor", "Corpus Christi", "Finados", etc...'>
+          <InputRoot helperText='Exemplo: "São José", "Natal do Senhor", "Corpus Christi", "Finados", etc...'>
             <InputControl
               id="title"
               name="title"

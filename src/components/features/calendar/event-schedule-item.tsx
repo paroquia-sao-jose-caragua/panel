@@ -20,6 +20,7 @@ import { useMutation } from '@tanstack/react-query';
 import { CircleDotIcon, MapPin, PencilIcon, Trash2Icon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { ChurchAvatar } from '../churches/church-avatar';
 
 interface ScheduleItemProps {
   schedule: EventSchedule;
@@ -60,14 +61,21 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
 
   return (
     <li className="group rounded-xl border border-brand-100 bg-brand-0 p-4 transition sm:p-5">
-      <div className="flex items-start gap-4">
-        <p className="font-mono text-sm tabular-nums text-muted-foreground">
-          {schedule.startTime} — {schedule.endTime}
-        </p>
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-start gap-4">
+          <p className="font-mono text-sm tabular-nums text-muted-foreground">
+            {schedule.startTime} — {schedule.endTime}
+          </p>
 
-        <Badge>
-          <CircleDotIcon /> Evento Único
-        </Badge>
+          <Badge>
+            <CircleDotIcon /> Evento Único
+          </Badge>
+        </div>
+
+        <ChurchAvatar
+          name={schedule.community.name}
+          coverUrl={schedule.community.coverUrl}
+        />
       </div>
 
       <div className="mt-2 flex items-end justify-between gap-4 flex-wrap">
@@ -87,14 +95,23 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-2 border-t border-brand-100/50 pt-3">
-        <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
-          {schedule.community.type === 'parish_church'
-            ? 'Paróquia '
-            : 'Capela '}
-          {schedule.community.name}
-          <MapPin className="h-3 w-3" />
-        </span>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-brand-100/50 pt-3">
+        {schedule.customLocation ? (
+          <span className="text-xs font-medium text-primary">
+            <MapPin className="h-3 w-3 inline mb-0.5" />{' '}
+            {schedule.customLocation}
+          </span>
+        ) : null}
+
+        {!schedule.customLocation ? (
+          <span className="text-xs font-medium text-primary">
+            <MapPin className="h-3 w-3 inline mb-0.5" />{' '}
+            {schedule.community.type === 'parish_church'
+              ? 'Paróquia '
+              : 'Capela '}
+            {schedule.community.name}
+          </span>
+        ) : null}
 
         <div className="flex flex-row gap-4">
           <Dialog open={openConfirmCancel} onOpenChange={setOpenConfirmCancel}>
