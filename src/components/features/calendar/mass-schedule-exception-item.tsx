@@ -1,7 +1,6 @@
 'use client';
 
 import { deleteMassScheduleException } from '@/api/mass-schedules/delete-exception';
-import { CoverImage } from '@/components/common/cover-image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +19,7 @@ import { showAlert } from '@/utils/showAlert';
 import { useMutation } from '@tanstack/react-query';
 import { CornerRightUpIcon, MapPin, RepeatIcon } from 'lucide-react';
 import { useState } from 'react';
+import { ChurchAvatar } from '../churches/church-avatar';
 
 interface ScheduleExceptionItemProps {
   schedule: ExceptionSchedule;
@@ -77,10 +77,9 @@ export const MassScheduleExceptionItem = ({
           </Badge>
         </div>
 
-        <CoverImage
-          variant="circular"
-          size="xs"
-          url={schedule.community.coverUrl}
+        <ChurchAvatar
+          name={schedule.community.name}
+          coverUrl={schedule.community.coverUrl}
         />
       </div>
 
@@ -101,13 +100,13 @@ export const MassScheduleExceptionItem = ({
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-2 border-t border-brand-100/50 pt-3">
-        <span className="inline-flex items-center gap-1 text-xs font-medium text-primary opacity-60">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-brand-100/50 pt-3">
+        <span className="text-xs font-medium text-primary">
+          <MapPin className="h-3 w-3 inline mb-0.5" />{' '}
           {schedule.community.type === 'parish_church'
             ? 'Paróquia '
             : 'Capela '}
           {schedule.community.name}
-          <MapPin className="h-3 w-3" />
         </span>
 
         <Dialog open={openConfirmCancel} onOpenChange={setOpenConfirmCancel}>

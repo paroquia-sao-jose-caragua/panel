@@ -1,7 +1,6 @@
 'use client';
 
 import { deleteEventSchedule } from '@/api/event-schedules/delete';
-import { CoverImage } from '@/components/common/cover-image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,6 +20,7 @@ import { useMutation } from '@tanstack/react-query';
 import { CircleDotIcon, MapPin, PencilIcon, Trash2Icon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { ChurchAvatar } from '../churches/church-avatar';
 
 interface ScheduleItemProps {
   schedule: EventSchedule;
@@ -72,10 +72,9 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
           </Badge>
         </div>
 
-        <CoverImage
-          variant="circular"
-          size="xs"
-          url={schedule.community.coverUrl}
+        <ChurchAvatar
+          name={schedule.community.name}
+          coverUrl={schedule.community.coverUrl}
         />
       </div>
 
@@ -96,14 +95,23 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-2 border-t border-brand-100/50 pt-3">
-        <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
-          {schedule.community.type === 'parish_church'
-            ? 'Paróquia '
-            : 'Capela '}
-          {schedule.community.name}
-          <MapPin className="h-3 w-3" />
-        </span>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-brand-100/50 pt-3">
+        {schedule.customLocation ? (
+          <span className="text-xs font-medium text-primary">
+            <MapPin className="h-3 w-3 inline mb-0.5" />{' '}
+            {schedule.customLocation}
+          </span>
+        ) : null}
+
+        {!schedule.customLocation ? (
+          <span className="text-xs font-medium text-primary">
+            <MapPin className="h-3 w-3 inline mb-0.5" />{' '}
+            {schedule.community.type === 'parish_church'
+              ? 'Paróquia '
+              : 'Capela '}
+            {schedule.community.name}
+          </span>
+        ) : null}
 
         <div className="flex flex-row gap-4">
           <Dialog open={openConfirmCancel} onOpenChange={setOpenConfirmCancel}>
