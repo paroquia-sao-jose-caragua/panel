@@ -246,8 +246,8 @@ export default function CalendarPage() {
 
       <div className="mt-8">
         {isPending && (
-          <div className="w-full rounded-lg bg-white p-6 py-10 border border-dashed border-border">
-            <div className="flex items-center justify-center gap-2">
+          <div className="w-full rounded-lg pl-2">
+            <div className="flex items-center justify-start gap-2">
               <p className="text-zinc-500">Carregando agenda</p>
               <Spinner className="text-zinc-500" />
             </div>
@@ -263,6 +263,7 @@ export default function CalendarPage() {
             variant="ghost"
             disabled={disabledPrevMonth}
             onClick={handlePrevMonth}
+            className='pl-0'
           >
             <ChevronLeft /> {t(`month-${prevMonth}`)}
           </Button>
@@ -273,6 +274,7 @@ export default function CalendarPage() {
             variant="ghost"
             disabled={disabledNextMonth}
             onClick={handleNextMonth}
+            className='pr-0'
           >
             {t(`month-${nextMonth}`)} <ChevronRight />
           </Button>

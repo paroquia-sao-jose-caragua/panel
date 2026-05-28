@@ -28,10 +28,8 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
 
   if (schedules.length === 0) {
     return (
-      <div className="w-full rounded-lg shadow-sm bg-white p-6">
-        <div className="flex items-center justify-center min-h-96">
-          <p className="text-zinc-500">Nenhum agendamento para este mês</p>
-        </div>
+      <div className="w-full p-2">
+        <p className="text-zinc-500">Nenhum agendamento para este mês</p>
       </div>
     );
   }
