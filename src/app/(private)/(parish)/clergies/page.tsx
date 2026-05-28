@@ -44,6 +44,9 @@ export default function Clergies() {
       );
       setisOpen(false);
       setEditClergy(null);
+      setName('');
+      setRole('');
+      setPhotoUrl('');
       return;
     }
     setClergies([
@@ -112,19 +115,25 @@ export default function Clergies() {
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
           <div className="bg-white rounded-xl p-6 w-96 flex flex-col gap-4">
-            <h2 className="text-lg font-medium">Adicionar Autoridade</h2>
+            <h2 className="text-lg font-medium">
+              {editClergy ? 'Editar Autoridade' : 'Adicionar Autoridade'}
+            </h2>
             <input
               placeholder="Nome"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="border rounded-md px-3 py-2 text-sm"
             />
-            <input
-              placeholder="Cargo"
+            <select
+              className="border rounded-md px-3 py-2 text-sm w-full"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="border rounded-md px-3 py-2 text-sm"
-            />
+            >
+              <option>Pároco</option>
+              <option>Diácono</option>
+              <option>Bispo</option>
+              <option>Diácono Permanente</option>
+            </select>
             <input
               placeholder="URL da foto"
               value={photoUrl}
@@ -133,7 +142,13 @@ export default function Clergies() {
             />
             <div className="flex justify-end gap-2">
               <button
-                onClick={() => setisOpen(false)}
+                onClick={() => {
+                  setisOpen(false);
+                  setName('');
+                  setRole('');
+                  setPhotoUrl('');
+                  setEditClergy(null);
+                }}
                 className="px-4 py-2 text-sm rounded-md border"
               >
                 Cancelar

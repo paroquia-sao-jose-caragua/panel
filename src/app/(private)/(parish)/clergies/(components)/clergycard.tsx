@@ -20,8 +20,9 @@ export default function Clergycard({
         src={photoUrl}
         alt={name}
       />
-      <p>{role}</p>
-      <p>{name}</p>
+      <p className="text-xs text-black">{role}</p>
+
+      <p className="text-sm font-medium text-gray-800">{name}</p>
       <div className="flex gap-2">
         <button
           className="border border-red-400 text-red-400 px-3 py-1 rounded-md text-xs hover:bg-red-400 hover:text-white"
