@@ -4,6 +4,7 @@ interface ClergyCardProps {
   photoUrl: string;
   onEdit: () => void;
   onDelete: () => void;
+  onClick: () => void;
 }
 
 export default function Clergycard({
@@ -12,9 +13,13 @@ export default function Clergycard({
   photoUrl,
   onDelete,
   onEdit,
+  onClick,
 }: ClergyCardProps) {
   return (
-    <div className="flex flex-col items-center gap-3 p-5 bg-white border border-gray-200 rounded-xl w-48">
+    <div
+      className="flex flex-col items-center gap-3 p-5 bg-white border border-gray-200 rounded-xl w-48"
+      onClick={onClick}
+    >
       <img
         className="w-20 h-20 rounded-full object-cover"
         src={photoUrl}
