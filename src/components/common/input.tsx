@@ -57,11 +57,26 @@ export const Root = ({ error, touched, helperText, ...props }: RootProps) => {
 
 type ControlProps = ComponentProps<'input'>;
 
-export const Control = (props: ControlProps) => {
+export const Control = ({ onBlur, type, ...props }: ControlProps) => {
   const { showError } = useContext(InputContext);
+
+  const handleBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
+    if (type === 'number') {
+      const value = event.target.value;
+
+      if (value) {
+        // Remove zeros à esquerda
+        event.target.value = String(Number(value));
+      }
+    }
+
+    onBlur?.(event);
+  };
 
   return (
     <input
+      type={type}
+      onBlur={handleBlur}
       className={twMerge([
         `${showError ? 'focus-error' : ''} flex-1 border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-600 outline-none`,
       ])}

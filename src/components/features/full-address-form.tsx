@@ -1,4 +1,3 @@
-import { FieldLabel } from '@/components/ui/field';
 import { MapPinIcon, SearchIcon } from 'lucide-react';
 import {
   Root as InputRoot,
@@ -6,18 +5,27 @@ import {
   Prefix as InputPrefix,
 } from '@/components/common/input';
 import React, { useCallback } from 'react';
-import { Select, SelectItem } from '@/components/common/select';
 import { useMutation } from '@tanstack/react-query';
 import { findAddressByZipCode } from '@/api/zip-code';
 import { Spinner } from '@/components/ui/spinner';
 import { stringUtils } from '@/utils/stringUtils';
 import type { useCreateChurch } from './churches/add-church/use-create-church';
+import { FieldSection } from '../ui/field-section';
+import type { useCreateEventSchedule } from './event-schedules/use-create-event-schedule';
 
 interface FormAddressProps {
-  formik: ReturnType<typeof useCreateChurch>['formik'];
+  formik: ReturnType<
+    typeof useCreateChurch | typeof useCreateEventSchedule
+  >['formik'];
+  isOptional?: boolean;
+  description?: string;
 }
 
-export const FullAddressForm = ({ formik }: FormAddressProps) => {
+export const FullAddressForm = ({
+  formik,
+  isOptional,
+  description,
+}: FormAddressProps) => {
   const [lastValidatedAddress, setLastValidatedAddress] = React.useState({
     zipCode: '',
     street: '',
@@ -42,8 +50,6 @@ export const FullAddressForm = ({ formik }: FormAddressProps) => {
       if (zipCode === lastValidatedAddress.zipCode) {
         formik.setFieldValue('street', lastValidatedAddress.street);
         formik.setFieldValue('district', lastValidatedAddress.district);
-        formik.setFieldValue('city', lastValidatedAddress.city);
-        formik.setFieldValue('state', lastValidatedAddress.state);
 
         return;
       }
@@ -61,8 +67,6 @@ export const FullAddressForm = ({ formik }: FormAddressProps) => {
 
             formik.setFieldValue('street', response.data.street);
             formik.setFieldValue('district', response.data.district);
-            formik.setFieldValue('city', response.data.city);
-            formik.setFieldValue('state', response.data.state);
 
             formik.submitForm();
           }
@@ -82,11 +86,12 @@ export const FullAddressForm = ({ formik }: FormAddressProps) => {
   );
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
-      <FieldLabel htmlFor="day-of-week">
-        <MapPinIcon className="text-zinc-400" /> Endereço Completo
-      </FieldLabel>
-
+    <FieldSection
+      title="Endereço Completo"
+      icon={<MapPinIcon className="text-zinc-400" />}
+      isOptional={isOptional}
+      description={description}
+    >
       <div className="flex-1">
         <span className="block mb-2 text-sm text-zinc-700 font-semibold">
           CEP
@@ -184,19 +189,16 @@ export const FullAddressForm = ({ formik }: FormAddressProps) => {
           <span className="block mb-2 text-sm text-zinc-700 font-semibold">
             Estado
           </span>
-          <Select
-            name="state"
-            placeholder=""
-            defaultValue="SP"
-            value={formik.values.state}
-            onValueChange={(newValue: string) => {
-              formik.setFieldValue('state', newValue);
-            }}
-          >
-            <SelectItem value="SP" text="São Paulo" defaultChecked />
-          </Select>
+          <InputRoot touched={formik.touched.state} error={formik.errors.state}>
+            <InputControl
+              name="state"
+              type="text"
+              value={formik.values.state}
+              onChange={formik.handleChange}
+            />
+          </InputRoot>
         </div>
       </div>
-    </div>
+    </FieldSection>
   );
 };

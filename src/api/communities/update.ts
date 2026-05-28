@@ -1,4 +1,4 @@
-import { communityApi } from "../utils/communityApi";
+import { communityApi } from '../utils/communityApi';
 
 interface UpdateCommunityResponse {
   community: {
@@ -6,13 +6,17 @@ interface UpdateCommunityResponse {
     name: string;
     slug: string;
     createdAt: string;
-    type: "parish" | "chapel";
+    type: 'chapel' | 'parish_church';
     address: string;
     coverId: string;
+    coverUrl: string;
   };
 }
 
-export const updateCommunity = async ({ id, ...values }: {
+export const updateCommunity = async ({
+  id,
+  ...values
+}: {
   id: string;
   name: string;
   type: string;
@@ -20,7 +24,7 @@ export const updateCommunity = async ({ id, ...values }: {
   coverId?: string;
 }) => {
   const result = await communityApi<UpdateCommunityResponse>(`/${id}`, {
-    method: "PUT",
+    method: 'PUT',
     body: JSON.stringify(values),
   });
 

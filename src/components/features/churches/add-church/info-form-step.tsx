@@ -1,4 +1,4 @@
-import { FieldDescription, FieldLabel } from '@/components/ui/field';
+import { FieldDescription } from '@/components/ui/field';
 import {
   Root as FileInputRoot,
   Trigger as FileInputTrigger,
@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { FullAddressForm } from '../../full-address-form';
 import type { useCreateChurch } from './use-create-church';
 import { useFileInputStore } from '@/stores/useFileInputStore';
+import { FieldSection } from '@/components/ui/field-section';
 
 interface InfoStepProps {
   formik: ReturnType<typeof useCreateChurch>['formik'];
@@ -24,14 +25,11 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
   const fileError = files.find((f) => f.state === 'error');
 
   return (
-    <form autoComplete="off" className="mt-6 flex w-full flex-col gap-5">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
-        <div className="flex-1">
-          <FieldLabel htmlFor="day-of-month">Foto da Igreja</FieldLabel>
-          <span className="block text-zinc-600 mt-2">
-            Recomendamos uma imagem retangular de pelo menos 400x300px
-          </span>
-        </div>
+    <form autoComplete="off" className="flex w-full flex-col gap-8">
+      <FieldSection
+        title="Foto da Igreja"
+        description="Recomendamos uma imagem retangular de pelo menos 400x300px"
+      >
         <div className="flex flex-col sm:flex-row gap-4">
           <ImagePreview size="lg" />
           <div className="flex-1">
@@ -49,11 +47,9 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             )}
           </div>
         </div>
-      </div>
+      </FieldSection>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
-        <FieldLabel htmlFor="day-of-month">Informações Básicas</FieldLabel>
-
+      <FieldSection title="Informações Básicas">
         <div className="flex-1">
           <span className="block mb-2 text-sm text-zinc-700 font-semibold">
             Nome da Comunidade
@@ -86,7 +82,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             >
               <RadioGroupItem value="parish_church" id="r1" />
 
-              <div className="flex flex-col items-start text-zinc-700 text-md font-semibold gap-0">
+              <div className="flex flex-col items-start text-zinc-700 text-md gap-0">
                 Igreja Matriz
                 <span className="block text-sm text-zinc-500 font-normal">
                   Sede da Paróquia
@@ -109,7 +105,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
             </label>
           </RadioGroup>
         </div>
-      </div>
+      </FieldSection>
 
       <FullAddressForm formik={formik} />
     </form>
