@@ -5,7 +5,7 @@ import { Describe } from '@/components/ui/typography/describe';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Church } from 'lucide-react';
 import Clergycard from './(components)/clergycard';
-import Clergydetails from './(components)/clergy-details';
+import { link } from 'fs';
 
 const clergies = [
   {
@@ -31,8 +31,6 @@ export default function Clergies() {
     },
   ]);
   const [editClergy, setEditClergy] = useState<any>(null);
-
-  const [selectedClergy, setSelectedClergy] = useState<any>(null);
 
   function handleSave() {
     if (!name || !role || !photoUrl) {
@@ -107,7 +105,6 @@ export default function Clergies() {
             <Clergycard
               onDelete={() => handleDelet(clergy.id)}
               onEdit={() => handleEdit(clergy)}
-              onClick={() => setSelectedClergy(clergy)}
               key={clergy.id}
               name={clergy.name}
               role={clergy.role}
@@ -167,18 +164,6 @@ export default function Clergies() {
           </div>
         </div>
       )}
-      <div className="bg-white rounded-xl p-6 w-3/4 max-h-screen overflow-y-auto flex gap-6">
-        {' '}
-        {selectedClergy && (
-          <Clergydetails
-            name={selectedClergy.name}
-            role={selectedClergy.role}
-            photoUrl={selectedClergy.photoUrl}
-            bio={selectedClergy.bio ?? ''}
-            onClose={() => setSelectedClergy(null)}
-          />
-        )}
-      </div>
     </main>
   );
 }
