@@ -2,25 +2,26 @@
 
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { TypographyH1 } from '@/components/ui/typography/h1';
-import { TypographyH3 } from '@/components/ui/typography/h3';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunity } from '@/api/communities/use-community';
-import { Church, MapPin, Pen, Plus } from 'lucide-react';
+import { Church, MapPin, Pen } from 'lucide-react';
 import Link from 'next/link';
-import { OrdinaryMass } from './ordinary-mass';
+import { OrdinaryMassesList } from '@/components/features/mass-schedules/ordinary-mass/list';
+import { DevotionalMassesList } from '@/components/features/mass-schedules/devotional-mass/list';
+import { AnnualMassesList } from '@/components/features/mass-schedules/annual-mass/list';
 
 export default function ChurchPage() {
   const { community } = useCommunity();
 
   return (
-    <main className="max-w-300 w-full px-4 pt-30 pb-12 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
+    <main className="max-w-300 w-full px-4 pt-20 pb-12 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
       <AppBreadcrumb
         links={[
           {
             key: 'churched',
             href: '/',
-            title: 'Igrejas',
+            title: 'Início',
             icon: Church,
           },
           {
@@ -48,6 +49,7 @@ export default function ChurchPage() {
             </div>
           )}
         </div>
+
         <div className="flex flex-col p-6 sm:flex-row gap-6">
           <div className="flex-1">
             {community ? (
@@ -57,6 +59,7 @@ export default function ChurchPage() {
             ) : (
               <Skeleton className="h-8 w-62.5" />
             )}
+
             {community ? (
               <div className="flex flex-row items-start gap-2 mt-3">
                 <MapPin className="text-zinc-400" />
@@ -78,20 +81,12 @@ export default function ChurchPage() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
-        <OrdinaryMass />
+      <div className="flex flex-col gap-8">
+        <OrdinaryMassesList />
 
-        <div className="w-full rounded-lg shadow-sm bg-white flex flex-col overflow-hidden">
-          <div className="flex flex-row items-center justify-between p-6">
-            <TypographyH3>Missas Devocionais</TypographyH3>
-            <Link href={`/${community?.slug}/edit`}>
-              <Button>
-                <Plus />
-                Adicionar
-              </Button>
-            </Link>
-          </div>
-        </div>
+        <AnnualMassesList />
+
+        <DevotionalMassesList />
       </div>
     </main>
   );

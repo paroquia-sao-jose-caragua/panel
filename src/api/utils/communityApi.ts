@@ -1,20 +1,8 @@
-import { api } from "./api";
-
-interface ResponseErrorFields<K extends string> {
-  fields?: {
-    [P in K]: { message: string }[];
-  };
-}
+import { api } from './api';
 
 export const communityApi = async <ResponseData, K extends string = never>(
-  path = "",
-  init?: RequestInit,
-): Promise<
-  ResponseErrorFields<K> &
-    ResponseData & {
-      statusCode: number;
-      message?: string;
-    }
-> => {
+  path = '',
+  init?: RequestInit
+) => {
   return api<ResponseData, K>(`/communities${path}`, init);
 };

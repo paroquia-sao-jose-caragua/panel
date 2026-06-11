@@ -10,7 +10,11 @@ import { routeUtils } from '@/utils/routeUtils';
 import { useNavigate } from '@/hooks/use-navigate';
 import { FullLoading } from '@/components/ui/loading/full-loading';
 
-const AuthGuardProvider = () => {
+interface AuthGuardProviderProps {
+  children: React.ReactNode;
+}
+
+const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
   const pathname = usePathname();
   const navigate = useNavigate();
   const { isLogged, email, token, setLogged } = useAuthStore();
@@ -69,7 +73,24 @@ const AuthGuardProvider = () => {
     }
   }, [sessionChecked, isLogged, email, pathname, navigate, token]);
 
-  return sessionChecked ? null : <FullLoading />;
+  // Se a sessão ainda não foi verificada, mostrar loading
+  if (!sessionChecked) {
+    return <FullLoading />;
+  }
+
+  // Se o usuário não está autenticado e não é uma rota de autenticação/confirmação,
+  // ainda mostrar loading enquanto o redirecionamento acontece
+  const isAuthRoute = routeUtils.isAuthRoute(pathname);
+  const isConfirmCodePage = pathname.includes('/confirm-code');
+
+  if (
+    (!isLogged && !isAuthRoute) ||
+    (isConfirmCodePage && !email && !isAuthRoute)
+  ) {
+    return <FullLoading />;
+  }
+
+  return children;
 };
 
 export default AuthGuardProvider;

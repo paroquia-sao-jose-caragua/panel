@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Calendar,
-  Church,
-  Cog,
-  Image,
-  LifeBuoy,
-  Menu,
-  MessageSquare,
-} from 'lucide-react';
+import { Calendar, Church, Menu, X } from 'lucide-react';
 import { Logo } from './logo';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { NavItem } from './nav-item';
@@ -24,7 +16,7 @@ export const AppSidebar = () => {
     <Collapsible.Root
       open={open}
       onOpenChange={setOpen}
-      className="fixed top-0 right-0 left-0 z-20 flex flex-col gap-6 border-b border-zinc-200 bg-brand-gradient py-2 md:py-4 data-[state=open]:bottom-0 lg:right-auto lg:border-r lg:py-8 lg:data-[state=closed]:bottom-0 lg:w-90"
+      className="fixed top-0 right-0 left-0 z-20 flex flex-col gap-6 border-b border-zinc-200 bg-brand-gradient py-2 md:py-4 data-[state=open]:bottom-0 lg:right-auto lg:border-r lg:py-8 lg:data-[state=closed]:-bottom-px lg:w-90"
     >
       <div className="flex items-center justify-between px-4 lg:px-6">
         <Logo />
@@ -33,7 +25,11 @@ export const AppSidebar = () => {
             type="button"
             className="ml-auto rounded-md p-2 hover:cursor-pointer hover:bg-brand-700/30 focus-visible:ring-2 focus-visible:ring-brand-400 outline-none transition-colors"
           >
-            <Menu className="h-6 w-6 text-brand-300" />
+            {open ? (
+              <X className="h-6 w-6 text-brand-300" />
+            ) : (
+              <Menu className="h-6 w-6 text-brand-300" />
+            )}
           </button>
         </Collapsible.Trigger>
       </div>
@@ -46,11 +42,33 @@ export const AppSidebar = () => {
 
         <div className="space-y-0.5 px-4">
           <NavItem
-            title="Paróquia"
+            title="Início"
             icon={Church}
             links={[
               {
-                title: 'Autoridades',
+                title: 'Início',
+                href: '/',
+              },
+            ]}
+            onLinkClick={handleClose}
+          />
+          <NavItem
+            title="Agenda"
+            icon={Calendar}
+            links={[
+              {
+                title: 'Agenda',
+                href: '/calendar',
+              },
+            ]}
+            onLinkClick={handleClose}
+          />
+          {/* <NavItem
+            title="Ministérios"
+            icon={Users}
+            links={[
+              {
+                title: 'Clérigos',
                 href: '/clergies',
               },
               {
@@ -59,7 +77,7 @@ export const AppSidebar = () => {
               },
             ]}
             onLinkClick={handleClose}
-          />
+          /> */}
           {/* <NavItem
             title="Agenda"
             icon={Calendar}

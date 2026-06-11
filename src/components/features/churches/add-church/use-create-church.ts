@@ -47,7 +47,7 @@ export const useCreateChurch = () => {
           onSuccess: ({ community, statusCode, message }) => {
             if (community && statusCode === 201) {
               setCommunity(community);
-              navigate.push(`/churches/${community.slug}`);
+              navigate.push(`/${community.slug}`);
             } else {
               showAlert(`Erro ao criar comunidade: ${message}`);
             }
