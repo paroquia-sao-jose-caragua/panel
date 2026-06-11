@@ -132,8 +132,9 @@ export default function Clergies() {
             >
               <option>Pároco</option>
               <option>Diácono</option>
-              <option>Bispo</option>
+              <option>Bispo Diocesano</option>
               <option>Diácono Permanente</option>
+              <option>Sumo Pontífice</option>
             </select>
             <input
               placeholder="URL da foto"
