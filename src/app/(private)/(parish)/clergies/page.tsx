@@ -6,30 +6,21 @@ import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Church } from 'lucide-react';
 import Clergycard from './(components)/clergycard';
 import { link } from 'fs';
-
-const clergies = [
-  {
-    name: 'Altair Santos',
-    role: 'Pároco',
-    photoUrl:
-      'https://images.pexels.com/photos/28143097/pexels-photo-28143097/free-photo-of-igreja-capela-catedral-retrato.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  },
-];
+import {
+  Root as FileInputRoot,
+  Trigger as FileInputTrigger,
+  Control as FileInputControl,
+  ImagePreview,
+} from '@/components/ui/file-input';
 
 export default function Clergies() {
   const [isOpen, setisOpen] = useState(false);
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
-  const [clergies, setClergies] = useState([
-    {
-      id: 1,
-      name: 'Altair Santos',
-      role: 'Pároco',
-      photoUrl:
-        'https://images.pexels.com/photos/28143097/pexels-photo-28143097/free-photo-of-igreja-capela-catedral-retrato.jpeg',
-    },
-  ]);
+  const [clergies, setClergies] = useState<any[]>([]);
+
+  //const [clergies, setClergies] = useState<any[]>([]);
   const [editClergy, setEditClergy] = useState<any>(null);
 
   function handleSave() {
@@ -136,12 +127,20 @@ export default function Clergies() {
               <option>Diácono Permanente</option>
               <option>Sumo Pontífice</option>
             </select>
-            <input
-              placeholder="URL da foto"
-              value={photoUrl}
-              onChange={(e) => setPhotoUrl(e.target.value)}
-              className="border rounded-md px-3 py-2 text-sm"
-            />
+            <div className="flex flex-col gap-2">
+              <span className="block text-sm text-zinc-700 font-semibold">
+                Foto da Autoridade
+              </span>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <ImagePreview size="lg" />
+                <div className="flex-1">
+                  <FileInputRoot className="flex-1">
+                    <FileInputTrigger />
+                    <FileInputControl accept="image/png,image/jpeg" />
+                  </FileInputRoot>
+                </div>
+              </div>
+            </div>
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => {

@@ -28,14 +28,22 @@ export default function Clergycard({
         <p className="text-sm font-medium text-gray-800">{name}</p>
         <div className="flex gap-2">
           <button
+            type="button"
             className="border border-red-400 text-red-400 px-3 py-1 rounded-md text-xs hover:bg-red-400 hover:text-white"
-            onClick={onDelete}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
           >
             Excluir
           </button>
           <button
+            type="button"
             className="border border-blue-400 text-blue-400 px-3 py-1 rounded-md text-xs hover:bg-blue-400 hover:text-white"
-            onClick={onEdit}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
           >
             Editar
           </button>
