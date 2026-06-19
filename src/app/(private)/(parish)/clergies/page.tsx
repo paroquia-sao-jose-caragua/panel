@@ -1,62 +1,78 @@
 'use client';
 import { useState } from 'react';
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
-import { Describe } from '@/components/ui/typography/describe';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Church } from 'lucide-react';
 import Clergycard from './(components)/clergycard';
-import { link } from 'fs';
 import {
   Root as FileInputRoot,
   Trigger as FileInputTrigger,
   Control as FileInputControl,
   ImagePreview,
 } from '@/components/ui/file-input';
+import { useFileInputStore } from '@/stores/useFileInputStore';
 
 export default function Clergies() {
-  const [isOpen, setisOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
-  const [role, setRole] = useState('');
-  const [photoUrl, setPhotoUrl] = useState('');
+  const [role, setRole] = useState('Pároco');
+  const [title, setTitle] = useState('');
   const [clergies, setClergies] = useState<any[]>([]);
-
-  //const [clergies, setClergies] = useState<any[]>([]);
   const [editClergy, setEditClergy] = useState<any>(null);
+  const { files } = useFileInputStore();
+
+  function handleClose() {
+    setIsOpen(false);
+    setName('');
+    setRole('Pároco');
+    setTitle('');
+    setEditClergy(null);
+  }
 
   function handleSave() {
-    if (!name || !role || !photoUrl) {
+    const uploadedFile = files[0]?.file;
+    const uploadedPreviewUrl = uploadedFile
+      ? URL.createObjectURL(uploadedFile)
+      : '';
+
+    if (editClergy) {
+      const newPhotoUrl = uploadedPreviewUrl || editClergy.photoUrl;
+
+      if (!name || !role || !newPhotoUrl) {
+        alert('Preencha os Campos Corretamente!');
+        return;
+      }
+
+      setClergies(
+        clergies.map((c) =>
+          c.id === editClergy.id
+            ? { ...c, name, role, title, photoUrl: newPhotoUrl }
+            : c
+        )
+      );
+      handleClose();
+      return;
+    }
+
+    if (!name || !role || !uploadedPreviewUrl) {
       alert('Preencha os Campos Corretamente!');
       return;
     }
-    if (editClergy) {
-      setClergies(
-        clergies.map((c) =>
-          c.id === editClergy.id ? { ...c, name, role, photoUrl } : c
-        )
-      );
-      setisOpen(false);
-      setEditClergy(null);
-      setName('');
-      setRole('');
-      setPhotoUrl('');
-      return;
-    }
+
     setClergies([
       ...clergies,
       {
-        id: clergies.length + 1,
+        id: Date.now(),
         name,
         role,
-        photoUrl,
+        title,
+        photoUrl: uploadedPreviewUrl,
       },
     ]);
-    setisOpen(false);
-    setName('');
-    setRole('');
-    setPhotoUrl('');
+    handleClose();
   }
 
-  function handleDelet(id: number) {
+  function handleDelete(id: number) {
     setClergies(clergies.filter((clergy) => clergy.id !== id));
   }
 
@@ -64,8 +80,8 @@ export default function Clergies() {
     setEditClergy(clergy);
     setName(clergy.name);
     setRole(clergy.role);
-    setPhotoUrl(clergy.photoUrl);
-    setisOpen(true);
+    setTitle(clergy.title || '');
+    setIsOpen(true);
   }
 
   return (
@@ -79,7 +95,7 @@ export default function Clergies() {
         <div className="flex items-center justify-end mb-6">
           <button
             className="bg-amber-800 text-white px-4 py-2 rounded-md text-sm"
-            onClick={() => setisOpen(true)}
+            onClick={() => setIsOpen(true)}
           >
             Adicionar Autoridade
           </button>
@@ -94,16 +110,18 @@ export default function Clergies() {
         ) : (
           clergies.map((clergy) => (
             <Clergycard
-              onDelete={() => handleDelet(clergy.id)}
+              onDelete={() => handleDelete(clergy.id)}
               onEdit={() => handleEdit(clergy)}
               key={clergy.id}
               name={clergy.name}
               role={clergy.role}
+              title={clergy.title}
               photoUrl={clergy.photoUrl}
             />
           ))
         )}
       </div>
+
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
           <div className="bg-white rounded-xl p-6 w-96 flex flex-col gap-4">
@@ -114,6 +132,12 @@ export default function Clergies() {
               placeholder="Nome"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="border rounded-md px-3 py-2 text-sm"
+            />
+            <input
+              placeholder="Título (ex: Dom, Padre, Reverendíssimo)"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               className="border rounded-md px-3 py-2 text-sm"
             />
             <select
@@ -143,13 +167,7 @@ export default function Clergies() {
             </div>
             <div className="flex justify-end gap-2">
               <button
-                onClick={() => {
-                  setisOpen(false);
-                  setName('');
-                  setRole('');
-                  setPhotoUrl('');
-                  setEditClergy(null);
-                }}
+                onClick={handleClose}
                 className="px-4 py-2 text-sm rounded-md border"
               >
                 Cancelar
