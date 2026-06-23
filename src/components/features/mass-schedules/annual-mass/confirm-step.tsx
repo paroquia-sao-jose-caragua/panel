@@ -10,7 +10,7 @@ dayjs.locale('pt-br');
 
 interface ConfirmStepProps {
   mode?: 'edit' | 'add';
-  title: string;
+  title?: string;
   isSolemn: boolean;
   isPrecept: boolean;
   startDate: string;
@@ -32,7 +32,6 @@ export const ConfirmStep = ({
   times,
 }: ConfirmStepProps) => {
   const { community } = useCommunity();
-  const { t } = useTranslator();
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-6 sm:py-8 flex flex-col gap-4 pb-5">
