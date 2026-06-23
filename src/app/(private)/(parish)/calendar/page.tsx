@@ -263,7 +263,7 @@ export default function CalendarPage() {
             variant="ghost"
             disabled={disabledPrevMonth}
             onClick={handlePrevMonth}
-            className='pl-0'
+            className="pl-0"
           >
             <ChevronLeft /> {t(`month-${prevMonth}`)}
           </Button>
@@ -274,7 +274,7 @@ export default function CalendarPage() {
             variant="ghost"
             disabled={disabledNextMonth}
             onClick={handleNextMonth}
-            className='pr-0'
+            className="pr-0"
           >
             {t(`month-${nextMonth}`)} <ChevronRight />
           </Button>
