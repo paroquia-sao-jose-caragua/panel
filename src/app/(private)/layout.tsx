@@ -8,7 +8,7 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className=" min-h-screen bg-zinc-50/75 lg:grid-cols-app lg:grid">
+    <div className="min-h-screen bg-zinc-50/75 lg:grid-cols-app lg:grid">
       <AppSidebar />
       <TooltipProvider>{children}</TooltipProvider>
     </div>

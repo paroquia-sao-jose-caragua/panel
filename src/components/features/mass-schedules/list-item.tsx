@@ -76,7 +76,7 @@ export const ListItem = ({ massSchedule, type, editHref }: ListItemProps) => {
   return (
     <div
       key={massSchedule.id}
-      className="cursor:pointer flex flex-row items-center justify-between bg-brand-0 pl-4 pr-2 py-4 rounded-xl border border-brand-50"
+      className="cursor:pointer flex flex-row items-center justify-between bg-brand-0/30 pl-4 pr-2 py-4 rounded-xl border border-brand-500/30"
     >
       <div className="flex flex-col md:flex-row items-start md:items-center w-full">
         <div className="flex flex-col flex-1">
