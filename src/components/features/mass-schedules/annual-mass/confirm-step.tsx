@@ -102,12 +102,12 @@ export const ConfirmStep = ({
               {times.map((time) => (
                 <div
                   key={time.startTime}
-                  className="flex flex-row items-center justify-between bg-brand-0 px-3 py-3 rounded-lg border border-brand-50"
+                  className="flex flex-row items-center justify-between bg-brand-0/30 px-3 py-3 rounded-lg border border-brand-500/50"
                 >
                   <span className="flex-1 text-md font-medium text-brand-800">
                     {time.startTime} - {time.endTime}
                   </span>
-                  <span className="text-xs text-brand-700 bg-brand-50 py-1 px-2 rounded">
+                  <span className="text-xs text-brand-700 bg-brand-200 py-1 px-2 rounded">
                     {formatTimeDifference(time.startTime, time.endTime)}
                   </span>
                 </div>

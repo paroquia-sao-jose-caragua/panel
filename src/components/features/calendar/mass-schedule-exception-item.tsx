@@ -129,7 +129,7 @@ export const MassScheduleExceptionItem = ({
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="mx-4 rounded-lg border border-brand-100 bg-brand-0 p-3 mb-5 space-y-2">
+              <div className="mx-4 rounded-lg border border-brand-500/30 bg-brand-0/50 p-3 mb-5 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-muted-foreground">
                     Horário:

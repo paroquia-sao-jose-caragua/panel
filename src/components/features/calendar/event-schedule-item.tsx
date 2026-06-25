@@ -60,7 +60,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
   };
 
   return (
-    <li className="group rounded-xl border border-brand-100 bg-brand-0 p-4 transition sm:p-5">
+    <li className="group rounded-xl border border-brand-500/30 bg-brand-0/30 p-4 transition sm:p-5">
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-4">
           <p className="font-mono text-sm tabular-nums text-muted-foreground">

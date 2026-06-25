@@ -11,18 +11,18 @@
   --grid-template-columns-form: minmax(7.5rem, 17.5rem) minmax(25rem, 1fr)
     minmax(0, 15rem);
 
-  /* Brand scale */
-  --color-brand-0: #fcf8f6;
-  --color-brand-50: #f5ede4;
-  --color-brand-100: #e8dacb;
-  --color-brand-200: #e8c4a8;
-  --color-brand-300: #d8b498;
-  --color-brand-400: #c9795a;
-  --color-brand-500: #a95a3a;
-  --color-brand-600: #9d6e4a;
-  --color-brand-700: #8b5e3c;
-  --color-brand-800: #6b3e1c;
-  --color-brand-900: #4a2e13; /* novo menu bg */
+  /* Parish palette shared with the public site */
+  --color-brand-0: #f8f0e7;
+  --color-brand-50: #fbf4eb;
+  --color-brand-100: #fff8f0;
+  --color-brand-200: #f8f3ec;
+  --color-brand-300: #eeca94;
+  --color-brand-400: #e0be8b;
+  --color-brand-500: #d6a64a;
+  --color-brand-600: #bb8835;
+  --color-brand-700: #27442a;
+  --color-brand-800: #18351e;
+  --color-brand-900: #102415;
 
   --color-divider: #e4e4e4;
   --color-black-a9: rgba(0, 0, 0, 0.7);
@@ -34,7 +34,7 @@
 
 @layer utilities {
   .bg-brand-gradient {
-    background: linear-gradient(180deg, #6b3e1c 0%, #4a2e13 100%);
+    background: linear-gradient(180deg, #18351e 0%, #102415 100%);
   }
 
   .antialiased {
@@ -129,21 +129,27 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: #18351e;
+  --sidebar-foreground: #fff8f0;
+  --sidebar-primary: #d6a64a;
+  --sidebar-primary-foreground: #18351e;
+  --sidebar-accent: #27442a;
+  --sidebar-accent-foreground: #fff8f0;
+  --sidebar-border: #d6a64a;
+  --sidebar-ring: #bb8835;
   --font-sans: var(--font-inter);
 
-  --paroquia-brown: oklch(0.38 0.06 50);
-  --paroquia-brown-deep: oklch(0.32 0.055 48);
-  --paroquia-brown-light: oklch(0.55 0.08 55);
-  --paroquia-cream: oklch(0.97 0.015 80);
-  --paroquia-gold: oklch(0.78 0.12 80);
+  --paroquia-green: #18351e;
+  --paroquia-green-deep: #102415;
+  --paroquia-green-soft: #27442a;
+  --paroquia-green-muted: #314523;
+  --paroquia-cream: #f8f0e7;
+  --paroquia-gold: #d6a64a;
+  --paroquia-gold-dark: #bb8835;
+
+  --paroquia-brown: var(--paroquia-green);
+  --paroquia-brown-deep: var(--paroquia-green-deep);
+  --paroquia-brown-light: var(--paroquia-green-muted);
 }
 
 .dark {

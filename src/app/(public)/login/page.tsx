@@ -9,10 +9,10 @@ export default function Login() {
       <div className="z-10 lg:z-0 flex flex-col gap-6 row-start-2 items-center justify-center max-w-100 w-full lg:mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-6 mx-4">
         <div className="flex flex-col items-center justify-center border-b border-divider pb-6 w-full">
           <Image
-            src="/avatar.svg"
+            src="/avatar.png"
             alt="São José com o Menino Jesus"
-            width={75}
-            height={75}
+            width={100}
+            height={100}
             priority
           />
           <h1 className="text-2xl font-medium text-zinc-900 mt-4">

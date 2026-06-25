@@ -1,7 +1,7 @@
 import { ParishLogoIcon } from '../logos/parish-logo-icon';
 
-const brown = 'var(--paroquia-brown)';
-const brownDeep = 'var(--paroquia-brown-deep)';
+const green = 'var(--paroquia-green)';
+const greenDeep = 'var(--paroquia-green-deep)';
 const cream = 'var(--paroquia-cream)';
 const gold = 'var(--paroquia-gold)';
 
@@ -17,7 +17,7 @@ export function FullLoading({
     <main
       className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 overflow-hidden"
       style={{
-        background: `radial-gradient(circle at 50% 40%, ${brown} 0%, ${brownDeep} 70%)`,
+        background: `radial-gradient(circle at 50% 40%, ${green} 0%, ${greenDeep} 70%)`,
       }}
       aria-live="polite"
     >
