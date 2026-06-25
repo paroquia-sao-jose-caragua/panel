@@ -5,7 +5,6 @@ import * as Collapsible from '@radix-ui/react-collapsible';
 import { NavItem } from './nav-item';
 import { Profile } from './profile';
 import { useState } from 'react';
-import { LogoMarkDark } from '@/components/ui/logos/logo-mark-dark';
 
 export const AppSidebar = () => {
   const [open, setOpen] = useState(false);
@@ -19,7 +18,7 @@ export const AppSidebar = () => {
       className="fixed top-0 right-0 left-0 z-20 flex flex-col gap-4 border-b border-zinc-200 bg-brand-gradient py-2 md:py-4 data-[state=open]:bottom-0 lg:right-auto lg:border-r lg:pt-4 lg:pb-8 lg:data-[state=closed]:-bottom-px lg:w-90"
     >
       <div className="flex items-center justify-between px-4 lg:px-6">
-        <LogoMarkDark height={80} width={240} />
+        <img src="/logo-mark-dark.png" alt="" height={80} width={240} />
         <Collapsible.Trigger asChild className="lg:hidden">
           <button
             type="button"
