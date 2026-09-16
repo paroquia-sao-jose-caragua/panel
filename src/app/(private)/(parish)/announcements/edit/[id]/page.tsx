@@ -63,7 +63,10 @@ export default function EditAnnouncementPage({
     }
   }, [data, id]);
 
-  const handleChange = (field: keyof AnnouncementFormValues, value: any) => {
+  const handleChange = (
+    field: keyof AnnouncementFormValues,
+    value: AnnouncementFormValues[keyof AnnouncementFormValues]
+  ) => {
     setValues((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => {
       const next = { ...prev };
@@ -73,12 +76,12 @@ export default function EditAnnouncementPage({
   };
 
   const editMutation = useMutation({
-    mutationFn: (payload: any) => editAnnouncement(id, payload),
+    mutationFn: (payload: Parameters<typeof editAnnouncement>[1]) => editAnnouncement(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['announcements'] });
       router.replace('/announcements');
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       alert(err?.message || 'Erro ao salvar alterações.');
     },
   });

@@ -33,7 +33,10 @@ export default function AddAnnouncementPage() {
     active: true,
   });
 
-  const handleChange = (field: keyof AnnouncementFormValues, value: any) => {
+  const handleChange = (
+    field: keyof AnnouncementFormValues,
+    value: AnnouncementFormValues[keyof AnnouncementFormValues]
+  ) => {
     setValues((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => {
       const next = { ...prev };
@@ -48,7 +51,7 @@ export default function AddAnnouncementPage() {
       queryClient.invalidateQueries({ queryKey: ['announcements'] });
       router.replace('/announcements');
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       alert(err?.message || 'Erro ao cadastrar banner.');
     },
   });

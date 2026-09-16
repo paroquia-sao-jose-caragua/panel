@@ -37,7 +37,10 @@ export interface AnnouncementFormValues {
 
 interface AnnouncementFormStepProps {
   values: AnnouncementFormValues;
-  onChange: (field: keyof AnnouncementFormValues, value: any) => void;
+  onChange: (
+    field: keyof AnnouncementFormValues,
+    value: AnnouncementFormValues[keyof AnnouncementFormValues]
+  ) => void;
   errors?: Record<string, string>;
 }
 
@@ -75,7 +78,7 @@ export const AnnouncementFormStep = ({
     try {
       const res = await uploadFileWithProgress(file, setProgressDesktop);
       onChange('coverDesktopId', res.attachmentId);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setUploadError(typeof err === 'string' ? err : 'Erro no upload desktop');
     } finally {
       setUploadingDesktop(false);
@@ -92,7 +95,7 @@ export const AnnouncementFormStep = ({
     try {
       const res = await uploadFileWithProgress(file, setProgressTablet);
       onChange('coverTabletId', res.attachmentId);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setUploadError(typeof err === 'string' ? err : 'Erro no upload tablet');
     } finally {
       setUploadingTablet(false);
@@ -109,7 +112,7 @@ export const AnnouncementFormStep = ({
     try {
       const res = await uploadFileWithProgress(file, setProgressMobile);
       onChange('coverMobileId', res.attachmentId);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setUploadError(typeof err === 'string' ? err : 'Erro no upload mobile');
     } finally {
       setUploadingMobile(false);
