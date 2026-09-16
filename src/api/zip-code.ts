@@ -25,7 +25,7 @@ const addressMapper = (data: BrasilApiResponseData) => ({
 export const findAddressByZipCode = async (zipCode: string) => {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 3000); // Cancela após 3 segundos
-
+  console.log('zipCode')
   try {
     const response = await fetch(
       `https://brasilapi.com.br/api/cep/v2/${zipCode}`,
