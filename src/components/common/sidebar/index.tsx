@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Church, Menu, X } from 'lucide-react';
+import { Calendar, Church, Megaphone, Menu, X } from 'lucide-react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { NavItem } from './nav-item';
 import { Profile } from './profile';
@@ -47,6 +47,17 @@ export const AppSidebar = () => {
               {
                 title: 'Início',
                 href: '/',
+              },
+            ]}
+            onLinkClick={handleClose}
+          />
+          <NavItem
+            title="Banners & Avisos"
+            icon={Megaphone}
+            links={[
+              {
+                title: 'Gerenciar Avisos',
+                href: '/announcements',
               },
             ]}
             onLinkClick={handleClose}

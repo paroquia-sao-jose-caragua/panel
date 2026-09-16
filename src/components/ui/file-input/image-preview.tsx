@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import { useFileInputStore } from '@/stores/useFileInputStore';
 import { cn } from '@/lib/utils';
 import { cva } from 'class-variance-authority';
+import { ImageLightbox } from '../image-lightbox';
 
 const emptyVariants = cva('flex items-center justify-center bg-zinc-100', {
   variants: {
@@ -30,7 +31,7 @@ const emptyVariants = cva('flex items-center justify-center bg-zinc-100', {
   ],
 });
 
-const imageVariants = cva('object-cover', {
+const imageVariants = cva('object-cover cursor-pointer', {
   variants: {
     variant: {
       rectangular: 'rounded',
@@ -59,11 +60,13 @@ export const ImagePreview = ({
   variant = 'rectangular',
   size = 'md',
   className = '',
+  label,
 }: {
   url?: string | null;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'rectangular' | 'circular';
   className?: string;
+  label?: string;
 }) => {
   const { files } = useFileInputStore();
 
@@ -81,7 +84,7 @@ export const ImagePreview = ({
     return initialPreviewURL;
   }, [files, initialPreviewURL]);
 
-  if (previewURL === null) {
+  if (!previewURL) {
     return (
       <div className={cn(emptyVariants({ variant, size }), className)}>
         <ImageIcon className="h-8 w-8 text-zinc-400" />
@@ -90,10 +93,10 @@ export const ImagePreview = ({
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <ImageLightbox
       src={previewURL}
-      alt=""
+      label={label}
+      size={size}
       className={cn(imageVariants({ variant, size }), className)}
     />
   );
