@@ -15,7 +15,6 @@ import {
   Sparkles,
   Save,
   CheckCircle2,
-  Headphones,
 } from 'lucide-react';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Button } from '@/components/ui/button';
@@ -78,7 +77,7 @@ export default function SecretariatPage() {
         <div className="mx-auto w-full max-w-4xl px-4 lg:px-8 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
             <div className="size-11 rounded-2xl bg-[#fef8ed] border border-[#D6A64A]/40 flex items-center justify-center text-[#B8872E] shadow-2xs shrink-0">
-              <Headphones className="w-6 h-6" />
+              <Phone className="w-6 h-6" />
             </div>
             <div>
               <TypographyH1>Contato e Secretaria</TypographyH1>
