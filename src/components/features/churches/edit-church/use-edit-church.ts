@@ -5,13 +5,14 @@ import useCommunityStore from '@/stores/useCommunityStore';
 import { useFileInputStore } from '@/stores/useFileInputStore';
 import { formatFullAddress, parseFullAddress } from '@/utils/formatFullAddress';
 import { showAlert } from '@/utils/showAlert';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { useCommunity } from '@/api/communities/use-community';
 
 export const useEditChurch = () => {
   const validationSchema = useChurchSchema();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { files } = useFileInputStore();
   const { setCommunity } = useCommunityStore();
   const { community } = useCommunity();
@@ -27,7 +28,7 @@ export const useEditChurch = () => {
     initialValues: {
       name: community?.name || '',
       type: (community?.type as 'chapel' | 'parish_church') || 'chapel',
-      coverId: coverId || community?.coverId,
+      coverId: coverId || community?.coverId || '',
       ...parseFullAddress(community?.address),
     },
     validationSchema,
@@ -42,13 +43,15 @@ export const useEditChurch = () => {
           address: formatFullAddress(values) as string,
         },
         {
-          onSuccess: ({ community, statusCode, message }) => {
-            if (community && statusCode === 200) {
-              setCommunity(community);
-              navigate.push(`/${community.slug}`);
-              showAlert('Alterações salvas com sucesso!');
+          onSuccess: ({ community: updatedCommunity, statusCode, message }) => {
+            if (updatedCommunity && (statusCode === 200 || !statusCode)) {
+              setCommunity(updatedCommunity);
+              queryClient.invalidateQueries({ queryKey: ['community', updatedCommunity.slug] });
+              queryClient.invalidateQueries({ queryKey: ['communities'] });
+              navigate.push(`/${updatedCommunity.slug}`);
+              showAlert('Dados principais salvos com sucesso!');
             } else {
-              showAlert(`Erro ao salvar comunidade: ${message}`);
+              showAlert(`Erro ao salvar comunidade: ${message || 'Erro desconhecido'}`);
             }
           },
           onError: (error) => {

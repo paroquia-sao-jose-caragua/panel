@@ -3,17 +3,10 @@
 import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 
+import type { Community } from '@/entities/Community';
+
 export interface ChurchCardProps {
-  community: {
-    id: string;
-    name: string;
-    slug: string;
-    createdAt: string;
-    type: 'parish_church' | 'chapel';
-    address: string;
-    coverId: string;
-    coverUrl: string;
-  };
+  community: Community;
 }
 
 export const ChurchCard = ({ community }: ChurchCardProps) => {

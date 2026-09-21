@@ -1,8 +1,10 @@
+import { useCallback } from 'react';
 import { updateMassSchedule } from '@/api/mass-schedules/update';
+import { deleteMassSchedule } from '@/api/mass-schedules/delete';
 import { useCommunity } from '@/api/communities/use-community';
 import { useNavigate } from '@/hooks/use-navigate';
 import { showAlert } from '@/utils/showAlert';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 import { useParams } from 'next/navigation';
@@ -15,8 +17,9 @@ interface UseCreateMassScheduleProps {
 export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
   const { community } = useCommunity();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const params = useParams<{ id: string; slug: string }>();
-  const { massSchedules } = useCommunityStore();
+  const { massSchedules, removeMassSchedule } = useCommunityStore();
 
   // Find the specific mass schedule by ID
   const massSchedule = massSchedules?.find((ms) => ms.id === params.id);
@@ -25,6 +28,34 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
     networkMode: 'always',
     mutationFn: updateMassSchedule,
   });
+
+  const { mutate: mutateDelete, isPending: isDeleting } = useMutation({
+    networkMode: 'always',
+    mutationFn: deleteMassSchedule,
+  });
+
+  const handleDelete = useCallback(() => {
+    if (!params.id) return;
+    mutateDelete(
+      { massScheduleId: params.id },
+      {
+        onSuccess: ({ statusCode }) => {
+          if (statusCode === 200) {
+            removeMassSchedule(params.id);
+            queryClient.invalidateQueries({ queryKey: ['communities'] });
+            queryClient.invalidateQueries({ queryKey: ['mass-schedules'] });
+            showAlert('Horário de missa excluído com sucesso!');
+            navigate.replace(`/${community?.slug}`);
+          } else {
+            showAlert('Não foi possível excluir o horário de missa. Tente novamente mais tarde.');
+          }
+        },
+        onError: (error) => {
+          showAlert(`Erro ao excluir horário de missa: ${error.message}`);
+        },
+      }
+    );
+  }, [params.id, mutateDelete, removeMassSchedule, queryClient, navigate, community?.slug]);
 
   const formik = useFormik({
     initialValues: {
@@ -75,6 +106,8 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
         {
           onSuccess: ({ massSchedule, statusCode, message }) => {
             if (massSchedule && statusCode === 200) {
+              queryClient.invalidateQueries({ queryKey: ['communities'] });
+              queryClient.invalidateQueries({ queryKey: ['mass-schedules'] });
               navigate.replace(`/${community?.slug}`);
               showAlert('Missa atualizada com sucesso!');
             } else {
@@ -89,5 +122,5 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
     },
   });
 
-  return { formik, isPending, massSchedule };
+  return { formik, isPending, isDeleting, handleDelete, massSchedule };
 };

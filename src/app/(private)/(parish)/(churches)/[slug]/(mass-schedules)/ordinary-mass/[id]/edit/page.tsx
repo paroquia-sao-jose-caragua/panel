@@ -13,13 +13,26 @@ import { TypographyH1 } from '@/components/ui/typography/h1';
 import { CoverImage } from '@/components/common/cover-image';
 import { InfoFormStep } from '@/components/features/mass-schedules/ordinary-mass/info-form-step';
 import { ConfirmStep } from '@/components/features/mass-schedules/ordinary-mass/confirm-step';
+import { Trash2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 export default function EditOrdinaryMassPage() {
   const [activeStep, setActiveStep] = React.useState(1);
 
   const { community } = useCommunity();
 
-  const { formik, isPending } = useEditMassSchedule({ type: 'ordinary' });
+  const { formik, isPending, isDeleting, handleDelete } = useEditMassSchedule({
+    type: 'ordinary',
+  });
 
   const handleNextStep = useCallback(async () => {
     const errors = await formik.validateForm();
@@ -83,12 +96,60 @@ export default function EditOrdinaryMassPage() {
         {activeStep === 1 && (
           <>
             <InfoFormStep formik={formik} />
-            <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
-              <Link href={`/${community?.slug}`}>
-                <Button variant="outline" size="lg">
-                  Cancelar
-                </Button>
-              </Link>
+            <div className="flex flex-wrap gap-3 pt-4 mt-8 justify-between items-center border-t border-divider">
+              <div className="flex items-center gap-2">
+                <Link href={`/${community?.slug}`}>
+                  <Button variant="outline" size="lg">
+                    Cancelar
+                  </Button>
+                </Link>
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="lg"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-2 cursor-pointer"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span>Excluir Horário</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Excluir horário de missa?</DialogTitle>
+                      <DialogDescription>
+                        Esta ação não pode ser desfeita. O horário de missa
+                        será removido permanentemente da comunidade.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button type="button" variant="outline">
+                          Cancelar
+                        </Button>
+                      </DialogClose>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={handleDelete}
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? (
+                          <>
+                            <Spinner className="w-4 h-4 mr-2" />
+                            Excluindo...
+                          </>
+                        ) : (
+                          'Excluir'
+                        )}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
               <Button size="lg" onClick={handleNextStep}>
                 Continuar
               </Button>
@@ -99,13 +160,61 @@ export default function EditOrdinaryMassPage() {
         {activeStep === 2 && (
           <>
             <ConfirmStep mode="edit" {...formik.values} />
-            <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
-              <Button variant="outline" size="lg" onClick={handlePrevStep}>
-                Voltar
-              </Button>
+            <div className="flex flex-wrap gap-3 pt-4 mt-8 justify-between items-center border-t border-divider">
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="lg" onClick={handlePrevStep}>
+                  Voltar
+                </Button>
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="lg"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-2 cursor-pointer"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span>Excluir Horário</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Excluir horário de missa?</DialogTitle>
+                      <DialogDescription>
+                        Esta ação não pode ser desfeita. O horário de missa
+                        será removido permanentemente da comunidade.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button type="button" variant="outline">
+                          Cancelar
+                        </Button>
+                      </DialogClose>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={handleDelete}
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? (
+                          <>
+                            <Spinner className="w-4 h-4 mr-2" />
+                            Excluindo...
+                          </>
+                        ) : (
+                          'Excluir'
+                        )}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
               <Button
                 size="lg"
-                disabled={isPending}
+                disabled={isPending || isDeleting}
                 onClick={formik.submitForm}
               >
                 {isPending ? (

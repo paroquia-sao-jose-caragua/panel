@@ -10,12 +10,16 @@ import { findAddressByZipCode } from '@/api/zip-code';
 import { Spinner } from '@/components/ui/spinner';
 import { stringUtils } from '@/utils/stringUtils';
 import type { useCreateChurch } from './churches/add-church/use-create-church';
+import type { useEditChurch } from './churches/edit-church/use-edit-church';
 import { FieldSection } from '../ui/field-section';
 import type { useCreateEventSchedule } from './event-schedules/use-create-event-schedule';
+import type { FormikProps } from 'formik';
 
 interface FormAddressProps {
   formik: ReturnType<
-    typeof useCreateChurch | typeof useCreateEventSchedule
+    | typeof useCreateChurch
+    | typeof useCreateEventSchedule
+    | typeof useEditChurch
   >['formik'];
   isOptional?: boolean;
   description?: string;
