@@ -141,7 +141,6 @@ export default function SecretariatPage() {
                       name="phone"
                       value={formik.values.phone || ''}
                       onChange={formik.handleChange}
-                      placeholder="(12) 3883-4888"
                     />
                   </InputRoot>
                 </div>
@@ -155,7 +154,6 @@ export default function SecretariatPage() {
                       name="whatsapp"
                       value={formik.values.whatsapp || ''}
                       onChange={formik.handleChange}
-                      placeholder="(12) 98170-5757"
                     />
                   </InputRoot>
                 </div>
@@ -170,7 +168,6 @@ export default function SecretariatPage() {
                       type="email"
                       value={formik.values.email || ''}
                       onChange={formik.handleChange}
-                      placeholder="contato@paroquiasaojosecaragua.org.br"
                     />
                   </InputRoot>
                 </div>
@@ -199,7 +196,6 @@ export default function SecretariatPage() {
                   name="officeHours"
                   value={formik.values.officeHours || ''}
                   onChange={formik.handleChange}
-                  placeholder="Ex:&#10;Terça a sexta-feira: 09h às 12h e 14h às 17h40&#10;Sábado: 08h às 12h&#10;Domingo e Segunda: Fechado"
                   className="min-h-[140px] text-sm leading-relaxed"
                 />
                 <p className="text-[11px] text-zinc-400 mt-1.5">
@@ -231,7 +227,6 @@ export default function SecretariatPage() {
                     name="address"
                     value={formik.values.address || ''}
                     onChange={formik.handleChange}
-                    placeholder="Ex: R. Edson dos Santos, 30 — Morro do Algodão, Caraguatatuba - SP, 11671-180"
                   />
                 </InputRoot>
               </div>
@@ -262,7 +257,6 @@ export default function SecretariatPage() {
                       name="instagramUrl"
                       value={formik.values.instagramUrl || ''}
                       onChange={formik.handleChange}
-                      placeholder="https://www.instagram.com/paroquiasaojosecaragua/"
                     />
                   </InputRoot>
                 </div>
@@ -277,7 +271,6 @@ export default function SecretariatPage() {
                       name="youtubeUrl"
                       value={formik.values.youtubeUrl || ''}
                       onChange={formik.handleChange}
-                      placeholder="https://www.youtube.com/@paroquiasaojosecaragua"
                     />
                   </InputRoot>
                 </div>
@@ -292,7 +285,6 @@ export default function SecretariatPage() {
                       name="facebookUrl"
                       value={formik.values.facebookUrl || ''}
                       onChange={formik.handleChange}
-                      placeholder="https://www.facebook.com/parsaojose/"
                     />
                   </InputRoot>
                 </div>
@@ -307,7 +299,6 @@ export default function SecretariatPage() {
                       name="whatsappUrl"
                       value={formik.values.whatsappUrl || ''}
                       onChange={formik.handleChange}
-                      placeholder="https://wa.me/5512981705757"
                     />
                   </InputRoot>
                 </div>
