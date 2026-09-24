@@ -276,47 +276,59 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
 
         {values.hasModal && (
           <div className="space-y-6 animate-in fade-in duration-200">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <FieldLabel htmlFor="modalButtonText">Texto do Botão na Faixa</FieldLabel>
-                <InputRoot>
-                  <InputControl
-                    id="modalButtonText"
-                    value={values.modalButtonText}
-                    onChange={(e) => onChange('modalButtonText', e.target.value)}
-                    maxLength={50}
-                    placeholder="Ex: Ver Detalhes, Saiba Mais"
-                  />
-                </InputRoot>
-                {errors.modalButtonText && (
-                  <p className="text-xs text-red-500 mt-1">{errors.modalButtonText}</p>
-                )}
-              </div>
-
-              <div>
-                <FieldLabel htmlFor="modalTitle">Título da Janela</FieldLabel>
-                <InputRoot>
-                  <InputControl
-                    id="modalTitle"
-                    value={values.modalTitle}
-                    onChange={(e) => onChange('modalTitle', e.target.value)}
-                    maxLength={255}
-                    placeholder="Ex: Comunicado sobre a Festa de São José"
-                  />
-                </InputRoot>
-                {errors.modalTitle && (
-                  <p className="text-xs text-red-500 mt-1">{errors.modalTitle}</p>
-                )}
-              </div>
+            <div>
+              <FieldLabel htmlFor="modalButtonText">Texto do Botão na Faixa</FieldLabel>
+              <InputRoot className="mt-1">
+                <InputControl
+                  id="modalButtonText"
+                  value={values.modalButtonText}
+                  onChange={(e) => onChange('modalButtonText', e.target.value)}
+                  maxLength={50}
+                  placeholder="Ex: Ver Detalhes, Saiba Mais"
+                />
+              </InputRoot>
+              {errors.modalButtonText && (
+                <p className="text-xs text-red-500 mt-1">{errors.modalButtonText}</p>
+              )}
             </div>
 
             <div>
-              <FieldLabel htmlFor="modalDescription">Texto Completo / Detalhes</FieldLabel>
+              <div className="flex items-center justify-between mb-1">
+                <FieldLabel htmlFor="modalTitle">Título da Janela</FieldLabel>
+                <span className={`text-xs ${values.modalTitle.length > 240 ? 'text-amber-600 font-semibold' : 'text-zinc-400'}`}>
+                  {values.modalTitle.length} / 255
+                </span>
+              </div>
+              <p className="text-xs text-zinc-500 mb-2">
+                Suporta quebras de linha para destacar títulos e subtítulos no modal.
+              </p>
+              <Textarea
+                id="modalTitle"
+                value={values.modalTitle}
+                onChange={(e) => onChange('modalTitle', e.target.value)}
+                maxLength={255}
+                rows={2}
+                placeholder="Ex: Comunicado sobre a Festa de São José"
+                className="min-h-18 resize-y"
+              />
+              {errors.modalTitle && (
+                <p className="text-xs text-red-500 mt-1">{errors.modalTitle}</p>
+              )}
+            </div>
+
+            <div>
+              <FieldLabel htmlFor="modalDescription" className="mb-1 block">
+                Texto Completo / Detalhes
+              </FieldLabel>
+              <p className="text-xs text-zinc-500 mb-2">
+                Suporta quebras de linha e múltiplos parágrafos para detalhar comunicados e avisos.
+              </p>
               <Textarea
                 id="modalDescription"
                 value={values.modalDescription}
                 onChange={(e) => onChange('modalDescription', e.target.value)}
-                rows={5}
+                rows={6}
+                className="min-h-32 resize-y"
                 placeholder="Insira aqui todas as informações detalhadas que os fiéis devem saber..."
               />
             </div>

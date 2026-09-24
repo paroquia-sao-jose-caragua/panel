@@ -25,10 +25,8 @@ import {
   ArrowRight,
   ExternalLink,
   Eye,
-  Calendar,
   Volume2,
   FileText,
-  Image as ImageIcon,
 } from 'lucide-react';
 import { listAnnouncements, reorderAnnouncements } from '@/api/announcements';
 import { getUrgentAlert } from '@/api/urgent-alert';
@@ -273,7 +271,7 @@ export default function AnnouncementsPage() {
 
                   <div>
                     <span className="text-zinc-500 text-xs block mb-1">Texto da Faixa:</span>
-                    <p className="font-medium text-zinc-800 bg-zinc-50 border border-zinc-100 p-3 rounded-xl leading-relaxed">
+                    <p className="font-medium text-zinc-800 bg-zinc-50 border border-zinc-100 p-3 rounded-xl leading-relaxed whitespace-pre-line">
                       {urgentAlert?.text || 'Nenhum texto cadastrado.'}
                     </p>
                   </div>
@@ -331,72 +329,70 @@ export default function AnnouncementsPage() {
             </div>
 
             {/* Card 1.2: Modal com Mais Informações */}
-            <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-zinc-100">
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4.5 h-4.5 text-[#B8872E]" />
-                    <h3 className="font-semibold text-zinc-900 text-sm sm:text-base">
-                      Janela Modal de Detalhes
-                    </h3>
-                  </div>
-                  <span
-                    className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full ${
-                      urgentAlert?.hasModal
-                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                        : 'bg-zinc-100 text-zinc-600'
-                    }`}
-                  >
-                    {urgentAlert?.hasModal ? 'Habilitado' : 'Desabilitado'}
-                  </span>
+            <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col h-full">
+              <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-zinc-100 shrink-0">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4.5 h-4.5 text-[#B8872E]" />
+                  <h3 className="font-semibold text-zinc-900 text-sm sm:text-base">
+                    Janela Modal de Detalhes
+                  </h3>
                 </div>
-
-                {urgentAlert?.hasModal ? (
-                  <div className="space-y-4 text-xs sm:text-sm">
-                    <div>
-                      <span className="text-zinc-500 text-xs block mb-0.5">Título do Modal:</span>
-                      <span className="font-semibold text-zinc-900 text-base">
-                        {urgentAlert.modalTitle || 'Sem título'}
-                      </span>
-                    </div>
-
-                    <div>
-                      <span className="text-zinc-500 text-xs block mb-0.5">Conteúdo / Descrição:</span>
-                      <p className="font-normal text-zinc-600 line-clamp-3 bg-zinc-50 p-3 rounded-xl border border-zinc-100 leading-relaxed">
-                        {urgentAlert.modalDescription || 'Nenhuma descrição detalhada.'}
-                      </p>
-                    </div>
-
-                    {urgentAlert.modalActionText && (
-                      <div>
-                        <span className="text-zinc-500 text-xs block mb-0.5">Botão de Ação:</span>
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-brand-600 bg-brand-50 border border-brand-200 px-2.5 py-1 rounded-lg inline-flex items-center gap-1">
-                            {urgentAlert.modalActionText}
-                            {urgentAlert.modalActionUrl && <ExternalLink className="w-3 h-3" />}
-                          </span>
-                          {urgentAlert.modalActionUrl && (
-                            <span className="text-xs text-zinc-400 truncate max-w-xs">
-                              {urgentAlert.modalActionUrl}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-10 text-center">
-                    <Eye className="w-10 h-10 text-zinc-300 stroke-1 mb-2" />
-                    <p className="text-sm font-medium text-zinc-700">Nenhum modal vinculado</p>
-                    <p className="text-xs text-zinc-400 mt-1 max-w-sm">
-                      Ao ativar o modal, o botão na faixa permitirá que os fiéis abram uma janela com informações completas e foto.
-                    </p>
-                  </div>
-                )}
+                <span
+                  className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+                    urgentAlert?.hasModal
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                      : 'bg-zinc-100 text-zinc-600'
+                  }`}
+                >
+                  {urgentAlert?.hasModal ? 'Habilitado' : 'Desabilitado'}
+                </span>
               </div>
 
+              {urgentAlert?.hasModal ? (
+                <div className="flex-1 flex flex-col min-h-0 space-y-4 text-xs sm:text-sm">
+                  <div className="shrink-0">
+                    <span className="text-zinc-500 text-xs block mb-0.5">Título do Modal:</span>
+                    <p className="font-semibold text-zinc-900 text-base whitespace-pre-line leading-snug">
+                      {urgentAlert.modalTitle || 'Sem título'}
+                    </p>
+                  </div>
+
+                  <div className="flex-1 flex flex-col min-h-0">
+                    <span className="text-zinc-500 text-xs block mb-1 shrink-0">Conteúdo / Descrição:</span>
+                    <div className="flex-1 min-h-[140px] overflow-y-auto whitespace-pre-line bg-zinc-50 p-3 rounded-xl border border-zinc-100 leading-relaxed font-normal text-zinc-600">
+                      {urgentAlert.modalDescription || 'Nenhuma descrição detalhada.'}
+                    </div>
+                  </div>
+
+                  {urgentAlert.modalActionText && (
+                    <div className="shrink-0">
+                      <span className="text-zinc-500 text-xs block mb-0.5">Botão de Ação:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-brand-600 bg-brand-50 border border-brand-200 px-2.5 py-1 rounded-lg inline-flex items-center gap-1">
+                          {urgentAlert.modalActionText}
+                          {urgentAlert.modalActionUrl && <ExternalLink className="w-3 h-3" />}
+                        </span>
+                        {urgentAlert.modalActionUrl && (
+                          <span className="text-xs text-zinc-400 truncate max-w-xs">
+                            {urgentAlert.modalActionUrl}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex-1 flex flex-col items-center justify-center py-10 text-center">
+                  <Eye className="w-10 h-10 text-zinc-300 stroke-1 mb-2" />
+                  <p className="text-sm font-medium text-zinc-700">Nenhum modal vinculado</p>
+                  <p className="text-xs text-zinc-400 mt-1 max-w-sm">
+                    Ao ativar o modal, o botão na faixa permitirá que os fiéis abram uma janela com informações completas e foto.
+                  </p>
+                </div>
+              )}
+
               {urgentAlert?.hasModal && urgentAlert.modalImageId && (
-                <div className="mt-5 pt-4 border-t border-zinc-100 flex items-center justify-between">
+                <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between shrink-0">
                   <span className="text-xs text-zinc-500">Cartaz / Flyer anexado:</span>
                   <ImageLightbox
                     src={getImageUrl(urgentAlert.modalImageId)}

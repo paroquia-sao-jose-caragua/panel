@@ -174,7 +174,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
 
         <div className="grid grid-cols-3 gap-4 py-3 items-start">
           <span className="text-zinc-500 text-sm">Texto da Faixa</span>
-          <span className="col-span-2 text-right text-sm text-zinc-900 font-medium">
+          <span className="col-span-2 text-right text-sm text-zinc-900 font-medium whitespace-pre-line leading-relaxed">
             {values.text || '-'}
           </span>
         </div>
@@ -207,9 +207,9 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
 
         {values.hasModal && (
           <>
-            <div className="grid grid-cols-3 gap-4 py-3 items-center">
+            <div className="grid grid-cols-3 gap-4 py-3 items-start">
               <span className="text-zinc-500 text-sm">Título do Modal</span>
-              <span className="col-span-2 text-right text-sm font-medium text-zinc-900">
+              <span className="col-span-2 text-right text-sm font-medium text-zinc-900 whitespace-pre-line leading-snug">
                 {values.modalTitle || '-'}
               </span>
             </div>
@@ -217,7 +217,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
             {values.modalDescription && (
               <div className="grid grid-cols-3 gap-4 py-3 items-start">
                 <span className="text-zinc-500 text-sm">Descrição Completa</span>
-                <span className="col-span-2 text-right text-xs text-zinc-700 line-clamp-3">
+                <span className="col-span-2 text-right text-xs text-zinc-700 whitespace-pre-line max-h-36 overflow-y-auto leading-relaxed">
                   {values.modalDescription}
                 </span>
               </div>
@@ -261,7 +261,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
                 {currentVariant.badgeText}
               </span>
             </div>
-            <DialogTitle className="text-xl sm:text-2xl font-serif text-[#14201d] font-bold">
+            <DialogTitle className="text-xl sm:text-2xl font-serif text-[#14201d] font-bold whitespace-pre-line leading-snug">
               {values.modalTitle || 'Comunicado Paroquial'}
             </DialogTitle>
             <DialogDescription className="text-xs text-stone-500">
@@ -270,11 +270,11 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
           </DialogHeader>
 
           {values.modalImageId && (
-            <div className="mt-4 rounded-xl overflow-hidden border border-stone-300 shadow-sm max-h-80 flex items-center justify-center bg-black/5">
+            <div className="mt-4 rounded-xl overflow-hidden border border-stone-300 shadow-sm">
               <img
                 src={imageUrl}
                 alt={values.modalTitle || 'Cartaz'}
-                className="w-full h-full object-contain"
+                className="w-full h-64 sm:h-80 object-cover"
               />
             </div>
           )}
