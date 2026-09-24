@@ -15,7 +15,7 @@ export default function Login() {
             height={100}
             priority
           />
-          <h1 className="text-2xl font-medium text-zinc-900 mt-4">
+          <h1 className="text-3xl font-semibold text-zinc-900 mt-4 font-serif">
             Acessar Painel
           </h1>
           <Describe className="text-center">

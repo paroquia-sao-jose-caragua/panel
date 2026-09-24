@@ -3,8 +3,10 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React, { useState } from 'react';
-import { Upload, User, Sparkles } from 'lucide-react';
+import { Upload, User, Sparkles, Trash2 } from 'lucide-react';
 import { uploadFileWithProgress } from '@/api/attachments/images/upload';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
+import { Button } from '@/components/ui/button';
 import type { ClergyPosition } from '@/entities/Clergy';
 import type { ClergyFormValues } from './types';
 
@@ -24,6 +26,7 @@ const POSITIONS: { value: ClergyPosition; label: string; defaultRole: string; de
 ];
 
 export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps) => {
+  const [confirmRemovePhoto, setConfirmRemovePhoto] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
@@ -84,11 +87,23 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
           <div className="flex flex-col items-center sm:w-44 shrink-0 mx-auto sm:mx-0">
             <div className="relative w-36 sm:w-40 aspect-3/4 rounded-2xl overflow-hidden border-2 border-[#D6A64A]/50 bg-gradient-to-b from-[#f8f3eb] to-[#e7dac7] shadow-xs flex items-center justify-center group">
               {values.photoUrl ? (
-                <img
-                  src={values.photoUrl}
-                  alt="Foto do Clérigo"
-                  className="w-full h-full object-cover object-top"
-                />
+                <>
+                  <img
+                    src={values.photoUrl}
+                    alt="Foto do Clérigo"
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon-xs"
+                    onClick={() => setConfirmRemovePhoto(true)}
+                    className="absolute top-2 right-2 rounded-full shadow z-10"
+                    title="Remover foto do clérigo"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </Button>
+                </>
               ) : (
                 <div className="flex flex-col items-center justify-center text-zinc-400 p-2 text-center">
                   <User className="w-12 h-12 mb-1 stroke-1 text-[#B8872E]/60" />
@@ -250,6 +265,19 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
           </div>
         </div>
       </div>
+
+      <DeleteConfirmationDialog
+        open={confirmRemovePhoto}
+        onOpenChange={setConfirmRemovePhoto}
+        title="Remover Foto do Clérigo"
+        description="Tem certeza que deseja remover a foto deste membro do clero?"
+        confirmText="Remover"
+        onConfirm={() => {
+          onChange('photoId', null);
+          onChange('photoUrl', null);
+          setConfirmRemovePhoto(false);
+        }}
+      />
     </div>
   );
 };

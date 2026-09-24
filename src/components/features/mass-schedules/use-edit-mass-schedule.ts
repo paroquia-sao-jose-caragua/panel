@@ -87,7 +87,7 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       monthOfYear?: number;
       startDate: string;
       endDate?: string;
-      times: { startTime: string; endTime: string }[];
+      times: { startTime: string; endTime?: string }[];
     },
     enableReinitialize: true,
     onSubmit: (values) => {

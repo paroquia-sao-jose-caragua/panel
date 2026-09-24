@@ -8,7 +8,6 @@ import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
-import { Spinner } from '@/components/ui/spinner';
 import Link from 'next/link';
 import { ClergyInfoStep } from '@/components/features/clergy/clergy-info-step';
 import { ClergyBioStep } from '@/components/features/clergy/clergy-bio-step';
@@ -174,15 +173,11 @@ export default function AddClergyPage() {
               </Button>
               <Button
                 size="lg"
-                disabled={createMutation.isPending}
+                isLoading={createMutation.isPending}
+                loadingText="Cadastrando..."
                 onClick={handleSubmit}
-                className="bg-[#18351E] hover:bg-[#27442A] text-white"
               >
-                {createMutation.isPending ? (
-                  <Spinner className="border-brand-300 border-2 w-5 h-5" />
-                ) : (
-                  'Cadastrar Clérigo'
-                )}
+                Cadastrar Clérigo
               </Button>
             </div>
           </>

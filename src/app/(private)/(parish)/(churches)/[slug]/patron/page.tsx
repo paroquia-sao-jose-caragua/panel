@@ -14,11 +14,13 @@ import {
 } from '@/components/common/input';
 import { useEditPatron } from '@/components/features/churches/edit-patron/use-edit-patron';
 import { uploadFileWithProgress } from '@/api/attachments/images/upload';
-import { User, Upload, X, Sparkles, BookOpen } from 'lucide-react';
+import { User, Upload, Trash2, Sparkles, BookOpen } from 'lucide-react';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 
 export default function EditCommunityPatronPage() {
   const { formik, isPending, community } = useEditPatron();
 
+  const [confirmRemovePhoto, setConfirmRemovePhoto] = useState(false);
   const [uploadingPatron, setUploadingPatron] = useState(false);
   const [patronProgress, setPatronProgress] = useState(0);
   const [patronError, setPatronError] = useState('');
@@ -103,14 +105,16 @@ export default function EditCommunityPatronPage() {
                         alt="Foto do Padroeiro"
                         className="w-full h-full object-cover"
                       />
-                      <button
+                      <Button
                         type="button"
-                        onClick={handleRemovePatronPhoto}
-                        className="absolute top-2 right-2 bg-red-600 text-white p-1.5 rounded-full shadow hover:bg-red-700 transition cursor-pointer"
-                        title="Remover foto"
+                        variant="destructive"
+                        size="icon-xs"
+                        onClick={() => setConfirmRemovePhoto(true)}
+                        className="absolute top-2 right-2 rounded-full shadow"
+                        title="Remover foto do padroeiro"
                       >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
                     </>
                   ) : (
                     <User className="w-12 h-12 text-[#B8872E]/60 stroke-1" />
@@ -192,30 +196,36 @@ export default function EditCommunityPatronPage() {
 
           {/* Actions Footer */}
           <div className="flex items-center justify-between pt-4 pb-12 border-t border-zinc-200">
-            <Link href={`/${community?.slug}`}>
-              <Button type="button" variant="outline" size="lg">
+            <Button asChild type="button" variant="outline" size="lg">
+              <Link href={`/${community?.slug}`}>
                 Cancelar
-              </Button>
-            </Link>
+              </Link>
+            </Button>
 
             <Button
               type="submit"
               size="lg"
-              disabled={isPending}
-              className="min-w-36 bg-[#18351E] hover:bg-[#23472b] text-white"
+              isLoading={isPending}
+              loadingText="Salvando..."
+              className="min-w-36"
             >
-              {isPending ? (
-                <>
-                  <Spinner className="w-4 h-4 mr-2" />
-                  <span>Salvando...</span>
-                </>
-              ) : (
-                'Salvar Padroeiro'
-              )}
+              Salvar Padroeiro
             </Button>
           </div>
         </form>
       </main>
+
+      <DeleteConfirmationDialog
+        open={confirmRemovePhoto}
+        onOpenChange={setConfirmRemovePhoto}
+        title="Remover Foto do Padroeiro"
+        description="Tem certeza que deseja remover a foto do padroeiro(a)? Para persistir a alteração, lembre-se de salvar o formulário."
+        confirmText="Remover"
+        onConfirm={() => {
+          handleRemovePatronPhoto();
+          setConfirmRemovePhoto(false);
+        }}
+      />
     </div>
   );
 }

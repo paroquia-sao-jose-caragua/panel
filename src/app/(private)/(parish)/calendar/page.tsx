@@ -11,6 +11,7 @@ import {
   XIcon,
 } from 'lucide-react';
 import { TypographyH1 } from '@/components/ui/typography/h1';
+import { Describe } from '@/components/ui/typography/describe';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
@@ -110,8 +111,6 @@ export default function CalendarPage() {
     setCurrentMonth((prev) => ((prev % 12) + 1) as Month);
   };
 
-  console.log({ filters });
-
   const handleRemoveFilter = (filterKey: keyof typeof filters) => {
     setFilters((prev) => {
       const newFilters = prev;
@@ -123,29 +122,30 @@ export default function CalendarPage() {
   };
 
   return (
-    <main className="max-w-300 w-full px-4 pt-30 pb-12 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
+    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
+      {/* Top Breadcrumb: Página raiz sem botão voltar e apenas o título do menu */}
       <AppBreadcrumb
         links={[
-          { key: 'origin', href: '/', title: 'Agenda', icon: CalendarIcon },
+          { key: 'calendar', href: '/calendar', title: 'Agenda', icon: CalendarIcon },
         ]}
       />
 
-      <div className="flex flex-row justify-between w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
         <TypographyH1>Agenda</TypographyH1>
 
         <div className="flex items-center gap-2">
           <Dialog open={openFilter} onOpenChange={setOpenFilter}>
             <form>
               <DialogTrigger asChild>
-                <Button variant="outline">
-                  <FunnelIcon />
-                  Filtros
+                <Button variant="outline" size="sm" className="gap-1.5 h-9 text-xs">
+                  <FunnelIcon className="w-3.5 h-3.5" />
+                  <span>Filtros</span>
                 </Button>
               </DialogTrigger>
 
               <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
-                  <DialogTitle>Filtros</DialogTitle>
+                  <DialogTitle>Filtrar Agenda</DialogTitle>
                 </DialogHeader>
 
                 <FieldGroup className="px-4 pb-4 gap-2">
@@ -194,36 +194,46 @@ export default function CalendarPage() {
             </form>
           </Dialog>
 
-          <Link href="/calendar/add-event-schedule" className="hidden md:block">
-            <Button>
-              <PlusIcon />
-              Adicionar Evento
-            </Button>
-          </Link>
+          <Button asChild size="sm" className="gap-1.5 h-9 text-xs">
+            <Link href="/calendar/add-event-schedule">
+              <PlusIcon className="w-3.5 h-3.5" />
+              <span>Adicionar Evento</span>
+            </Link>
+          </Button>
         </div>
       </div>
 
+      <Describe className="mb-6">
+        Acompanhe a agenda pastoral da paróquia, consulte as missas recorrentes e adicione eventos pontuais para cada comunidade.
+      </Describe>
+
       {Object.keys(filters).length > 0 && (
-        <div className="flex items-center flex-wrap gap-2">
-          <p className="text-sm text-zinc-500">Filtros aplicados:</p>
+        <div className="flex items-center flex-wrap gap-2 mb-4">
+          <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+            Filtros aplicados:
+          </span>
           {filters.communityId && (
-            <div className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:text-primary bg-zinc-100 border border-divider">
-              Comunidade:{' '}
-              {communities.find((c) => c.id === filters.communityId)?.name}
-              <button
-                type="button"
-                className="inline-flex shrink-0 text-xs font-medium text-muted-foreground"
-                onClick={() => handleRemoveFilter('communityId')}
-              >
-                <Tooltip>
-                  <TooltipTrigger asChild>
+            <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
+              <span className="text-zinc-500">Comunidade:</span>
+              <span className="font-semibold text-zinc-900">
+                {communities.find((c) => c.id === filters.communityId)?.name}
+              </span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-xs"
+                    className="h-4 w-4 p-0 text-zinc-400 hover:text-zinc-800 ml-1"
+                    onClick={() => handleRemoveFilter('communityId')}
+                  >
                     <XIcon className="h-3 w-3" />
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">
-                    <p>Remover</p>
-                  </TooltipContent>
-                </Tooltip>
-              </button>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Remover</p>
+                </TooltipContent>
+              </Tooltip>
             </div>
           )}
         </div>
@@ -246,37 +256,39 @@ export default function CalendarPage() {
 
       <div className="mt-8">
         {isPending && (
-          <div className="w-full rounded-lg pl-2">
-            <div className="flex items-center justify-start gap-2">
-              <p className="text-zinc-500">Carregando agenda</p>
-              <Spinner className="text-zinc-500" />
-            </div>
+          <div className="w-full bg-white border border-zinc-200/80 rounded-2xl p-10 flex flex-col items-center justify-center gap-3 shadow-xs">
+            <Spinner className="text-[#B8872E] w-6 h-6" />
+            <p className="text-sm font-medium text-zinc-600">Carregando agendamentos da agenda...</p>
           </div>
         )}
 
         {!isPending && <CalendarView schedules={data?.calendar ?? []} />}
       </div>
 
-      <div className="flex flex-row justify-between mt-8">
+      <div className="flex flex-row justify-between items-center mt-10 pt-4 border-t border-zinc-200/80">
         {prevMonth && (
           <Button
-            variant="ghost"
+            variant="outline"
+            size="sm"
             disabled={disabledPrevMonth}
             onClick={handlePrevMonth}
-            className="pl-0"
+            className="gap-1.5 text-xs h-9 shadow-2xs"
           >
-            <ChevronLeft /> {t(`month-${prevMonth}`)}
+            <ChevronLeft className="w-4 h-4" />
+            <span>{t(`month-${prevMonth}`)}</span>
           </Button>
         )}
 
         {nextMonth && (
           <Button
-            variant="ghost"
+            variant="outline"
+            size="sm"
             disabled={disabledNextMonth}
             onClick={handleNextMonth}
-            className="pr-0"
+            className="gap-1.5 text-xs h-9 shadow-2xs ml-auto"
           >
-            {t(`month-${nextMonth}`)} <ChevronRight />
+            <span>{t(`month-${nextMonth}`)}</span>
+            <ChevronRight className="w-4 h-4" />
           </Button>
         )}
       </div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { deleteEventSchedule } from '@/api/event-schedules/delete';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,7 +16,14 @@ import type { EventSchedule } from '@/entities/CalendarSchedule';
 import useCalendarStore from '@/stores/useCalendarStore';
 import { showAlert } from '@/utils/showAlert';
 import { useMutation } from '@tanstack/react-query';
-import { CircleDotIcon, MapPin, PencilIcon, Trash2Icon } from 'lucide-react';
+import {
+  CalendarDays,
+  Clock,
+  MapPin,
+  Pencil,
+  Sparkles,
+  Trash2,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ChurchAvatar } from '../churches/church-avatar';
@@ -60,70 +66,103 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
   };
 
   return (
-    <li className="group rounded-xl border border-brand-500/30 bg-brand-0/30 p-4 transition sm:p-5">
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-start gap-4">
-          <p className="font-mono text-sm tabular-nums text-muted-foreground">
-            {schedule.startTime} — {schedule.endTime}
-          </p>
+    <li className="group bg-white border border-zinc-200/80 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-[#D6A64A]/50 transition-all flex flex-col justify-between">
+      <div>
+        {/* Top Header: Time, Badges, Church Avatar */}
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Horário (sem parecer botão) */}
+            <div className="flex items-center gap-1.5 font-mono text-sm sm:text-base font-bold text-zinc-900">
+              <Clock className="w-4 h-4 text-[#B8872E]" />
+              <span>
+                {schedule.startTime}
+                {schedule.endTime ? ` — ${schedule.endTime}` : ''}
+              </span>
+            </div>
 
-          <Badge>
-            <CircleDotIcon /> Evento Único
-          </Badge>
+            {/* Event Type Badge */}
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200/80">
+              <CalendarDays className="w-3 h-3 text-blue-600" />
+              <span>{isMass ? 'Missa Pontual' : 'Evento Pontual'}</span>
+            </span>
+
+            {/* Devotional Badge */}
+            {schedule.massType === 'devotional' && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-800 border border-purple-200/80">
+                <Sparkles className="w-3 h-3 text-purple-600" />
+                <span>Devocional</span>
+              </span>
+            )}
+
+            {/* Solemnity Badge */}
+            {schedule.massType === 'solemnity' && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80">
+                <Sparkles className="w-3 h-3 text-emerald-600" />
+                <span>Solenidade</span>
+              </span>
+            )}
+
+            {/* Precept Badge */}
+            {schedule.isPrecept && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200/80">
+                Preceito
+              </span>
+            )}
+          </div>
+
+          <ChurchAvatar
+            name={schedule.community.name}
+            coverUrl={schedule.community.coverUrl}
+          />
         </div>
 
-        <ChurchAvatar
-          name={schedule.community.name}
-          coverUrl={schedule.community.coverUrl}
-        />
+        {/* Content: Title & Orientations */}
+        <div className="space-y-1">
+          <h4
+            className="text-lg sm:text-xl font-semibold text-zinc-900 leading-snug"
+            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+          >
+            {isMass ? 'Santa Missa' : schedule.title}
+            {schedule.massType === 'devotional' && schedule.title && isMass
+              ? ` Devocional — ${schedule.title}`
+              : ''}
+            {schedule.massType === 'solemnity' && schedule.title && isMass
+              ? ` Solene — ${schedule.title}`
+              : ''}
+          </h4>
+
+          {schedule.orientations && (
+            <p className="text-xs sm:text-sm text-zinc-600 font-serif leading-relaxed">
+              {schedule.orientations}
+            </p>
+          )}
+        </div>
       </div>
 
-      <div className="mt-2 flex items-end justify-between gap-4 flex-wrap">
-        <p className="text-base font-semibold text-foreground">
-          {isMass ? 'Santa Missa' : schedule.title}
-          {schedule.massType === 'devotional'
-            ? ` Devocional - ${schedule.title}`
-            : ''}
-          {schedule.massType === 'solemnity'
-            ? ` Solene - ${schedule.title}`
-            : ''}
-        </p>
-        {schedule.orientations && (
-          <p className="mt-1 text-sm text-muted-foreground">
-            {schedule.orientations}
-          </p>
-        )}
-      </div>
-
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-brand-100/50 pt-3">
-        {schedule.customLocation ? (
-          <span className="text-xs font-medium text-primary">
-            <MapPin className="h-3 w-3 inline mb-0.5" />{' '}
-            {schedule.customLocation}
+      {/* Card Footer: Location & Actions */}
+      <div className="mt-4 pt-3.5 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+          <MapPin className="w-3.5 h-3.5 text-[#B8872E] shrink-0" />
+          <span className="font-medium text-zinc-700">
+            {schedule.customLocation
+              ? schedule.customLocation
+              : `${schedule.community.type === 'parish_church' ? 'Paróquia ' : 'Capela '} ${schedule.community.name}`}
           </span>
-        ) : null}
+        </div>
 
-        {!schedule.customLocation ? (
-          <span className="text-xs font-medium text-primary">
-            <MapPin className="h-3 w-3 inline mb-0.5" />{' '}
-            {schedule.community.type === 'parish_church'
-              ? 'Paróquia '
-              : 'Capela '}
-            {schedule.community.name}
-          </span>
-        ) : null}
-
-        <div className="flex flex-row gap-4">
+        <div className="flex items-center gap-2">
           <Dialog open={openConfirmCancel} onOpenChange={setOpenConfirmCancel}>
             <form>
               <DialogTrigger asChild>
-                <button
+                <Button
                   type="button"
-                  className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:border-destructive/40 hover:text-destructive"
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5 text-zinc-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-xs h-8"
                 >
-                  Excluir
-                  <Trash2Icon className="h-3 w-3" />
-                </button>
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Excluir</span>
+                </Button>
               </DialogTrigger>
 
               <DialogContent className="sm:max-w-sm">
@@ -136,20 +175,17 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
                   </DialogDescription>
                 </DialogHeader>
 
-                <div className="mx-4 rounded-lg border border-brand-100 bg-brand-0 p-3 mb-5 space-y-2">
+                <div className="mx-4 rounded-xl border border-zinc-200 bg-zinc-50 p-3.5 mb-5 space-y-2 text-xs sm:text-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      Horário:
-                    </span>
-                    <span className="font-mono text-sm font-medium text-foreground">
-                      {schedule.startTime} — {schedule.endTime}
+                    <span className="text-zinc-500 font-medium">Horário:</span>
+                    <span className="font-mono font-semibold text-zinc-900">
+                      {schedule.startTime}
+                      {schedule.endTime ? ` — ${schedule.endTime}` : ''}
                     </span>
                   </div>
                   <div className="flex items-start justify-between gap-2">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      Tipo:
-                    </span>
-                    <span className="text-sm font-medium text-foreground text-right">
+                    <span className="text-zinc-500 font-medium">Tipo:</span>
+                    <span className="font-semibold text-zinc-900 text-right">
                       {isMass ? 'Santa Missa' : 'Compromisso Eventual'}
                       {isMass && schedule?.massType === 'devotional'
                         ? ' (Devocional)'
@@ -162,34 +198,32 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
 
                   {schedule.title && (
                     <div className="flex items-start justify-between gap-2">
-                      <span className="text-sm font-medium text-muted-foreground">
-                        Título:
-                      </span>
-                      <span className="text-sm font-medium text-foreground text-right">
+                      <span className="text-zinc-500 font-medium">Título:</span>
+                      <span className="font-semibold text-zinc-900 text-right">
                         {schedule.title}
                       </span>
                     </div>
                   )}
 
                   <div className="flex items-start justify-between gap-2">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      Local:
-                    </span>
-                    <span className="text-sm font-medium text-foreground text-right">
-                      {schedule.community.type === 'parish_church'
-                        ? 'Paróquia '
-                        : 'Capela '}
-                      {schedule.community.name}
+                    <span className="text-zinc-500 font-medium">Local:</span>
+                    <span className="font-semibold text-zinc-900 text-right">
+                      {schedule.customLocation
+                        ? schedule.customLocation
+                        : `${schedule.community.type === 'parish_church' ? 'Paróquia ' : 'Capela '} ${schedule.community.name}`}
                     </span>
                   </div>
                 </div>
 
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline">Cancelar</Button>
+                    <Button variant="outline" disabled={isPending}>
+                      Cancelar
+                    </Button>
                   </DialogClose>
                   <Button
                     type="submit"
+                    variant="destructive"
                     onClick={handleDelete}
                     disabled={isPending}
                   >
@@ -200,17 +234,19 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
             </form>
           </Dialog>
 
-          <Link
-            href={`/calendar/event-schedule/${schedule.eventScheduleId}/edit`}
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="gap-1.5 text-xs h-8"
           >
-            <button
-              type="button"
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+            <Link
+              href={`/calendar/event-schedule/${schedule.eventScheduleId}/edit`}
             >
-              Editar
-              <PencilIcon className="h-3 w-3" />
-            </button>
-          </Link>
+              <Pencil className="w-3.5 h-3.5" />
+              <span>Editar</span>
+            </Link>
+          </Button>
         </div>
       </div>
     </li>

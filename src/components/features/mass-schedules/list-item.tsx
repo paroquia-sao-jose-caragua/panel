@@ -22,7 +22,7 @@ import useTranslator from '@/hooks/use-translator';
 import useCommunityStore from '@/stores/useCommunityStore';
 import { showAlert } from '@/utils/showAlert';
 import { useMutation } from '@tanstack/react-query';
-import { PencilIcon, Trash2Icon } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback } from 'react';
 import {
@@ -98,25 +98,25 @@ export const ListItem = ({ massSchedule, type, editHref }: ListItemProps) => {
       </div>
 
       <div className="flex items-center">
-        <Link href={editHref} className="ml-4">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button type="button" variant="ghost" size="icon-lg">
-                <PencilIcon />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>Editar</p>
-            </TooltipContent>
-          </Tooltip>
-        </Link>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button asChild type="button" variant="ghost" size="icon-lg" className="ml-4">
+              <Link href={editHref}>
+                <Pencil className="w-5 h-5" />
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">
+            <p>Editar</p>
+          </TooltipContent>
+        </Tooltip>
 
         <Dialog>
           <Tooltip>
             <TooltipTrigger asChild>
               <DialogTrigger asChild>
                 <Button type="button" variant="ghost" size="icon-lg">
-                  <Trash2Icon />
+                  <Trash2 className="w-5 h-5 text-red-600" />
                 </Button>
               </DialogTrigger>
             </TooltipTrigger>
@@ -134,18 +134,18 @@ export const ListItem = ({ massSchedule, type, editHref }: ListItemProps) => {
             </DialogHeader>
             <DialogFooter>
               <DialogClose asChild>
+                <Button type="button" variant="outline" disabled={isPending}>
+                  Cancelar
+                </Button>
+              </DialogClose>
+              <DialogClose asChild>
                 <Button
                   type="button"
+                  variant="destructive"
                   onClick={handleDeleteMassSchedule}
                   disabled={isPending}
                 >
                   Excluir
-                </Button>
-              </DialogClose>
-
-              <DialogClose asChild>
-                <Button type="button" variant="outline">
-                  Cancelar
                 </Button>
               </DialogClose>
             </DialogFooter>

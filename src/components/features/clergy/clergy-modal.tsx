@@ -186,13 +186,16 @@ export const ClergyModal = ({
             </div>
           </div>
 
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-sm"
             onClick={onClose}
-            className="size-8 rounded-full bg-zinc-200/80 hover:bg-zinc-300 text-zinc-700 flex items-center justify-center transition-colors cursor-pointer"
+            className="rounded-full bg-zinc-200/80 hover:bg-zinc-300 text-zinc-700"
+            aria-label="Fechar"
           >
             <X size={16} />
-          </button>
+          </Button>
         </div>
 
         {/* Body Form */}
@@ -391,10 +394,12 @@ export const ClergyModal = ({
             </Button>
             <Button
               type="submit"
-              disabled={isSaving || !name.trim()}
-              className="rounded-full bg-[#18351E] hover:bg-[#27442A] text-white text-xs font-semibold px-6 shadow-md"
+              disabled={!name.trim()}
+              isLoading={isSaving}
+              loadingText="Salvando..."
+              className="rounded-full text-xs font-semibold px-6 shadow-md"
             >
-              {isSaving ? 'Salvando...' : clergyToEdit ? 'Salvar Alterações' : 'Cadastrar Clérigo'}
+              {clergyToEdit ? 'Salvar Alterações' : 'Cadastrar Clérigo'}
             </Button>
           </div>
         </form>

@@ -6,7 +6,6 @@ import { BackButton } from '@/components/common/back-button';
 import { CoverImage } from '@/components/common/cover-image';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Root as InputRoot,
@@ -124,26 +123,20 @@ export default function EditCommunityAboutPage() {
 
           {/* Actions Footer */}
           <div className="flex items-center justify-between pt-4 pb-12 border-t border-zinc-200">
-            <Link href={`/${community?.slug}`}>
-              <Button type="button" variant="outline" size="lg">
+            <Button asChild type="button" variant="outline" size="lg">
+              <Link href={`/${community?.slug}`}>
                 Cancelar
-              </Button>
-            </Link>
+              </Link>
+            </Button>
 
             <Button
               type="submit"
               size="lg"
-              disabled={isPending}
-              className="min-w-36 bg-[#18351E] hover:bg-[#23472b] text-white"
+              isLoading={isPending}
+              loadingText="Salvando..."
+              className="min-w-36"
             >
-              {isPending ? (
-                <>
-                  <Spinner className="w-4 h-4 mr-2" />
-                  <span>Salvando...</span>
-                </>
-              ) : (
-                'Salvar Textos'
-              )}
+              Salvar Textos
             </Button>
           </div>
         </form>

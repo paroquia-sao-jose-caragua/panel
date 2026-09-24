@@ -9,10 +9,13 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
 import { Spinner } from '@/components/ui/spinner';
+import { Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import { AnnouncementFormStep, type AnnouncementFormValues } from '@/components/features/announcements/announcement-form-step';
 import { AnnouncementConfirmStep } from '@/components/features/announcements/announcement-confirm-step';
-import { listAnnouncements, editAnnouncement } from '@/api/announcements';
+import { listAnnouncements, editAnnouncement, deleteAnnouncement } from '@/api/announcements';
+import { showAlert } from '@/utils/showAlert';
 
 export default function EditAnnouncementPage({
   params,
@@ -25,6 +28,7 @@ export default function EditAnnouncementPage({
 
   const [activeStep, setActiveStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [confirmDeleteAnnouncement, setConfirmDeleteAnnouncement] = useState(false);
 
   const [values, setValues] = useState<AnnouncementFormValues>({
     title: '',
@@ -79,10 +83,23 @@ export default function EditAnnouncementPage({
     mutationFn: (payload: Parameters<typeof editAnnouncement>[1]) => editAnnouncement(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['announcements'] });
+      showAlert('Banner / Comunicado atualizado com sucesso!');
       router.replace('/announcements');
     },
     onError: (err: Error) => {
-      alert(err?.message || 'Erro ao salvar alterações.');
+      showAlert(`Erro ao salvar alterações: ${err.message}`);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteAnnouncement(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['announcements'] });
+      showAlert('Banner / Comunicado excluído com sucesso!');
+      router.replace('/announcements');
+    },
+    onError: (err: Error) => {
+      showAlert(`Erro ao excluir banner: ${err.message}`);
     },
   });
 
@@ -201,6 +218,42 @@ export default function EditAnnouncementPage({
                 </div>
               </>
             )}
+
+            {/* DANGER ZONE: Opções Avançadas / Exclusão discreta do Banner */}
+            <div className="mt-14 pt-8 border-t border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block">
+                  Gerenciamento do Registro
+                </span>
+                <p className="text-xs text-zinc-400 mt-0.5">
+                  Excluir este banner removerá permanentemente as imagens e informações cadastradas do site.
+                </p>
+              </div>
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setConfirmDeleteAnnouncement(true)}
+                className="text-xs text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Excluir Banner</span>
+              </Button>
+            </div>
+
+            <DeleteConfirmationDialog
+              open={confirmDeleteAnnouncement}
+              onOpenChange={setConfirmDeleteAnnouncement}
+              title="Excluir Banner / Comunicado"
+              itemName={values.title || 'este banner'}
+              description={`Tem certeza que deseja excluir o banner "${values.title || 'selecionado'}"? Esta ação é irreversível e o banner não será mais exibido no site.`}
+              isPending={deleteMutation.isPending}
+              onConfirm={async () => {
+                await deleteMutation.mutateAsync();
+                setConfirmDeleteAnnouncement(false);
+              }}
+            />
           </>
         )}
       </main>

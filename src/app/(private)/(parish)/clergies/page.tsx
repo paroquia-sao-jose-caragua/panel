@@ -7,11 +7,12 @@ import Link from 'next/link';
 import {
   Users,
   Plus,
-  Pen,
-  Trash2,
+  Pencil,
   Sparkles,
   Church,
   Shield,
+  UsersIcon,
+  PlusIcon,
 } from 'lucide-react';
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { TypographyH1 } from '@/components/ui/typography/h1';
@@ -22,13 +23,7 @@ import { useClergy } from '@/api/clergy/use-clergy';
 import type { Clergy } from '@/entities/Clergy';
 
 export default function ClergiesPage() {
-  const { clergy, isPending, deleteClergy } = useClergy();
-
-  const handleDelete = async (id: string, name: string) => {
-    if (confirm(`Tem certeza que deseja remover "${name}" da lista de clérigos?`)) {
-      await deleteClergy(id);
-    }
-  };
+  const { clergy, isPending } = useClergy();
 
   const mainMember =
     clergy.find((m) => m.isMain || m.position === 'parish_priest') || clergy[0];
@@ -46,23 +41,24 @@ export default function ClergiesPage() {
   return (
     <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
       {/* Top Breadcrumb & Action */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <AppBreadcrumb
-          links={[
-            { key: 'origin', href: '/', title: 'Início', icon: Church },
-            { key: 'clergies', href: '/clergies', title: 'Clérigos e Autoridades' },
-          ]}
-        />
+      <AppBreadcrumb
+        links={[
+          { key: 'origin', href: '/', title: 'Clérigos', icon: UsersIcon },
+        ]}
+      />
 
-        <Link href="/clergies/add">
-          <Button className="rounded-full bg-[#18351E] hover:bg-[#27442A] text-white text-xs font-semibold px-5 h-9 gap-1.5 shadow-md">
-            <Plus className="w-4 h-4 text-[#D6A64A]" />
-            <span>Adicionar Clérigo</span>
-          </Button>
-        </Link>
+      <div className="flex flex-row justify-between items-center w-full">
+        <TypographyH1>Quem nos conduz na fé</TypographyH1>
+
+        <div className="hidden items-center md:flex">
+          <Link href="/clergies/add">
+            <Button size="lg">
+              <PlusIcon />
+              Adicionar Clérigo
+            </Button>
+          </Link>
+        </div>
       </div>
-
-      <TypographyH1>Clérigos e Autoridades</TypographyH1>
 
       <Describe>
         Gerencie os sacerdotes, diáconos e autoridades religiosas que conduzem nossa
@@ -117,12 +113,12 @@ export default function ClergiesPage() {
             <p className="text-sm text-zinc-500 max-w-md mx-auto mb-6">
               Cadastre o pároco, diáconos, bispo ou outras autoridades religiosas da paróquia.
             </p>
-            <Link href="/clergies/add">
-              <Button className="rounded-full bg-[#18351E] hover:bg-[#27442A] text-white text-xs font-semibold px-6 shadow-md">
+            <Button asChild size="sm" className="rounded-full px-6 shadow-md gap-1.5">
+              <Link href="/clergies/add">
                 <Plus className="w-4 h-4 mr-1.5" />
                 <span>Adicionar primeiro clérigo</span>
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         ) : (
           <>
@@ -151,7 +147,7 @@ export default function ClergiesPage() {
                           {mainMember.roleName || 'PÁROCO'}
                         </span>
                         <h2
-                          className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-zinc-900 leading-tight"
+                          className="text-2xl md:text-4xl font-semibold text-zinc-900 leading-tight"
                           style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
                           {mainMember.name}
@@ -159,24 +155,16 @@ export default function ClergiesPage() {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <Link href={`/clergies/edit/${mainMember.id}`}>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="gap-1.5 text-xs h-8 px-3 rounded-full border-zinc-300 hover:bg-zinc-100"
-                          >
-                            <Pen className="w-3.5 h-3.5" />
-                            <span>Editar</span>
-                          </Button>
-                        </Link>
                         <Button
+                          asChild
                           variant="outline"
                           size="sm"
-                          onClick={() => handleDelete(mainMember.id, mainMember.name)}
-                          className="text-xs h-8 px-2.5 rounded-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-                          title="Excluir"
+                          className="gap-1.5"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Link href={`/clergies/edit/${mainMember.id}`}>
+                            <Pencil className="w-3.5 h-3.5" />
+                            <span>Editar</span>
+                          </Link>
                         </Button>
                       </div>
                     </div>
@@ -187,7 +175,7 @@ export default function ClergiesPage() {
                       </p>
                     )}
 
-                    <p className="text-sm text-zinc-600 font-serif leading-relaxed mb-6 line-clamp-4 md:line-clamp-5">
+                    <p className="text-sm md:text-base text-zinc-600 font-serif leading-relaxed mb-6 line-clamp-4 md:line-clamp-5">
                       {mainMember.bio || 'Nenhuma biografia informada.'}
                     </p>
                   </div>
@@ -200,81 +188,90 @@ export default function ClergiesPage() {
               </div>
             )}
 
-            {/* 2. Other Members Grid */}
-            {otherMembers.length > 0 && (
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <Shield className="w-5 h-5 text-zinc-700" />
-                    <h3
-                      className="text-xl sm:text-2xl font-semibold text-zinc-900"
-                      style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                    >
-                      Outros Ministros e Pastores
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                  {otherMembers.map((member) => (
-                    <div
-                      key={member.id}
-                      className="group bg-white border border-[#D6A64A]/30 sm:border-zinc-200/80 rounded-2xl p-5 flex flex-col items-center text-center shadow-xs hover:shadow-md hover:border-[#B8872E] transition-all"
-                    >
-                      {/* Circular Portrait Photo */}
-                      <div className="relative size-32 aspect-square mb-4 overflow-hidden rounded-full border-2 border-[#D6A64A]/50 shadow-xs bg-gradient-to-b from-[#f8f3eb] to-[#e7dac7] flex items-center justify-center">
-                        <img
-                          src={getFallbackPhoto(member)}
-                          alt={member.name}
-                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-
-                      {/* Role */}
-                      <span className="text-[11px] font-semibold text-[#B8872E] uppercase tracking-wider mb-1">
-                        {member.roleName || member.title || 'Ministro'}
-                      </span>
-
-                      {/* Name */}
-                      <h4
-                        className="text-lg font-semibold text-zinc-900 leading-snug mb-2 line-clamp-1"
-                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                      >
-                        {member.name}
-                      </h4>
-
-                      {/* Short Intro / Bio */}
-                      <p className="text-xs text-zinc-600 font-serif leading-relaxed line-clamp-3 mb-4 px-2">
-                        {member.shortIntro || member.bio || 'Sem descrição cadastrada.'}
-                      </p>
-
-                      {/* Card Actions */}
-                      <div className="flex items-center gap-2 mt-auto pt-3 border-t border-zinc-100 w-full justify-center">
-                        <Link href={`/clergies/edit/${member.id}`} className="flex-1">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-xs h-8 px-3 rounded-full gap-1 border-zinc-300 hover:bg-zinc-100 w-full"
-                          >
-                            <Pen className="w-3.5 h-3.5" />
-                            <span>Editar</span>
-                          </Button>
-                        </Link>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDelete(member.id, member.name)}
-                          className="text-xs h-8 px-2.5 rounded-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-                          title="Excluir"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+            {/* 2. Other Members Grid & Add Clergy Card */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <UsersIcon className="w-5 h-5 text-zinc-700" />
+                  <h3
+                    className="text-2xl md:text-3xl font-semibold text-zinc-900"
+                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                  >
+                    Outros Ministros e Pastores
+                  </h3>
                 </div>
               </div>
-            )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                {otherMembers.map((member) => (
+                  <div
+                    key={member.id}
+                    className="group bg-white border border-[#D6A64A]/30 sm:border-zinc-200/80 rounded-2xl p-5 flex flex-col items-center text-center shadow-xs hover:shadow-md hover:border-[#B8872E] transition-all"
+                  >
+                    {/* Circular Portrait Photo */}
+                    <div className="relative size-32 aspect-square mb-4 overflow-hidden rounded-full border-2 border-[#D6A64A]/50 shadow-xs bg-gradient-to-b from-[#f8f3eb] to-[#e7dac7] flex items-center justify-center">
+                      <img
+                        src={getFallbackPhoto(member)}
+                        alt={member.name}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+
+                    {/* Role */}
+                    <span className="text-[11px] font-semibold text-[#B8872E] uppercase tracking-wider mb-1">
+                      {member.roleName || member.title || 'Ministro'}
+                    </span>
+
+                    {/* Name */}
+                    <h4
+                      className="text-lg font-semibold text-zinc-900 leading-snug mb-2 line-clamp-1"
+                      style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                    >
+                      {member.name}
+                    </h4>
+
+                    {/* Short Intro / Bio */}
+                    <p className="text-xs text-zinc-600 font-serif leading-relaxed line-clamp-3 mb-4 px-2">
+                      {member.shortIntro || member.bio || 'Sem descrição cadastrada.'}
+                    </p>
+
+                    {/* Card Actions */}
+                    <div className="flex items-center gap-2 mt-auto pt-3 border-t border-zinc-100 w-full justify-center">
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="gap-1.5 w-full"
+                      >
+                        <Link href={`/clergies/edit/${member.id}`}>
+                          <Pencil className="w-3.5 h-3.5" />
+                          <span>Editar</span>
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Add Clergy Action Card */}
+                <Link
+                  href="/clergies/add"
+                  className="group bg-zinc-50/60 border-2 border-dashed border-[#D6A64A]/40 hover:border-[#B8872E] rounded-2xl p-5 flex flex-col items-center justify-center text-center shadow-xs hover:shadow-md hover:bg-[#fefbf6] transition-all cursor-pointer min-h-[260px]"
+                >
+                  <div className="w-12 h-12 rounded-full bg-[#fef8ed] border border-[#D6A64A]/40 flex items-center justify-center text-[#B8872E] group-hover:scale-110 transition-transform mb-3">
+                    <Plus className="w-6 h-6" strokeWidth={2} />
+                  </div>
+                  <h4
+                    className="text-base font-semibold text-zinc-900 group-hover:text-[#B8872E] transition-colors mb-1"
+                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                  >
+                    Adicionar clérigo
+                  </h4>
+                  <p className="text-xs text-zinc-500 max-w-[180px]">
+                    Cadastre um novo sacerdote, diácono ou autoridade
+                  </p>
+                </Link>
+              </div>
+            </div>
           </>
         )}
       </div>

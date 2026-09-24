@@ -10,20 +10,12 @@ interface UpdateMassScheduleResponse {
     dayOfWeek?: number;
     active: boolean;
     startDate: string;
-    times: [
-      {
-        id: string;
-        scheduleId: string;
-        startTime: string;
-        endTime: string;
-      },
-      {
-        id: string;
-        scheduleId: string;
-        startTime: string;
-        endTime: string;
-      },
-    ];
+    times: {
+      id: string;
+      scheduleId: string;
+      startTime: string;
+      endTime?: string;
+    }[];
   };
   statusCode: number;
   message: string;
@@ -46,7 +38,7 @@ export const updateMassSchedule = async ({
   startDate?: string;
   endDate?: string;
   active?: boolean;
-  times: { startTime: string; endTime: string }[];
+  times: { startTime: string; endTime?: string }[];
 }) => {
   const result = await massSchedulesApi<UpdateMassScheduleResponse>(
     `/${massScheduleId}`,

@@ -16,12 +16,14 @@ import {
   Smartphone,
   CheckCircle2,
   AlertCircle,
-  X,
+  Trash2,
 } from 'lucide-react';
 import { uploadFileWithProgress } from '@/api/attachments/images/upload';
 import { Spinner } from '@/components/ui/spinner';
 import { ImageLightbox } from '@/components/ui/image-lightbox';
 import { apiBaseUrl } from '@/api/utils/api';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
+import { Button } from '@/components/ui/button';
 
 export interface AnnouncementFormValues {
   title: string;
@@ -49,6 +51,7 @@ export const AnnouncementFormStep = ({
   onChange,
   errors,
 }: AnnouncementFormStepProps) => {
+  const [slotToRemove, setSlotToRemove] = useState<'tablet' | 'mobile' | null>(null);
   const [uploadingDesktop, setUploadingDesktop] = useState(false);
   const [progressDesktop, setProgressDesktop] = useState(0);
 
@@ -310,14 +313,16 @@ export const AnnouncementFormStep = ({
                   <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Enviada
                   </span>
-                  <button
+                  <Button
                     type="button"
-                    onClick={() => onChange('coverTabletId', '')}
-                    className="text-zinc-400 hover:text-red-600 p-1"
+                    variant="ghost"
+                    size="icon-xs"
+                    onClick={() => setSlotToRemove('tablet')}
+                    className="text-zinc-400 hover:text-red-600 hover:bg-red-50"
                     title="Remover versão tablet"
                   >
-                    <X className="w-4 h-4" />
-                  </button>
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </Button>
                 </div>
               )}
             </div>
@@ -362,14 +367,16 @@ export const AnnouncementFormStep = ({
                   <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Enviada
                   </span>
-                  <button
+                  <Button
                     type="button"
-                    onClick={() => onChange('coverMobileId', '')}
-                    className="text-zinc-400 hover:text-red-600 p-1"
+                    variant="ghost"
+                    size="icon-xs"
+                    onClick={() => setSlotToRemove('mobile')}
+                    className="text-zinc-400 hover:text-red-600 hover:bg-red-50"
                     title="Remover versão mobile"
                   >
-                    <X className="w-4 h-4" />
-                  </button>
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </Button>
                 </div>
               )}
             </div>
@@ -422,6 +429,22 @@ export const AnnouncementFormStep = ({
           onCheckedChange={(checked) => onChange('active', checked)}
         />
       </div>
+
+      <DeleteConfirmationDialog
+        open={slotToRemove !== null}
+        onOpenChange={(open) => !open && setSlotToRemove(null)}
+        title={slotToRemove === 'tablet' ? 'Remover Banner Tablet' : 'Remover Banner Mobile'}
+        description={`Tem certeza que deseja remover a imagem da versão ${slotToRemove === 'tablet' ? 'Tablet' : 'Mobile'} deste comunicado?`}
+        confirmText="Remover"
+        onConfirm={() => {
+          if (slotToRemove === 'tablet') {
+            onChange('coverTabletId', '');
+          } else if (slotToRemove === 'mobile') {
+            onChange('coverMobileId', '');
+          }
+          setSlotToRemove(null);
+        }}
+      />
     </div>
   );
 };

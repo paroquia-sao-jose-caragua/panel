@@ -2,10 +2,13 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Church,
   MapPin,
-  Pen,
+  Edit,
+  Pencil,
   ExternalLink,
   FileText,
   ImageIcon,
@@ -22,12 +25,16 @@ import {
   Phone,
   Mail,
   Clock,
+  Trash2,
 } from 'lucide-react';
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunity } from '@/api/communities/use-community';
 import { useMassSchedules } from '@/api/communities/mass-schedules/use-mass-schedules';
+import { deleteCommunity } from '@/api/communities/delete';
+import { showAlert } from '@/utils/showAlert';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import useTranslator from '@/hooks/use-translator';
 
 const WEEKDAYS = [
@@ -56,16 +63,31 @@ const MONTHS = [
 ];
 
 export default function ChurchPage() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { community, isPending: isCommunityPending } = useCommunity();
   const { massSchedules, isPending: isSchedulesPending } = useMassSchedules();
   const { t } = useTranslator();
 
   const photos = community?.photos || [];
 
+  const [confirmDeleteCommunity, setConfirmDeleteCommunity] = React.useState(false);
   const [showAllOrdinary, setShowAllOrdinary] = React.useState(false);
   const [showAllDevotional, setShowAllDevotional] = React.useState(false);
   const [showAllAnnual, setShowAllAnnual] = React.useState(false);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteCommunity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['communities'] });
+      showAlert('Comunidade excluída com sucesso!');
+      router.replace('/');
+    },
+    onError: (err: Error) => {
+      showAlert(`Erro ao excluir comunidade: ${err.message}`);
+    },
+  });
 
   React.useEffect(() => {
     const photosCount = photos.length;
@@ -197,27 +219,29 @@ export default function ChurchPage() {
         />
 
         <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
-          <Link href={`/${community?.slug}/edit`}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 text-xs h-9 px-3 border-zinc-300 text-zinc-800 hover:bg-zinc-100"
-            >
-              <Pen className="w-3.5 h-3.5" />
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+          >
+            <Link href={`/${community?.slug}/edit`}>
+              <Pencil className="w-3.5 h-3.5" />
               <span>Editar Dados Principais</span>
-            </Button>
-          </Link>
+            </Link>
+          </Button>
 
           {community?.slug && (
-            <a
-              href={publicPageUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#18351E] hover:bg-[#23472b] text-white text-xs font-semibold transition-all shadow-xs shrink-0 h-9"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>Ver página no site público</span>
-            </a>
+            <Button asChild size="sm" className="gap-2 text-xs h-9">
+              <a
+                href={publicPageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Ver página no site público</span>
+              </a>
+            </Button>
           )}
         </div>
       </div>
@@ -301,16 +325,17 @@ export default function ChurchPage() {
                   {community?.aboutTitle || 'Sobre a Comunidade'}
                 </h3>
               </div>
-              <Link href={`/${community?.slug}/about`}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-1.5 text-xs h-7.5 px-2.5"
-                >
-                  <Pen className="w-3 h-3" />
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="gap-1.5"
+              >
+                <Link href={`/${community?.slug}/about`}>
+                  <Edit className="w-3.5 h-3.5" />
                   <span>Editar texto</span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
 
             <p className="text-xs sm:text-sm text-zinc-600 font-serif leading-relaxed line-clamp-5">
@@ -342,16 +367,17 @@ export default function ChurchPage() {
                   Padroeiro(a) da Comunidade
                 </h3>
               </div>
-              <Link href={`/${community?.slug}/patron`}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-1.5 text-xs h-7.5 px-2.5"
-                >
-                  <Pen className="w-3 h-3" />
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="gap-1.5"
+              >
+                <Link href={`/${community?.slug}/patron`}>
+                  <Pencil className="w-3.5 h-3.5" />
                   <span>Editar</span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
 
             {community?.patronName || community?.patronPhotoUrl || community?.patronDescription ? (
@@ -399,16 +425,17 @@ export default function ChurchPage() {
               Galeria de Fotos
             </h2>
           </div>
-          <Link href={`/${community?.slug}/gallery`}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 text-xs h-7.5 px-2.5"
-            >
-              <Pen className="w-3 h-3" />
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+          >
+            <Link href={`/${community?.slug}/gallery`}>
+              <Pencil className="w-3.5 h-3.5" />
               <span>Editar galeria</span>
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         {!photos || photos.length === 0 ? (
@@ -430,11 +457,12 @@ export default function ChurchPage() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3">
             {photos.map((photo, index) => (
-              <button
+              <Button
                 key={photo.id || photo.photoId || index}
                 type="button"
+                variant="ghost"
                 onClick={() => setLightboxIndex(index)}
-                className="group relative aspect-4/3 rounded-xl overflow-hidden border border-zinc-200/80 bg-zinc-100 shadow-xs cursor-pointer text-left focus:outline-hidden focus:ring-2 focus:ring-[#B8872E] transition-transform hover:scale-[1.02]"
+                className="group relative aspect-4/3 h-auto w-full p-0 rounded-xl overflow-hidden border border-zinc-200/80 bg-zinc-100 shadow-xs hover:bg-zinc-100 hover:scale-[1.02] text-left block"
               >
                 <img
                   src={
@@ -453,7 +481,7 @@ export default function ChurchPage() {
                     </span>
                   </div>
                 )}
-              </button>
+              </Button>
             ))}
           </div>
         )}
@@ -475,14 +503,16 @@ export default function ChurchPage() {
                 {lightboxIndex + 1} / {photos.length}
               </span>
 
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon-sm"
                 onClick={() => setLightboxIndex(null)}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                className="rounded-full bg-white/10 hover:bg-white/20 text-white hover:text-white"
                 aria-label="Fechar galeria"
               >
                 <X className="w-5 h-5" />
-              </button>
+              </Button>
             </div>
 
             {/* Center Image with Navigation */}
@@ -491,18 +521,20 @@ export default function ChurchPage() {
               onClick={(e) => e.stopPropagation()}
             >
               {photos.length > 1 && (
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon"
                   onClick={() =>
                     setLightboxIndex(
                       (lightboxIndex - 1 + photos.length) % photos.length
                     )
                   }
-                  className="absolute left-2 sm:left-4 z-20 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm border border-white/10 transition-all cursor-pointer hover:scale-105"
+                  className="absolute left-2 sm:left-4 z-20 rounded-full bg-black/60 hover:bg-black/80 text-white hover:text-white backdrop-blur-sm border border-white/10 hover:scale-105"
                   aria-label="Foto anterior"
                 >
                   <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-                </button>
+                </Button>
               )}
 
               <img
@@ -517,16 +549,18 @@ export default function ChurchPage() {
               />
 
               {photos.length > 1 && (
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon"
                   onClick={() =>
                     setLightboxIndex((lightboxIndex + 1) % photos.length)
                   }
-                  className="absolute right-2 sm:right-4 z-20 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm border border-white/10 transition-all cursor-pointer hover:scale-105"
+                  className="absolute right-2 sm:right-4 z-20 rounded-full bg-black/60 hover:bg-black/80 text-white hover:text-white backdrop-blur-sm border border-white/10 hover:scale-105"
                   aria-label="Próxima foto"
                 >
                   <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-                </button>
+                </Button>
               )}
             </div>
 
@@ -558,16 +592,17 @@ export default function ChurchPage() {
               Horários de Missa
             </h2>
           </div>
-          <Link href={`/${community?.slug}/add-ordinary-mass`}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 text-xs h-7.5 px-2.5"
-            >
-              <Pen className="w-3 h-3" />
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+          >
+            <Link href={`/${community?.slug}/add-ordinary-mass`}>
+              <Pencil className="w-3.5 h-3.5" />
               <span>Editar horários</span>
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         {/* 3 Columns Grid for Masses */}
@@ -623,10 +658,11 @@ export default function ChurchPage() {
             </div>
 
             {ordinaryMasses.length > 3 && (
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => setShowAllOrdinary((prev) => !prev)}
-                className="flex items-center gap-1.5 px-4 py-2.5 text-xs text-[#18351E] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full text-left transition-colors cursor-pointer"
+                className="flex items-center justify-start gap-1.5 px-4 py-2.5 text-xs text-[#18351E] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full rounded-none h-auto"
               >
                 {showAllOrdinary ? (
                   <>
@@ -639,7 +675,7 @@ export default function ChurchPage() {
                     <span>Ver mais horários</span>
                   </>
                 )}
-              </button>
+              </Button>
             )}
           </div>
 
@@ -692,10 +728,11 @@ export default function ChurchPage() {
             </div>
 
             {devotionalMasses.length > 3 && (
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => setShowAllDevotional((prev) => !prev)}
-                className="flex items-center gap-1.5 px-4 py-2.5 text-xs text-[#8c6016] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full text-left transition-colors cursor-pointer"
+                className="flex items-center justify-start gap-1.5 px-4 py-2.5 text-xs text-[#8c6016] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full rounded-none h-auto"
               >
                 {showAllDevotional ? (
                   <>
@@ -708,7 +745,7 @@ export default function ChurchPage() {
                     <span>Ver mais horários</span>
                   </>
                 )}
-              </button>
+              </Button>
             )}
           </div>
 
@@ -761,10 +798,11 @@ export default function ChurchPage() {
             </div>
 
             {annualMasses.length > 3 && (
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => setShowAllAnnual((prev) => !prev)}
-                className="flex items-center gap-1.5 px-4 py-2.5 text-xs text-[#1e446d] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full text-left transition-colors cursor-pointer"
+                className="flex items-center justify-start gap-1.5 px-4 py-2.5 text-xs text-[#1e446d] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full rounded-none h-auto"
               >
                 {showAllAnnual ? (
                   <>
@@ -777,11 +815,50 @@ export default function ChurchPage() {
                     <span>Ver mais horários</span>
                   </>
                 )}
-              </button>
+              </Button>
             )}
           </div>
         </div>
       </div>
+
+      {/* 4. DANGER ZONE: Opções Avançadas / Exclusão discreta da Comunidade */}
+      {!isCommunityPending && community && (
+        <div className="mt-14 pt-8 border-t border-zinc-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block">
+              Gerenciamento da Comunidade
+            </span>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Excluir esta comunidade removerá permanentemente suas fotos, horários e textos cadastrados.
+            </p>
+          </div>
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setConfirmDeleteCommunity(true)}
+            className="text-xs text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Excluir Comunidade</span>
+          </Button>
+        </div>
+      )}
+
+      <DeleteConfirmationDialog
+        open={confirmDeleteCommunity}
+        onOpenChange={setConfirmDeleteCommunity}
+        title="Excluir Comunidade"
+        itemName={displayName}
+        description={`Tem certeza que deseja excluir a comunidade "${displayName}"? Esta ação é irreversível e excluirá permanentemente todos os horários de missas, textos e fotos associados.`}
+        isPending={deleteMutation.isPending}
+        onConfirm={async () => {
+          if (!community?.id) return;
+          await deleteMutation.mutateAsync(community.id);
+          setConfirmDeleteCommunity(false);
+        }}
+      />
     </main>
   );
 }

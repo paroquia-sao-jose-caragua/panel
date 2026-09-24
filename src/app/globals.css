@@ -62,8 +62,10 @@
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-sans);
+  --font-heading: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-lora: var(--font-lora), 'Lora', Georgia, serif;
+  --font-sans: var(--font-inter), sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -137,7 +139,10 @@
   --sidebar-accent-foreground: #fff8f0;
   --sidebar-border: #d6a64a;
   --sidebar-ring: #bb8835;
-  --font-sans: var(--font-inter);
+  --font-heading: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-lora: var(--font-lora), 'Lora', Georgia, serif;
+  --font-sans: var(--font-inter), sans-serif;
 
   --paroquia-green: #18351e;
   --paroquia-green-deep: #102415;
@@ -192,6 +197,11 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: -0.01em;
   }
   html {
     @apply font-sans;

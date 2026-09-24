@@ -9,13 +9,16 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
 import { Spinner } from '@/components/ui/spinner';
+import { Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import { ClergyInfoStep } from '@/components/features/clergy/clergy-info-step';
 import { ClergyBioStep } from '@/components/features/clergy/clergy-bio-step';
 import { ClergyConfirmStep } from '@/components/features/clergy/clergy-confirm-step';
 import type { ClergyFormValues } from '@/components/features/clergy/types';
 import { listClergy } from '@/api/clergy/list';
 import { editClergy } from '@/api/clergy/edit';
+import { deleteClergy } from '@/api/clergy/delete';
 import { showAlert } from '@/utils/showAlert';
 
 export default function EditClergyPage({
@@ -29,6 +32,7 @@ export default function EditClergyPage({
 
   const [activeStep, setActiveStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [confirmDeleteClergy, setConfirmDeleteClergy] = useState(false);
 
   const [values, setValues] = useState<ClergyFormValues>({
     name: '',
@@ -89,6 +93,18 @@ export default function EditClergyPage({
     },
     onError: (err: Error) => {
       showAlert(`Erro ao salvar alterações: ${err.message}`);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (clergyId: string) => deleteClergy(clergyId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['clergy'] });
+      showAlert('Membro do clero excluído com sucesso!');
+      router.replace('/clergies');
+    },
+    onError: (err: Error) => {
+      showAlert(`Erro ao excluir membro do clero: ${err.message}`);
     },
   });
 
@@ -213,19 +229,51 @@ export default function EditClergyPage({
                   </Button>
                   <Button
                     size="lg"
-                    disabled={editMutation.isPending}
+                    isLoading={editMutation.isPending}
+                    loadingText="Salvando..."
                     onClick={handleSubmit}
-                    className="bg-[#18351E] hover:bg-[#27442A] text-white"
                   >
-                    {editMutation.isPending ? (
-                      <Spinner className="border-brand-300 border-2 w-5 h-5" />
-                    ) : (
-                      'Salvar Alterações'
-                    )}
+                    Salvar Alterações
                   </Button>
                 </div>
               </>
             )}
+
+            {/* DANGER ZONE: Opções Avançadas / Exclusão discreta do Clérigo */}
+            <div className="mt-14 pt-8 border-t border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block">
+                  Gerenciamento do Registro
+                </span>
+                <p className="text-xs text-zinc-400 mt-0.5">
+                  Excluir este membro removerá permanentemente suas informações, biografia e foto do site.
+                </p>
+              </div>
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setConfirmDeleteClergy(true)}
+                className="text-xs text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Excluir Clérigo</span>
+              </Button>
+            </div>
+
+            <DeleteConfirmationDialog
+              open={confirmDeleteClergy}
+              onOpenChange={setConfirmDeleteClergy}
+              title="Excluir Clérigo"
+              itemName={values.name || 'Membro do clero'}
+              description={`Tem certeza que deseja excluir "${values.name || 'este membro'}"? Esta ação é irreversível e removerá todos os dados e fotos associados.`}
+              isPending={deleteMutation.isPending}
+              onConfirm={async () => {
+                await deleteMutation.mutateAsync(id);
+                setConfirmDeleteClergy(false);
+              }}
+            />
           </>
         )}
       </main>

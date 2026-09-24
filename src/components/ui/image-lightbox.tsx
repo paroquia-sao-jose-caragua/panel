@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Maximize2, X, ZoomIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from './button';
 
 interface ImageLightboxProps {
   src: string;
@@ -97,12 +98,15 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
               {label && <span className="font-semibold text-sm sm:text-base">{label}</span>}
             </div>
 
-            <button
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/25 focus:outline-none"
+              className="rounded-full bg-white/10 hover:bg-white/25 text-white hover:text-white px-3 py-1.5 text-xs font-semibold gap-1.5"
             >
               <X className="h-4 w-4" /> Fechar (ESC)
-            </button>
+            </Button>
           </div>
 
           {/* Centered Image */}

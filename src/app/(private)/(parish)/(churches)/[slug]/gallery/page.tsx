@@ -26,6 +26,7 @@ import useCommunityStore from '@/stores/useCommunityStore';
 import { uploadFileWithProgress } from '@/api/attachments/images/upload';
 import { updateCommunityPhotos } from '@/api/communities/photos/update';
 import { showAlert } from '@/utils/showAlert';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 
 interface GalleryItem {
   id?: string;
@@ -41,6 +42,7 @@ export default function ChurchGalleryPage() {
   const { setCommunity } = useCommunityStore();
 
   const [photos, setPhotos] = useState<GalleryItem[]>([]);
+  const [photoIndexToDelete, setPhotoIndexToDelete] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState('');
@@ -319,7 +321,7 @@ export default function ChurchGalleryPage() {
                       variant="ghost"
                       size="icon-sm"
                       className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      onClick={() => handleRemovePhoto(index)}
+                      onClick={() => setPhotoIndexToDelete(index)}
                       title="Remover foto"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -353,6 +355,20 @@ export default function ChurchGalleryPage() {
           </Button>
         </div>
       </main>
+
+      <DeleteConfirmationDialog
+        open={photoIndexToDelete !== null}
+        onOpenChange={(open) => !open && setPhotoIndexToDelete(null)}
+        title="Remover Foto da Galeria"
+        description="Tem certeza que deseja remover esta foto da galeria? Para persistir a alteração, lembre-se de salvar a galeria ao final."
+        confirmText="Remover"
+        onConfirm={() => {
+          if (photoIndexToDelete !== null) {
+            handleRemovePhoto(photoIndexToDelete);
+            setPhotoIndexToDelete(null);
+          }
+        }}
+      />
     </div>
   );
 }

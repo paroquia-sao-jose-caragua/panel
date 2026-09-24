@@ -14,19 +14,12 @@ import { CoverImage } from '@/components/common/cover-image';
 import { InfoFormStep } from '@/components/features/mass-schedules/devotional-mass/info-form-step';
 import { ConfirmStep } from '@/components/features/mass-schedules/devotional-mass/confirm-step';
 import { Trash2 } from 'lucide-react';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 
 export default function EditDevotionalMassPage() {
   const [activeStep, setActiveStep] = React.useState(1);
+  const [confirmDeleteMassSchedule, setConfirmDeleteMassSchedule] =
+    React.useState(false);
 
   const { community } = useCommunity();
 
@@ -96,60 +89,12 @@ export default function EditDevotionalMassPage() {
         {activeStep === 1 && (
           <>
             <InfoFormStep formik={formik} />
-            <div className="flex flex-wrap gap-3 pt-4 mt-8 justify-between items-center border-t border-divider">
-              <div className="flex items-center gap-2">
-                <Link href={`/${community?.slug}`}>
-                  <Button variant="outline" size="lg">
-                    Cancelar
-                  </Button>
-                </Link>
-
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="lg"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-2 cursor-pointer"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      <span>Excluir Horário</span>
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Excluir horário de missa devocional?</DialogTitle>
-                      <DialogDescription>
-                        Esta ação não pode ser desfeita. O horário será
-                        removido permanentemente da comunidade.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <DialogClose asChild>
-                        <Button type="button" variant="outline">
-                          Cancelar
-                        </Button>
-                      </DialogClose>
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        onClick={handleDelete}
-                        disabled={isDeleting}
-                      >
-                        {isDeleting ? (
-                          <>
-                            <Spinner className="w-4 h-4 mr-2" />
-                            Excluindo...
-                          </>
-                        ) : (
-                          'Excluir'
-                        )}
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </div>
-
+            <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
+              <Link href={`/${community?.slug}`}>
+                <Button variant="outline" size="lg">
+                  Cancelar
+                </Button>
+              </Link>
               <Button size="lg" onClick={handleNextStep}>
                 Continuar
               </Button>
@@ -160,58 +105,10 @@ export default function EditDevotionalMassPage() {
         {activeStep === 2 && (
           <>
             <ConfirmStep mode="edit" {...formik.values} />
-            <div className="flex flex-wrap gap-3 pt-4 mt-8 justify-between items-center border-t border-divider">
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="lg" onClick={handlePrevStep}>
-                  Voltar
-                </Button>
-
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="lg"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-2 cursor-pointer"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      <span>Excluir Horário</span>
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Excluir horário de missa devocional?</DialogTitle>
-                      <DialogDescription>
-                        Esta ação não pode ser desfeita. O horário será
-                        removido permanentemente da comunidade.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <DialogClose asChild>
-                        <Button type="button" variant="outline">
-                          Cancelar
-                        </Button>
-                      </DialogClose>
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        onClick={handleDelete}
-                        disabled={isDeleting}
-                      >
-                        {isDeleting ? (
-                          <>
-                            <Spinner className="w-4 h-4 mr-2" />
-                            Excluindo...
-                          </>
-                        ) : (
-                          'Excluir'
-                        )}
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </div>
-
+            <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
+              <Button variant="outline" size="lg" onClick={handlePrevStep}>
+                Voltar
+              </Button>
               <Button
                 size="lg"
                 disabled={isPending || isDeleting}
@@ -229,6 +126,42 @@ export default function EditDevotionalMassPage() {
             </div>
           </>
         )}
+
+        {/* DANGER ZONE: Opções Avançadas / Exclusão discreta */}
+        <div className="mt-14 pt-8 border-t border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block">
+              Gerenciamento do Registro
+            </span>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Excluir este horário de missa devocional removerá permanentemente esta celebração da comunidade.
+            </p>
+          </div>
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setConfirmDeleteMassSchedule(true)}
+            className="text-xs text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Excluir Horário</span>
+          </Button>
+        </div>
+
+        <DeleteConfirmationDialog
+          open={confirmDeleteMassSchedule}
+          onOpenChange={setConfirmDeleteMassSchedule}
+          title="Excluir Horário de Missa Devocional"
+          itemName={formik.values.title || 'este horário de missa devocional'}
+          description="Tem certeza que deseja excluir este horário de missa devocional? Esta ação é irreversível e removerá permanentemente as informações desta celebração."
+          isPending={isDeleting}
+          onConfirm={async () => {
+            await handleDelete();
+            setConfirmDeleteMassSchedule(false);
+          }}
+        />
       </main>
     </div>
   );

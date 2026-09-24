@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Church, MapPin, ChevronRight, Plus, Sparkles } from 'lucide-react';
 import { useCommunities } from '@/api/communities/use-communities';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 
 export const CommunitiesList = () => {
   const { communities, isPending } = useCommunities();
@@ -92,13 +93,12 @@ export const CommunitiesList = () => {
         <p className="text-sm text-zinc-500 max-w-md mx-auto mb-6">
           Comece cadastrando a Igreja Matriz ou uma das capelas da Paróquia São José.
         </p>
-        <Link
-          href="/add"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#18351E] hover:bg-[#27442A] text-white text-sm font-semibold transition-all shadow-md"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Adicionar primeira comunidade</span>
-        </Link>
+        <Button asChild size="lg" className="rounded-full shadow-md gap-2">
+          <Link href="/add">
+            <Plus className="w-4 h-4" />
+            <span>Adicionar primeira comunidade</span>
+          </Link>
+        </Button>
       </div>
     );
   }
@@ -197,7 +197,7 @@ export const CommunitiesList = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
           {otherCommunities.map((item) => {
             const imageSrc = getImageUrl(item.coverUrl, item.coverId);
             return (
