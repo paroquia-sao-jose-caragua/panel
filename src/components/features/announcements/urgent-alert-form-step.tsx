@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FieldLabel } from '@/components/ui/field';
 import { Root as InputRoot, Control as InputControl } from '@/components/common/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Spinner } from '@/components/ui/spinner';
+import { Button } from '@/components/ui/button';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import { ImageLightbox } from '@/components/ui/image-lightbox';
 import { apiBaseUrl } from '@/api/utils/api';
 import { uploadFileWithProgress } from '@/api/attachments/images/upload';
@@ -18,9 +20,10 @@ import {
   Calendar,
   Eye,
   Trash2,
-  UploadCloud,
+  Upload,
   Volume2,
   Layers,
+  X,
 } from 'lucide-react';
 
 export interface UrgentAlertFormValues {
@@ -55,6 +58,9 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState('');
+  const [confirmRemoveImage, setConfirmRemoveImage] = useState(false);
+  const [confirmClearDates, setConfirmClearDates] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const getImageUrl = (id: string | null) => {
     if (!id) return '';
@@ -79,11 +85,19 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
       setUploadError(typeof err === 'string' ? err : 'Falha no upload da imagem');
     } finally {
       setUploadingImage(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
   const handleRemoveImage = () => {
     onChange('modalImageId', null);
+  };
+
+  const handleClearDates = () => {
+    onChange('startsAt', '');
+    onChange('endsAt', '');
   };
 
   return (
@@ -190,16 +204,16 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
               Período de Exibição Automático (Opcional)
             </FieldLabel>
             {(values.startsAt || values.endsAt) && (
-              <button
+              <Button
                 type="button"
-                onClick={() => {
-                  onChange('startsAt', '');
-                  onChange('endsAt', '');
-                }}
-                className="text-xs text-zinc-400 hover:text-red-500 transition-colors"
+                variant="outline"
+                size="sm"
+                onClick={() => setConfirmClearDates(true)}
+                className="h-7.5 px-2.5 text-xs font-medium text-red-600 hover:text-red-700 bg-red-50/50 hover:bg-red-100/70 border-red-200 hover:border-red-300 gap-1.5 transition-colors cursor-pointer"
               >
-                Limpar datas
-              </button>
+                <X className="w-3.5 h-3.5 text-red-500" />
+                <span>Limpar datas</span>
+              </Button>
             )}
           </div>
           <p className="text-xs text-zinc-500 mb-3">
@@ -225,6 +239,18 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
               />
             </div>
           </div>
+
+          <DeleteConfirmationDialog
+            open={confirmClearDates}
+            onOpenChange={setConfirmClearDates}
+            title="Limpar Período de Exibição"
+            description="Tem certeza que deseja limpar as datas de início e término? A faixa passará a ser exibida continuamente enquanto estiver com o status 'Ativa'."
+            confirmText="Limpar datas"
+            onConfirm={() => {
+              handleClearDates();
+              setConfirmClearDates(false);
+            }}
+          />
         </div>
       </div>
 
@@ -334,47 +360,79 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
             </div>
 
             {/* Imagem / Cartaz */}
-            <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200/80 space-y-4">
-              <FieldLabel className="flex items-center justify-between">
-                <span className="font-semibold text-zinc-800">Cartaz / Flyer de Divulgação (Opcional)</span>
-                {values.modalImageId && (
-                  <button
-                    type="button"
-                    onClick={handleRemoveImage}
-                    className="text-xs text-red-600 hover:text-red-700 flex items-center gap-1"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" /> Remover
-                  </button>
-                )}
-              </FieldLabel>
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <FieldLabel asChild className="mb-0">
+                  <span className="cursor-default">
+                    Cartaz / Flyer de Divulgação (Opcional)
+                  </span>
+                </FieldLabel>
+              </div>
+              <p className="text-xs text-zinc-500 mb-2">
+                Adicione uma arte ou comunicado visual que será exibido aos fiéis na janela modal.
+              </p>
 
               {values.modalImageId ? (
-                <div className="flex items-center gap-4">
-                  <ImageLightbox
-                    src={getImageUrl(values.modalImageId)}
-                    label="Cartaz do Comunicado"
-                    size="lg"
-                    className="h-28 w-28 object-cover rounded-xl border border-zinc-200"
-                  />
-                  <div className="text-xs text-zinc-500 space-y-1">
-                    <p className="font-medium text-zinc-800">Imagem carregada</p>
-                    <p>Os fiéis poderão visualizar este cartaz ampliado no modal.</p>
-                    <label className="inline-block mt-2">
-                      <span className="text-xs text-brand-600 font-semibold cursor-pointer hover:underline">
-                        Trocar imagem...
-                      </span>
-                      <input
-                        type="file"
-                        accept="image/png, image/jpeg, image/webp"
-                        onChange={handleUpload}
-                        className="hidden"
-                      />
-                    </label>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl border border-zinc-200/80 bg-zinc-50/50">
+                  <div className="relative shrink-0 group">
+                    <ImageLightbox
+                      src={getImageUrl(values.modalImageId)}
+                      label="Cartaz do Comunicado"
+                      size="lg"
+                      className="h-28 w-28 object-cover rounded-xl border border-zinc-200 shadow-xs"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon-sm"
+                      onClick={() => setConfirmRemoveImage(true)}
+                      className="absolute top-2 right-2 rounded-full shadow-md z-10 hover:scale-105 transition-transform cursor-pointer"
+                      title="Remover cartaz"
+                      aria-label="Remover cartaz"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  <div className="space-y-2 flex-1">
+                    <div>
+                      <p className="text-xs font-semibold text-zinc-800">Cartaz carregado</p>
+                      <p className="text-xs text-zinc-500 mt-0.5">
+                        Os fiéis poderão visualizar este cartaz ampliado no modal do comunicado.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploadingImage}
+                        className="gap-1.5 text-xs font-medium cursor-pointer"
+                      >
+                        <Upload className="w-3.5 h-3.5 text-zinc-500" />
+                        <span>Trocar imagem</span>
+                      </Button>
+                    </div>
+
+                    {uploadingImage && (
+                      <div className="flex items-center gap-2 pt-1 text-xs text-brand-600 font-medium">
+                        <Spinner className="w-3.5 h-3.5" />
+                        <span>Enviando nova imagem... {uploadProgress}%</span>
+                      </div>
+                    )}
+                    {uploadError && (
+                      <p className="text-xs text-red-500 pt-1">{uploadError}</p>
+                    )}
                   </div>
                 </div>
               ) : (
                 <div>
-                  <label className="border-2 border-dashed border-zinc-300 hover:border-brand-500 rounded-xl p-5 flex flex-col items-center justify-center cursor-pointer bg-white transition-colors">
+                  <div
+                    onClick={() => !uploadingImage && fileInputRef.current?.click()}
+                    className="border-2 border-dashed border-zinc-300 hover:border-brand-500 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer bg-white transition-colors"
+                  >
                     {uploadingImage ? (
                       <div className="flex flex-col items-center gap-2">
                         <Spinner className="w-6 h-6 text-brand-600" />
@@ -383,24 +441,55 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                         </span>
                       </div>
                     ) : (
-                      <div className="flex flex-col items-center gap-1.5 text-center">
-                        <UploadCloud className="w-7 h-7 text-zinc-400" />
-                        <span className="text-xs font-medium text-zinc-700">
-                          Clique para selecionar cartaz ou imagem (PNG, JPG, WebP)
-                        </span>
+                      <div className="flex flex-col items-center gap-2 text-center">
+                        <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-500">
+                          <Upload className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-semibold text-zinc-800 block">
+                            Clique para selecionar cartaz ou imagem
+                          </span>
+                          <span className="text-[11px] text-zinc-400 mt-0.5 block">
+                            Formatos aceitos: PNG, JPG ou WebP
+                          </span>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="mt-1 gap-1.5 text-xs pointer-events-none"
+                        >
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>Selecionar arquivo</span>
+                        </Button>
                       </div>
                     )}
-                    <input
-                      type="file"
-                      accept="image/png, image/jpeg, image/webp"
-                      disabled={uploadingImage}
-                      onChange={handleUpload}
-                      className="hidden"
-                    />
-                  </label>
+                  </div>
                   {uploadError && <p className="text-xs text-red-500 mt-2">{uploadError}</p>}
                 </div>
               )}
+
+              {/* Input file invisível controlado via ref */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png, image/jpeg, image/webp"
+                disabled={uploadingImage}
+                onChange={handleUpload}
+                className="hidden"
+              />
+
+              <DeleteConfirmationDialog
+                open={confirmRemoveImage}
+                onOpenChange={setConfirmRemoveImage}
+                title="Remover Cartaz do Comunicado"
+                description="Tem certeza que deseja remover este cartaz? O comunicado deixará de exibir a imagem no modal."
+                confirmText="Remover"
+                onConfirm={() => {
+                  handleRemoveImage();
+                  setConfirmRemoveImage(false);
+                }}
+              />
             </div>
 
             {/* Ação Externa */}
