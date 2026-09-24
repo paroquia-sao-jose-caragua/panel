@@ -65,7 +65,7 @@ export async function uploadFileWithProgress(
         if (xhr.status === 401) {
           setLoggedOut();
           if (typeof window !== 'undefined') {
-            window.location.href = '/login';
+            window.location.href = '/entrar';
           }
         }
       }

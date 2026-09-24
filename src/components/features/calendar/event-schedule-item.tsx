@@ -241,7 +241,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
             className="gap-1.5 text-xs h-8"
           >
             <Link
-              href={`/calendar/event-schedule/${schedule.eventScheduleId}/edit`}
+              href={`/agenda/evento/${schedule.eventScheduleId}/editar`}
             >
               <Pencil className="w-3.5 h-3.5" />
               <span>Editar</span>

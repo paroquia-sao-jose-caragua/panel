@@ -11,8 +11,8 @@ export const OrdinaryMassesList = () => {
       title={t('ordinary-masses')}
       type="ordinary"
       typeFilter="ordinary"
-      addHref={`/${community?.slug}/add-ordinary-mass`}
-      editHrefPattern={(id) => `/${community?.slug}/ordinary-mass/${id}/edit`}
+      addHref={`/${community?.slug}/adicionar-missa-regular`}
+      editHrefPattern={(id) => `/${community?.slug}/missa-regular/${id}/editar`}
       info={t('ordinary-mass-info')}
     />
   );

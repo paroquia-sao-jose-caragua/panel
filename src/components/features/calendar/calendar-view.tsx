@@ -43,7 +43,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
           Não há missas ou eventos programados para o período selecionado.
         </p>
         <Button asChild size="sm" className="rounded-full px-6 shadow-md gap-1.5">
-          <Link href="/calendar/add-event-schedule">
+          <Link href="/agenda/adicionar-evento">
             <Plus className="w-4 h-4 mr-1.5" />
             <span>Adicionar primeiro evento</span>
           </Link>
@@ -96,7 +96,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
                 size="sm"
                 className="border-dashed border-zinc-300 text-zinc-600 hover:border-[#B8872E] hover:text-[#B8872E] hover:bg-[#fefbf6] gap-1.5 text-xs h-8 self-start sm:self-center shrink-0 shadow-2xs"
               >
-                <Link href={`/calendar/add-event-schedule?date=${group.date}`}>
+                <Link href={`/agenda/adicionar-evento?date=${group.date}`}>
                   <Plus className="h-3.5 w-3.5" />
                   <span>Adicionar Evento</span>
                 </Link>

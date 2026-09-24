@@ -21,7 +21,7 @@ export const LogoutButton = () => {
     onSuccess: ({ statusCode }) => {
       if (statusCode === 200) {
         setLoggedOut();
-        navigate.replace('/login');
+        navigate.replace('/entrar');
       } else {
         showAlert(t('error-logging-out'));
       }

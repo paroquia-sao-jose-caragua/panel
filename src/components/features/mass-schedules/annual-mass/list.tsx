@@ -11,8 +11,8 @@ export const AnnualMassesList = () => {
       title={t('annual-masses')}
       type="annual"
       typeFilter="solemnity"
-      addHref={`/${community?.slug}/add-annual-mass`}
-      editHrefPattern={(id) => `/${community?.slug}/annual-mass/${id}/edit`}
+      addHref={`/${community?.slug}/adicionar-missa-anual`}
+      editHrefPattern={(id) => `/${community?.slug}/missa-anual/${id}/editar`}
       info={t('annual-mass-info')}
     />
   );

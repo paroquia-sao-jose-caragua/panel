@@ -94,7 +94,7 @@ export const CommunitiesList = () => {
           Comece cadastrando a Igreja Matriz ou uma das capelas da Paróquia São José.
         </p>
         <Button asChild size="lg" className="rounded-full shadow-md gap-2">
-          <Link href="/add">
+          <Link href="/adicionar-comunidade">
             <Plus className="w-4 h-4" />
             <span>Adicionar primeira comunidade</span>
           </Link>
@@ -244,7 +244,7 @@ export const CommunitiesList = () => {
 
           {/* Add Community Action Card */}
           <Link
-            href="/add"
+            href="/adicionar-comunidade"
             className="border-2 border-dashed border-zinc-200 hover:border-brand-500 rounded-2xl p-4 flex flex-col items-center justify-center text-center bg-zinc-50/50 hover:bg-zinc-50 transition-all cursor-pointer min-h-[260px] group"
           >
             <div className="w-12 h-12 rounded-full bg-white shadow-xs border border-zinc-200 flex items-center justify-center text-zinc-500 group-hover:text-brand-600 group-hover:border-brand-300 group-hover:scale-110 transition-all mb-3">

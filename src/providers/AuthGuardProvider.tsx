@@ -69,7 +69,7 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
       (!isLogged && !isAuthRoute) ||
       (isConfirmCodePage && !email && !isAuthRoute)
     ) {
-      navigate.replace('/login');
+      navigate.replace('/entrar');
     }
   }, [sessionChecked, isLogged, email, pathname, navigate, token]);
 

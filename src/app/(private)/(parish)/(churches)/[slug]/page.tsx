@@ -225,7 +225,7 @@ export default function ChurchPage() {
             size="sm"
             className="gap-1.5"
           >
-            <Link href={`/${community?.slug}/edit`}>
+            <Link href={`/${community?.slug}/editar`}>
               <Pencil className="w-3.5 h-3.5" />
               <span>Editar Dados Principais</span>
             </Link>
@@ -331,7 +331,7 @@ export default function ChurchPage() {
                 size="sm"
                 className="gap-1.5"
               >
-                <Link href={`/${community?.slug}/about`}>
+                <Link href={`/${community?.slug}/sobre`}>
                   <Edit className="w-3.5 h-3.5" />
                   <span>Editar texto</span>
                 </Link>
@@ -373,7 +373,7 @@ export default function ChurchPage() {
                 size="sm"
                 className="gap-1.5"
               >
-                <Link href={`/${community?.slug}/patron`}>
+                <Link href={`/${community?.slug}/padroeiro`}>
                   <Pencil className="w-3.5 h-3.5" />
                   <span>Editar</span>
                 </Link>
@@ -431,7 +431,7 @@ export default function ChurchPage() {
             size="sm"
             className="gap-1.5"
           >
-            <Link href={`/${community?.slug}/gallery`}>
+            <Link href={`/${community?.slug}/galeria`}>
               <Pencil className="w-3.5 h-3.5" />
               <span>Editar galeria</span>
             </Link>
@@ -447,7 +447,7 @@ export default function ChurchPage() {
             <p className="text-xs text-zinc-500 mt-1 max-w-sm">
               Fotos adicionadas aparecerão aqui e na página pública da comunidade.
             </p>
-            <Link href={`/${community?.slug}/gallery`} className="mt-4">
+            <Link href={`/${community?.slug}/galeria`} className="mt-4">
               <Button variant="outline" size="sm" className="gap-1.5 text-xs">
                 <Plus className="w-3.5 h-3.5" />
                 <span>Adicionar fotos</span>
@@ -598,7 +598,7 @@ export default function ChurchPage() {
             size="sm"
             className="gap-1.5"
           >
-            <Link href={`/${community?.slug}/add-ordinary-mass`}>
+            <Link href={`/${community?.slug}/adicionar-missa-regular`}>
               <Pencil className="w-3.5 h-3.5" />
               <span>Editar horários</span>
             </Link>
@@ -620,7 +620,7 @@ export default function ChurchPage() {
                   </span>
                 </div>
                 <Link
-                  href={`/${community?.slug}/add-ordinary-mass`}
+                  href={`/${community?.slug}/adicionar-missa-regular`}
                   className="p-1 hover:bg-[#18351E]/10 rounded-md text-[#18351E] transition-colors"
                   title="Adicionar Missa Regular"
                 >
@@ -637,7 +637,7 @@ export default function ChurchPage() {
                   visibleOrdinaryMasses.map((ms) => (
                     <Link
                       key={ms.id}
-                      href={`/${community?.slug}/ordinary-mass/${ms.id}/edit`}
+                      href={`/${community?.slug}/missa-regular/${ms.id}/editar`}
                       className="group px-4 py-3 flex items-center justify-between hover:bg-zinc-50 transition-colors text-xs sm:text-sm"
                     >
                       <span className="font-medium text-zinc-800">
@@ -692,7 +692,7 @@ export default function ChurchPage() {
                   </span>
                 </div>
                 <Link
-                  href={`/${community?.slug}/add-devotional-mass`}
+                  href={`/${community?.slug}/adicionar-missa-devocional`}
                   className="p-1 hover:bg-[#B8872E]/10 rounded-md text-[#8c6016] transition-colors"
                   title="Adicionar Missa Devocional"
                 >
@@ -709,7 +709,7 @@ export default function ChurchPage() {
                   visibleDevotionalMasses.map((ms) => (
                     <Link
                       key={ms.id}
-                      href={`/${community?.slug}/devotional-mass/${ms.id}/edit`}
+                      href={`/${community?.slug}/missa-devocional/${ms.id}/editar`}
                       className="group px-4 py-3 flex items-center justify-between hover:bg-zinc-50 transition-colors text-xs sm:text-sm"
                     >
                       <span className="font-medium text-zinc-800 line-clamp-1 pr-2">
@@ -762,7 +762,7 @@ export default function ChurchPage() {
                   </span>
                 </div>
                 <Link
-                  href={`/${community?.slug}/add-annual-mass`}
+                  href={`/${community?.slug}/adicionar-missa-anual`}
                   className="p-1 hover:bg-[#2b5c8f]/10 rounded-md text-[#1e446d] transition-colors"
                   title="Adicionar Missa Anual / Solenidade"
                 >
@@ -779,7 +779,7 @@ export default function ChurchPage() {
                   visibleAnnualMasses.map((ms) => (
                     <Link
                       key={ms.id}
-                      href={`/${community?.slug}/annual-mass/${ms.id}/edit`}
+                      href={`/${community?.slug}/missa-anual/${ms.id}/editar`}
                       className="group px-4 py-3 flex items-center justify-between hover:bg-zinc-50 transition-colors text-xs sm:text-sm"
                     >
                       <span className="font-medium text-zinc-800 line-clamp-1 pr-2">

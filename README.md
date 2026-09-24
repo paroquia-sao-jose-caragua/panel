@@ -183,21 +183,36 @@ Fluxo geral da aplicação:
 
 ## Principais telas
 
-| Caminho                              | Finalidade                                 |
-| ------------------------------------ | ------------------------------------------ |
-| `/login`                             | Autenticação dos usuários administrativos. |
-| `/`                                  | Área inicial privada do painel.            |
-| `/calendar`                          | Visualização do calendÁrio paroquial.      |
-| `/calendar/add-event-schedule`       | Cadastro de evento no calendário.          |
-| `/calendar/event-schedule/[id]/edit` | Edição de evento do calendário.            |
-| `/[slug]`                            | Detalhes de uma comunidade/capela.         |
-| `/add`                               | Cadastro de comunidade/capela.             |
-| `/[slug]/edit`                       | Edição de comunidade/capela.               |
-| `/[slug]/add-ordinary-mass`          | Cadastro de missa ordinária.               |
-| `/[slug]/add-devotional-mass`        | Cadastro de missa devocional.              |
-| `/[slug]/add-annual-mass`            | Cadastro de missa anual.                   |
-| `/pastorals`                         | Área de pastorais.                         |
-| `/clergies`                          | Área de clero.                             |
+| Caminho                                         | Finalidade                                     |
+| ----------------------------------------------- | ---------------------------------------------- |
+| `/entrar`                                       | Autenticação dos usuários administrativos.     |
+| `/`                                             | Área inicial privada do painel (Comunidades).  |
+| `/adicionar-comunidade`                         | Cadastro de nova comunidade/capela.            |
+| `/[slug]`                                       | Detalhes da comunidade/capela.                 |
+| `/[slug]/editar`                                | Edição dos dados principais da comunidade.     |
+| `/[slug]/sobre`                                 | Edição de textos e histórico da comunidade.    |
+| `/[slug]/padroeiro`                             | Edição do padroeiro(a) da comunidade.          |
+| `/[slug]/galeria`                               | Gestão da galeria de fotos da comunidade.      |
+| `/[slug]/adicionar-missa-regular`               | Cadastro de horário de missa regular.          |
+| `/[slug]/missa-regular/[id]/editar`             | Edição de horário de missa regular.            |
+| `/[slug]/adicionar-missa-devocional`             | Cadastro de missa devocional.                  |
+| `/[slug]/missa-devocional/[id]/editar`          | Edição de missa devocional.                    |
+| `/[slug]/adicionar-missa-anual`                  | Cadastro de missa anual/solenidade.            |
+| `/[slug]/missa-anual/[id]/editar`               | Edição de missa anual/solenidade.              |
+| `/clerigos`                                     | Gestão dos clérigos da paróquia.               |
+| `/clerigos/adicionar`                           | Cadastro de novo membro do clero.              |
+| `/clerigos/editar/[id]`                         | Edição de dados do clérigo.                    |
+| `/avisos`                                       | Gestão de banners e faixa de alerta urgente.   |
+| `/avisos/adicionar`                             | Cadastro de novo banner responsivo.            |
+| `/avisos/alerta/editar`                         | Edição da faixa de aviso urgente.              |
+| `/avisos/editar/[id]`                           | Edição de banner existente.                    |
+| `/agenda`                                       | Visualização da agenda/calendário paroquial.   |
+| `/agenda/adicionar-evento`                      | Cadastro de evento na agenda.                  |
+| `/agenda/evento/[id]/editar`                    | Edição de evento da agenda.                    |
+| `/secretaria`                                   | Dados da secretaria e doações.                 |
+| `/secretaria/editar`                            | Edição dos dados da secretaria de atendimento. |
+| `/secretaria/doacoes`                           | Gestão de contas bancárias e chave PIX.        |
+| `/pastorais`                                    | Área de pastorais.                             |
 
 Algumas telas em `src/app/(private)/(pending-development)` existem como páginas previstas para evolução futura, como blog, galeria, configurações e suporte.
 

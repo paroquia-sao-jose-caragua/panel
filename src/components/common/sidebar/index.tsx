@@ -62,7 +62,7 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Clérigos',
-                href: '/clergies',
+                href: '/clerigos',
               },
             ]}
             onLinkClick={handleClose}
@@ -74,7 +74,7 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Gerenciar Avisos',
-                href: '/announcements',
+                href: '/avisos',
               },
             ]}
             onLinkClick={handleClose}
@@ -86,7 +86,7 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Agenda',
-                href: '/calendar',
+                href: '/agenda',
               },
             ]}
             onLinkClick={handleClose}
@@ -98,7 +98,7 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Secretaria & Contribuição',
-                href: '/secretariat',
+                href: '/secretaria',
               },
             ]}
             onLinkClick={handleClose}
@@ -109,11 +109,11 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Clérigos',
-                href: '/clergies',
+                href: '/clerigos',
               },
               {
                 title: 'Pastorais',
-                href: '/pastorals',
+                href: '/pastorais',
               },
             ]}
             onLinkClick={handleClose}
@@ -124,11 +124,11 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Eventos',
-                href: '/events',
+                href: '/agenda',
               },
               {
                 title: 'Programação Completa',
-                href: '/full-schedule',
+                href: '/agenda',
               },
             ]}
             onLinkClick={handleClose}
@@ -139,15 +139,15 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Avisos',
-                href: '/notices',
+                href: '/comunicados',
               },
               {
                 title: 'Notícias',
-                href: '/news',
+                href: '/noticias',
               },
               {
                 title: 'Artigos',
-                href: '/articles',
+                href: '/artigos',
               },
             ]}
             onLinkClick={handleClose}
@@ -158,7 +158,7 @@ export const AppSidebar = () => {
             links={[
               {
                 title: 'Fotos',
-                href: '/photos',
+                href: '/fotos',
               },
               {
                 title: 'Vídeos',
@@ -166,7 +166,7 @@ export const AppSidebar = () => {
               },
               {
                 title: 'Álbuns',
-                href: '/albums',
+                href: '/albuns',
               },
             ]}
             onLinkClick={handleClose}
@@ -194,11 +194,11 @@ export const AppSidebar = () => {
               links={[
                 {
                   title: 'Alterar Senha',
-                  href: '/change-password',
+                  href: '/alterar-senha',
                 },
                 {
                   title: 'Gerenciar Acessos',
-                  href: '/manage-access',
+                  href: '/gerenciar-acessos',
                 },
               ]}
               onLinkClick={handleClose}

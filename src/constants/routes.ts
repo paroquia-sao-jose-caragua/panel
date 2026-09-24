@@ -1,0 +1,46 @@
+export const ROUTES = {
+  HOME: '/',
+  AUTH: {
+    LOGIN: '/entrar',
+  },
+  COMMUNITIES: {
+    HOME: '/',
+    ADD: '/adicionar-comunidade',
+    DETAILS: (slug: string) => `/${slug}`,
+    EDIT: (slug: string) => `/${slug}/editar`,
+    ABOUT: (slug: string) => `/${slug}/sobre`,
+    PATRON: (slug: string) => `/${slug}/padroeiro`,
+    GALLERY: (slug: string) => `/${slug}/galeria`,
+    MASS_SCHEDULES: {
+      ADD_ORDINARY: (slug: string) => `/${slug}/adicionar-missa-regular`,
+      EDIT_ORDINARY: (slug: string, id: string) => `/${slug}/missa-regular/${id}/editar`,
+      ADD_DEVOTIONAL: (slug: string) => `/${slug}/adicionar-missa-devocional`,
+      EDIT_DEVOTIONAL: (slug: string, id: string) => `/${slug}/missa-devocional/${id}/editar`,
+      ADD_ANNUAL: (slug: string) => `/${slug}/adicionar-missa-anual`,
+      EDIT_ANNUAL: (slug: string, id: string) => `/${slug}/missa-anual/${id}/editar`,
+    },
+  },
+  CLERGY: {
+    HOME: '/clerigos',
+    ADD: '/clerigos/adicionar',
+    EDIT: (id: string) => `/clerigos/editar/${id}`,
+  },
+  ANNOUNCEMENTS: {
+    HOME: '/avisos',
+    ADD: '/avisos/adicionar',
+    EDIT: (id: string) => `/avisos/editar/${id}`,
+    EDIT_ALERT: '/avisos/alerta/editar',
+  },
+  CALENDAR: {
+    HOME: '/agenda',
+    ADD_EVENT: '/agenda/adicionar-evento',
+    ADD_EVENT_WITH_DATE: (date: string) => `/agenda/adicionar-evento?date=${date}`,
+    EDIT_EVENT: (id: string) => `/agenda/evento/${id}/editar`,
+  },
+  SECRETARIAT: {
+    HOME: '/secretaria',
+    EDIT: '/secretaria/editar',
+    DONATIONS: '/secretaria/doacoes',
+  },
+  PASTORALS: '/pastorais',
+} as const;
