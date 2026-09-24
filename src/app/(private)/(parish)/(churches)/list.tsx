@@ -245,18 +245,18 @@ export const CommunitiesList = () => {
           {/* Add Community Action Card */}
           <Link
             href="/add"
-            className="group bg-zinc-50/60 border-2 border-dashed border-[#D6A64A]/40 hover:border-[#B8872E] rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-xs hover:shadow-md hover:bg-[#fefbf6] transition-all cursor-pointer min-h-[260px]"
+            className="border-2 border-dashed border-zinc-200 hover:border-brand-500 rounded-2xl p-4 flex flex-col items-center justify-center text-center bg-zinc-50/50 hover:bg-zinc-50 transition-all cursor-pointer min-h-[260px] group"
           >
-            <div className="w-12 h-12 rounded-full bg-[#fef8ed] border border-[#D6A64A]/40 flex items-center justify-center text-[#B8872E] group-hover:scale-110 transition-transform mb-3">
+            <div className="w-12 h-12 rounded-full bg-white shadow-xs border border-zinc-200 flex items-center justify-center text-zinc-500 group-hover:text-brand-600 group-hover:border-brand-300 group-hover:scale-110 transition-all mb-3">
               <Plus className="w-6 h-6" strokeWidth={2} />
             </div>
             <h4
-              className="text-base font-semibold text-zinc-900 group-hover:text-[#B8872E] transition-colors mb-1"
+              className="text-base font-semibold text-zinc-700 group-hover:text-brand-700 transition-colors mb-1"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               Adicionar comunidade
             </h4>
-            <p className="text-xs text-zinc-500 max-w-[180px]">
+            <p className="text-xs text-zinc-400 max-w-[180px]">
               Cadastre uma nova capela ou igreja na paróquia
             </p>
           </Link>
