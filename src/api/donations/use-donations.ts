@@ -16,9 +16,13 @@ export const useDonations = () => {
   const { mutateAsync: updateDonations, isPending: isUpdating } = useMutation({
     mutationFn: (payload: UpdateDonationsInfoPayload) => updateDonationsInfo(payload),
     onSuccess: (data) => {
-      queryClient.setQueryData(['donations-info'], data);
-      queryClient.invalidateQueries({ queryKey: ['donations-info'] });
-      showAlert('Informações de doações salvas com sucesso!');
+      if (data.statusCode === 200) {
+        queryClient.setQueryData(['donations-info'], data);
+        queryClient.invalidateQueries({ queryKey: ['donations-info'] });
+        showAlert('Informações de doações salvas com sucesso!');
+      } else {
+        showAlert(data.message || 'Erro ao atualizar informações de doações.');
+      }
     },
     onError: (err: Error) => {
       showAlert(`Erro ao atualizar informações de doações: ${err.message}`);

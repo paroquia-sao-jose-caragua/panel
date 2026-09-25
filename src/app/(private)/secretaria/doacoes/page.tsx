@@ -68,7 +68,7 @@ export default function EditDonationsPage() {
     enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        await updateDonations({
+        const response = await updateDonations({
           pixKey: values.pixKey || null,
           pixKeyType: values.pixKeyType || null,
           pixReceiverName: values.pixReceiverName || null,
@@ -87,7 +87,9 @@ export default function EditDonationsPage() {
           pastoralCenterTitle: values.pastoralCenterTitle || null,
           pastoralCenterDescription: values.pastoralCenterDescription || null,
         });
-        router.push('/secretaria');
+        if (response.statusCode === 200) {
+          router.push('/secretaria');
+        }
       } catch {
         // Error handled in useDonations
       }
