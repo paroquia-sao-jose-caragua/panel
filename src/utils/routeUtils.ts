@@ -4,6 +4,8 @@ export const routeUtils = {
       /^\/entrar\/?$/,
       /^\/login\/?$/,
       /^\/confirm-code\/?$/,
+      /^\/esqueci-minha-senha\/?$/,
+      /^\/redefinir-senha\/?$/,
     ];
 
     return authRoutePatterns.some((pattern) => pattern.test(pathname));

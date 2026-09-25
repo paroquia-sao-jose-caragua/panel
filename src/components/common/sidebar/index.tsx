@@ -1,16 +1,26 @@
 'use client';
 
-import { Calendar, Church, Megaphone, Menu, X, Users, Building2 } from 'lucide-react';
+import { Calendar, Church, Megaphone, Menu, X, Users, Building2, Settings } from 'lucide-react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { Button } from '@/components/ui/button';
 import { NavItem } from './nav-item';
 import { Profile } from './profile';
 import { useState } from 'react';
+import useAuthStore from '@/stores/useAuthStore';
+import { ROUTES } from '@/constants/routes';
 
 export const AppSidebar = () => {
   const [open, setOpen] = useState(false);
+  const { user } = useAuthStore();
 
   const handleClose = () => setOpen(false);
+
+  const settingsLinks = [
+    {
+      title: 'Configurações',
+      href: ROUTES.SETTINGS.HOME,
+    },
+  ];
 
   return (
     <Collapsible.Root
@@ -174,36 +184,16 @@ export const AppSidebar = () => {
         </div>
 
         <div className="mt-auto flex flex-col gap-6 ">
-          {/* <div className="h-px bg-brand-700/30" />
+          <div className="h-px bg-brand-700/30" />
 
           <nav className="space-y-0.5 px-4">
             <NavItem
-              title="Suporte"
-              icon={LifeBuoy}
-              links={[
-                {
-                  title: 'FAQ',
-                  href: '/faq',
-                },
-              ]}
-              onLinkClick={handleClose}
-            />
-            <NavItem
               title="Configurações"
-              icon={Cog}
-              links={[
-                {
-                  title: 'Alterar Senha',
-                  href: '/alterar-senha',
-                },
-                {
-                  title: 'Gerenciar Acessos',
-                  href: '/gerenciar-acessos',
-                },
-              ]}
+              icon={Settings}
+              links={settingsLinks}
               onLinkClick={handleClose}
             />
-          </nav> */}
+          </nav>
 
           <div className="h-px bg-brand-700/30" />
 

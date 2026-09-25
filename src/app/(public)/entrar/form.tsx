@@ -2,6 +2,7 @@
 
 import { Lock, Mail } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
 import { login } from '@/api/users/login';
 import useTranslator from '@/hooks/use-translator';
 import useLoginSchema from '@/schemas/useLoginSchema';
@@ -11,6 +12,7 @@ import { useFormik } from 'formik';
 import * as Input from '@/components/common/input';
 import { showAlert } from '@/utils/showAlert';
 import { Button } from '@/components/ui/button';
+import { ROUTES } from '@/constants/routes';
 
 export const Form = () => {
   const { t } = useTranslator();
@@ -18,7 +20,7 @@ export const Form = () => {
   const validationSchema = useLoginSchema();
   const { setLogged } = useAuthStore();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: login,
     onSuccess: ({ message, statusCode, token, user, errors }) => {
       if (statusCode === 200) {
@@ -91,7 +93,16 @@ export const Form = () => {
         </Input.Root>
       </div>
 
-      <Button type="submit" className="w-full mt-4">
+      <div className="flex items-center justify-end pb-3">
+        <Link
+          href={ROUTES.AUTH.FORGOT_PASSWORD}
+          className="text-xs font-medium text-brand-700 hover:text-brand-900 hover:underline transition-colors"
+        >
+          {t('forgot-password')}?
+        </Link>
+      </div>
+
+      <Button type="submit" isLoading={isPending} className="w-full mt-2">
         Entrar
       </Button>
     </form>

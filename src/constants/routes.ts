@@ -2,6 +2,15 @@ export const ROUTES = {
   HOME: '/',
   AUTH: {
     LOGIN: '/entrar',
+    FORGOT_PASSWORD: '/esqueci-minha-senha',
+    RESET_PASSWORD: '/redefinir-senha',
+  },
+  SETTINGS: {
+    HOME: '/configuracoes',
+    CHANGE_PASSWORD: '/configuracoes/alterar-senha',
+    NEW_USER: '/configuracoes/usuarios/novo',
+    RESET_USER_PASSWORD: (id: string) => `/configuracoes/usuarios/${id}/redefinir-senha`,
+    EDIT_USER_ROLE: (id: string) => `/configuracoes/usuarios/${id}/papel`,
   },
   COMMUNITIES: {
     HOME: '/',

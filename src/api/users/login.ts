@@ -1,12 +1,9 @@
+import { AuthUser } from "@/stores/useAuthStore";
 import { api } from "../utils/api";
 
 interface LoginResponse {
   token: string;
-  user: {
-    name: string;
-    email: string;
-    role: "user" | "admin" | "viewer";
-  };
+  user: AuthUser;
 }
 
 export const login = async (values: { email: string; password: string }) => {
