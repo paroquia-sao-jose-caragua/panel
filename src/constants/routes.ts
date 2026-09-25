@@ -52,4 +52,15 @@ export const ROUTES = {
     DONATIONS: '/secretaria/doacoes',
   },
   PASTORALS: '/pastorais',
+  APPOINTMENTS: {
+    HOME: '/agendamentos',
+    DETAILS: (id: string) => `/agendamentos/${id}`,
+  },
+  PASTORAL_AGENTS: {
+    HOME: '/agentes-pastorais',
+    ADD: '/agentes-pastorais/adicionar',
+    EDIT: (id: string) => `/agentes-pastorais/editar/${id}`,
+    SCHEDULE: (id: string) => `/agentes-pastorais/${id}/horarios`,
+    BLOCKED_DATES: (id: string) => `/agentes-pastorais/${id}/bloqueios`,
+  },
 } as const;

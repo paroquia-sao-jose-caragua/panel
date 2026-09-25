@@ -17,7 +17,7 @@ interface AuthGuardProviderProps {
 const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
   const pathname = usePathname();
   const navigate = useNavigate();
-  const { isLogged, email, token, setLogged } = useAuthStore();
+  const { isLogged, email, token, setLogged, user } = useAuthStore();
   const [sessionChecked, setSessionChecked] = useState(false);
 
   const { mutate } = useMutation({
@@ -60,9 +60,17 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
     const isAuthRoute = routeUtils.isAuthRoute(pathname);
     const isConfirmCodePage = pathname.includes('/confirm-code');
 
-    if (isLogged && token && isAuthRoute) {
-      navigate.replace('/');
-      return;
+    if (isLogged && token) {
+      if (user?.role === 'pastoral_agent') {
+        const isAppointmentsRoute = pathname.startsWith('/agendamentos');
+        if (!isAppointmentsRoute || pathname.startsWith('/agentes-pastorais')) {
+          navigate.replace('/agendamentos');
+          return;
+        }
+      } else if (isAuthRoute) {
+        navigate.replace('/');
+        return;
+      }
     }
 
     if (
@@ -71,7 +79,7 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
     ) {
       navigate.replace('/entrar');
     }
-  }, [sessionChecked, isLogged, email, pathname, navigate, token]);
+  }, [sessionChecked, isLogged, email, pathname, navigate, token, user?.role]);
 
   // Se a sessão ainda não foi verificada, mostrar loading
   if (!sessionChecked) {

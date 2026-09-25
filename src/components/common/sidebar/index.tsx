@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Church, Megaphone, Menu, X, Users, Building2, Settings } from 'lucide-react';
+import { Calendar, Church, Megaphone, Menu, X, Users, Building2, Settings, CalendarCheck } from 'lucide-react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { Button } from '@/components/ui/button';
 import { NavItem } from './nav-item';
@@ -54,146 +54,114 @@ export const AppSidebar = () => {
         <div className="h-px bg-brand-700/30" />
 
         <div className="space-y-0.5 px-4">
-          <NavItem
-            title="Início"
-            icon={Church}
-            links={[
-              {
-                title: 'Início',
-                href: '/',
-              },
-            ]}
-            onLinkClick={handleClose}
-          />
+          {user?.role === 'pastoral_agent' ? (
+            <NavItem
+              title="Meus Atendimentos"
+              icon={CalendarCheck}
+              links={[
+                {
+                  title: 'Meus Atendimentos',
+                  href: ROUTES.APPOINTMENTS.HOME,
+                },
+              ]}
+              onLinkClick={handleClose}
+            />
+          ) : (
+            <>
+              <NavItem
+                title="Início"
+                icon={Church}
+                links={[
+                  {
+                    title: 'Início',
+                    href: '/',
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
 
-          <NavItem
-            title="Clérigos"
-            icon={Users}
-            links={[
-              {
-                title: 'Clérigos',
-                href: '/clerigos',
-              },
-            ]}
-            onLinkClick={handleClose}
-          />
+              <NavItem
+                title="Clérigos"
+                icon={Users}
+                links={[
+                  {
+                    title: 'Clérigos',
+                    href: '/clerigos',
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
 
-          <NavItem
-            title="Banners & Avisos"
-            icon={Megaphone}
-            links={[
-              {
-                title: 'Gerenciar Avisos',
-                href: '/avisos',
-              },
-            ]}
-            onLinkClick={handleClose}
-          />
-          
-          <NavItem
-            title="Agenda"
-            icon={Calendar}
-            links={[
-              {
-                title: 'Agenda',
-                href: '/agenda',
-              },
-            ]}
-            onLinkClick={handleClose}
-          />
-          
-          <NavItem
-            title="Secretaria & Contribuição"
-            icon={Building2}
-            links={[
-              {
-                title: 'Secretaria & Contribuição',
-                href: '/secretaria',
-              },
-            ]}
-            onLinkClick={handleClose}
-          />
-          {/* <NavItem
-            title="Ministérios"
-            icon={Users}
-            links={[
-              {
-                title: 'Clérigos',
-                href: '/clerigos',
-              },
-              {
-                title: 'Pastorais',
-                href: '/pastorais',
-              },
-            ]}
-            onLinkClick={handleClose}
-          /> */}
-          {/* <NavItem
-            title="Agenda"
-            icon={Calendar}
-            links={[
-              {
-                title: 'Eventos',
-                href: '/agenda',
-              },
-              {
-                title: 'Programação Completa',
-                href: '/agenda',
-              },
-            ]}
-            onLinkClick={handleClose}
-          />
-          <NavItem
-            title="Blog"
-            icon={MessageSquare}
-            links={[
-              {
-                title: 'Avisos',
-                href: '/comunicados',
-              },
-              {
-                title: 'Notícias',
-                href: '/noticias',
-              },
-              {
-                title: 'Artigos',
-                href: '/artigos',
-              },
-            ]}
-            onLinkClick={handleClose}
-          />
-          <NavItem
-            title="Galeria"
-            icon={Image}
-            links={[
-              {
-                title: 'Fotos',
-                href: '/fotos',
-              },
-              {
-                title: 'Vídeos',
-                href: '/videos',
-              },
-              {
-                title: 'Álbuns',
-                href: '/albuns',
-              },
-            ]}
-            onLinkClick={handleClose}
-          /> */}
+              <NavItem
+                title="Banners & Avisos"
+                icon={Megaphone}
+                links={[
+                  {
+                    title: 'Gerenciar Avisos',
+                    href: '/avisos',
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+              
+              <NavItem
+                title="Programação Paroquial"
+                icon={Calendar}
+                links={[
+                  {
+                    title: 'Programação Paroquial',
+                    href: '/agenda',
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+
+              <NavItem
+                title="Agendamentos"
+                icon={CalendarCheck}
+                links={[
+                  {
+                    title: 'Atendimentos & Visitas',
+                    href: ROUTES.APPOINTMENTS.HOME,
+                  },
+                  {
+                    title: 'Agentes Pastorais',
+                    href: ROUTES.PASTORAL_AGENTS.HOME,
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+              
+              <NavItem
+                title="Secretaria & Contribuição"
+                icon={Building2}
+                links={[
+                  {
+                    title: 'Secretaria & Contribuição',
+                    href: '/secretaria',
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+            </>
+          )}
         </div>
 
         <div className="mt-auto flex flex-col gap-6 ">
-          <div className="h-px bg-brand-700/30" />
+          {user?.role !== 'pastoral_agent' && (
+            <>
+              <div className="h-px bg-brand-700/30" />
 
-          <nav className="space-y-0.5 px-4">
-            <NavItem
-              title="Configurações"
-              icon={Settings}
-              links={settingsLinks}
-              onLinkClick={handleClose}
-            />
-          </nav>
+              <nav className="space-y-0.5 px-4">
+                <NavItem
+                  title="Configurações"
+                  icon={Settings}
+                  links={settingsLinks}
+                  onLinkClick={handleClose}
+                />
+              </nav>
+            </>
+          )}
 
           <div className="h-px bg-brand-700/30" />
 

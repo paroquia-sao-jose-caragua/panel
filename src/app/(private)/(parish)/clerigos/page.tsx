@@ -52,9 +52,9 @@ export default function ClergiesPage() {
 
         <div className="hidden items-center md:flex">
           <Link href="/clerigos/adicionar">
-            <Button size="lg">
+            <Button>
               <PlusIcon />
-              Adicionar Clérigo
+              Novo Clérigo
             </Button>
           </Link>
         </div>

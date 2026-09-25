@@ -78,6 +78,11 @@ API Backend Paróquia São José (Cloudflare Workers)
 8. **Rotas e URLs em Português Centralizadas (`ROUTES`)**:
    - Todas as URLs do painel devem ser em português (`/entrar`, `/clerigos`, `/avisos`, `/agenda`, `/secretaria`, `/doacoes`, `/adicionar-comunidade`, `/[slug]/editar`, etc.).
    - Nunca utilize URLs literais hardcoded nos componentes, links ou redirects. Importe e utilize sempre a constante tipada `ROUTES` de `@/constants/routes` (ex: `ROUTES.PARISH.CLERGY.LIST`, `ROUTES.AUTH.LOGIN`, `ROUTES.PARISH.COMMUNITY.EDIT(slug)`).
+9. **Nunca crie formulários em modais (Dialogs/Sheets) para cadastro ou edição de entidades**:
+   - Formulários de criação e edição **SEMPRE** devem ser páginas dedicadas no App Router (ex.: `/adicionar`, `/editar/[id]`), nunca modais.
+   - A página de formulário deve conter a estrutura padrão de cabeçalho (`<header className="bg-white ...">` com `<BackButton>`, `<TypographyH1>`, subtítulo descritivo e `<Separator />`), passos de formulário com `<Step>` e etapa de revisão/confirmação (`confirm-step`) antes de salvar quando fizer sentido.
+   - Em páginas de **edição**, inclua sempre a área de exclusão no rodapé ("Danger Zone" / Gerenciamento do Registro) com botão discreto de excluir acionando o `<DeleteConfirmationDialog>`.
+   - Modais (`<Dialog>`) são estritamente reservados para confirmações de ações pontuais ou diálogos de exclusão, **nunca** para preenchimento de formulários de entidades.
 
 ---
 
