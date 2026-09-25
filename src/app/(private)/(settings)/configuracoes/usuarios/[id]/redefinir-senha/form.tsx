@@ -4,8 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { Lock } from 'lucide-react';
+import { Lock, Mail } from 'lucide-react';
 import { adminResetPassword } from '@/api/users/admin-reset-password';
+import { resendUserInvite } from '@/api/users/resend-user-invite';
 import { User } from '@/entities/user';
 import useTranslator from '@/hooks/use-translator';
 import { Button } from '@/components/ui/button';
@@ -29,6 +30,22 @@ export const ResetUserPasswordForm = ({ user }: ResetUserPasswordFormProps) => {
     onSuccess: ({ statusCode, message }) => {
       if (statusCode === 200) {
         showAlert(message || t('reset-password-success'));
+        router.push(ROUTES.SETTINGS.HOME);
+      } else {
+        showAlert(message || t('something-went-wrong'));
+      }
+    },
+    onError: (error) => {
+      console.error(error);
+      showAlert(t('something-went-wrong'));
+    },
+  });
+
+  const { mutate: mutateResendInvite, isPending: isResendingInvite } = useMutation({
+    mutationFn: resendUserInvite,
+    onSuccess: ({ statusCode, message }) => {
+      if (statusCode === 200) {
+        showAlert(message || t('invite-resent-successfully'));
         router.push(ROUTES.SETTINGS.HOME);
       } else {
         showAlert(message || t('something-went-wrong'));
@@ -68,6 +85,31 @@ export const ResetUserPasswordForm = ({ user }: ResetUserPasswordFormProps) => {
             <p className="text-xs text-zinc-500 truncate">{user.email}</p>
           </div>
         </div>
+
+        {user.status === 'pending' && (
+          <div className="p-4 rounded-xl bg-amber-50 border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-900">
+            <div className="flex items-center gap-2.5">
+              <Mail className="w-5 h-5 text-amber-600 shrink-0" />
+              <div className="text-xs sm:text-sm">
+                <p className="font-semibold text-amber-950">Usuário com convite pendente</p>
+                <p className="text-amber-800">
+                  Este usuário ainda não ativou a conta. Deseja reenviar o convite de 48 horas?
+                </p>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="bg-white border-amber-300 text-amber-900 hover:bg-amber-100/50 shrink-0"
+              isLoading={isResendingInvite}
+              onClick={() => mutateResendInvite(user.id)}
+            >
+              <Mail className="w-3.5 h-3.5 mr-1" />
+              {t('resend-invite')}
+            </Button>
+          </div>
+        )}
 
         <div className="space-y-4">
           <span className="text-sm font-medium text-zinc-900 block">

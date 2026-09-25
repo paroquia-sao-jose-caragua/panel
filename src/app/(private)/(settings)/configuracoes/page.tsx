@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
-  Shield,
 } from 'lucide-react';
 import { listUsers } from '@/api/users/list-users';
 import useAuthStore from '@/stores/useAuthStore';

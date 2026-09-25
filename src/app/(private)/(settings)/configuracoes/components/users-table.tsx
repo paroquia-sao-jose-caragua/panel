@@ -10,12 +10,14 @@ import {
   UserX,
   UserCheck,
   LogOut,
+  Mail,
 } from 'lucide-react';
 import { User, UserRole, UserStatus } from '@/entities/user';
 import useAuthStore from '@/stores/useAuthStore';
 import useTranslator from '@/hooks/use-translator';
 import { updateUserStatus } from '@/api/users/update-user-status';
 import { revokeUserSessions } from '@/api/users/revoke-user-sessions';
+import { resendUserInvite } from '@/api/users/resend-user-invite';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -41,6 +43,24 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
 
   const [userToToggleStatus, setUserToToggleStatus] = useState<User | null>(null);
   const [userToRevokeSessions, setUserToRevokeSessions] = useState<User | null>(null);
+  const [userToResendInvite, setUserToResendInvite] = useState<User | null>(null);
+
+  const { mutate: mutateResendInvite, isPending: isResendingInvite } = useMutation({
+    mutationFn: resendUserInvite,
+    onSuccess: ({ statusCode, message }) => {
+      if (statusCode === 200) {
+        showAlert(message || t('invite-resent-successfully'));
+        queryClient.invalidateQueries({ queryKey: ['users'] });
+        setUserToResendInvite(null);
+      } else {
+        showAlert(message || t('something-went-wrong'));
+      }
+    },
+    onError: (error) => {
+      console.error(error);
+      showAlert(t('something-went-wrong'));
+    },
+  });
 
   const { mutate: mutateStatus, isPending: isUpdatingStatus } = useMutation({
     mutationFn: updateUserStatus,
@@ -222,65 +242,88 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
                     {formatLastLogin(u.lastLoginAt)}
                   </td>
                   <td className="py-3.5 px-4 text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                    <div className="flex items-center justify-end gap-1">
+                      {u.status === 'pending' && (
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-zinc-500 hover:text-zinc-900"
+                          className="h-8 w-8 text-brand-600 hover:text-brand-800 hover:bg-brand-50"
+                          title={t('resend-invite')}
+                          onClick={() => setUserToResendInvite(u)}
                         >
-                          <MoreHorizontal className="h-4 w-4" />
+                          <Mail className="h-4 w-4" />
                         </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-48 bg-white">
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href={ROUTES.SETTINGS.EDIT_USER_ROLE(u.id)}
-                            className="flex items-center gap-2 cursor-pointer"
+                      )}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-zinc-500 hover:text-zinc-900"
                           >
-                            <Shield className="w-4 h-4 text-brand-600" />
-                            <span>{t('change-role')}</span>
-                          </Link>
-                        </DropdownMenuItem>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 bg-white">
+                          {u.status === 'pending' && (
+                            <DropdownMenuItem
+                              onClick={() => setUserToResendInvite(u)}
+                              className="gap-2 cursor-pointer text-brand-700 focus:text-brand-800"
+                            >
+                              <Mail className="w-4 h-4 text-brand-600" />
+                              <span>{t('resend-invite')}</span>
+                            </DropdownMenuItem>
+                          )}
 
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href={ROUTES.SETTINGS.RESET_USER_PASSWORD(u.id)}
-                            className="flex items-center gap-2 cursor-pointer"
-                          >
-                            <KeyRound className="w-4 h-4 text-zinc-600" />
-                            <span>{t('reset-password')}</span>
-                          </Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem
-                          onClick={() => setUserToRevokeSessions(u)}
-                          className="gap-2 cursor-pointer"
-                        >
-                          <LogOut className="w-4 h-4 text-zinc-600" />
-                          <span>{t('revoke-sessions')}</span>
-                        </DropdownMenuItem>
-
-                        {!isSelf && (
-                          <DropdownMenuItem
-                            onClick={() => setUserToToggleStatus(u)}
-                            className="gap-2 cursor-pointer text-red-600 focus:text-red-700"
-                          >
-                            {u.status === 'suspended' ? (
-                              <>
-                                <UserCheck className="w-4 h-4 text-emerald-600" />
-                                <span className="text-emerald-700">{t('reactivate-account')}</span>
-                              </>
-                            ) : (
-                              <>
-                                <UserX className="w-4 h-4 text-red-600" />
-                                <span>{t('suspend-account')}</span>
-                              </>
-                            )}
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href={ROUTES.SETTINGS.EDIT_USER_ROLE(u.id)}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <Shield className="w-4 h-4 text-brand-600" />
+                              <span>{t('change-role')}</span>
+                            </Link>
                           </DropdownMenuItem>
-                        )}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href={ROUTES.SETTINGS.RESET_USER_PASSWORD(u.id)}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <KeyRound className="w-4 h-4 text-zinc-600" />
+                              <span>{t('reset-password')}</span>
+                            </Link>
+                          </DropdownMenuItem>
+
+                          <DropdownMenuItem
+                            onClick={() => setUserToRevokeSessions(u)}
+                            className="gap-2 cursor-pointer"
+                          >
+                            <LogOut className="w-4 h-4 text-zinc-600" />
+                            <span>{t('revoke-sessions')}</span>
+                          </DropdownMenuItem>
+
+                          {!isSelf && (
+                            <DropdownMenuItem
+                              onClick={() => setUserToToggleStatus(u)}
+                              className="gap-2 cursor-pointer text-red-600 focus:text-red-700"
+                            >
+                              {u.status === 'suspended' ? (
+                                <>
+                                  <UserCheck className="w-4 h-4 text-emerald-600" />
+                                  <span className="text-emerald-700">{t('reactivate-account')}</span>
+                                </>
+                              ) : (
+                                <>
+                                  <UserX className="w-4 h-4 text-red-600" />
+                                  <span>{t('suspend-account')}</span>
+                                </>
+                              )}
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </td>
                 </tr>
               );
@@ -288,6 +331,27 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
           </tbody>
         </table>
       </div>
+
+      {/* Resend Invite Confirmation Dialog */}
+      <ConfirmDialog
+        open={Boolean(userToResendInvite)}
+        onOpenChange={(open) => !open && setUserToResendInvite(null)}
+        title={t('resend-invite-confirm-title')}
+        description={
+          userToResendInvite
+            ? `${t('resend-invite-confirm-desc')} (${userToResendInvite.name} • ${userToResendInvite.email})`
+            : t('resend-invite-confirm-desc')
+        }
+        confirmText={t('confirm')}
+        cancelText={t('cancel')}
+        variant="default"
+        isPending={isResendingInvite}
+        onConfirm={() => {
+          if (userToResendInvite) {
+            mutateResendInvite(userToResendInvite.id);
+          }
+        }}
+      />
 
       {/* Toggle Status Confirmation Dialog */}
       <ConfirmDialog

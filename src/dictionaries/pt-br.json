@@ -215,5 +215,9 @@
   "unauthorized-access": "Você não tem permissão para acessar esta página.",
   "no-users-found": "Nenhum usuário encontrado.",
   "page-prev": "Anterior",
-  "page-next": "Próxima"
+  "page-next": "Próxima",
+  "resend-invite": "Reenviar Convite",
+  "resend-invite-confirm-title": "Reenviar Convite de Acesso",
+  "resend-invite-confirm-desc": "Deseja reenviar o convite de acesso por e-mail para este usuário? O link anterior será invalidado e um novo link válido por 48 horas será enviado.",
+  "invite-resent-successfully": "Convite reenviado com sucesso!"
 }
