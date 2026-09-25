@@ -51,28 +51,21 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
     alert: {
       barBg: 'bg-[#85261d] text-[#fff8f0]',
       badgeBg: 'bg-[#5e1811] text-amber-200 border-amber-500/30',
-      badgeText: 'ALERTA URGENTE',
       buttonBg: 'bg-amber-400 text-stone-900',
-      icon: AlertTriangle,
     },
     info: {
       barBg: 'bg-[#153422] text-[#f4efe6]',
       badgeBg: 'bg-[#0e2417] text-emerald-200 border-emerald-500/30',
-      badgeText: 'COMUNICADO',
       buttonBg: 'bg-[#cfa55b] text-[#153422]',
-      icon: Info,
     },
     solemnity: {
       barBg: 'bg-[#6b4c1b] text-[#fff8ed]',
       badgeBg: 'bg-[#4a3411] text-amber-200 border-amber-400/40',
-      badgeText: 'SOLENIDADE / FESTA',
       buttonBg: 'bg-[#f4d068] text-[#3a270a]',
-      icon: Sparkles,
     },
   };
 
   const currentVariant = variantStyles[values.variant] || variantStyles.alert;
-  const CurrentIcon = currentVariant.icon;
   const imageUrl = getImageUrl(values.modalImageId);
 
   return (
@@ -110,33 +103,14 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
         </div>
 
         <div
-          className={`w-full rounded-xl overflow-hidden py-2.5 px-4 shadow-sm flex items-center justify-between gap-4 ${currentVariant.barBg}`}
+          className={`w-full overflow-hidden py-2.5 px-4 shadow-sm flex items-center justify-between gap-4 ${currentVariant.barBg}`}
         >
           <div className="flex items-center gap-3 overflow-hidden flex-1">
-            <span
-              className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold tracking-wider border ${currentVariant.badgeBg}`}
-            >
-              <CurrentIcon className="w-3 h-3" />
-              {currentVariant.badgeText}
-            </span>
             <span className="text-xs sm:text-sm font-medium truncate">
               {values.text || 'Nenhum texto informado'}
             </span>
           </div>
-
-          <div className="flex items-center gap-3 shrink-0">
-            {values.hasModal && (
-              <span
-                className={`text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 ${currentVariant.buttonBg}`}
-              >
-                {values.modalButtonText || 'Ver Detalhes'}
-                <ArrowRight className="w-3 h-3" />
-              </span>
-            )}
-            <span className="text-white/60 p-0.5 rounded-full">
-              <X className="w-3.5 h-3.5" />
-            </span>
-          </div>
+         
         </div>
       </div>
 
@@ -253,14 +227,6 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
       <Dialog open={previewModalOpen} onOpenChange={setPreviewModalOpen}>
         <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto bg-[#fbf6ee] p-6 sm:p-8 rounded-2xl border border-stone-200 text-stone-900">
           <DialogHeader className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold tracking-wider border ${currentVariant.badgeBg}`}
-              >
-                <CurrentIcon className="w-3 h-3" />
-                {currentVariant.badgeText}
-              </span>
-            </div>
             <DialogTitle className="text-xl sm:text-2xl font-serif text-[#14201d] font-bold whitespace-pre-line leading-snug">
               {values.modalTitle || 'Comunicado Paroquial'}
             </DialogTitle>

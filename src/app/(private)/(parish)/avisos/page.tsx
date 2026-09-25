@@ -99,34 +99,27 @@ export default function AnnouncementsPage() {
     alert: {
       barBg: 'bg-[#85261d] text-[#fff8f0]',
       badgeBg: 'bg-[#5e1811] text-amber-200 border-amber-500/30',
-      badgeText: 'ALERTA URGENTE',
       buttonBg: 'bg-amber-400 text-stone-900',
-      icon: AlertTriangle,
       label: 'Alerta Urgente',
       colorBadge: 'bg-red-50 text-red-700 border-red-200',
     },
     info: {
       barBg: 'bg-[#153422] text-[#f4efe6]',
       badgeBg: 'bg-[#0e2417] text-emerald-200 border-emerald-500/30',
-      badgeText: 'COMUNICADO',
       buttonBg: 'bg-[#cfa55b] text-[#153422]',
-      icon: Info,
       label: 'Comunicado Paroquial',
       colorBadge: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     },
     solemnity: {
       barBg: 'bg-[#6b4c1b] text-[#fff8ed]',
       badgeBg: 'bg-[#4a3411] text-amber-200 border-amber-400/40',
-      badgeText: 'SOLENIDADE / FESTA',
       buttonBg: 'bg-[#f4d068] text-[#3a270a]',
-      icon: Sparkles,
       label: 'Solenidade / Festa',
       colorBadge: 'bg-amber-50 text-amber-800 border-amber-200',
     },
   };
 
   const currentVariant = variantStyles[urgentAlert?.variant || 'alert'];
-  const VariantIcon = currentVariant.icon;
 
   const isPending = isAlertPending || isAnnouncementsPending;
 
@@ -261,12 +254,6 @@ export default function AnnouncementsPage() {
                 <div className="space-y-4 text-xs sm:text-sm">
                   <div>
                     <span className="text-zinc-500 text-xs block mb-1">Categoria / Tom:</span>
-                    <span
-                      className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md border ${currentVariant.colorBadge}`}
-                    >
-                      <VariantIcon className="w-3.5 h-3.5" />
-                      {currentVariant.label}
-                    </span>
                   </div>
 
                   <div>
@@ -303,27 +290,13 @@ export default function AnnouncementsPage() {
                   Prévia Visual
                 </span>
                 <div
-                  className={`w-full rounded-xl overflow-hidden py-2.5 px-3.5 shadow-2xs flex items-center justify-between gap-3 ${currentVariant.barBg}`}
+                  className={`w-full overflow-hidden py-2.5 px-3.5 shadow-2xs flex items-center justify-between gap-3 ${currentVariant.barBg}`}
                 >
                   <div className="flex items-center gap-2 overflow-hidden flex-1">
-                    <span
-                      className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-wider border ${currentVariant.badgeBg}`}
-                    >
-                      <VariantIcon className="w-2.5 h-2.5" />
-                      {currentVariant.badgeText}
-                    </span>
                     <span className="text-xs font-medium truncate">
                       {urgentAlert?.text || 'Sem texto de alerta'}
                     </span>
                   </div>
-                  {urgentAlert?.hasModal && (
-                    <span
-                      className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 shrink-0 ${currentVariant.buttonBg}`}
-                    >
-                      {urgentAlert.modalButtonText || 'Ver Detalhes'}
-                      <ArrowRight className="w-3 h-3" />
-                    </span>
-                  )}
                 </div>
               </div>
             </div>
