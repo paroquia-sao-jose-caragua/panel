@@ -50,6 +50,15 @@ interface UrgentAlertFormStepProps {
   errors?: Record<string, string>;
 }
 
+const variantBarStyles: Record<UrgentAlertVariant, string> = {
+  alert:
+    'bg-gradient-to-r from-[#701710] via-[#85261d] to-[#701710] text-[#fff8f2] border-b border-[#a8382c]/40',
+  info:
+    'bg-gradient-to-r from-[#0f2617] via-[#153422] to-[#0f2617] text-[#f4efe6] border-b border-emerald-700/30',
+  solemnity:
+    'bg-gradient-to-r from-[#523912] via-[#6e4e1a] to-[#523912] text-[#fff8ed] border-b border-amber-500/40',
+};
+
 export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
   values,
   onChange,
@@ -278,6 +287,25 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
           className="resize-none"
         />
         {errors.text && <p className="text-xs text-red-500 mt-1">{errors.text}</p>}
+
+        {/* Prévia em tempo real */}
+        <div className="pt-2">
+          <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">
+            Prévia em Tempo Real
+          </span>
+          <div
+            className={`w-full overflow-hidden py-3 px-4 rounded-xl shadow-xs flex items-center justify-between gap-3 ${
+              variantBarStyles[values.variant] || variantBarStyles.alert
+            }`}
+          >
+            <div className="flex items-center gap-3 overflow-hidden flex-1">
+              <span className="text-base sm:text-lg font-semibold tracking-wide truncate">
+                {values.text || 'Digite a mensagem acima para visualizar a prévia...'}
+              </span>
+              <span className="opacity-60 text-sm sm:text-base shrink-0">☩</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* 3. Modal de Detalhes */}

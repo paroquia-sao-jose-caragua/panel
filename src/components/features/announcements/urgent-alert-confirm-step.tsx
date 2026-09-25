@@ -49,17 +49,20 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
 
   const variantStyles = {
     alert: {
-      barBg: 'bg-[#85261d] text-[#fff8f0]',
+      barBg:
+        'bg-gradient-to-r from-[#701710] via-[#85261d] to-[#701710] text-[#fff8f2] border-b border-[#a8382c]/40',
       badgeBg: 'bg-[#5e1811] text-amber-200 border-amber-500/30',
       buttonBg: 'bg-amber-400 text-stone-900',
     },
     info: {
-      barBg: 'bg-[#153422] text-[#f4efe6]',
+      barBg:
+        'bg-gradient-to-r from-[#0f2617] via-[#153422] to-[#0f2617] text-[#f4efe6] border-b border-emerald-700/30',
       badgeBg: 'bg-[#0e2417] text-emerald-200 border-emerald-500/30',
       buttonBg: 'bg-[#cfa55b] text-[#153422]',
     },
     solemnity: {
-      barBg: 'bg-[#6b4c1b] text-[#fff8ed]',
+      barBg:
+        'bg-gradient-to-r from-[#523912] via-[#6e4e1a] to-[#523912] text-[#fff8ed] border-b border-amber-500/40',
       badgeBg: 'bg-[#4a3411] text-amber-200 border-amber-400/40',
       buttonBg: 'bg-[#f4d068] text-[#3a270a]',
     },
@@ -103,14 +106,14 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
         </div>
 
         <div
-          className={`w-full overflow-hidden py-2.5 px-4 shadow-sm flex items-center justify-between gap-4 ${currentVariant.barBg}`}
+          className={`w-full overflow-hidden py-3 px-4 rounded-xl shadow-xs flex items-center justify-between gap-4 ${currentVariant.barBg}`}
         >
           <div className="flex items-center gap-3 overflow-hidden flex-1">
-            <span className="text-xs sm:text-sm font-medium truncate">
+            <span className="text-base sm:text-lg font-semibold tracking-wide truncate">
               {values.text || 'Nenhum texto informado'}
             </span>
+            <span className="opacity-60 text-sm sm:text-base shrink-0">☩</span>
           </div>
-         
         </div>
       </div>
 
