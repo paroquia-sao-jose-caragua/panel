@@ -63,4 +63,10 @@ export const ROUTES = {
     SCHEDULE: (id: string) => `/agentes-pastorais/${id}/horarios`,
     BLOCKED_DATES: (id: string) => `/agentes-pastorais/${id}/bloqueios`,
   },
+  APPOINTMENT_SERVICES: {
+    HOME: '/categorias-atendimento',
+    ADD: '/categorias-atendimento/adicionar',
+    EDIT: (id: string) => `/categorias-atendimento/editar/${id}`,
+  },
 } as const;
+

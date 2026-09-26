@@ -8,6 +8,7 @@ import { Profile } from './profile';
 import { useState } from 'react';
 import useAuthStore from '@/stores/useAuthStore';
 import { ROUTES } from '@/constants/routes';
+import { cn } from '@/lib/utils';
 
 export const AppSidebar = () => {
   const [open, setOpen] = useState(false);
@@ -29,8 +30,16 @@ export const AppSidebar = () => {
       className="fixed top-0 right-0 left-0 z-20 flex flex-col gap-4 border-b border-zinc-200 bg-brand-gradient py-2 md:py-4 data-[state=open]:bottom-0 lg:right-auto lg:border-r lg:pt-4 lg:pb-8 lg:data-[state=closed]:-bottom-px lg:w-90"
     >
       <div className="flex items-center justify-between px-4 lg:px-6">
-        <img src="/logo-mark-dark.png" alt="" height={80} width={240} />
+        <img
+          src="/logo-mark-dark.png"
+          alt="Paróquia São José"
+          className={cn(
+            'w-auto object-contain transition-all duration-200',
+            open ? 'h-10 sm:h-12 lg:h-16' : 'h-12 lg:h-16'
+          )}
+        />
         <Collapsible.Trigger asChild className="lg:hidden">
+
           <Button
             type="button"
             variant="ghost"
@@ -128,9 +137,14 @@ export const AppSidebar = () => {
                     title: 'Agentes Pastorais',
                     href: ROUTES.PASTORAL_AGENTS.HOME,
                   },
+                  {
+                    title: 'Categorias de Atendimento',
+                    href: ROUTES.APPOINTMENT_SERVICES.HOME,
+                  },
                 ]}
                 onLinkClick={handleClose}
               />
+
               
               <NavItem
                 title="Secretaria & Contribuição"

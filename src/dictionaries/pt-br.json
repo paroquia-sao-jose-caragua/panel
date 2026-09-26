@@ -219,5 +219,16 @@
   "resend-invite": "Reenviar Convite",
   "resend-invite-confirm-title": "Reenviar Convite de Acesso",
   "resend-invite-confirm-desc": "Deseja reenviar o convite de acesso por e-mail para este usuário? O link anterior será invalidado e um novo link válido por 48 horas será enviado.",
-  "invite-resent-successfully": "Convite reenviado com sucesso!"
+  "invite-resent-successfully": "Convite reenviado com sucesso!",
+  "appointment-services-title": "Categorias de Atendimento",
+  "appointment-services-desc": "Cadastre e gerencie os tipos de atendimentos espirituais, sacramentos e visitas pastorais oferecidos aos fiéis.",
+  "add-appointment-service": "Nova Categoria",
+  "edit-appointment-service": "Editar Categoria",
+  "delete-appointment-service": "Excluir Categoria",
+  "service-title-required": "O título da categoria é obrigatório",
+  "service-category-required": "Selecione a categoria canônica/pastoral",
+  "service-duration-required": "A duração estimada é obrigatória",
+  "service-saved-successfully": "Categoria de atendimento salva com sucesso!",
+  "service-deleted-successfully": "Categoria de atendimento excluída com sucesso!"
 }
+

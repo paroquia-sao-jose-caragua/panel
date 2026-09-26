@@ -220,5 +220,16 @@
   "resend-invite": "Resend Invite",
   "resend-invite-confirm-title": "Resend Access Invite",
   "resend-invite-confirm-desc": "Do you want to resend the access invitation email to this user? The previous link will be invalidated and a new link valid for 48 hours will be sent.",
-  "invite-resent-successfully": "Invitation resent successfully!"
+  "invite-resent-successfully": "Invitation resent successfully!",
+  "appointment-services-title": "Appointment Categories",
+  "appointment-services-desc": "Register and manage the types of spiritual services, sacraments, and pastoral visits offered to the community.",
+  "add-appointment-service": "New Category",
+  "edit-appointment-service": "Edit Category",
+  "delete-appointment-service": "Delete Category",
+  "service-title-required": "Category title is required",
+  "service-category-required": "Select the canonical/pastoral category",
+  "service-duration-required": "Estimated duration is required",
+  "service-saved-successfully": "Appointment category saved successfully!",
+  "service-deleted-successfully": "Appointment category deleted successfully!"
 }
+

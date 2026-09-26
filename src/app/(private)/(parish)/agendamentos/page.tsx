@@ -22,7 +22,10 @@ import {
   Save,
   ChevronDown,
   ChevronUp,
+  Tag,
 } from 'lucide-react';
+
+
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
@@ -167,7 +170,7 @@ export default function AppointmentsPage() {
   };
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
+    <main className="w-full min-w-0 max-w-325 px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
       {/* Top Breadcrumb */}
       <AppBreadcrumb
         links={[
@@ -182,21 +185,10 @@ export default function AppointmentsPage() {
 
       {/* Page Header */}
       <div>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           <TypographyH1>
             {isPastoralAgent ? 'Meus Atendimentos' : 'Atendimentos & Visitas'}
           </TypographyH1>
-
-          {!isPastoralAgent && (
-            <div className="flex items-center gap-3">
-              <Link href={ROUTES.PASTORAL_AGENTS.HOME}>
-                <Button variant="outline">
-                  <Users className="w-4 h-4 mr-2" />
-                  Gerenciar Agentes Pastorais
-                </Button>
-              </Link>
-            </div>
-          )}
         </div>
 
         <Describe>
@@ -215,8 +207,9 @@ export default function AppointmentsPage() {
               : 'bg-amber-50/70 border-amber-300 shadow-xs'
           }`}
         >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-start sm:items-center gap-3.5">
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+          <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+
             <div
               className={`p-2.5 rounded-xl shrink-0 ${
                 settings?.enabled
@@ -256,7 +249,7 @@ export default function AppointmentsPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 self-end sm:self-center">
+          <div className="flex items-center gap-3 self-start sm:self-auto xl:self-center shrink-0">
             {!settings?.enabled && (
               <Button
                 variant="outline"
@@ -341,9 +334,9 @@ export default function AppointmentsPage() {
       )}
 
       {/* Filter Tabs & Search */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 min-w-0">
         {/* Status Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto p-1 bg-zinc-100/80 rounded-xl">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full p-1 bg-zinc-100/80 rounded-xl scrollbar-none shrink-0">
           {[
             { id: 'all', label: 'Todos' },
             { id: 'pending', label: 'Pendentes' },
@@ -366,12 +359,12 @@ export default function AppointmentsPage() {
         </div>
 
         {/* Search Input and Agent Dropdown */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full xl:w-auto min-w-0">
           {!isPastoralAgent && agents && agents.length > 0 && (
             <select
               value={selectedAgentId}
               onChange={(e) => setSelectedAgentId(e.target.value)}
-              className="h-10 px-3 rounded-xl border border-zinc-300 text-xs sm:text-sm bg-white text-zinc-700 w-full sm:w-auto"
+              className="h-10 px-3 rounded-xl border border-zinc-300 text-xs sm:text-sm bg-white text-zinc-700 w-full sm:w-auto min-w-0"
             >
               <option value="all">Todos os Agentes</option>
               {agents.map((agent) => (
@@ -382,13 +375,13 @@ export default function AppointmentsPage() {
             </select>
           )}
 
-          <div className="relative w-full sm:w-80">
+          <div className="relative w-full sm:w-72 xl:w-80 min-w-0">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar por fiel, enfermo ou clérigo..."
-              className="pl-9 h-10 rounded-xl bg-white border-zinc-300"
+              className="pl-9 h-10 rounded-xl bg-white border-zinc-300 w-full"
             />
           </div>
         </div>
@@ -396,7 +389,7 @@ export default function AppointmentsPage() {
 
       {/* Content / List */}
       {isPending ? (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 grid-cols-1 xl:grid-cols-2">
           {Array.from({ length: 4 }).map((_, idx) => (
             <div key={idx} className="border border-zinc-200 rounded-2xl p-5 bg-white space-y-4 shadow-xs">
               <div className="flex justify-between items-center">
@@ -422,7 +415,7 @@ export default function AppointmentsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 grid-cols-1 xl:grid-cols-2">
           {filteredAppointments.map((appointment) => {
             const cleanPhone = (appointment.requesterPhone || '').replace(/\D/g, '');
             const whatsappUrl = `https://wa.me/55${cleanPhone}?text=${encodeURIComponent(
@@ -432,12 +425,12 @@ export default function AppointmentsPage() {
             return (
               <div
                 key={appointment.id}
-                className="border border-zinc-200 rounded-2xl p-5 bg-white shadow-xs flex flex-col justify-between hover:border-zinc-300 transition-all gap-4"
+                className="border border-zinc-200 rounded-2xl p-5 bg-white shadow-xs flex flex-col justify-between hover:border-zinc-300 transition-all gap-4 min-w-0"
               >
-                <div className="space-y-3">
+                <div className="space-y-3 min-w-0">
                   {/* Top Bar: Service title & Status */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
+                  <div className="flex items-start justify-between gap-2 min-w-0">
+                    <div className="min-w-0">
                       <div className="flex items-center gap-1.5 mb-1 flex-wrap">
                         <span className="text-xs font-semibold text-brand-700 uppercase tracking-wider block">
                           {appointment.service?.category === 'home_visit'
@@ -445,44 +438,46 @@ export default function AppointmentsPage() {
                             : 'Atendimento Presencial'}
                         </span>
                         {appointment.service?.title?.toLowerCase().includes('confissão') && (
-                          <Badge variant="outline" className="text-[10px] py-0 px-1.5 bg-purple-50 text-purple-800 border-purple-200 font-bold">
+                          <Badge variant="outline" className="text-[10px] py-0 px-1.5 bg-purple-50 text-purple-800 border-purple-200 font-bold shrink-0">
                             Sacramento
                           </Badge>
                         )}
                         {appointment.service?.title?.toLowerCase().includes('aconselhamento') && (
-                          <Badge variant="outline" className="text-[10px] py-0 px-1.5 bg-sky-50 text-sky-800 border-sky-200 font-semibold">
+                          <Badge variant="outline" className="text-[10px] py-0 px-1.5 bg-sky-50 text-sky-800 border-sky-200 font-semibold shrink-0">
                             Geral / Escuta
                           </Badge>
                         )}
                       </div>
-                      <h3 className="text-lg font-bold text-zinc-900">
+                      <h3 className="text-lg font-bold text-zinc-900 truncate">
                         {appointment.service?.title || 'Atendimento Pastoral'}
                       </h3>
                     </div>
-                    {getStatusBadge(appointment.status)}
+                    <div className="shrink-0">
+                      {getStatusBadge(appointment.status)}
+                    </div>
                   </div>
 
                   {/* Date & Time and Assigned Agent */}
-                  <div className="grid grid-cols-2 gap-2 p-3 bg-zinc-50 rounded-xl text-xs text-zinc-700">
-                    <div className="flex items-center gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 bg-zinc-50 rounded-xl text-xs text-zinc-700 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
                       <Clock className="w-4 h-4 text-brand-600 shrink-0" />
-                      <div>
-                        <span className="font-semibold block text-zinc-900">
+                      <div className="min-w-0">
+                        <span className="font-semibold block text-zinc-900 truncate">
                           {formatDate(appointment.appointmentDate)}
                         </span>
-                        <span>
+                        <span className="text-zinc-500">
                           {appointment.startTime} - {appointment.endTime}
                         </span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
                       <HeartHandshake className="w-4 h-4 text-brand-600 shrink-0" />
-                      <div>
-                        <span className="font-semibold block text-zinc-900">
+                      <div className="min-w-0">
+                        <span className="font-semibold block text-zinc-900 truncate" title={`${appointment.agent?.title ? `${appointment.agent.title} ` : ''}${appointment.agent?.name || 'Agente'}`}>
                           {appointment.agent?.title ? `${appointment.agent.title} ` : ''}
                           {appointment.agent?.name || 'Agente'}
                         </span>
-                        <span className="text-zinc-500">
+                        <span className="text-zinc-500 truncate block">
                           {appointment.agent?.actingRole || 'Pastoral'}
                         </span>
                       </div>
@@ -490,22 +485,22 @@ export default function AppointmentsPage() {
                   </div>
 
                   {/* Solicitante */}
-                  <div className="text-xs space-y-1">
-                    <div className="flex items-center gap-2 text-zinc-800">
+                  <div className="text-xs space-y-1 min-w-0">
+                    <div className="flex items-center gap-2 text-zinc-800 min-w-0">
                       <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                      <span className="font-semibold">{appointment.requesterName}</span>
+                      <span className="font-semibold truncate">{appointment.requesterName}</span>
                       {appointment.requesterRelationship && (
-                        <span className="text-zinc-400">({appointment.requesterRelationship})</span>
+                        <span className="text-zinc-400 shrink-0">({appointment.requesterRelationship})</span>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-2 text-zinc-600">
+                    <div className="flex items-center gap-2 text-zinc-600 min-w-0">
                       <Phone className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                      <span>{appointment.requesterPhone}</span>
+                      <span className="truncate">{appointment.requesterPhone}</span>
                     </div>
 
                     {appointment.requesterNotes && (
-                      <div className="mt-2 p-2 bg-amber-50/60 border border-amber-200/60 rounded-lg text-amber-900 italic text-[11px]">
+                      <div className="mt-2 p-2 bg-amber-50/60 border border-amber-200/60 rounded-lg text-amber-900 italic text-[11px] break-words">
                         &quot;{appointment.requesterNotes}&quot;
                       </div>
                     )}
@@ -513,16 +508,16 @@ export default function AppointmentsPage() {
 
                   {/* Se for Visita Domiciliar */}
                   {appointment.patientName && (
-                    <div className="p-3 bg-zinc-100/70 border border-zinc-200/80 rounded-xl text-xs space-y-1.5">
-                      <div className="font-semibold text-zinc-900 flex items-center gap-1.5">
-                        <AlertCircle className="w-3.5 h-3.5 text-brand-700" />
-                        <span>Enfermo: {appointment.patientName}</span>
+                    <div className="p-3 bg-zinc-100/70 border border-zinc-200/80 rounded-xl text-xs space-y-1.5 min-w-0">
+                      <div className="font-semibold text-zinc-900 flex items-center gap-1.5 min-w-0">
+                        <AlertCircle className="w-3.5 h-3.5 text-brand-700 shrink-0" />
+                        <span className="truncate">Enfermo: {appointment.patientName}</span>
                       </div>
 
                       {appointment.patientAddress && (
-                        <div className="flex items-start gap-1.5 text-zinc-600">
+                        <div className="flex items-start gap-1.5 text-zinc-600 min-w-0">
                           <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0 mt-0.5" />
-                          <span>{appointment.patientAddress}</span>
+                          <span className="break-words">{appointment.patientAddress}</span>
                         </div>
                       )}
 
@@ -549,14 +544,14 @@ export default function AppointmentsPage() {
                   )}
 
                   {appointment.cancellationReason && (
-                    <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800">
+                    <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 break-words">
                       <span className="font-semibold">Motivo do Cancelamento:</span> {appointment.cancellationReason}
                     </div>
                   )}
                 </div>
 
                 {/* Bottom Actions */}
-                <div className="pt-3 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-2">
+                <div className="pt-3 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-2 min-w-0">
                   <a
                     href={whatsappUrl}
                     target="_blank"

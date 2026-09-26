@@ -12,7 +12,9 @@ import {
   CheckCircle2,
   XCircle,
   CalendarCheck,
+  Tag,
 } from 'lucide-react';
+
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
@@ -26,7 +28,7 @@ export default function PastoralAgentsPage() {
   const { agents, isPending: isPendingAgents } = usePastoralAgents();
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
+    <main className="max-w-325 w-full min-w-0 px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
       {/* Top Breadcrumb */}
       <AppBreadcrumb
         links={[
@@ -44,20 +46,13 @@ export default function PastoralAgentsPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <TypographyH1>Agentes Pastorais</TypographyH1>
 
-          <div className="flex items-center gap-3">
-            <Link href={ROUTES.APPOINTMENTS.HOME}>
-              <Button variant="outline">
-                <CalendarCheck className="w-4 h-4 mr-2" />
-                Ver Atendimentos
-              </Button>
-            </Link>
-            <Link href={ROUTES.PASTORAL_AGENTS.ADD}>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Novo Agente
-              </Button>
-            </Link>
-          </div>
+          <Link href={ROUTES.PASTORAL_AGENTS.ADD}>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Novo Agente
+            </Button>
+          </Link>
+
         </div>
 
         <Describe>
@@ -67,7 +62,7 @@ export default function PastoralAgentsPage() {
 
       {/* Agents Cards Grid */}
       {isPendingAgents ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-1 xl:grid-cols-2">
           {Array.from({ length: 3 }).map((_, idx) => (
             <div key={idx} className="border border-zinc-200 rounded-2xl p-5 bg-white space-y-4">
               <Skeleton className="h-6 w-32 rounded-md" />
@@ -94,11 +89,11 @@ export default function PastoralAgentsPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 grid-cols-1 xl:grid-cols-2">
           {agents.map((agent) => (
             <div
               key={agent.id}
-              className="border border-zinc-200 rounded-2xl p-5 bg-white shadow-xs hover:border-zinc-300 transition-all flex flex-col justify-between gap-4"
+              className="border border-zinc-200 rounded-2xl p-5 bg-white shadow-xs hover:border-zinc-300 transition-all flex flex-col justify-between gap-4 min-w-0"
             >
               <div className="space-y-3.5">
                 {/* Top Info */}

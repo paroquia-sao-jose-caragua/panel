@@ -18,9 +18,16 @@ import {
   updateAppointmentSettings,
   type UpdateAppointmentSettingsParams,
 } from './settings';
-import { listAppointmentServices } from './services';
+import {
+  listAppointmentServices,
+  saveAppointmentService,
+  deleteAppointmentService,
+  type ListAppointmentServicesParams,
+} from './services';
+import type { AppointmentService } from '@/entities/appointment-service';
 import type { PastoralAgent } from '@/entities/pastoral-agent';
 import { showAlert } from '@/utils/showAlert';
+
 
 export const useAppointments = (params?: ListAppointmentsParams) => {
   const queryClient = useQueryClient();
@@ -52,12 +59,36 @@ export const useAppointments = (params?: ListAppointmentsParams) => {
   };
 };
 
-import type { AppointmentService } from '@/entities/appointment-service';
+export const useAppointmentServices = (params?: ListAppointmentServicesParams) => {
+  const queryClient = useQueryClient();
 
-export const useAppointmentServices = () => {
+
   const { data, isPending, error, refetch } = useQuery({
-    queryKey: ['appointment-services'],
-    queryFn: () => listAppointmentServices(),
+    queryKey: ['appointment-services', params],
+    queryFn: () => listAppointmentServices(params),
+  });
+
+  const saveMutation = useMutation({
+    mutationFn: (serviceData: Partial<AppointmentService> & { id?: string }) =>
+      saveAppointmentService(serviceData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appointment-services'] });
+      showAlert('Categoria de atendimento salva com sucesso!');
+    },
+    onError: (err: Error) => {
+      showAlert(`Erro ao salvar categoria: ${err.message}`);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteAppointmentService(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appointment-services'] });
+      showAlert('Categoria de atendimento excluída com sucesso!');
+    },
+    onError: (err: Error) => {
+      showAlert(`Erro ao excluir categoria: ${err.message}`);
+    },
   });
 
   return {
@@ -65,8 +96,13 @@ export const useAppointmentServices = () => {
     isPending,
     error,
     refetch,
+    saveService: saveMutation.mutateAsync,
+    isSaving: saveMutation.isPending,
+    deleteService: deleteMutation.mutateAsync,
+    isDeleting: deleteMutation.isPending,
   };
 };
+
 
 export const usePastoralAgents = (params?: ListPastoralAgentsParams) => {
   const queryClient = useQueryClient();
