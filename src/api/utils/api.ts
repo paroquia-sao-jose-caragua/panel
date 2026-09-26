@@ -53,7 +53,7 @@ export const api = async <ResponseData, K extends string = never>(
     if (statusCode !== 200) {
       setLoggedOut();
       await logout();
-      if (typeof window !== 'undefined') window.location.href = '/login';
+      if (typeof window !== 'undefined') window.location.href = '/entrar';
       return new Promise<never>(() => {});
     }
 

@@ -2,7 +2,6 @@ import { TypographyH2 } from '@/components/ui/typography/h2';
 import { Check } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
-import { formatTimeDifference } from '@/utils/formatTime';
 import { useCommunity } from '@/api/communities/use-community';
 import useTranslator from '@/hooks/use-translator';
 
@@ -17,7 +16,7 @@ interface ConfirmStepProps {
   endDate?: string;
   monthOfYear?: number;
   dayOfMonth?: number;
-  times: { startTime: string; endTime: string }[];
+  times: { startTime: string; endTime?: string }[];
 }
 
 export const ConfirmStep = ({
@@ -105,10 +104,7 @@ export const ConfirmStep = ({
                   className="flex flex-row items-center justify-between bg-brand-0/30 px-3 py-3 rounded-lg border border-brand-500/50"
                 >
                   <span className="flex-1 text-md font-medium text-brand-800">
-                    {time.startTime} - {time.endTime}
-                  </span>
-                  <span className="text-xs text-brand-700 bg-brand-200 py-1 px-2 rounded">
-                    {formatTimeDifference(time.startTime, time.endTime)}
+                    {time.startTime}
                   </span>
                 </div>
               ))}

@@ -1,16 +1,21 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-type User = {
+import { UserRole, UserStatus } from "@/entities/user";
+
+export type AuthUser = {
+  id?: string;
   name: string;
   email: string;
-  role: "user" | "admin" | "viewer";
+  role: UserRole;
+  status?: UserStatus;
+  lastLoginAt?: string | null;
 };
 
 interface States {
   isLogged: boolean;
   token: string | null;
-  user: User;
+  user: AuthUser;
   initialized: boolean;
   wasCodeSent: boolean;
   email: string;
@@ -19,7 +24,7 @@ interface States {
   onboardingName: string;
   setLogged: (data: {
     token?: string;
-    user: User;
+    user: AuthUser;
     initialized?: boolean;
   }) => void;
   setLoggedOut: () => void;

@@ -6,13 +6,16 @@ import { useEffect } from 'react';
 
 export const useCommunity = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { community, setCommunity } = useCommunityStore();
+  const { community: storeCommunity, setCommunity } = useCommunityStore();
 
-  const { isPending, data } = useQuery({
+  const { isPending: isQueryPending, isLoading, data } = useQuery({
     queryKey: ['community', slug],
-    queryFn: () => getCommunityBySlug(slug),
-    enabled: community?.slug !== slug, // Only fetch if the current community is different from the slug
+    queryFn: () => getCommunityBySlug(slug as string),
+    enabled: Boolean(slug),
   });
+
+  const currentCommunity =
+    data?.community ?? (storeCommunity?.slug === slug ? storeCommunity : null);
 
   useEffect(() => {
     if (data?.community) {
@@ -20,5 +23,7 @@ export const useCommunity = () => {
     }
   }, [data?.community, setCommunity]);
 
-  return { community, isPending };
+  const isPending = (isQueryPending || isLoading) && !currentCommunity;
+
+  return { community: currentCommunity, isPending };
 };

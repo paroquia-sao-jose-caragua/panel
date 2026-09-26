@@ -6,7 +6,10 @@ export function TypographyP({
 }: React.ComponentProps<'p'>) {
   return (
     <p
-      className={cn('leading-7 [&:not(:first-child)]:mt-6', className)}
+      className={cn(
+        'text-sm md:text-base text-zinc-600 font-serif leading-relaxed [&:not(:first-child)]:mt-4',
+        className
+      )}
       {...props}
     />
   );

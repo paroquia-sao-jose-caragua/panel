@@ -6,15 +6,19 @@ import { useEffect } from 'react';
 
 export const useMassSchedules = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { community, massSchedules, setMassSchedules } = useCommunityStore();
+  const { community, massSchedules: storeMassSchedules, setMassSchedules } = useCommunityStore();
 
-  const { isPending, data } = useQuery({
-    queryKey: ['community-mass-schedules', slug],
+  const communityId = community?.slug === slug ? community.id : undefined;
+
+  const { isPending: isQueryPending, isLoading, data } = useQuery({
+    queryKey: ['community-mass-schedules', slug, communityId],
     queryFn: () =>
-      listCommunityMassSchedules({ communityId: community?.id as string }),
+      listCommunityMassSchedules({ communityId: communityId as string }),
     refetchOnWindowFocus: false,
-    enabled: community?.id !== undefined && community?.slug === slug, // Only fetch if we have a community ID and the slug matches
+    enabled: Boolean(communityId),
   });
+
+  const currentSchedules = data?.massSchedules ?? storeMassSchedules;
 
   useEffect(() => {
     if (data?.massSchedules) {
@@ -22,5 +26,9 @@ export const useMassSchedules = () => {
     }
   }, [data?.massSchedules, setMassSchedules]);
 
-  return { massSchedules, isPending };
+  const isPending = communityId
+    ? (isQueryPending || isLoading) && (!currentSchedules || currentSchedules.length === 0)
+    : false;
+
+  return { massSchedules: currentSchedules, isPending };
 };

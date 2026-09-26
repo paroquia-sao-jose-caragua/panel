@@ -70,12 +70,14 @@ export default function FileItem({
             <span className="text-error-600 text-sm">{name}</span>
           </div>
 
-          <button
+          <Button
             type="button"
-            className="text-error-700 hover:text-error-900 text-sm font-semibold"
+            variant="link"
+            size="xs"
+            className="text-error-700 hover:text-error-900 font-semibold p-0 h-auto"
           >
             Try again
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="flex flex-1 flex-col items-start gap-1">

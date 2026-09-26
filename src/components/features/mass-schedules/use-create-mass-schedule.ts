@@ -36,7 +36,7 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       weekOfMonth?: number;
       startDate: string;
       endDate?: string;
-      times: { startTime: string; endTime: string }[];
+      times: { startTime: string; endTime?: string }[];
       orientations?: string;
     },
     onSubmit: (values) => {

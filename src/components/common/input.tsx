@@ -78,7 +78,7 @@ export const Control = ({ onBlur, type, ...props }: ControlProps) => {
       type={type}
       onBlur={handleBlur}
       className={twMerge([
-        `${showError ? 'focus-error' : ''} flex-1 border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-600 outline-none`,
+        `${showError ? 'focus-error' : ''} flex-1 border-0 bg-transparent p-0 text-zinc-900 placeholder:text-zinc-400 placeholder:opacity-60 placeholder:font-normal outline-none`,
       ])}
       {...props}
     />

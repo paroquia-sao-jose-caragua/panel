@@ -9,6 +9,8 @@ import { useMutation } from '@tanstack/react-query';
 import { LogOut } from 'lucide-react';
 import { useCallback } from 'react';
 
+import { Button } from '@/components/ui/button';
+
 export const LogoutButton = () => {
   const { t } = useTranslator();
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ export const LogoutButton = () => {
     onSuccess: ({ statusCode }) => {
       if (statusCode === 200) {
         setLoggedOut();
-        navigate.replace('/login');
+        navigate.replace('/entrar');
       } else {
         showAlert(t('error-logging-out'));
       }
@@ -34,12 +36,15 @@ export const LogoutButton = () => {
   }, [mutate]);
 
   return (
-    <button
+    <Button
       type="button"
-      className="ml-auto rounded-md p-2 hover:cursor-pointer hover:bg-brand-700/30 focus-visible:ring-2 focus-visible:ring-brand-400 outline-none transition-colors"
+      variant="ghost"
+      size="icon"
+      className="ml-auto text-brand-300 hover:text-white hover:bg-brand-700/40 focus-visible:ring-2 focus-visible:ring-brand-400"
       onClick={handleLogout}
+      title="Sair"
     >
-      <LogOut className="h-5 w-5 text-brand-300" />
-    </button>
+      <LogOut className="h-5 w-5" />
+    </Button>
   );
 };

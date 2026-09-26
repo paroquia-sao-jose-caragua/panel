@@ -5,9 +5,9 @@ export function TypographyH3({
   ...props
 }: React.ComponentProps<'h3'>) {
   return (
-    <h4
+    <h3
       className={twMerge([
-        'scroll-m-20 text-xl font-semibold tracking-tight',
+        'scroll-m-20 text-lg md:text-xl font-semibold text-zinc-900 leading-snug font-serif',
         className,
       ])}
       {...props}

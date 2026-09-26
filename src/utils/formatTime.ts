@@ -1,7 +1,8 @@
 export function formatTimeDifference(
   startTime: string,
-  endTime: string
+  endTime?: string
 ): string {
+  if (!endTime) return '';
   const [startHour, startMin] = startTime.split(':').map(Number);
   const [endHour, endMin] = endTime.split(':').map(Number);
 

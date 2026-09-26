@@ -10,20 +10,12 @@ interface CreateMassScheduleResponse {
     dayOfWeek?: number;
     active: boolean;
     startDate: string;
-    times: [
-      {
-        id: string;
-        scheduleId: string;
-        startTime: string;
-        endTime: string;
-      },
-      {
-        id: string;
-        scheduleId: string;
-        startTime: string;
-        endTime: string;
-      },
-    ];
+    times: {
+      id: string;
+      scheduleId: string;
+      startTime: string;
+      endTime?: string;
+    }[];
   };
 }
 
@@ -44,7 +36,7 @@ export const createMassSchedule = async ({
   startDate?: string;
   endDate?: string;
   active?: boolean;
-  times: { startTime: string; endTime: string }[]; // Array de horários no formato "HH:MM"
+  times: { startTime: string; endTime?: string }[]; // Array de horários no formato "HH:MM"
 }) => {
   const result = await communityApi<CreateMassScheduleResponse>(
     `/${communityId}/mass-schedules`,

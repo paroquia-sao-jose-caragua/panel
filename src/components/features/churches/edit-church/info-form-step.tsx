@@ -1,3 +1,6 @@
+'use client';
+
+import React from 'react';
 import { FieldDescription } from '@/components/ui/field';
 import {
   Root as FileInputRoot,
@@ -14,10 +17,10 @@ import { FieldSection } from '@/components/ui/field-section';
 import { useFileInputStore } from '@/stores/useFileInputStore';
 import { useCommunity } from '@/api/communities/use-community';
 import { FullAddressForm } from '../../full-address-form';
-import type { useCreateChurch } from '../add-church/use-create-church';
+import type { useEditChurch } from './use-edit-church';
 
 interface EditInfoFormStepProps {
-  formik: ReturnType<typeof useCreateChurch>['formik'];
+  formik: ReturnType<typeof useEditChurch>['formik'];
 }
 
 export const InfoFormStep = ({ formik }: EditInfoFormStepProps) => {
@@ -28,16 +31,17 @@ export const InfoFormStep = ({ formik }: EditInfoFormStepProps) => {
 
   return (
     <form autoComplete="off" className="flex w-full flex-col gap-8">
+      {/* Cover Image Section */}
       <FieldSection
-        title="Foto da Igreja"
-        description="Esta imagem será exibida publicamente"
+        title="Foto da Igreja (Capa)"
+        description="Esta imagem será exibida na listagem e no cabeçalho da comunidade"
       >
         <div className="flex flex-col sm:flex-row gap-4">
           <ImagePreview url={community?.coverUrl} size="lg" />
           <div className="flex-1">
             <FileInputRoot className="flex-1">
               <FileInputTrigger actionLabel="Clique aqui para alterar" />
-              <FileInputControl accept="image/png,image/jpeg" />
+              <FileInputControl accept="image/png,image/jpeg,image/webp" />
             </FileInputRoot>
             {((formik.touched.coverId && formik.errors.coverId) ||
               fileError?.error) && (
@@ -51,6 +55,7 @@ export const InfoFormStep = ({ formik }: EditInfoFormStepProps) => {
         </div>
       </FieldSection>
 
+      {/* Basic Information Section */}
       <FieldSection title="Informações Básicas">
         <div className="flex-1">
           <span className="block mb-2 text-sm text-zinc-700 font-semibold">
@@ -62,6 +67,7 @@ export const InfoFormStep = ({ formik }: EditInfoFormStepProps) => {
               name="name"
               value={formik.values.name}
               onChange={formik.handleChange}
+              placeholder="Ex: Comunidade Nossa Senhora das Graças"
             />
           </InputRoot>
         </div>
@@ -108,6 +114,7 @@ export const InfoFormStep = ({ formik }: EditInfoFormStepProps) => {
         </div>
       </FieldSection>
 
+      {/* Address Form Section */}
       <FullAddressForm formik={formik} />
     </form>
   );

@@ -69,7 +69,7 @@ export const useCreateEventSchedule = ({
         {
           onSuccess: ({ eventSchedule }) => {
             if (eventSchedule) {
-              navigate.replace('/calendar');
+              navigate.replace('/agenda');
             }
           },
         }

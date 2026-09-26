@@ -9,7 +9,7 @@ import {
 import {
   ClockIcon,
   PlusIcon,
-  Trash2 as TrashIcon,
+  Trash2,
   CalendarIcon,
 } from 'lucide-react';
 import {
@@ -26,9 +26,9 @@ import {
 } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
-import { formatTimeDifference } from '@/utils/formatTime';
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
+import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import type { useCreateMassSchedule } from '../use-create-mass-schedule';
 
 interface InfoStepProps {
@@ -37,7 +37,7 @@ interface InfoStepProps {
 
 export const InfoFormStep = ({ formik }: InfoStepProps) => {
   const startTimeRef = React.useRef<HTMLInputElement>(null);
-  const endTimeRef = React.useRef<HTMLInputElement>(null);
+  const [timeToRemove, setTimeToRemove] = useState<{ startTime: string } | null>(null);
 
   return (
     <form
@@ -110,18 +110,10 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
           <div className="w-full flex flex-wrap gap-4 items-end">
             <div className="flex-1">
               <span className="block mb-2 text-sm text-zinc-700 font-semibold">
-                Início
+                Horário da Missa
               </span>
               <InputRoot>
                 <InputControl ref={startTimeRef} type="time" />
-              </InputRoot>
-            </div>
-            <div className="flex-1">
-              <span className="block mb-2 text-sm text-zinc-700 font-semibold">
-                Fim
-              </span>
-              <InputRoot>
-                <InputControl ref={endTimeRef} type="time" />
               </InputRoot>
             </div>
             <Button
@@ -130,21 +122,16 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
               className="w-full sm:w-fit"
               onClick={() => {
                 const startTime = startTimeRef.current?.value;
-                const endTime = endTimeRef.current?.value;
 
-                if (
-                  startTime &&
-                  endTime &&
-                  startTimeRef.current?.value &&
-                  endTimeRef.current?.value
-                ) {
+                if (startTime) {
                   formik.setFieldValue('times', [
                     ...formik.values.times,
-                    { startTime, endTime },
+                    { startTime },
                   ]);
 
-                  startTimeRef.current.value = '';
-                  endTimeRef.current.value = '';
+                  if (startTimeRef.current) {
+                    startTimeRef.current.value = '';
+                  }
                 }
               }}
             >
@@ -162,7 +149,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
                   Nenhum horário adicionado ainda
                 </EmptyTitle>
                 <EmptyDescription>
-                  Adicione pelo menos um horário (início e fim)
+                  Adicione pelo menos um horário
                 </EmptyDescription>
               </EmptyHeader>
             </Empty>
@@ -177,30 +164,21 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
                 {formik.values.times.map((time) => (
                   <div
                     key={time.startTime}
-                    className="flex flex-row items-center justify-between bg-brand-0/30 pl-4 pr-2 py-1 rounded-lg border border-brand-500/50"
+                    className="flex flex-row items-center justify-between bg-brand-0/30 pl-4 pr-2 py-2 rounded-lg border border-brand-500/50"
                   >
-                    <div className="flex flex-row items-center gap-2">
-                      <span className="flex-1 text-md font-medium text-brand-800">
-                        {time.startTime} - {time.endTime}
-                      </span>
-                      <span className="text-xs text-brand-700 bg-brand-200 py-1 px-2 rounded">
-                        {formatTimeDifference(time.startTime, time.endTime)}
-                      </span>
-                    </div>
+                    <span className="flex-1 text-md font-medium text-brand-800">
+                      {time.startTime}
+                    </span>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
                           type="button"
                           variant="ghost"
                           size="icon-lg"
-                          onClick={() => {
-                            formik.setFieldValue(
-                              'times',
-                              formik.values.times.filter((t) => t !== time)
-                            );
-                          }}
+                          onClick={() => setTimeToRemove(time)}
+                          className="hover:text-red-600 cursor-pointer"
                         >
-                          <TrashIcon />
+                          <Trash2 className="w-4 h-4 text-red-600" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent side="bottom">
@@ -237,6 +215,23 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
           />
         </div>
       </div>
+
+      <DeleteConfirmationDialog
+        open={timeToRemove !== null}
+        onOpenChange={(open) => !open && setTimeToRemove(null)}
+        title="Remover Horário"
+        description={`Deseja remover o horário das ${timeToRemove?.startTime} da lista?`}
+        confirmText="Remover"
+        onConfirm={() => {
+          if (timeToRemove) {
+            formik.setFieldValue(
+              'times',
+              formik.values.times.filter((t) => t.startTime !== timeToRemove.startTime)
+            );
+            setTimeToRemove(null);
+          }
+        }}
+      />
     </form>
   );
 };

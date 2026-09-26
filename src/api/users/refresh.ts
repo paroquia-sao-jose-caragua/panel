@@ -1,12 +1,9 @@
+import { AuthUser } from "@/stores/useAuthStore";
 import { api } from "../utils/api";
 
 interface RefreshResponse {
   token: string;
-  user: {
-    name: string;
-    email: string;
-    role: "user" | "admin" | "viewer";
-  };
+  user: AuthUser;
 }
 
 export const refresh = async (signal?: AbortSignal) => {

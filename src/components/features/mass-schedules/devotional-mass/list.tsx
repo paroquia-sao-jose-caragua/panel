@@ -11,8 +11,8 @@ export const DevotionalMassesList = () => {
       title={t('devotional-masses')}
       type="devotional"
       typeFilter="devotional"
-      addHref={`/${community?.slug}/add-devotional-mass`}
-      editHrefPattern={(id) => `/${community?.slug}/devotional-mass/${id}/edit`}
+      addHref={`/${community?.slug}/adicionar-missa-devocional`}
+      editHrefPattern={(id) => `/${community?.slug}/missa-devocional/${id}/editar`}
       info={t('devotional-mass-info')}
     />
   );
