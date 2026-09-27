@@ -35,6 +35,7 @@ export default function DevicesPage() {
   const [testTitle, setTestTitle] = useState('Paróquia São José');
   const [testBody, setTestBody] = useState('Notificação de teste do painel administrativo.');
   const [testUrl, setTestUrl] = useState('/');
+  const [targetOriginFilter, setTargetOriginFilter] = useState<'all' | 'site' | 'panel'>('all');
   const [isSendingTest, setIsSendingTest] = useState(false);
 
   const loadSubscriptions = async () => {
@@ -77,6 +78,11 @@ export default function DevicesPage() {
         body: testBody,
         url: testUrl,
         targetId: selectedDevice ? selectedDevice.id : undefined,
+        targetOrigin: selectedDevice
+          ? undefined
+          : targetOriginFilter === 'all'
+          ? undefined
+          : targetOriginFilter,
       });
       setTestDialogOpen(false);
       setSelectedDevice(null);
@@ -317,6 +323,25 @@ export default function DevicesPage() {
             </p>
 
             <form onSubmit={handleSendTestPush} className="space-y-4 pt-2">
+              {!selectedDevice && (
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-700 mb-1">
+                    Público-Alvo / Origem dos Dispositivos
+                  </label>
+                  <select
+                    value={targetOriginFilter}
+                    onChange={(e) =>
+                      setTargetOriginFilter(e.target.value as 'all' | 'site' | 'panel')
+                    }
+                    className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 focus:border-amber-600 focus:outline-none bg-white"
+                  >
+                    <option value="all">Todos os Dispositivos (Site Público & Painel)</option>
+                    <option value="site">Apenas Fiéis (Site Público)</option>
+                    <option value="panel">Apenas Equipe / Admin (Painel Administrativo)</option>
+                  </select>
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs font-semibold text-zinc-700 mb-1">
                   Título da Notificação
@@ -345,7 +370,7 @@ export default function DevicesPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-zinc-700 mb-1">
-                  URL ao Clicar (opcional)
+                  Caminho ao Clicar (ex: / ou /avisos)
                 </label>
                 <input
                   type="text"
