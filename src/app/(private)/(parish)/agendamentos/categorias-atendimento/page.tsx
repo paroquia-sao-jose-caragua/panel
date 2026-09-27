@@ -28,6 +28,8 @@ import { useAppointmentServices } from '@/api/appointments/use-appointments';
 import { ROUTES } from '@/constants/routes';
 import type { AppointmentServiceCategory } from '@/entities/appointment-service';
 
+import { BackButton } from '@/components/common/back-button';
+
 export default function AppointmentServicesPage() {
   const { services, isPending } = useAppointmentServices({ all: true });
 
@@ -86,16 +88,21 @@ export default function AppointmentServicesPage() {
       <AppBreadcrumb
         links={[
           {
+            key: 'agendamentos-hub',
+            href: ROUTES.APPOINTMENTS.HOME,
+            title: 'Agendamentos',
+            icon: CalendarCheck,
+          },
+          {
             key: 'categorias',
             href: ROUTES.APPOINTMENT_SERVICES.HOME,
             title: 'Categorias de Atendimento',
-            icon: Tag,
           },
         ]}
       />
 
       {/* Header and Actions */}
-      <div>
+      <div className="space-y-2">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <TypographyH1>Categorias de Atendimento</TypographyH1>
 

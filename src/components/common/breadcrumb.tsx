@@ -20,7 +20,7 @@ interface AppBreadcrumbProps {
 
 export const AppBreadcrumb = ({ links }: AppBreadcrumbProps) => {
   return (
-    <Breadcrumb className="mb-3">
+    <Breadcrumb className="mb-0">
       <BreadcrumbList className="mb-3">
         {links.map(({ key, href, title, icon: Icon }, index) => (
           <div key={`breadcrumb-${key}`} className="flex items-center gap-1.5">

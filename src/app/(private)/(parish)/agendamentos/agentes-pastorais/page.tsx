@@ -24,6 +24,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { usePastoralAgents } from '@/api/appointments/use-appointments';
 import { ROUTES } from '@/constants/routes';
 
+import { BackButton } from '@/components/common/back-button';
+
 export default function PastoralAgentsPage() {
   const { agents, isPending: isPendingAgents } = usePastoralAgents();
 
@@ -33,16 +35,21 @@ export default function PastoralAgentsPage() {
       <AppBreadcrumb
         links={[
           {
-            key: 'agentes',
+            key: 'agendamentos-hub',
             href: ROUTES.APPOINTMENTS.HOME,
-            title: 'Agentes Pastorais',
+            title: 'Agendamentos',
             icon: CalendarCheck,
+          },
+          {
+            key: 'agentes',
+            href: ROUTES.PASTORAL_AGENTS.HOME,
+            title: 'Agentes Pastorais',
           },
         ]}
       />
 
       {/* Header and Actions */}
-      <div>
+      <div className="space-y-2">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <TypographyH1>Agentes Pastorais</TypographyH1>
 

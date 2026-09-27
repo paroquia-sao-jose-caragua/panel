@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import {
   Smartphone,
   Send,
@@ -9,6 +10,9 @@ import {
   Globe,
   Monitor,
   RefreshCw,
+  Settings,
+  ShieldCheck,
+  UserCheck,
 } from 'lucide-react';
 import { AppBreadcrumb } from '@/components/common/breadcrumb';
 import { TypographyH1 } from '@/components/ui/typography/h1';
@@ -19,9 +23,9 @@ import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dia
 import {
   listPushSubscriptions,
   deletePushSubscription,
-  sendTestPushNotification,
 } from '@/api/push-subscriptions';
 import type { PushSubscriptionEntity } from '@/entities/push-subscription';
+import { ROUTES } from '@/constants/routes';
 
 export default function DevicesPage() {
   const [subscriptions, setSubscriptions] = useState<PushSubscriptionEntity[]>([]);
@@ -29,14 +33,6 @@ export default function DevicesPage() {
   const [selectedDevice, setSelectedDevice] = useState<PushSubscriptionEntity | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
-  // Send Test Dialog State
-  const [testDialogOpen, setTestDialogOpen] = useState(false);
-  const [testTitle, setTestTitle] = useState('Paróquia São José');
-  const [testBody, setTestBody] = useState('Notificação de teste do painel administrativo.');
-  const [testUrl, setTestUrl] = useState('/');
-  const [targetOriginFilter, setTargetOriginFilter] = useState<'all' | 'site' | 'panel'>('all');
-  const [isSendingTest, setIsSendingTest] = useState(false);
 
   const loadSubscriptions = async () => {
     setIsLoading(true);
@@ -69,78 +65,66 @@ export default function DevicesPage() {
     }
   };
 
-  const handleSendTestPush = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSendingTest(true);
-    try {
-      await sendTestPushNotification({
-        title: testTitle,
-        body: testBody,
-        url: testUrl,
-        targetId: selectedDevice ? selectedDevice.id : undefined,
-        targetOrigin: selectedDevice
-          ? undefined
-          : targetOriginFilter === 'all'
-          ? undefined
-          : targetOriginFilter,
-      });
-      setTestDialogOpen(false);
-      setSelectedDevice(null);
-    } catch (err) {
-      console.error('Erro ao enviar notificação de teste:', err);
-    } finally {
-      setIsSendingTest(false);
+  const siteCount = subscriptions.filter((s) => s.origin === 'site').length;
+  const panelCount = subscriptions.filter((s) => s.origin === 'panel').length;
+  const linkedCount = subscriptions.filter((s) => Boolean(s.userId)).length;
+
+  const getRoleLabel = (role?: string | null) => {
+    switch (role) {
+      case 'admin':
+        return 'Administrador';
+      case 'secretary':
+      case 'user':
+        return 'Secretaria';
+      case 'pastoral_agent':
+        return 'Agente Pastoral';
+      default:
+        return 'Usuário Painel';
     }
   };
 
-  const siteCount = subscriptions.filter((s) => s.origin === 'site').length;
-  const panelCount = subscriptions.filter((s) => s.origin === 'panel').length;
-
   return (
     <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-      {/* Top Breadcrumb & Actions */}
+      {/* Top Breadcrumb */}
       <AppBreadcrumb
         links={[
-          { key: 'origin', href: '/dispositivos', title: 'Dispositivos', icon: Smartphone },
+          { key: 'settings', href: ROUTES.SETTINGS.HOME, title: 'Configurações', icon: Settings },
+          { key: 'devices', href: ROUTES.SETTINGS.DEVICES, title: 'Dispositivos Conectados', icon: Smartphone },
         ]}
       />
 
-      <div className="flex flex-row justify-between items-center w-full">
-        <TypographyH1>Dispositivos Conectados</TypographyH1>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
+        <div>
+          <TypographyH1>Dispositivos Conectados</TypographyH1>
+          <Describe>
+            Gerencie os celulares e computadores conectados que recebem notificações push do site e do painel da Paróquia São José.
+          </Describe>
+        </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <Button
             variant="outline"
             size="sm"
             onClick={loadSubscriptions}
             disabled={isLoading}
-            className="gap-1.5"
+            className="gap-1.5 cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span>Atualizar</span>
           </Button>
-          <Button
-            size="sm"
-            onClick={() => {
-              setSelectedDevice(null);
-              setTestDialogOpen(true);
-            }}
-            className="gap-1.5 bg-amber-600 hover:bg-amber-700 text-white border-none"
-          >
-            <Send className="w-4 h-4" />
-            <span>Enviar Notificação Global</span>
+
+          <Button asChild size="sm" className="gap-1.5 bg-amber-600 hover:bg-amber-700 text-white border-none cursor-pointer">
+            <Link href={ROUTES.SETTINGS.SEND_PUSH}>
+              <Send className="w-4 h-4" />
+              <span>Enviar Notificação Push</span>
+            </Link>
           </Button>
         </div>
       </div>
 
-      <Describe>
-        Gerencie os aparelhos celular e computadores que aceitaram receber notificações push do
-        site e do painel da Paróquia São José.
-      </Describe>
-
       {/* Stats Overview Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
-        <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-xs flex items-center gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 my-6">
+        <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-2xs flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 shrink-0">
             <Smartphone className="w-6 h-6" />
           </div>
@@ -152,7 +136,7 @@ export default function DevicesPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-xs flex items-center gap-4">
+        <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-2xs flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
             <Globe className="w-6 h-6" />
           </div>
@@ -164,7 +148,7 @@ export default function DevicesPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-xs flex items-center gap-4">
+        <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-2xs flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 shrink-0">
             <Monitor className="w-6 h-6" />
           </div>
@@ -175,10 +159,22 @@ export default function DevicesPage() {
             <span className="text-2xl font-bold text-zinc-900">{panelCount}</span>
           </div>
         </div>
+
+        <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-2xs flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-700 shrink-0">
+            <UserCheck className="w-6 h-6" />
+          </div>
+          <div>
+            <span className="text-xs text-zinc-500 font-medium uppercase tracking-wider block">
+              Contas Vinculadas
+            </span>
+            <span className="text-2xl font-bold text-zinc-900">{linkedCount}</span>
+          </div>
+        </div>
       </div>
 
       {/* Main Table / Device List */}
-      <div className="bg-white border border-zinc-200/80 rounded-2xl shadow-xs overflow-hidden">
+      <div className="bg-white border border-zinc-200/80 rounded-2xl shadow-2xs overflow-hidden">
         {isLoading ? (
           <div className="p-6 space-y-4">
             {[1, 2, 3, 4].map((i) => (
@@ -201,8 +197,7 @@ export default function DevicesPage() {
               Nenhum dispositivo conectado
             </h3>
             <p className="text-sm text-zinc-500 max-w-md mx-auto">
-              Quando os fiéis no site ou a equipe no painel ativarem as notificações, os aparelhos
-              aparecerão listados aqui.
+              Quando os fiéis no site ou a equipe no painel ativarem as notificações, os aparelhos aparecerão listados aqui.
             </p>
           </div>
         ) : (
@@ -210,9 +205,9 @@ export default function DevicesPage() {
             <table className="w-full text-left text-sm text-zinc-600">
               <thead className="bg-zinc-50 text-xs font-semibold uppercase text-zinc-500 border-b border-zinc-200">
                 <tr>
-                  <th className="px-6 py-3.5">Usuário / Fiel</th>
+                  <th className="px-6 py-3.5">Usuário / Identificação</th>
                   <th className="px-6 py-3.5">Origem</th>
-                  <th className="px-6 py-3.5">Dispositivo / Navegador</th>
+                  <th className="px-6 py-3.5">Navegador / Sistema</th>
                   <th className="px-6 py-3.5">Data da Inscrição</th>
                   <th className="px-6 py-3.5 text-right">Ações</th>
                 </tr>
@@ -222,16 +217,28 @@ export default function DevicesPage() {
                   <tr key={device.id} className="hover:bg-zinc-50/50 transition-colors">
                     <td className="px-6 py-4 font-medium text-zinc-900">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs uppercase shrink-0">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs uppercase shrink-0 border ${
+                          device.userId ? 'bg-purple-100 text-purple-800 border-purple-300' : 'bg-amber-100 text-amber-800 border-amber-300'
+                        }`}>
                           {device.userName ? device.userName[0] : 'D'}
                         </div>
-                        <div>
-                          <span className="block font-semibold text-zinc-900">
-                            {device.userName || 'Dispositivo Não Identificado'}
-                          </span>
-                          {device.userId && (
-                            <span className="text-xs text-zinc-400">ID: {device.userId}</span>
-                          )}
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-2">
+                            <span className="block font-semibold text-zinc-900">
+                              {device.userName || 'Dispositivo Não Identificado'}
+                            </span>
+                            {device.userId && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                                <ShieldCheck className="w-3 h-3" />
+                                {getRoleLabel(device.userRole)}
+                              </span>
+                            )}
+                          </div>
+                          {device.userEmail ? (
+                            <span className="text-xs text-zinc-500 block font-mono">{device.userEmail}</span>
+                          ) : device.userId ? (
+                            <span className="text-xs text-zinc-400 block font-mono">ID: {device.userId}</span>
+                          ) : null}
                         </div>
                       </div>
                     </td>
@@ -263,16 +270,15 @@ export default function DevicesPage() {
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Button
+                          asChild
                           variant="outline"
                           size="sm"
-                          onClick={() => {
-                            setSelectedDevice(device);
-                            setTestDialogOpen(true);
-                          }}
-                          className="h-8 px-2.5 text-xs gap-1 text-amber-700 border-amber-200 hover:bg-amber-50"
+                          className="h-8 px-2.5 text-xs gap-1 text-amber-700 border-amber-200 hover:bg-amber-50 cursor-pointer"
                         >
-                          <Send className="w-3.5 h-3.5" />
-                          <span>Testar</span>
+                          <Link href={`${ROUTES.SETTINGS.SEND_PUSH}?deviceId=${device.id}`}>
+                            <Send className="w-3.5 h-3.5" />
+                            <span>Notificar</span>
+                          </Link>
                         </Button>
 
                         <Button
@@ -282,10 +288,10 @@ export default function DevicesPage() {
                             setSelectedDevice(device);
                             setDeleteDialogOpen(true);
                           }}
-                          className="h-8 px-2.5 text-xs gap-1 text-rose-600 border-rose-200 hover:bg-rose-50"
+                          className="h-8 px-2.5 text-xs gap-1 text-rose-600 border-rose-200 hover:bg-rose-50 cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
-                          <span>Remover</span>
+                          <span>Desconectar</span>
                         </Button>
                       </div>
                     </td>
@@ -297,118 +303,15 @@ export default function DevicesPage() {
         )}
       </div>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Delete / Disconnect Confirmation Dialog */}
       <DeleteConfirmationDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         onConfirm={handleDeleteDevice}
         isPending={isDeleting}
-        title="Remover Dispositivo?"
-        description={`Tem certeza que deseja desconectar o dispositivo "${selectedDevice?.userName || 'Selecionado'}"? Ele deixará de receber notificações push.`}
+        title="Desconectar Dispositivo?"
+        description={`Tem certeza que deseja desconectar o dispositivo "${selectedDevice?.userName || 'Selecionado'}"${selectedDevice?.userEmail ? ` (${selectedDevice.userEmail})` : ''}? Ele deixará de receber notificações push do painel.`}
       />
-
-      {/* Send Push Notification Dialog */}
-      {testDialogOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in">
-          <div className="bg-white border border-zinc-200 rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4">
-            <h3 className="text-lg font-bold text-zinc-900 flex items-center gap-2">
-              <Send className="w-5 h-5 text-amber-600" />
-              <span>{selectedDevice ? `Notificar ${selectedDevice.userName}` : 'Enviar Notificação Push Global'}</span>
-            </h3>
-
-            <p className="text-xs text-zinc-500">
-              {selectedDevice
-                ? `Esta notificação será enviada especificamente para o dispositivo de ${selectedDevice.userName}.`
-                : 'Esta notificação será enviada para TODOS os fiéis e usuários com notificações ativas.'}
-            </p>
-
-            <form onSubmit={handleSendTestPush} className="space-y-4 pt-2">
-              {!selectedDevice && (
-                <div>
-                  <label className="block text-xs font-semibold text-zinc-700 mb-1">
-                    Público-Alvo / Origem dos Dispositivos
-                  </label>
-                  <select
-                    value={targetOriginFilter}
-                    onChange={(e) =>
-                      setTargetOriginFilter(e.target.value as 'all' | 'site' | 'panel')
-                    }
-                    className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 focus:border-amber-600 focus:outline-none bg-white"
-                  >
-                    <option value="all">Todos os Dispositivos (Site Público & Painel)</option>
-                    <option value="site">Apenas Fiéis (Site Público)</option>
-                    <option value="panel">Apenas Equipe / Admin (Painel Administrativo)</option>
-                  </select>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-xs font-semibold text-zinc-700 mb-1">
-                  Título da Notificação
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={testTitle}
-                  onChange={(e) => setTestTitle(e.target.value)}
-                  className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 focus:border-amber-600 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-zinc-700 mb-1">
-                  Mensagem / Conteúdo
-                </label>
-                <textarea
-                  required
-                  rows={3}
-                  value={testBody}
-                  onChange={(e) => setTestBody(e.target.value)}
-                  className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 focus:border-amber-600 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-zinc-700 mb-1">
-                  Caminho ao Clicar (ex: / ou /avisos)
-                </label>
-                <input
-                  type="text"
-                  value={testUrl}
-                  onChange={(e) => setTestUrl(e.target.value)}
-                  placeholder="/"
-                  className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 focus:border-amber-600 focus:outline-none"
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-2 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setTestDialogOpen(false);
-                    setSelectedDevice(null);
-                  }}
-                >
-                  Cancelar
-                </Button>
-
-                <Button
-                  type="submit"
-                  size="sm"
-                  isLoading={isSendingTest}
-                  loadingText="Enviando..."
-                  className="bg-amber-600 hover:bg-amber-700 text-white border-none"
-                >
-                  <Send className="w-4 h-4 mr-1.5" />
-                  <span>Enviar Agora</span>
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </main>
   );
 }

@@ -79,8 +79,13 @@ API Backend Paróquia São José (Cloudflare Workers)
    - Todas as URLs do painel devem ser em português (`/entrar`, `/clerigos`, `/avisos`, `/agenda`, `/secretaria`, `/doacoes`, `/adicionar-comunidade`, `/[slug]/editar`, etc.).
    - Nunca utilize URLs literais hardcoded nos componentes, links ou redirects. Importe e utilize sempre a constante tipada `ROUTES` de `@/constants/routes` (ex: `ROUTES.PARISH.CLERGY.LIST`, `ROUTES.AUTH.LOGIN`, `ROUTES.PARISH.COMMUNITY.EDIT(slug)`).
 9. **Nunca crie formulários em modais (Dialogs/Sheets) para cadastro ou edição de entidades**:
-   - Formulários de criação e edição **SEMPRE** devem ser páginas dedicadas no App Router (ex.: `/adicionar`, `/editar/[id]`), nunca modais.
-   - A página de formulário deve conter a estrutura padrão de cabeçalho (`<header className="bg-white ...">` com `<BackButton>`, `<TypographyH1>`, subtítulo descritivo e `<Separator />`), passos de formulário com `<Step>` e etapa de revisão/confirmação (`confirm-step`) antes de salvar quando fizer sentido.
+   - Formulários de criação e edição **SEMPRE** devem ser páginas dedicadas no App Router (ex.: `/adicionar`, `/editar/[id]`, `/enviar-notificacao`, `/alterar-senha`), nunca modais.
+   - **Estrutura Padrão de Layout de Subpáginas de Formulário**:
+     - Todas as subpáginas de formulário devem ser envoltas em `<div className="w-full lg:col-start-2">`.
+     - **Header**: `<header className="bg-white mt-24 md:mt-20.25 lg:mt-0">` contendo um container `max-w-200 px-4 lg:px-8 py-4` com `<BackButton href={...}>`, `<TypographyH1>` e `<span className="text-md font-medium text-zinc-600">` para o subtítulo/descrição, finalizando com o `<Separator />`.
+     - **Etapas / Wizard no Header**: Quando o formulário envolver alteração ou criação de dados que afetam diretamente o site público ou exijam revisão/aprovação antes da publicação (como cadastrar comunidades, avisos, clérigos, eventos), o cabeçalho deve exibir as etapas (`<StepBar>` / `<StepIndicator>`) indicando a progressão (ex.: Etapa 1: Dados → Etapa 2: Confirmação). Formulários de ação direta/pontual (como alterar senha ou enviar notificação push) são formulários de passo único e não necessitam de etapas no header.
+     - **Main Content**: `<main className="w-full max-w-200 px-4 pt-8 pb-12 mx-auto lg:px-8">` contendo o componente do formulário (`<form className="w-full flex flex-col gap-6">`).
+     - **Containers e Ações do Formulário**: Os grupos de campos utilizam a estrutura de card `<div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-6">`, e a barra inferior de ações utiliza `<div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">` com os botões "Cancelar" (`variant="outline"`) e o botão de submissão.
    - Em páginas de **edição**, inclua sempre a área de exclusão no rodapé ("Danger Zone" / Gerenciamento do Registro) com botão discreto de excluir acionando o `<DeleteConfirmationDialog>`.
    - Modais (`<Dialog>`) são estritamente reservados para confirmações de ações pontuais ou diálogos de exclusão, **nunca** para preenchimento de formulários de entidades.
 

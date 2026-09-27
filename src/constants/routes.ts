@@ -7,11 +7,13 @@ export const ROUTES = {
   },
   SETTINGS: {
     HOME: '/configuracoes',
-    DEVICES: '/dispositivos',
     CHANGE_PASSWORD: '/configuracoes/alterar-senha',
+    USERS: '/configuracoes/usuarios',
     NEW_USER: '/configuracoes/usuarios/novo',
     RESET_USER_PASSWORD: (id: string) => `/configuracoes/usuarios/${id}/redefinir-senha`,
     EDIT_USER_ROLE: (id: string) => `/configuracoes/usuarios/${id}/papel`,
+    DEVICES: '/configuracoes/dispositivos',
+    SEND_PUSH: '/configuracoes/dispositivos/enviar-notificacao',
   },
   COMMUNITIES: {
     HOME: '/',
@@ -55,19 +57,20 @@ export const ROUTES = {
   PASTORALS: '/pastorais',
   APPOINTMENTS: {
     HOME: '/agendamentos',
+    LIST: '/agendamentos/solicitacoes',
     DETAILS: (id: string) => `/agendamentos/${id}`,
   },
   PASTORAL_AGENTS: {
-    HOME: '/agentes-pastorais',
-    ADD: '/agentes-pastorais/adicionar',
-    EDIT: (id: string) => `/agentes-pastorais/editar/${id}`,
-    SCHEDULE: (id: string) => `/agentes-pastorais/${id}/horarios`,
-    BLOCKED_DATES: (id: string) => `/agentes-pastorais/${id}/bloqueios`,
+    HOME: '/agendamentos/agentes-pastorais',
+    ADD: '/agendamentos/agentes-pastorais/adicionar',
+    EDIT: (id: string) => `/agendamentos/agentes-pastorais/editar/${id}`,
+    SCHEDULE: (id: string) => `/agendamentos/agentes-pastorais/${id}/horarios`,
+    BLOCKED_DATES: (id: string) => `/agendamentos/agentes-pastorais/${id}/bloqueios`,
   },
   APPOINTMENT_SERVICES: {
-    HOME: '/categorias-atendimento',
-    ADD: '/categorias-atendimento/adicionar',
-    EDIT: (id: string) => `/categorias-atendimento/editar/${id}`,
+    HOME: '/agendamentos/categorias-atendimento',
+    ADD: '/agendamentos/categorias-atendimento/adicionar',
+    EDIT: (id: string) => `/agendamentos/categorias-atendimento/editar/${id}`,
   },
 } as const;
 

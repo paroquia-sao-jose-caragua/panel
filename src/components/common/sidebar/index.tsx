@@ -21,10 +21,6 @@ export const AppSidebar = () => {
       title: 'Configurações',
       href: ROUTES.SETTINGS.HOME,
     },
-    {
-      title: 'Dispositivos Conectados',
-      href: ROUTES.SETTINGS.DEVICES,
-    },
   ];
 
   return (
@@ -134,16 +130,8 @@ export const AppSidebar = () => {
                 icon={CalendarCheck}
                 links={[
                   {
-                    title: 'Atendimentos & Visitas',
+                    title: 'Agendamentos',
                     href: ROUTES.APPOINTMENTS.HOME,
-                  },
-                  {
-                    title: 'Agentes Pastorais',
-                    href: ROUTES.PASTORAL_AGENTS.HOME,
-                  },
-                  {
-                    title: 'Categorias de Atendimento',
-                    href: ROUTES.APPOINTMENT_SERVICES.HOME,
                   },
                 ]}
                 onLinkClick={handleClose}
