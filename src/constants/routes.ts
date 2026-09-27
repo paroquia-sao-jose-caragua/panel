@@ -7,6 +7,7 @@ export const ROUTES = {
   },
   SETTINGS: {
     HOME: '/configuracoes',
+    DEVICES: '/dispositivos',
     CHANGE_PASSWORD: '/configuracoes/alterar-senha',
     NEW_USER: '/configuracoes/usuarios/novo',
     RESET_USER_PASSWORD: (id: string) => `/configuracoes/usuarios/${id}/redefinir-senha`,

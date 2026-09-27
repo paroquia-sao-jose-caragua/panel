@@ -21,6 +21,10 @@ export const AppSidebar = () => {
       title: 'Configurações',
       href: ROUTES.SETTINGS.HOME,
     },
+    {
+      title: 'Dispositivos Conectados',
+      href: ROUTES.SETTINGS.DEVICES,
+    },
   ];
 
   return (
