@@ -45,7 +45,7 @@ export default function AddEventSchedulePage() {
 
   return (
     <div className="w-full lg:col-start-2">
-      <header className="bg-white mt-24 md:mt-20.25 lg:mt-0">
+      <header className="bg-white border-b border-zinc-200/80 relative lg:sticky lg:top-0 z-10 lg:z-40 shadow-2xs mt-16 lg:mt-0 md:mt-20">
         <div className="mx-auto w-full max-w-200 px-4 lg:px-8 py-4">
           <BackButton href={'/agenda'} />
 

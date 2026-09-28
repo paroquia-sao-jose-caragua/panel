@@ -30,7 +30,7 @@ export default function PastoralAgentsPage() {
   const { agents, isPending: isPendingAgents } = usePastoralAgents();
 
   return (
-    <main className="max-w-325 w-full min-w-0 px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
+    <main className="max-w-325 w-full min-w-0 px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
       {/* Top Breadcrumb */}
       <AppBreadcrumb
         links={[
@@ -49,7 +49,7 @@ export default function PastoralAgentsPage() {
       />
 
       {/* Header and Actions */}
-      <div className="space-y-2">
+      <div className="space-y-2 mb-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <TypographyH1>Agentes Pastorais</TypographyH1>
 

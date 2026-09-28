@@ -206,13 +206,8 @@ export default function ChurchPage() {
               title: 'Início',
             },
             {
-              key: 'communities',
-              href: '/',
-              title: 'Comunidades',
-            },
-            {
               key: 'church',
-              title: isMatriz ? 'Igreja Matriz' : community?.name || '',
+              title: community?.name || '',
               href: `/${community?.slug}`,
             },
           ]}
