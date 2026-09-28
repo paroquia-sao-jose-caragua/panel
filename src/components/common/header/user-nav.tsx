@@ -5,9 +5,6 @@ import Link from 'next/link';
 import {
   LogOut,
   Settings,
-  Lock,
-  Users,
-  Smartphone,
   ChevronDown,
 } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';

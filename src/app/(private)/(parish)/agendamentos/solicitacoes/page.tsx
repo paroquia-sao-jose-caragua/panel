@@ -21,7 +21,7 @@ import {
   Save,
 } from 'lucide-react';
 
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { BackButton } from '@/components/common/back-button';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
@@ -166,9 +166,8 @@ export default function AppointmentsListPage() {
   };
 
   return (
-    <main className="w-full min-w-0 max-w-325 px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
-      {/* Top Breadcrumb */}
-      <AppBreadcrumb
+    <>
+      <AppHeader
         links={[
           {
             key: 'agendamentos-hub',
@@ -183,6 +182,7 @@ export default function AppointmentsListPage() {
           },
         ]}
       />
+      <main className="w-full min-w-0 max-w-325 px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
 
       {/* Page Header */}
       <div className="space-y-2">
@@ -646,5 +646,6 @@ export default function AppointmentsListPage() {
         </DialogContent>
       </Dialog>
     </main>
+    </>
   );
 }

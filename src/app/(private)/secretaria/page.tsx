@@ -22,7 +22,7 @@ import {
   Edit,
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
 import { Button } from '@/components/ui/button';
@@ -136,7 +136,18 @@ export default function SecretariatOverviewPage() {
 
   if (isPending) {
     return (
-      <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-8">
+      <>
+        <AppHeader
+          links={[
+            {
+              key: 'secretariat',
+              href: '/secretaria',
+              title: 'Secretaria & Contribuição',
+              icon: Building2,
+            },
+          ]}
+        />
+        <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-8">
         <div>
           <Skeleton className="h-6 w-48 mb-3" />
           <Skeleton className="h-10 w-96 mb-2" />
@@ -163,13 +174,13 @@ export default function SecretariatOverviewPage() {
           </div>
         </div>
       </main>
-    );
+    </>
+  );
   }
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-      {/* Top Breadcrumb: Página raiz sem botão voltar e apenas o título do menu */}
-      <AppBreadcrumb
+    <>
+      <AppHeader
         links={[
           {
             key: 'secretariat',
@@ -179,6 +190,7 @@ export default function SecretariatOverviewPage() {
           },
         ]}
       />
+      <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
 
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
@@ -713,5 +725,6 @@ export default function SecretariatOverviewPage() {
         </section>
       </div>
     </main>
+    </>
   );
 }

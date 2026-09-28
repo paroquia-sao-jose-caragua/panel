@@ -14,7 +14,7 @@ import {
   ShieldCheck,
   UserCheck,
 } from 'lucide-react';
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
 import { Button } from '@/components/ui/button';
@@ -84,14 +84,14 @@ export default function DevicesPage() {
   };
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-      {/* Top Breadcrumb */}
-      <AppBreadcrumb
+    <>
+      <AppHeader
         links={[
           { key: 'settings', href: ROUTES.SETTINGS.HOME, title: 'Configurações', icon: Settings },
           { key: 'devices', href: ROUTES.SETTINGS.DEVICES, title: 'Dispositivos Conectados', icon: Smartphone },
         ]}
       />
+      <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
         <div>
@@ -313,5 +313,6 @@ export default function DevicesPage() {
         description={`Tem certeza que deseja desconectar o dispositivo "${selectedDevice?.userName || 'Selecionado'}"${selectedDevice?.userEmail ? ` (${selectedDevice.userEmail})` : ''}? Ele deixará de receber notificações push do painel.`}
       />
     </main>
+    </>
   );
 }

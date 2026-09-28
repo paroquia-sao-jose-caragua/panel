@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import useAuthStore from '@/stores/useAuthStore';
 import useTranslator from '@/hooks/use-translator';
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
 import { Button } from '@/components/ui/button';
@@ -38,9 +38,8 @@ export default function SettingsHubPage() {
   };
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-8">
-      {/* Top Breadcrumb */}
-      <AppBreadcrumb
+    <>
+      <AppHeader
         links={[
           {
             key: 'settings',
@@ -50,6 +49,7 @@ export default function SettingsHubPage() {
           },
         ]}
       />
+      <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-8">
 
       {/* Page Header */}
       <div>
@@ -166,5 +166,6 @@ export default function SettingsHubPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

@@ -8,7 +8,7 @@ import { listUsers } from '@/api/users/list-users';
 import useAuthStore from '@/stores/useAuthStore';
 import useTranslator from '@/hooks/use-translator';
 import { useDebounce } from '@/hooks/use-debounce';
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
 import { Button } from '@/components/ui/button';
@@ -69,14 +69,14 @@ export default function ManageUsersPage() {
   };
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
-      {/* Top Breadcrumb */}
-      <AppBreadcrumb
+    <>
+      <AppHeader
         links={[
           { key: 'settings', href: ROUTES.SETTINGS.HOME, title: 'Configurações', icon: Settings },
           { key: 'users', href: ROUTES.SETTINGS.USERS, title: 'Gestão de Usuários', icon: Users },
         ]}
       />
+      <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
@@ -140,5 +140,6 @@ export default function ManageUsersPage() {
         )}
       </div>
     </main>
+    </>
   );
 }

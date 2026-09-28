@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, type ElementType } from 'react';
+import type { ElementType } from 'react';
 import {
   Church,
   Settings,
@@ -28,7 +28,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { BackButton } from './back-button';
-import { useBreadcrumbStore, type BreadcrumbLinkItem } from '@/stores/useBreadcrumbStore';
+import type { BreadcrumbLinkItem } from '@/components/common/header';
 
 const ICON_MAP: Record<string, LucideIcon> = {
   church: Church,
@@ -65,35 +65,12 @@ export function BreadcrumbIcon({ icon, className }: BreadcrumbIconProps) {
   return <IconComponent className={className} />;
 }
 
-interface AppBreadcrumbProps {
+export interface AppBreadcrumbProps {
   links: BreadcrumbLinkItem[];
   showBackButton?: boolean;
 }
 
 export const AppBreadcrumb = ({ links, showBackButton = true }: AppBreadcrumbProps) => {
-  const { links: storeLinks, setLinks } = useBreadcrumbStore();
-
-  // Sync store with page props immediately if links changed
-  const isDifferent =
-    storeLinks.length !== links.length ||
-    storeLinks.some(
-      (item, index) =>
-        item.key !== links[index]?.key ||
-        item.href !== links[index]?.href ||
-        item.title !== links[index]?.title ||
-        item.icon !== links[index]?.icon
-    );
-
-  if (isDifferent) {
-    setLinks(links);
-  }
-
-  useEffect(() => {
-    if (isDifferent) {
-      setLinks(links);
-    }
-  }, [isDifferent, links, setLinks]);
-
   const previousLink = links.length > 1 ? links[links.length - 2] : null;
 
   return (
@@ -122,7 +99,7 @@ export const AppBreadcrumb = ({ links, showBackButton = true }: AppBreadcrumbPro
       </Breadcrumb>
 
       {/* Back Button (rendered in page body below header line) */}
-      {showBackButton && previousLink && (
+      {showBackButton && previousLink?.href && (
         <BackButton href={previousLink.href} />
       )}
     </div>

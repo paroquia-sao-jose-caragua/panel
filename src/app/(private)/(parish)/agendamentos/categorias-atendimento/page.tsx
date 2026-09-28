@@ -17,7 +17,7 @@ import {
   Home,
   HeartHandshake,
 } from 'lucide-react';
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
 import { Button } from '@/components/ui/button';
@@ -83,9 +83,8 @@ export default function AppointmentServicesPage() {
   };
 
   return (
-    <main className="max-w-325 w-full min-w-0 px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
-      {/* Top Breadcrumb */}
-      <AppBreadcrumb
+    <>
+      <AppHeader
         links={[
           {
             key: 'agendamentos-hub',
@@ -100,6 +99,7 @@ export default function AppointmentServicesPage() {
           },
         ]}
       />
+      <main className="max-w-325 w-full min-w-0 px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
 
       {/* Header and Actions */}
       <div className="space-y-2">
@@ -272,5 +272,6 @@ export default function AppointmentServicesPage() {
         </div>
       )}
     </main>
+    </>
   );
 }

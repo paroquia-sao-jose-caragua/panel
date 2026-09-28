@@ -27,7 +27,7 @@ import {
   Clock,
   Trash2,
 } from 'lucide-react';
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunity } from '@/api/communities/use-community';
@@ -195,25 +195,25 @@ export default function ChurchPage() {
     : '';
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-      {/* 1. TOP BAR: Breadcrumbs + Action Buttons */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <AppBreadcrumb
-          links={[
-            {
-              key: 'home',
-              href: '/',
-              title: 'Início',
-            },
-            {
-              key: 'church',
-              title: community?.name || '',
-              href: `/${community?.slug}`,
-            },
-          ]}
-        />
+    <>
+      <AppHeader
+        links={[
+          {
+            key: 'home',
+            href: '/',
+            title: 'Início',
+          },
+          {
+            key: 'church',
+            title: community?.name || '',
+            href: `/${community?.slug}`,
+          },
+        ]}
+      />
 
-        <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
+      <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
+        {/* 1. TOP BAR: Action Buttons */}
+        <div className="flex items-center justify-end gap-2.5 mb-6 flex-wrap">
           <Button
             asChild
             variant="outline"
@@ -239,7 +239,6 @@ export default function ChurchPage() {
             </Button>
           )}
         </div>
-      </div>
 
       {/* 2. HERO & COVER SECTION */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
@@ -855,6 +854,7 @@ export default function ChurchPage() {
         }}
       />
     </main>
+    </>
   );
 }
 

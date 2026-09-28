@@ -1,4 +1,4 @@
-import type { BreadcrumbLinkItem } from '@/stores/useBreadcrumbStore';
+import type { BreadcrumbLinkItem } from '@/components/common/header';
 import { ROUTES } from '@/constants/routes';
 
 function formatSegmentTitle(segment: string): string {

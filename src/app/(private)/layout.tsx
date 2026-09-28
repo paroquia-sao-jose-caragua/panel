@@ -3,7 +3,6 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import '../globals.css';
 import { AppSidebar } from '@/components/common/sidebar';
-import { AppHeader } from '@/components/common/header';
 import { useSidebarStore } from '@/stores/useSidebarStore';
 import { cn } from '@/lib/utils';
 
@@ -26,7 +25,6 @@ export default function Layout({
       >
         <AppSidebar />
         <div className="flex flex-col min-w-0 w-full lg:col-start-2">
-          <AppHeader />
           {children}
         </div>
       </div>
