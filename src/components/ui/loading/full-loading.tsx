@@ -1,4 +1,4 @@
-import { ParishLogoIcon } from '../logos/parish-logo-icon';
+import Image from 'next/image';
 
 const green = 'var(--paroquia-green)';
 const greenDeep = 'var(--paroquia-green-deep)';
@@ -7,12 +7,13 @@ const gold = 'var(--paroquia-gold)';
 
 interface FullLoadingProps {
   message?: string;
+  subtitle?: string;
 }
 
 export function FullLoading({
   message = 'Jesus, Maria e José',
   subtitle = 'a nossa família vossa é!',
-}: FullLoadingProps & { subtitle?: string }) {
+}: FullLoadingProps) {
   return (
     <main
       className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 overflow-hidden"
@@ -38,7 +39,14 @@ export function FullLoading({
             animationDuration: '3s',
           }}
         />
-        <ParishLogoIcon className="w-28 h-28 z-10" />
+        <Image
+          src="/loading-icon.png"
+          alt="Paróquia São José"
+          width={112}
+          height={112}
+          className="w-28 h-28 z-10 object-contain drop-shadow-md"
+          priority
+        />
       </div>
       <div className="text-center mt-10">
         <p className="text-xl font-semibold" style={{ color: cream }}>
