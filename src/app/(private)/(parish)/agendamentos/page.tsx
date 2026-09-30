@@ -14,6 +14,7 @@ import {
   Plus,
   Clock,
   CalendarOff,
+  Printer,
 } from 'lucide-react';
 import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
@@ -92,13 +93,6 @@ export default function AppointmentsHubPage() {
                 : 'Gerencie as solicitações de atendimento pastoral dos fiéis, os agentes cadastrados e as categorias de serviço.'}
             </Describe>
           </div>
-
-          <Button asChild className="cursor-pointer shrink-0">
-            <Link href={ROUTES.APPOINTMENTS.ADD}>
-              <Plus className="w-4 h-4 mr-1.5" />
-              Novo Agendamento
-            </Link>
-          </Button>
         </div>
 
         <div className="h-px bg-zinc-200" />
@@ -336,6 +330,30 @@ export default function AppointmentsHubPage() {
                   </Link>
                 </Button>
               </div>
+
+              {/* Card 5: Relatório & Pauta em PDF */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center shrink-0">
+                    <Printer className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Relatório & Pauta (PDF)
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Gere e imprima sua pauta de atendimentos por período com checklist de comparecimento presencial.
+                    </p>
+                  </div>
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={ROUTES.APPOINTMENTS.REPORT}>
+                    <span>Gerar Relatório</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
+              </div>
             </>
           ) : (
             <>
@@ -387,7 +405,31 @@ export default function AppointmentsHubPage() {
                 </Button>
               </div>
 
-              {/* Card 3: Agentes Pastorais */}
+              {/* Card 3: Relatório & Pauta em PDF */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center shrink-0">
+                    <Printer className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Relatório & Pauta (PDF)
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Exporte a pauta filtrada por período para enviar ao Padre ou imprimir com campos de anotação presencial.
+                    </p>
+                  </div>
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={ROUTES.APPOINTMENTS.REPORT}>
+                    <span>Gerar Relatório</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Card 4: Agentes Pastorais */}
               <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
                 <div className="space-y-3">
                   <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center shrink-0">
@@ -411,7 +453,7 @@ export default function AppointmentsHubPage() {
                 </Button>
               </div>
 
-              {/* Card 4: Categorias de Atendimento */}
+              {/* Card 5: Categorias de Atendimento */}
               <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
                 <div className="space-y-3">
                   <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">

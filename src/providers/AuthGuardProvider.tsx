@@ -57,15 +57,19 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
   useEffect(() => {
     if (!sessionChecked) return;
 
+    const isPublicRoute = routeUtils.isPublicRoute(pathname);
     const isAuthRoute = routeUtils.isAuthRoute(pathname);
     const isConfirmCodePage = pathname.includes('/confirm-code');
 
     if (isLogged && token) {
       if (user?.role === 'pastoral_agent') {
         const isAllowedForAgent =
+          pathname.startsWith('/ajuda') ||
+          pathname.startsWith('/central-de-ajuda') ||
           pathname === '/agendamentos' ||
           pathname === '/agendamentos/solicitacoes' ||
           pathname === '/agendamentos/adicionar' ||
+          pathname === '/agendamentos/relatorio' ||
           pathname.includes('/horarios') ||
           pathname.includes('/bloqueios');
 
@@ -80,8 +84,8 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
     }
 
     if (
-      (!isLogged && !isAuthRoute) ||
-      (isConfirmCodePage && !email && !isAuthRoute)
+      (!isLogged && !isPublicRoute) ||
+      (isConfirmCodePage && !email && !isPublicRoute)
     ) {
       navigate.replace('/entrar');
     }
@@ -92,14 +96,14 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
     return <FullLoading />;
   }
 
-  // Se o usuário não está autenticado e não é uma rota de autenticação/confirmação,
+  // Se o usuário não está autenticado e não é uma rota pública/autenticação/confirmação,
   // ainda mostrar loading enquanto o redirecionamento acontece
-  const isAuthRoute = routeUtils.isAuthRoute(pathname);
+  const isPublicRoute = routeUtils.isPublicRoute(pathname);
   const isConfirmCodePage = pathname.includes('/confirm-code');
 
   if (
-    (!isLogged && !isAuthRoute) ||
-    (isConfirmCodePage && !email && !isAuthRoute)
+    (!isLogged && !isPublicRoute) ||
+    (isConfirmCodePage && !email && !isPublicRoute)
   ) {
     return <FullLoading />;
   }

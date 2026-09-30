@@ -59,6 +59,7 @@ export const ROUTES = {
     HOME: '/agendamentos',
     LIST: '/agendamentos/solicitacoes',
     ADD: '/agendamentos/adicionar',
+    REPORT: '/agendamentos/relatorio',
     DETAILS: (id: string) => `/agendamentos/${id}`,
   },
   PASTORAL_AGENTS: {
@@ -72,6 +73,12 @@ export const ROUTES = {
     HOME: '/agendamentos/categorias-atendimento',
     ADD: '/agendamentos/categorias-atendimento/adicionar',
     EDIT: (id: string) => `/agendamentos/categorias-atendimento/editar/${id}`,
+  },
+  HELP: {
+    HOME: '/ajuda',
+    APPOINTMENTS: '/ajuda/agendamentos',
+    FIRST_STEPS: '/ajuda/primeiros-passos',
+    FAQ: '/ajuda/faq',
   },
 } as const;
 
