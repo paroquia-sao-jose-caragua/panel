@@ -115,6 +115,13 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
       { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
     ];
   }
+  if (cleanPath === ROUTES.APPOINTMENTS.ADD) {
+    return [
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
+      { key: 'adicionar', href: ROUTES.APPOINTMENTS.ADD, title: 'Novo Agendamento' },
+    ];
+  }
 
   // Pastoral Agents
   if (cleanPath === ROUTES.PASTORAL_AGENTS.HOME) {

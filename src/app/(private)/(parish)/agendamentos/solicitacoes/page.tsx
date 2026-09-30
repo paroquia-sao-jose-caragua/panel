@@ -11,7 +11,6 @@ import {
   Phone,
   Search,
   User,
-  Users,
   XCircle,
   AlertCircle,
   AlertTriangle,
@@ -19,10 +18,10 @@ import {
   Calendar as CalendarIcon,
   Settings2,
   Save,
+  Plus,
 } from 'lucide-react';
 
 import { AppHeader } from '@/components/common/header';
-import { BackButton } from '@/components/common/back-button';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
 import { Button } from '@/components/ui/button';
@@ -186,10 +185,17 @@ export default function AppointmentsListPage() {
 
       {/* Page Header */}
       <div className="space-y-2">
-        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <TypographyH1>
             {isPastoralAgent ? 'Meus Atendimentos' : 'Atendimentos & Visitas'}
           </TypographyH1>
+
+          <Button asChild className="cursor-pointer shrink-0">
+            <Link href={ROUTES.APPOINTMENTS.ADD}>
+              <Plus className="w-4 h-4 mr-1.5" />
+              Novo Agendamento
+            </Link>
+          </Button>
         </div>
 
         <Describe>

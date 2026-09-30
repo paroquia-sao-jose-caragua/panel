@@ -88,12 +88,17 @@ export const AppSidebar = () => {
         <div className={cn('space-y-0.5 px-4', isCollapsed && 'lg:px-2.5')}>
           {user?.role === 'pastoral_agent' ? (
             <NavItem
-              title="Meus Atendimentos"
+              title="Atendimentos"
               icon={CalendarCheck}
+              collapsedHref={ROUTES.APPOINTMENTS.HOME}
               links={[
                 {
                   title: 'Meus Atendimentos',
-                  href: ROUTES.APPOINTMENTS.HOME,
+                  href: ROUTES.APPOINTMENTS.LIST,
+                },
+                {
+                  title: 'Novo Agendamento',
+                  href: ROUTES.APPOINTMENTS.ADD,
                 },
               ]}
               onLinkClick={handleClose}
@@ -151,10 +156,27 @@ export const AppSidebar = () => {
               <NavItem
                 title="Agendamentos"
                 icon={CalendarCheck}
+                collapsedHref={ROUTES.APPOINTMENTS.HOME}
                 links={[
                   {
-                    title: 'Agendamentos',
+                    title: 'Visão Geral',
                     href: ROUTES.APPOINTMENTS.HOME,
+                  },
+                  {
+                    title: 'Atendimentos & Visitas',
+                    href: ROUTES.APPOINTMENTS.LIST,
+                  },
+                  {
+                    title: 'Novo Agendamento',
+                    href: ROUTES.APPOINTMENTS.ADD,
+                  },
+                  {
+                    title: 'Agentes Pastorais',
+                    href: ROUTES.PASTORAL_AGENTS.HOME,
+                  },
+                  {
+                    title: 'Categorias de Atendimento',
+                    href: ROUTES.APPOINTMENT_SERVICES.HOME,
                   },
                 ]}
                 onLinkClick={handleClose}

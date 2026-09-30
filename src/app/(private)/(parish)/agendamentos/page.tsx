@@ -4,12 +4,16 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import {
   CalendarCheck,
+  CalendarPlus,
   Users,
   Tag,
   ChevronRight,
   AlertTriangle,
   Settings2,
   Save,
+  Plus,
+  Clock,
+  CalendarOff,
 } from 'lucide-react';
 import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
@@ -19,13 +23,17 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useAppointmentSettings } from '@/api/appointments/use-appointments';
+import {
+  useAppointmentSettings,
+  useMyPastoralAgent,
+} from '@/api/appointments/use-appointments';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
 
 export default function AppointmentsHubPage() {
   const { user } = useAuthStore();
   const isPastoralAgent = user?.role === 'pastoral_agent';
+  const { agent: myAgent } = useMyPastoralAgent(isPastoralAgent);
 
   const {
     settings,
@@ -75,11 +83,22 @@ export default function AppointmentsHubPage() {
 
       <div className="space-y-8 w-full">
         {/* Page Header */}
-        <div>
-          <TypographyH1>Agendamentos & Atendimentos</TypographyH1>
-          <Describe className="mt-1">
-            Gerencie as solicitações de atendimento pastoral dos fiéis, os agentes cadastrados e as categorias de serviço.
-          </Describe>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <TypographyH1>Agendamentos & Atendimentos</TypographyH1>
+            <Describe className="mt-1">
+              {isPastoralAgent
+                ? 'Gerencie seus atendimentos pastorais, horários disponíveis e solicitações dos fiéis.'
+                : 'Gerencie as solicitações de atendimento pastoral dos fiéis, os agentes cadastrados e as categorias de serviço.'}
+            </Describe>
+          </div>
+
+          <Button asChild className="cursor-pointer shrink-0">
+            <Link href={ROUTES.APPOINTMENTS.ADD}>
+              <Plus className="w-4 h-4 mr-1.5" />
+              Novo Agendamento
+            </Link>
+          </Button>
         </div>
 
         <div className="h-px bg-zinc-200" />
@@ -219,78 +238,204 @@ export default function AppointmentsHubPage() {
         )}
 
         {/* Navigation Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: Atendimentos & Visitas */}
-          <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
-                <CalendarCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
-                  Atendimentos & Visitas
-                </h3>
-                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
-                  Consulte, aprove, conclua ou cancele as solicitações de atendimento pastoral enviadas pelos fiéis.
-                </p>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {isPastoralAgent ? (
+            <>
+              {/* Card 1: Meus Atendimentos */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
+                    <CalendarCheck className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Meus Atendimentos
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Consulte, confirme, conclua ou remarque os atendimentos e visitas agendados para você.
+                    </p>
+                  </div>
+                </div>
 
-            <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
-              <Link href={ROUTES.APPOINTMENTS.LIST}>
-                <span>Acessar</span>
-                <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
-              </Link>
-            </Button>
-          </div>
-
-          {/* Card 2: Agentes Pastorais */}
-          <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center shrink-0">
-                <Users className="w-6 h-6" />
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={ROUTES.APPOINTMENTS.LIST}>
+                    <span>Ver Atendimentos</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
-                  Agentes Pastorais
-                </h3>
-                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
-                  Cadastre e gerencie os clérigos e ministros com seus respectivos horários e disponibilidades.
-                </p>
-              </div>
-            </div>
 
-            <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
-              <Link href={ROUTES.PASTORAL_AGENTS.HOME}>
-                <span>Acessar</span>
-                <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
-              </Link>
-            </Button>
-          </div>
+              {/* Card 2: Novo Agendamento */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                    <CalendarPlus className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Novo Agendamento
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Agende diretamente um atendimento presencial ou visita domiciliar com um paroquiano.
+                    </p>
+                  </div>
+                </div>
 
-          {/* Card 3: Categorias de Atendimento */}
-          <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">
-                <Tag className="w-6 h-6" />
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={ROUTES.APPOINTMENTS.ADD}>
+                    <span>Agendar Agora</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
-                  Categorias de Atendimento
-                </h3>
-                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
-                  Configure os tipos de serviços disponíveis (confissões, bênçãos, conselhos e visitas domiciliares).
-                </p>
-              </div>
-            </div>
 
-            <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
-              <Link href={ROUTES.APPOINTMENT_SERVICES.HOME}>
-                <span>Acessar</span>
-                <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
-              </Link>
-            </Button>
-          </div>
+              {/* Card 3: Minha Grade de Horários */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">
+                    <Clock className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Minha Grade de Horários
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Configure os dias da semana e faixas de horário em que você está disponível para atendimentos.
+                    </p>
+                  </div>
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={myAgent ? ROUTES.PASTORAL_AGENTS.SCHEDULE(myAgent.id) : '#'}>
+                    <span>Configurar Grade</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Card 4: Meus Bloqueios de Data */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 flex items-center justify-center shrink-0">
+                    <CalendarOff className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Bloqueios de Data
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Bloqueie datas pontuais por motivo de férias, retiros espirituais, viagens ou imprevistos.
+                    </p>
+                  </div>
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={myAgent ? ROUTES.PASTORAL_AGENTS.BLOCKED_DATES(myAgent.id) : '#'}>
+                    <span>Gerenciar Bloqueios</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Card 1: Atendimentos & Visitas */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
+                    <CalendarCheck className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Atendimentos & Visitas
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Consulte, aprove, conclua ou cancele as solicitações de atendimento pastoral enviadas pelos fiéis.
+                    </p>
+                  </div>
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={ROUTES.APPOINTMENTS.LIST}>
+                    <span>Acessar</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Card 2: Novo Agendamento */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                    <CalendarPlus className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Novo Agendamento
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Registre um agendamento para um fiel que ligou ou compareceu pessoalmente na secretaria.
+                    </p>
+                  </div>
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={ROUTES.APPOINTMENTS.ADD}>
+                    <span>Agendar Agora</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Card 3: Agentes Pastorais */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center shrink-0">
+                    <Users className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Agentes Pastorais
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Cadastre e gerencie os clérigos e ministros com seus respectivos horários e disponibilidades.
+                    </p>
+                  </div>
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={ROUTES.PASTORAL_AGENTS.HOME}>
+                    <span>Acessar</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Card 4: Categorias de Atendimento */}
+              <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">
+                    <Tag className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                      Categorias de Atendimento
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      Configure os tipos de serviços disponíveis (confissões, bênçãos, conselhos e visitas domiciliares).
+                    </p>
+                  </div>
+                </div>
+
+                <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200 cursor-pointer">
+                  <Link href={ROUTES.APPOINTMENT_SERVICES.HOME}>
+                    <span>Acessar</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+                  </Link>
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </main>

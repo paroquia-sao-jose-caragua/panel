@@ -3,7 +3,7 @@
 import React, { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Clock, CheckCircle2 } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { BackButton } from '@/components/common/back-button';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,13 @@ import {
   useAgentAvailabilities,
 } from '@/api/appointments/use-appointments';
 import { ROUTES } from '@/constants/routes';
+
+interface DayScheduleItem {
+  active: boolean;
+  startTime: string;
+  endTime: string;
+  slotDurationMinutes: number;
+}
 
 const DAYS_OF_WEEK = [
   { id: 0, label: 'Domingo' },
@@ -32,8 +39,8 @@ export default function AgentSchedulePage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = use(params);
   const router = useRouter();
+  const { id } = use(params);
 
   const { agents } = usePastoralAgents();
   const agent = agents.find((a) => a.id === id);
@@ -42,17 +49,9 @@ export default function AgentSchedulePage({
     useAgentAvailabilities(id);
 
   const [scheduleState, setScheduleState] = useState<
-    Record<
-      number,
-      {
-        active: boolean;
-        startTime: string;
-        endTime: string;
-        slotDurationMinutes: number;
-      }
-    >
+    Record<number, DayScheduleItem>
   >(() => {
-    const initial: Record<number, any> = {};
+    const initial: Record<number, DayScheduleItem> = {};
     DAYS_OF_WEEK.forEach((d) => {
       initial[d.id] = {
         active: false,
@@ -66,7 +65,7 @@ export default function AgentSchedulePage({
 
   useEffect(() => {
     if (availabilities && availabilities.length > 0) {
-      const updated: Record<number, any> = {};
+      const updated: Record<number, DayScheduleItem> = {};
       DAYS_OF_WEEK.forEach((d) => {
         const existing = availabilities.find((a) => a.dayOfWeek === d.id);
         updated[d.id] = {

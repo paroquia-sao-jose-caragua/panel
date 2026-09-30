@@ -62,8 +62,14 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
 
     if (isLogged && token) {
       if (user?.role === 'pastoral_agent') {
-        const isAppointmentsRoute = pathname.startsWith('/agendamentos');
-        if (!isAppointmentsRoute || pathname.startsWith('/agentes-pastorais')) {
+        const isAllowedForAgent =
+          pathname === '/agendamentos' ||
+          pathname === '/agendamentos/solicitacoes' ||
+          pathname === '/agendamentos/adicionar' ||
+          pathname.includes('/horarios') ||
+          pathname.includes('/bloqueios');
+
+        if (!isAllowedForAgent) {
           navigate.replace('/agendamentos');
           return;
         }

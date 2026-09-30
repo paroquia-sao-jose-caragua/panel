@@ -58,6 +58,7 @@ export const ROUTES = {
   APPOINTMENTS: {
     HOME: '/agendamentos',
     LIST: '/agendamentos/solicitacoes',
+    ADD: '/agendamentos/adicionar',
     DETAILS: (id: string) => `/agendamentos/${id}`,
   },
   PASTORAL_AGENTS: {
