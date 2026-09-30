@@ -59,6 +59,7 @@ export const ROUTES = {
     HOME: '/agendamentos',
     LIST: '/agendamentos/solicitacoes',
     ADD: '/agendamentos/adicionar',
+    EDIT: (id: string) => `/agendamentos/editar/${id}`,
     REPORT: '/agendamentos/relatorio',
     DETAILS: (id: string) => `/agendamentos/${id}`,
   },

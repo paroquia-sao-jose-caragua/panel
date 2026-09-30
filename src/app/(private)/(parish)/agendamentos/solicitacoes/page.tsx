@@ -20,6 +20,7 @@ import {
   Save,
   Plus,
   Printer,
+  Pencil,
 } from 'lucide-react';
 
 import { AppHeader } from '@/components/common/header';
@@ -43,15 +44,18 @@ import { useAppointments, useAppointmentSettings, usePastoralAgents } from '@/ap
 import type { Appointment, AppointmentStatus } from '@/entities/appointment';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
+import { AppointmentWhatsAppDialog } from '@/components/features/appointments/appointment-whatsapp-dialog';
 
 export default function AppointmentsListPage() {
   const { user } = useAuthStore();
   const isPastoralAgent = user?.role === 'pastoral_agent';
+  const isStaffSecretaryOrAdmin = user?.role === 'admin' || user?.role === 'secretary';
 
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedAgentId, setSelectedAgentId] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [cancellingAppointment, setCancellingAppointment] = useState<Appointment | null>(null);
+  const [whatsAppModalAppointment, setWhatsAppModalAppointment] = useState<Appointment | null>(null);
   const [cancellationReason, setCancellationReason] = useState('');
   const [showNoticeEditor, setShowNoticeEditor] = useState(false);
   const [customTitle, setCustomTitle] = useState('');
@@ -89,6 +93,13 @@ export default function AppointmentsListPage() {
       id: appointment.id,
       status: 'confirmed',
     });
+
+    if (isStaffSecretaryOrAdmin) {
+      setWhatsAppModalAppointment({
+        ...appointment,
+        status: 'confirmed',
+      });
+    }
   };
 
   const handleComplete = async (appointment: Appointment) => {
@@ -580,6 +591,18 @@ export default function AppointmentsListPage() {
                   </a>
 
                   <div className="flex items-center gap-1.5">
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="outline"
+                      className="h-8 text-xs font-semibold text-zinc-700 hover:text-brand-700 hover:border-brand-300 cursor-pointer"
+                    >
+                      <Link href={ROUTES.APPOINTMENTS.EDIT(appointment.id)}>
+                        <Pencil className="w-3.5 h-3.5 mr-1 text-zinc-500" />
+                        Editar
+                      </Link>
+                    </Button>
+
                     {appointment.status === 'pending' && (
                       <Button
                         size="sm"
@@ -661,6 +684,13 @@ export default function AppointmentsListPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* WhatsApp Confirmation Dialog for Secretary/Admin on Approval */}
+      <AppointmentWhatsAppDialog
+        open={!!whatsAppModalAppointment}
+        onOpenChange={(open) => !open && setWhatsAppModalAppointment(null)}
+        appointment={whatsAppModalAppointment}
+      />
     </main>
     </>
   );

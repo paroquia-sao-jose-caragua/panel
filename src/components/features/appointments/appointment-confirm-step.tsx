@@ -23,9 +23,13 @@ import type { AppointmentFormValues } from './types';
 
 interface AppointmentConfirmStepProps {
   values: AppointmentFormValues;
+  isEdit?: boolean;
 }
 
-export const AppointmentConfirmStep = ({ values }: AppointmentConfirmStepProps) => {
+export const AppointmentConfirmStep = ({
+  values,
+  isEdit = false,
+}: AppointmentConfirmStepProps) => {
   const { user } = useAuthStore();
   const isPastoralAgent = user?.role === 'pastoral_agent';
 
@@ -59,7 +63,7 @@ export const AppointmentConfirmStep = ({ values }: AppointmentConfirmStepProps) 
         <div className="border-b border-zinc-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <span className="text-xs font-semibold text-brand-700 uppercase tracking-wider">
-              Revisão do Agendamento
+              {isEdit ? 'Revisão das Alterações' : 'Revisão do Agendamento'}
             </span>
             <h2 className="text-xl font-bold text-zinc-900 mt-0.5">
               {service?.title || 'Atendimento Pastoral'}
@@ -71,11 +75,25 @@ export const AppointmentConfirmStep = ({ values }: AppointmentConfirmStepProps) 
             className={
               values.status === 'confirmed'
                 ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                : values.status === 'completed'
+                ? 'bg-blue-50 text-blue-800 border-blue-300'
+                : values.status === 'cancelled'
+                ? 'bg-rose-50 text-rose-800 border-rose-300'
                 : 'bg-amber-50 text-amber-800 border-amber-300'
             }
           >
             <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
-            {values.status === 'confirmed' ? 'Será criado como Confirmado' : 'Será criado como Pendente'}
+            {isEdit
+              ? values.status === 'confirmed'
+                ? 'Status: Confirmado'
+                : values.status === 'completed'
+                ? 'Status: Realizado'
+                : values.status === 'cancelled'
+                ? 'Status: Cancelado'
+                : 'Status: Pendente'
+              : values.status === 'confirmed'
+              ? 'Será criado como Confirmado'
+              : 'Será criado como Pendente'}
           </Badge>
         </div>
 
