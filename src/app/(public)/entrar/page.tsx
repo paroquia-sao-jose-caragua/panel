@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { HelpCircle } from 'lucide-react';
 import { Describe } from '@/components/ui/typography/describe';
 import Image from 'next/image';
 import { Form } from './form';
@@ -23,6 +25,16 @@ export default function Login() {
           </Describe>
         </div>
         <Form />
+
+        <div className="pt-2 border-t border-zinc-100 text-center w-full">
+          <Link
+            href="/ajuda"
+            className="text-xs text-brand-700 hover:text-brand-900 font-medium inline-flex items-center gap-1.5 transition"
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+            <span>Precisa de ajuda? Acesse a Central de Ajuda</span>
+          </Link>
+        </div>
       </div>
     </main>
   );

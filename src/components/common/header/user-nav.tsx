@@ -6,6 +6,7 @@ import {
   LogOut,
   Settings,
   ChevronDown,
+  HelpCircle,
 } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '@/api/users/logout';
@@ -122,6 +123,15 @@ export function UserNav() {
               </DropdownMenuItem>
             )}
 
+            <DropdownMenuItem asChild>
+              <Link
+                href={ROUTES.HELP.HOME}
+                className="flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-zinc-700 rounded-lg hover:bg-zinc-100 hover:text-zinc-900 transition cursor-pointer"
+              >
+                <HelpCircle className="w-4 h-4 text-brand-600" />
+                <span>Central de Ajuda & Manuais</span>
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
 
           <DropdownMenuSeparator className="my-1 bg-zinc-100" />

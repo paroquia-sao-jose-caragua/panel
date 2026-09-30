@@ -74,5 +74,11 @@ export const ROUTES = {
     ADD: '/agendamentos/categorias-atendimento/adicionar',
     EDIT: (id: string) => `/agendamentos/categorias-atendimento/editar/${id}`,
   },
+  HELP: {
+    HOME: '/ajuda',
+    APPOINTMENTS: '/ajuda/agendamentos',
+    FIRST_STEPS: '/ajuda/primeiros-passos',
+    FAQ: '/ajuda/faq',
+  },
 } as const;
 

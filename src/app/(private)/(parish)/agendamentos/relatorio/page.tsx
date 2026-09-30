@@ -555,11 +555,6 @@ export default function AppointmentsReportPage() {
           <div className="border-b-2 border-zinc-800 pb-5">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
               <div className="flex items-center gap-4">
-                <img
-                  src="/logo-mark-dark.png"
-                  alt="Paróquia São José"
-                  className="h-16 w-auto object-contain shrink-0"
-                />
                 <div>
                   <h2 className="text-xl font-bold tracking-tight text-zinc-950 uppercase font-serif">
                     Paróquia São José
