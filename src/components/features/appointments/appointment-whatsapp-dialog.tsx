@@ -169,9 +169,13 @@ export function AppointmentWhatsAppDialog({
   // Synchronize initialTemplate when dialog opens
   useEffect(() => {
     if (open) {
-      setTemplate(initialTemplate);
+      if (appointment?.status === 'completed' && initialTemplate === 'cancellation') {
+        setTemplate('confirmation');
+      } else {
+        setTemplate(initialTemplate);
+      }
     }
-  }, [open, initialTemplate]);
+  }, [open, initialTemplate, appointment?.status]);
 
   // Generate message based on selected template
   useEffect(() => {
@@ -266,18 +270,20 @@ export function AppointmentWhatsAppDialog({
             <span className="truncate">Confirmação</span>
           </button>
 
-          <button
-            type="button"
-            onClick={() => setTemplate('cancellation')}
-            className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
-              template === 'cancellation'
-                ? 'bg-white text-rose-800 shadow-2xs border border-rose-200'
-                : 'text-zinc-600 hover:text-zinc-900'
-            }`}
-          >
-            <XCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-            <span className="truncate">Cancelamento</span>
-          </button>
+          {appointment?.status !== 'completed' && (
+            <button
+              type="button"
+              onClick={() => setTemplate('cancellation')}
+              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                template === 'cancellation'
+                  ? 'bg-white text-rose-800 shadow-2xs border border-rose-200'
+                  : 'text-zinc-600 hover:text-zinc-900'
+              }`}
+            >
+              <XCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+              <span className="truncate">Cancelamento</span>
+            </button>
+          )}
 
           <button
             type="button"

@@ -698,31 +698,33 @@ export default function AppointmentsListPage() {
                           </div>
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem
-                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-rose-50 focus:bg-rose-50"
-                          onClick={() =>
-                            setWhatsAppDialogState({
-                              open: true,
-                              appointment,
-                              template: 'cancellation',
-                              cancellationReason:
-                                appointment.cancellationReason ||
-                                'Houve um imprevisto na agenda pastoral',
-                            })
-                          }
-                        >
-                          <div className="w-7 h-7 rounded-md bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
-                            <XCircle className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <span className="font-semibold block text-zinc-900">
-                              Avisar Cancelamento
-                            </span>
-                            <span className="text-[11px] text-zinc-500 block leading-tight">
-                              Imprevisto + link para reagendar
-                            </span>
-                          </div>
-                        </DropdownMenuItem>
+                        {appointment.status !== 'completed' && (
+                          <DropdownMenuItem
+                            className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-rose-50 focus:bg-rose-50"
+                            onClick={() =>
+                              setWhatsAppDialogState({
+                                open: true,
+                                appointment,
+                                template: 'cancellation',
+                                cancellationReason:
+                                  appointment.cancellationReason ||
+                                  'Houve um imprevisto na agenda pastoral',
+                              })
+                            }
+                          >
+                            <div className="w-7 h-7 rounded-md bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                              <XCircle className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <span className="font-semibold block text-zinc-900">
+                                Avisar Cancelamento
+                              </span>
+                              <span className="text-[11px] text-zinc-500 block leading-tight">
+                                Imprevisto + link para reagendar
+                              </span>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
 
                         <DropdownMenuItem
                           className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-blue-50 focus:bg-blue-50"
@@ -787,7 +789,7 @@ export default function AppointmentsListPage() {
                       </Button>
                     )}
 
-                    {appointment.status !== 'cancelled' && (
+                    {appointment.status !== 'cancelled' && appointment.status !== 'completed' && (
                       <Button
                         size="sm"
                         variant="ghost"
