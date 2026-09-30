@@ -66,6 +66,7 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
           pathname === '/agendamentos' ||
           pathname === '/agendamentos/solicitacoes' ||
           pathname === '/agendamentos/adicionar' ||
+          pathname === '/agendamentos/relatorio' ||
           pathname.includes('/horarios') ||
           pathname.includes('/bloqueios');
 

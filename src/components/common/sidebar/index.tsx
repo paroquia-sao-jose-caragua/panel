@@ -36,7 +36,7 @@ export const AppSidebar = () => {
       open={open}
       onOpenChange={setOpen}
       className={cn(
-        'fixed top-0 right-0 left-0 z-20 flex flex-col gap-4 border-b border-zinc-200 bg-brand-gradient py-2 md:py-4 data-[state=open]:bottom-0 lg:right-auto lg:bottom-0 lg:border-r lg:pt-4 lg:pb-6 transition-all duration-300',
+        'print:hidden fixed top-0 right-0 left-0 z-20 flex flex-col gap-4 border-b border-zinc-200 bg-brand-gradient py-2 md:py-4 data-[state=open]:bottom-0 lg:right-auto lg:bottom-0 lg:border-r lg:pt-4 lg:pb-6 transition-all duration-300',
         isCollapsed ? 'lg:w-20' : 'lg:w-80'
       )}
     >
@@ -100,6 +100,10 @@ export const AppSidebar = () => {
                   title: 'Novo Agendamento',
                   href: ROUTES.APPOINTMENTS.ADD,
                 },
+                {
+                  title: 'Relatório & Pauta (PDF)',
+                  href: ROUTES.APPOINTMENTS.REPORT,
+                },
               ]}
               onLinkClick={handleClose}
             />
@@ -159,24 +163,8 @@ export const AppSidebar = () => {
                 collapsedHref={ROUTES.APPOINTMENTS.HOME}
                 links={[
                   {
-                    title: 'Visão Geral',
+                    title: 'Agendamentos',
                     href: ROUTES.APPOINTMENTS.HOME,
-                  },
-                  {
-                    title: 'Atendimentos & Visitas',
-                    href: ROUTES.APPOINTMENTS.LIST,
-                  },
-                  {
-                    title: 'Novo Agendamento',
-                    href: ROUTES.APPOINTMENTS.ADD,
-                  },
-                  {
-                    title: 'Agentes Pastorais',
-                    href: ROUTES.PASTORAL_AGENTS.HOME,
-                  },
-                  {
-                    title: 'Categorias de Atendimento',
-                    href: ROUTES.APPOINTMENT_SERVICES.HOME,
                   },
                 ]}
                 onLinkClick={handleClose}

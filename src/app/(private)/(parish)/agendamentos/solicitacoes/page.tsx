@@ -19,6 +19,7 @@ import {
   Settings2,
   Save,
   Plus,
+  Printer,
 } from 'lucide-react';
 
 import { AppHeader } from '@/components/common/header';
@@ -190,12 +191,21 @@ export default function AppointmentsListPage() {
             {isPastoralAgent ? 'Meus Atendimentos' : 'Atendimentos & Visitas'}
           </TypographyH1>
 
-          <Button asChild className="cursor-pointer shrink-0">
-            <Link href={ROUTES.APPOINTMENTS.ADD}>
-              <Plus className="w-4 h-4 mr-1.5" />
-              Novo Agendamento
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2.5 shrink-0">
+            <Button asChild variant="outline" className="cursor-pointer">
+              <Link href={ROUTES.APPOINTMENTS.REPORT}>
+                <Printer className="w-4 h-4 mr-1.5 text-zinc-600" />
+                Relatório & Pauta (PDF)
+              </Link>
+            </Button>
+
+            <Button asChild className="cursor-pointer">
+              <Link href={ROUTES.APPOINTMENTS.ADD}>
+                <Plus className="w-4 h-4 mr-1.5" />
+                Novo Agendamento
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <Describe>
