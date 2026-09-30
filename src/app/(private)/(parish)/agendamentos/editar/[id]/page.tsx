@@ -24,7 +24,10 @@ import {
 } from '@/api/appointments/use-appointments';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
-import { AppointmentWhatsAppDialog } from '@/components/features/appointments/appointment-whatsapp-dialog';
+import {
+  AppointmentWhatsAppDialog,
+  type WhatsAppTemplateType,
+} from '@/components/features/appointments/appointment-whatsapp-dialog';
 
 export default function EditAppointmentPage({
   params,
@@ -45,12 +48,21 @@ export default function EditAppointmentPage({
   const [activeStep, setActiveStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [whatsAppModalAppointment, setWhatsAppModalAppointment] = useState<Appointment | null>(null);
+  const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
+    open: boolean;
+    appointment: Appointment | null;
+    template: WhatsAppTemplateType;
+    cancellationReason?: string;
+  }>({
+    open: false,
+    appointment: null,
+    template: 'confirmation',
+  });
 
   const handleWhatsAppDialogClose = useCallback(
     (open: boolean) => {
+      setWhatsAppDialogState((prev) => ({ ...prev, open }));
       if (!open) {
-        setWhatsAppModalAppointment(null);
         router.replace(ROUTES.APPOINTMENTS.LIST);
       }
     },
@@ -201,17 +213,38 @@ export default function EditAppointmentPage({
       },
     });
 
+    const isStaff = user?.role === 'admin' || user?.role === 'secretary';
     const wasPendingApproved =
       appointment?.status === 'pending' &&
       values.status === 'confirmed' &&
-      (user?.role === 'admin' || user?.role === 'secretary');
+      isStaff;
+    const wasCancelled =
+      appointment?.status !== 'cancelled' &&
+      values.status === 'cancelled' &&
+      isStaff;
 
     if (wasPendingApproved && appointment) {
-      setWhatsAppModalAppointment({
-        ...appointment,
-        ...values,
-        agentId: effectiveAgentId,
-        id,
+      setWhatsAppDialogState({
+        open: true,
+        appointment: {
+          ...appointment,
+          ...values,
+          agentId: effectiveAgentId,
+          id,
+        },
+        template: 'confirmation',
+      });
+    } else if (wasCancelled && appointment) {
+      setWhatsAppDialogState({
+        open: true,
+        appointment: {
+          ...appointment,
+          ...values,
+          agentId: effectiveAgentId,
+          id,
+        },
+        template: 'cancellation',
+        cancellationReason: 'Houve um imprevisto na agenda pastoral',
       });
     } else {
       router.replace(ROUTES.APPOINTMENTS.LIST);
@@ -368,9 +401,11 @@ export default function EditAppointmentPage({
             />
 
             <AppointmentWhatsAppDialog
-              open={!!whatsAppModalAppointment}
+              open={whatsAppDialogState.open}
               onOpenChange={handleWhatsAppDialogClose}
-              appointment={whatsAppModalAppointment}
+              appointment={whatsAppDialogState.appointment}
+              initialTemplate={whatsAppDialogState.template}
+              cancellationReason={whatsAppDialogState.cancellationReason}
             />
           </>
         )}

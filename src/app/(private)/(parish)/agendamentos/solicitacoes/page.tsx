@@ -21,6 +21,9 @@ import {
   Plus,
   Printer,
   Pencil,
+  Send,
+  ChevronDown,
+  BellRing,
 } from 'lucide-react';
 
 import { AppHeader } from '@/components/common/header';
@@ -40,11 +43,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu';
 import { useAppointments, useAppointmentSettings, usePastoralAgents } from '@/api/appointments/use-appointments';
 import type { Appointment, AppointmentStatus } from '@/entities/appointment';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
-import { AppointmentWhatsAppDialog } from '@/components/features/appointments/appointment-whatsapp-dialog';
+import {
+  AppointmentWhatsAppDialog,
+  type WhatsAppTemplateType,
+} from '@/components/features/appointments/appointment-whatsapp-dialog';
 
 export default function AppointmentsListPage() {
   const { user } = useAuthStore();
@@ -55,7 +67,16 @@ export default function AppointmentsListPage() {
   const [selectedAgentId, setSelectedAgentId] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [cancellingAppointment, setCancellingAppointment] = useState<Appointment | null>(null);
-  const [whatsAppModalAppointment, setWhatsAppModalAppointment] = useState<Appointment | null>(null);
+  const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
+    open: boolean;
+    appointment: Appointment | null;
+    template: WhatsAppTemplateType;
+    cancellationReason?: string;
+  }>({
+    open: false,
+    appointment: null,
+    template: 'confirmation',
+  });
   const [cancellationReason, setCancellationReason] = useState('');
   const [showNoticeEditor, setShowNoticeEditor] = useState(false);
   const [customTitle, setCustomTitle] = useState('');
@@ -95,9 +116,13 @@ export default function AppointmentsListPage() {
     });
 
     if (isStaffSecretaryOrAdmin) {
-      setWhatsAppModalAppointment({
-        ...appointment,
-        status: 'confirmed',
+      setWhatsAppDialogState({
+        open: true,
+        appointment: {
+          ...appointment,
+          status: 'confirmed',
+        },
+        template: 'confirmation',
       });
     }
   };
@@ -111,13 +136,32 @@ export default function AppointmentsListPage() {
 
   const handleCancelSubmit = async () => {
     if (!cancellingAppointment) return;
+    const finalReason =
+      cancellationReason.trim() || 'Houve um imprevisto na agenda pastoral';
+
     await updateStatus({
       id: cancellingAppointment.id,
       status: 'cancelled',
-      cancellationReason: cancellationReason.trim() || 'Cancelado pela paróquia',
+      cancellationReason: finalReason,
     });
+
+    const appointmentCancelled: Appointment = {
+      ...cancellingAppointment,
+      status: 'cancelled',
+      cancellationReason: finalReason,
+    };
+
     setCancellingAppointment(null);
     setCancellationReason('');
+
+    if (isStaffSecretaryOrAdmin) {
+      setWhatsAppDialogState({
+        open: true,
+        appointment: appointmentCancelled,
+        template: 'cancellation',
+        cancellationReason: finalReason,
+      });
+    }
   };
 
   const getStatusBadge = (status: AppointmentStatus) => {
@@ -445,10 +489,9 @@ export default function AppointmentsListPage() {
       ) : (
         <div className="grid gap-4 grid-cols-1 xl:grid-cols-2">
           {filteredAppointments.map((appointment) => {
-            const cleanPhone = (appointment.requesterPhone || '').replace(/\D/g, '');
-            const whatsappUrl = `https://wa.me/55${cleanPhone}?text=${encodeURIComponent(
-              `Olá ${appointment.requesterName || ''}, entramos em contato sobre o seu agendamento de ${appointment.service?.title || 'atendimento'} na Paróquia São José.`
-            )}`;
+            const rawPhone = (appointment.requesterPhone || '').replace(/\D/g, '');
+            const phoneWithCountry = rawPhone.length <= 11 ? `55${rawPhone}` : rawPhone;
+            const directWhatsAppUrl = rawPhone ? `https://wa.me/${phoneWithCountry}` : undefined;
 
             return (
               <div
@@ -580,15 +623,116 @@ export default function AppointmentsListPage() {
 
                 {/* Bottom Actions */}
                 <div className="pt-3 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-2 min-w-0">
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200 transition-colors"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </a>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {/* Botão: WhatsApp Direto */}
+                    <a
+                      href={directWhatsAppUrl || '#'}
+                      target={directWhatsAppUrl ? '_blank' : undefined}
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-colors shadow-2xs ${
+                        directWhatsAppUrl
+                          ? 'text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/80 border-emerald-200 cursor-pointer'
+                          : 'text-zinc-400 bg-zinc-100 border-zinc-200 cursor-not-allowed pointer-events-none'
+                      }`}
+                      title={
+                        directWhatsAppUrl
+                          ? 'Abrir conversa direta no WhatsApp'
+                          : 'Telefone não informado'
+                      }
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>WhatsApp Direto</span>
+                    </a>
+
+                    {/* Botão: Mensagens Prontas (Dropdown com opções) */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="h-8 text-xs font-semibold text-emerald-800 border-emerald-300 bg-emerald-50/60 hover:bg-emerald-100/70 cursor-pointer gap-1.5 px-2.5 shadow-2xs"
+                        >
+                          <Send className="w-3 h-3 text-emerald-600" />
+                          <span>Mensagens Prontas</span>
+                          <ChevronDown className="w-3 h-3 text-emerald-600 opacity-70" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" className="w-64 p-1.5 shadow-lg border-zinc-200">
+                        <DropdownMenuItem
+                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-emerald-50 focus:bg-emerald-50"
+                          onClick={() =>
+                            setWhatsAppDialogState({
+                              open: true,
+                              appointment,
+                              template: 'confirmation',
+                            })
+                          }
+                        >
+                          <div className="w-7 h-7 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                            <CheckCircle2 className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <span className="font-semibold block text-zinc-900">
+                              Enviar Confirmação
+                            </span>
+                            <span className="text-[11px] text-zinc-500 block leading-tight">
+                              Aprovado + link de acompanhamento
+                            </span>
+                          </div>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem
+                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-rose-50 focus:bg-rose-50"
+                          onClick={() =>
+                            setWhatsAppDialogState({
+                              open: true,
+                              appointment,
+                              template: 'cancellation',
+                              cancellationReason:
+                                appointment.cancellationReason ||
+                                'Houve um imprevisto na agenda pastoral',
+                            })
+                          }
+                        >
+                          <div className="w-7 h-7 rounded-md bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                            <XCircle className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <span className="font-semibold block text-zinc-900">
+                              Avisar Cancelamento
+                            </span>
+                            <span className="text-[11px] text-zinc-500 block leading-tight">
+                              Imprevisto + link para reagendar
+                            </span>
+                          </div>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem
+                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-blue-50 focus:bg-blue-50"
+                          onClick={() =>
+                            setWhatsAppDialogState({
+                              open: true,
+                              appointment,
+                              template: 'reminder',
+                            })
+                          }
+                        >
+                          <div className="w-7 h-7 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                            <BellRing className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <span className="font-semibold block text-zinc-900">
+                              Enviar Lembrete
+                            </span>
+                            <span className="text-[11px] text-zinc-500 block leading-tight">
+                              Horário, local e orientações
+                            </span>
+                          </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
 
                   <div className="flex items-center gap-1.5">
                     <Button
@@ -607,7 +751,7 @@ export default function AppointmentsListPage() {
                       <Button
                         size="sm"
                         variant="default"
-                        className="h-8 text-xs font-semibold"
+                        className="h-8 text-xs font-semibold cursor-pointer"
                         onClick={() => handleConfirm(appointment)}
                         isLoading={isUpdatingStatus}
                       >
@@ -619,7 +763,7 @@ export default function AppointmentsListPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-8 text-xs font-semibold text-blue-700 border-blue-200 hover:bg-blue-50"
+                        className="h-8 text-xs font-semibold text-blue-700 border-blue-200 hover:bg-blue-50 cursor-pointer"
                         onClick={() => handleComplete(appointment)}
                         isLoading={isUpdatingStatus}
                       >
@@ -631,7 +775,7 @@ export default function AppointmentsListPage() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="h-8 text-xs text-zinc-500 hover:text-rose-600 hover:bg-rose-50"
+                        className="h-8 text-xs text-zinc-500 hover:text-rose-600 hover:bg-rose-50 cursor-pointer"
                         onClick={() => setCancellingAppointment(appointment)}
                       >
                         Cancelar
@@ -656,20 +800,33 @@ export default function AppointmentsListPage() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="py-2">
+          <div className="py-2 space-y-2">
+            <label className="text-xs font-medium text-zinc-700 block">
+              Motivo do cancelamento (opcional):
+            </label>
             <Input
               value={cancellationReason}
               onChange={(e) => setCancellationReason(e.target.value)}
-              placeholder="Ex.: Imprevisto paroquial, necessidade de reagendamento..."
+              placeholder="Ex.: Houve um imprevisto na agenda pastoral..."
               className="w-full"
             />
+            <p className="text-[11px] text-zinc-500">
+              Se deixar em branco, o motivo padrão será &quot;Houve um imprevisto na agenda pastoral&quot;.
+            </p>
+            {isStaffSecretaryOrAdmin && (
+              <div className="p-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-lg flex items-center gap-2 text-xs text-emerald-800 mt-2">
+                <MessageCircle className="w-4 h-4 shrink-0 text-emerald-600" />
+                <span>Ao confirmar, você poderá avisar o fiel pelo WhatsApp com a mensagem pronta.</span>
+              </div>
+            )}
           </div>
 
-          <DialogFooter className="flex sm:justify-end gap-2">
+          <DialogFooter className="flex sm:justify-end gap-2 pt-2">
             <Button
               variant="outline"
               onClick={() => setCancellingAppointment(null)}
               type="button"
+              className="cursor-pointer"
             >
               Voltar
             </Button>
@@ -678,6 +835,7 @@ export default function AppointmentsListPage() {
               onClick={handleCancelSubmit}
               isLoading={isUpdatingStatus}
               type="button"
+              className="cursor-pointer"
             >
               Confirmar Cancelamento
             </Button>
@@ -685,11 +843,15 @@ export default function AppointmentsListPage() {
         </DialogContent>
       </Dialog>
 
-      {/* WhatsApp Confirmation Dialog for Secretary/Admin on Approval */}
+      {/* WhatsApp Dialog with Pre-made Templates */}
       <AppointmentWhatsAppDialog
-        open={!!whatsAppModalAppointment}
-        onOpenChange={(open) => !open && setWhatsAppModalAppointment(null)}
-        appointment={whatsAppModalAppointment}
+        open={whatsAppDialogState.open}
+        onOpenChange={(open) =>
+          setWhatsAppDialogState((prev) => ({ ...prev, open }))
+        }
+        appointment={whatsAppDialogState.appointment}
+        initialTemplate={whatsAppDialogState.template}
+        cancellationReason={whatsAppDialogState.cancellationReason}
       />
     </main>
     </>
