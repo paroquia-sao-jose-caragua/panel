@@ -18,7 +18,7 @@ export function BackButton({ href, label = 'Voltar', className }: BackButtonProp
       size="sm"
       asChild
       className={cn(
-        'gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors mb-3 -ml-2.5 h-8',
+        'gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors -ml-2.5 h-8',
         className
       )}
     >

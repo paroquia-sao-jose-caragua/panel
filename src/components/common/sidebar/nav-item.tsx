@@ -1,7 +1,13 @@
+'use client';
+
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState, type ElementType } from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
+import { cn } from '@/lib/utils';
+import { useSidebarStore } from '@/stores/useSidebarStore';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export interface NavItemProps {
   title: string;
@@ -11,6 +17,7 @@ export interface NavItemProps {
     href: string;
   }[];
   onLinkClick: () => void;
+  collapsedHref?: string;
 }
 
 export function NavItem({
@@ -18,46 +25,206 @@ export function NavItem({
   icon: Icon,
   links,
   onLinkClick,
+  collapsedHref,
 }: NavItemProps) {
+  const pathname = usePathname();
+  const { isCollapsed } = useSidebarStore();
   const [open, setOpen] = useState(false);
 
-  // Se tem apenas um link, renderizar como link direto
+  const isLinkActive = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  // Single link nav item
   if (links.length === 1) {
-    return (
+    const isActive = isLinkActive(links[0].href);
+
+    const linkContent = (
       <Link
         href={links[0].href}
-        className="group flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-brand-700/30 focus-visible:ring-2 focus-visible:ring-brand-400 outline-none transition-colors"
+        className={cn(
+          'group flex items-center gap-3 rounded-lg px-3 py-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-400',
+          isActive
+            ? 'bg-brand-700/40 text-brand-50 font-semibold'
+            : 'text-brand-100 hover:bg-brand-700/30 hover:text-brand-50',
+          isCollapsed && 'lg:justify-center lg:px-2.5'
+        )}
         onClick={onLinkClick}
       >
-        <Icon className="h-5 w-5 text-brand-300" />
-        <span className="font-medium text-brand-100 group-hover:text-brand-50">
+        <Icon
+          className={cn(
+            'h-5 w-5 shrink-0 transition-colors',
+            isActive ? 'text-brand-300' : 'text-brand-300/80 group-hover:text-brand-300'
+          )}
+        />
+        <span className={cn('font-medium text-sm truncate', isCollapsed && 'lg:hidden')}>
           {title}
         </span>
       </Link>
     );
+
+    if (isCollapsed) {
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
+          <TooltipContent side="right" className="hidden lg:flex bg-brand-900 text-brand-100 border border-brand-700 shadow-md">
+            {title}
+          </TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    return linkContent;
   }
 
-  return (
-    <Collapsible.Root open={open} onOpenChange={setOpen}>
-      <Collapsible.Trigger className="group w-full group flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-brand-700/30 focus-visible:ring-2 focus-visible:ring-brand-400 outline-none transition-colors">
-        <Icon className="h-5 w-5 text-brand-300" />
-        <span className="font-medium text-brand-100 group-hover:text-brand-50">
-          {title}
-        </span>
-        <ChevronDown className="ml-auto h-5 w-5 text-brand-300 group-hover:text-brand-300 group-data-[state=open]:rotate-180 transition-transform" />
-      </Collapsible.Trigger>
-      <Collapsible.Content>
-        <nav className="pl-7.5 pr-3 mt-1 space-y-1 pb-2">
-          {links.map((link) => (
+  // Collapsible nav item with sublinks
+  const isAnyChildActive = links.some((link) => isLinkActive(link.href));
+  const targetHref = collapsedHref || links[0]?.href;
+
+  if (isCollapsed) {
+    return (
+      <Collapsible.Root open={open || isAnyChildActive} onOpenChange={setOpen}>
+        {/* Desktop Collapsed View: direct Link to targetHref with Tooltip */}
+        <Tooltip>
+          <TooltipTrigger asChild>
             <Link
-              key={`nav-item-${link.href}`}
-              href={link.href}
-              className="block rounded-lg px-4 py-2 text-sm text-brand-200 hover:bg-brand-700/30 hover:text-brand-50 transition-colors focus-visible:ring-2 focus-visible:ring-brand-400 outline-none"
+              href={targetHref}
+              className={cn(
+                'group hidden lg:flex items-center justify-center rounded-lg px-2.5 py-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-400',
+                isAnyChildActive
+                  ? 'bg-brand-700/40 text-brand-50 font-semibold'
+                  : 'text-brand-100 hover:bg-brand-700/30 hover:text-brand-50'
+              )}
               onClick={onLinkClick}
             >
-              {link.title}
+              <Icon
+                className={cn(
+                  'h-5 w-5 shrink-0 transition-colors',
+                  isAnyChildActive
+                    ? 'text-brand-300'
+                    : 'text-brand-300/80 group-hover:text-brand-300'
+                )}
+              />
             </Link>
-          ))}
+          </TooltipTrigger>
+          <TooltipContent
+            side="right"
+            className="hidden lg:flex bg-brand-900 text-brand-100 border border-brand-700 shadow-md"
+          >
+            {title}
+          </TooltipContent>
+        </Tooltip>
+
+        {/* Mobile View: Collapsible Trigger */}
+        <Collapsible.Trigger
+          className={cn(
+            'group lg:hidden w-full flex items-center gap-3 rounded-lg px-3 py-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-400',
+            isAnyChildActive
+              ? 'bg-brand-700/40 text-brand-50 font-semibold'
+              : 'text-brand-100 hover:bg-brand-700/30 hover:text-brand-50'
+          )}
+        >
+          <Icon
+            className={cn(
+              'h-5 w-5 shrink-0 transition-colors',
+              isAnyChildActive
+                ? 'text-brand-300'
+                : 'text-brand-300/80 group-hover:text-brand-300'
+            )}
+          />
+          <span className="font-medium text-sm truncate">{title}</span>
+          <ChevronDown
+            className={cn(
+              'ml-auto h-5 w-5 shrink-0 transition-transform',
+              isAnyChildActive
+                ? 'text-brand-300'
+                : 'text-brand-300/80 group-hover:text-brand-300',
+              'group-data-[state=open]:rotate-180'
+            )}
+          />
+        </Collapsible.Trigger>
+
+        <Collapsible.Content>
+          <nav className="pl-7.5 pr-3 mt-1 space-y-1 pb-2 lg:hidden">
+            {links.map((link) => {
+              const isChildActive = isLinkActive(link.href);
+              return (
+                <Link
+                  key={`nav-item-${link.href}`}
+                  href={link.href}
+                  className={cn(
+                    'block rounded-lg px-4 py-2 text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-400',
+                    isChildActive
+                      ? 'bg-brand-700/40 text-brand-50 font-semibold'
+                      : 'text-brand-200 hover:bg-brand-700/30 hover:text-brand-50'
+                  )}
+                  onClick={onLinkClick}
+                >
+                  {link.title}
+                </Link>
+              );
+            })}
+          </nav>
+        </Collapsible.Content>
+      </Collapsible.Root>
+    );
+  }
+
+  const triggerContent = (
+    <Collapsible.Trigger
+      className={cn(
+        'group w-full flex items-center gap-3 rounded-lg px-3 py-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-400',
+        isAnyChildActive
+          ? 'bg-brand-700/40 text-brand-50 font-semibold'
+          : 'text-brand-100 hover:bg-brand-700/30 hover:text-brand-50'
+      )}
+    >
+      <Icon
+        className={cn(
+          'h-5 w-5 shrink-0 transition-colors',
+          isAnyChildActive ? 'text-brand-300' : 'text-brand-300/80 group-hover:text-brand-300'
+        )}
+      />
+      <span className="font-medium text-sm truncate">
+        {title}
+      </span>
+      <ChevronDown
+        className={cn(
+          'ml-auto h-5 w-5 shrink-0 transition-transform',
+          isAnyChildActive ? 'text-brand-300' : 'text-brand-300/80 group-hover:text-brand-300',
+          'group-data-[state=open]:rotate-180'
+        )}
+      />
+    </Collapsible.Trigger>
+  );
+
+  return (
+    <Collapsible.Root open={open || isAnyChildActive} onOpenChange={setOpen}>
+      {triggerContent}
+
+      <Collapsible.Content>
+        <nav className="pl-7.5 pr-3 mt-1 space-y-1 pb-2">
+          {links.map((link) => {
+            const isChildActive = isLinkActive(link.href);
+            return (
+              <Link
+                key={`nav-item-${link.href}`}
+                href={link.href}
+                className={cn(
+                  'block rounded-lg px-4 py-2 text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-400',
+                  isChildActive
+                    ? 'bg-brand-700/40 text-brand-50 font-semibold'
+                    : 'text-brand-200 hover:bg-brand-700/30 hover:text-brand-50'
+                )}
+                onClick={onLinkClick}
+              >
+                {link.title}
+              </Link>
+            );
+          })}
         </nav>
       </Collapsible.Content>
     </Collapsible.Root>

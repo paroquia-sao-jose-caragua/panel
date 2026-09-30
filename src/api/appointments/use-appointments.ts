@@ -11,8 +11,17 @@ import {
   getAgentBlockedDates,
   addAgentBlockedDate,
   removeAgentBlockedDate,
+  getMyPastoralAgent,
   type ListPastoralAgentsParams,
 } from './agents';
+import {
+  createAppointment,
+  type CreateAppointmentInput,
+} from './create';
+import {
+  getAvailableSlots,
+  type GetAvailableSlotsParams,
+} from './slots';
 import {
   getAppointmentSettings,
   updateAppointmentSettings,
@@ -285,3 +294,54 @@ export const useAppointmentSettings = () => {
     isUpdatingSettings: updateMutation.isPending,
   };
 };
+
+export const useCreateAppointment = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (data: CreateAppointmentInput) => createAppointment(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appointments'] });
+      showAlert('Atendimento agendado com sucesso!');
+    },
+    onError: (err: Error) => {
+      showAlert(`Erro ao criar agendamento: ${err.message}`);
+    },
+  });
+
+  return {
+    createAppointment: mutation.mutateAsync,
+    isCreating: mutation.isPending,
+  };
+};
+
+export const useAvailableSlots = (params: GetAvailableSlotsParams, enabled: boolean = true) => {
+  const { data, isPending, error, refetch } = useQuery({
+    queryKey: ['available-slots', params.agentId, params.date, params.serviceId],
+    queryFn: () => getAvailableSlots(params),
+    enabled: enabled && Boolean(params.agentId) && Boolean(params.date),
+  });
+
+  return {
+    slots: data?.slots || [],
+    isPending,
+    error,
+    refetch,
+  };
+};
+
+export const useMyPastoralAgent = (enabled: boolean = true) => {
+  const { data, isPending, error, refetch } = useQuery({
+    queryKey: ['my-pastoral-agent'],
+    queryFn: () => getMyPastoralAgent(),
+    enabled,
+  });
+
+  return {
+    agent: data?.agent || null,
+    isPending,
+    error,
+    refetch,
+  };
+};
+

@@ -53,7 +53,7 @@ export default function EditCommunityPatronPage() {
   return (
     <div className="w-full lg:col-start-2 min-h-screen flex flex-col bg-zinc-50/40">
       {/* Header */}
-      <header className="bg-white border-b border-zinc-200/80 sticky top-0 z-20 shadow-2xs">
+      <header className="bg-white border-b border-zinc-200/80 relative lg:sticky lg:top-0 z-10 lg:z-40 shadow-2xs mt-16 lg:mt-0 md:mt-20">
         <div className="mx-auto w-full max-w-4xl px-4 lg:px-8 py-4">
           <BackButton href={`/${community?.slug}`} />
 

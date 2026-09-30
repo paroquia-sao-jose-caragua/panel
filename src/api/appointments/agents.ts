@@ -98,3 +98,9 @@ export const removeAgentBlockedDate = async (agentId: string, blockId: string) =
   );
   return result;
 };
+
+export const getMyPastoralAgent = async () => {
+  const result = await api<{ agent: PastoralAgent }>('/pastoral-agents/me');
+  return result;
+};
+

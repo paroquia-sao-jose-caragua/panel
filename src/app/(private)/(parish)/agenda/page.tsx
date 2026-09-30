@@ -1,6 +1,6 @@
 'use client';
 
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { CalendarView } from '@/components/features/calendar/calendar-view';
 import {
   CalendarIcon,
@@ -122,13 +122,13 @@ export default function CalendarPage() {
   };
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-      {/* Top Breadcrumb: Página raiz sem botão voltar e apenas o título do menu */}
-      <AppBreadcrumb
+    <>
+      <AppHeader
         links={[
           { key: 'calendar', href: '/agenda', title: 'Agenda', icon: CalendarIcon },
         ]}
       />
+      <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
         <TypographyH1>Agenda</TypographyH1>
@@ -293,5 +293,6 @@ export default function CalendarPage() {
         )}
       </div>
     </main>
+    </>
   );
 }

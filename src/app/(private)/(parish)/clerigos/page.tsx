@@ -9,12 +9,10 @@ import {
   Plus,
   Pencil,
   Sparkles,
-  Church,
-  Shield,
   UsersIcon,
   PlusIcon,
 } from 'lucide-react';
-import { AppBreadcrumb } from '@/components/common/breadcrumb';
+import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
 import { Button } from '@/components/ui/button';
@@ -39,13 +37,13 @@ export default function ClergiesPage() {
   };
 
   return (
-    <main className="max-w-325 w-full px-4 pt-28 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-      {/* Top Breadcrumb & Action */}
-      <AppBreadcrumb
+    <>
+      <AppHeader
         links={[
           { key: 'origin', href: '/clerigos', title: 'Clérigos', icon: UsersIcon },
         ]}
       />
+      <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
 
       <div className="flex flex-row justify-between items-center w-full">
         <TypographyH1>Quem nos conduz na fé</TypographyH1>
@@ -276,5 +274,6 @@ export default function ClergiesPage() {
         )}
       </div>
     </main>
+    </>
   );
 }
