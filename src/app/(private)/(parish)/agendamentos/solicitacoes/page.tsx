@@ -67,6 +67,7 @@ export default function AppointmentsListPage() {
   const [selectedAgentId, setSelectedAgentId] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [cancellingAppointment, setCancellingAppointment] = useState<Appointment | null>(null);
+  const [processingAppointmentId, setProcessingAppointmentId] = useState<string | null>(null);
   const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
     open: boolean;
     appointment: Appointment | null;
@@ -110,28 +111,38 @@ export default function AppointmentsListPage() {
   });
 
   const handleConfirm = async (appointment: Appointment) => {
-    await updateStatus({
-      id: appointment.id,
-      status: 'confirmed',
-    });
-
-    if (isStaffSecretaryOrAdmin) {
-      setWhatsAppDialogState({
-        open: true,
-        appointment: {
-          ...appointment,
-          status: 'confirmed',
-        },
-        template: 'confirmation',
+    setProcessingAppointmentId(appointment.id);
+    try {
+      await updateStatus({
+        id: appointment.id,
+        status: 'confirmed',
       });
+
+      if (isStaffSecretaryOrAdmin) {
+        setWhatsAppDialogState({
+          open: true,
+          appointment: {
+            ...appointment,
+            status: 'confirmed',
+          },
+          template: 'confirmation',
+        });
+      }
+    } finally {
+      setProcessingAppointmentId(null);
     }
   };
 
   const handleComplete = async (appointment: Appointment) => {
-    await updateStatus({
-      id: appointment.id,
-      status: 'completed',
-    });
+    setProcessingAppointmentId(appointment.id);
+    try {
+      await updateStatus({
+        id: appointment.id,
+        status: 'completed',
+      });
+    } finally {
+      setProcessingAppointmentId(null);
+    }
   };
 
   const handleCancelSubmit = async () => {
@@ -139,28 +150,33 @@ export default function AppointmentsListPage() {
     const finalReason =
       cancellationReason.trim() || 'Houve um imprevisto na agenda pastoral';
 
-    await updateStatus({
-      id: cancellingAppointment.id,
-      status: 'cancelled',
-      cancellationReason: finalReason,
-    });
-
-    const appointmentCancelled: Appointment = {
-      ...cancellingAppointment,
-      status: 'cancelled',
-      cancellationReason: finalReason,
-    };
-
-    setCancellingAppointment(null);
-    setCancellationReason('');
-
-    if (isStaffSecretaryOrAdmin) {
-      setWhatsAppDialogState({
-        open: true,
-        appointment: appointmentCancelled,
-        template: 'cancellation',
+    setProcessingAppointmentId(cancellingAppointment.id);
+    try {
+      await updateStatus({
+        id: cancellingAppointment.id,
+        status: 'cancelled',
         cancellationReason: finalReason,
       });
+
+      const appointmentCancelled: Appointment = {
+        ...cancellingAppointment,
+        status: 'cancelled',
+        cancellationReason: finalReason,
+      };
+
+      setCancellingAppointment(null);
+      setCancellationReason('');
+
+      if (isStaffSecretaryOrAdmin) {
+        setWhatsAppDialogState({
+          open: true,
+          appointment: appointmentCancelled,
+          template: 'cancellation',
+          cancellationReason: finalReason,
+        });
+      }
+    } finally {
+      setProcessingAppointmentId(null);
     }
   };
 
@@ -753,7 +769,7 @@ export default function AppointmentsListPage() {
                         variant="default"
                         className="h-8 text-xs font-semibold cursor-pointer"
                         onClick={() => handleConfirm(appointment)}
-                        isLoading={isUpdatingStatus}
+                        isLoading={isUpdatingStatus && processingAppointmentId === appointment.id}
                       >
                         Aprovar
                       </Button>
@@ -765,7 +781,7 @@ export default function AppointmentsListPage() {
                         variant="outline"
                         className="h-8 text-xs font-semibold text-blue-700 border-blue-200 hover:bg-blue-50 cursor-pointer"
                         onClick={() => handleComplete(appointment)}
-                        isLoading={isUpdatingStatus}
+                        isLoading={isUpdatingStatus && processingAppointmentId === appointment.id}
                       >
                         Concluir
                       </Button>
@@ -791,8 +807,8 @@ export default function AppointmentsListPage() {
 
       {/* Cancellation Dialog */}
       <Dialog open={!!cancellingAppointment} onOpenChange={(open) => !open && setCancellingAppointment(null)}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-md p-6 flex flex-col gap-4">
+          <DialogHeader className="p-0 text-left space-y-1.5">
             <DialogTitle>Cancelar Agendamento</DialogTitle>
             <DialogDescription>
               Informe o motivo do cancelamento para o agendamento de{' '}
@@ -800,7 +816,7 @@ export default function AppointmentsListPage() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="py-2 space-y-2">
+          <div className="space-y-2">
             <label className="text-xs font-medium text-zinc-700 block">
               Motivo do cancelamento (opcional):
             </label>
@@ -821,7 +837,7 @@ export default function AppointmentsListPage() {
             )}
           </div>
 
-          <DialogFooter className="flex sm:justify-end gap-2 pt-2">
+          <DialogFooter className="p-0 border-t-0 flex sm:justify-end gap-2 pt-2">
             <Button
               variant="outline"
               onClick={() => setCancellingAppointment(null)}
@@ -833,7 +849,7 @@ export default function AppointmentsListPage() {
             <Button
               variant="destructive"
               onClick={handleCancelSubmit}
-              isLoading={isUpdatingStatus}
+              isLoading={isUpdatingStatus && processingAppointmentId === cancellingAppointment?.id}
               type="button"
               className="cursor-pointer"
             >

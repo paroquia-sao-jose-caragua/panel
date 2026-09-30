@@ -69,15 +69,15 @@ export const ConfirmDialog = ({
         </DialogTrigger>
       )}
 
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-md p-6 flex flex-col gap-4">
+        <DialogHeader className="p-0 text-left space-y-1.5">
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
 
-        {children && <div className="py-2">{children}</div>}
+        {children && <div>{children}</div>}
 
-        <DialogFooter className="flex flex-row items-center justify-end gap-2 pt-2">
+        <DialogFooter className="p-0 border-t-0 flex flex-row items-center justify-end gap-2 pt-2">
           <DialogClose asChild>
             <Button
               type="button"
