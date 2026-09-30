@@ -77,6 +77,11 @@ export const ROUTES = {
   HELP: {
     HOME: '/ajuda',
     APPOINTMENTS: '/ajuda/agendamentos',
+    SECRETARIAT: '/ajuda/secretaria',
+    COMMUNITIES: '/ajuda/comunidades',
+    CLERGY: '/ajuda/clerigos',
+    ANNOUNCEMENTS: '/ajuda/avisos',
+    USERS: '/ajuda/usuarios',
     FIRST_STEPS: '/ajuda/primeiros-passos',
     FAQ: '/ajuda/faq',
   },
