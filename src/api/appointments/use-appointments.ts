@@ -18,6 +18,9 @@ import {
   createAppointment,
   type CreateAppointmentInput,
 } from './create';
+import { getAppointment } from './get';
+import { updateAppointment, type UpdateAppointmentInput } from './update';
+import { deleteAppointment } from './delete';
 import {
   getAvailableSlots,
   type GetAvailableSlotsParams,
@@ -342,6 +345,63 @@ export const useMyPastoralAgent = (enabled: boolean = true) => {
     isPending,
     error,
     refetch,
+  };
+};
+
+export const useAppointment = (id?: string) => {
+  const { data, isPending, error, refetch } = useQuery({
+    queryKey: ['appointment', id],
+    queryFn: () => (id ? getAppointment(id) : null),
+    enabled: !!id,
+  });
+
+  return {
+    appointment: data?.appointment,
+    isPending,
+    error,
+    refetch,
+  };
+};
+
+export const useUpdateAppointment = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateAppointmentInput }) =>
+      updateAppointment(id, data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['appointments'] });
+      queryClient.invalidateQueries({ queryKey: ['appointment', variables.id] });
+      showAlert('Atendimento atualizado com sucesso!');
+    },
+    onError: (err: Error) => {
+      showAlert(`Erro ao atualizar agendamento: ${err.message}`);
+    },
+  });
+
+  return {
+    updateAppointment: mutation.mutateAsync,
+    isUpdating: mutation.isPending,
+  };
+};
+
+export const useDeleteAppointment = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteAppointment(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appointments'] });
+      showAlert('Agendamento excluído com sucesso!');
+    },
+    onError: (err: Error) => {
+      showAlert(`Erro ao excluir agendamento: ${err.message}`);
+    },
+  });
+
+  return {
+    deleteAppointment: mutation.mutateAsync,
+    isDeleting: mutation.isPending,
   };
 };
 

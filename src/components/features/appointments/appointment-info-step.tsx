@@ -33,6 +33,7 @@ interface AppointmentInfoStepProps {
     value: AppointmentFormValues[K]
   ) => void;
   errors: Record<string, string>;
+  isEdit?: boolean;
 }
 
 const COMMON_RELATIONSHIPS = [
@@ -49,6 +50,7 @@ export const AppointmentInfoStep = ({
   values,
   onChange,
   errors,
+  isEdit = false,
 }: AppointmentInfoStepProps) => {
   const { user } = useAuthStore();
   const isPastoralAgent = user?.role === 'pastoral_agent';
@@ -267,10 +269,10 @@ export const AppointmentInfoStep = ({
             </p>
           </div>
 
-          {/* Status Inicial do Agendamento */}
+          {/* Status do Agendamento */}
           <div>
             <label className="text-sm font-semibold text-zinc-800 block mb-1.5">
-              Status Inicial
+              {isEdit ? 'Status do Agendamento' : 'Status Inicial'}
             </label>
             <select
               value={values.status}
@@ -285,9 +287,17 @@ export const AppointmentInfoStep = ({
               <option value="pending">
                 Pendente (Aguardando confirmação posterior)
               </option>
+              {isEdit && (
+                <>
+                  <option value="completed">Realizado / Concluído</option>
+                  <option value="cancelled">Cancelado</option>
+                </>
+              )}
             </select>
             <p className="text-xs text-zinc-500 mt-1">
-              Agendamentos inseridos pelo painel geralmente nascem confirmados.
+              {isEdit
+                ? 'Atualize a situação do atendimento conforme o andamento pastoral.'
+                : 'Agendamentos inseridos pelo painel geralmente nascem confirmados.'}
             </p>
           </div>
         </div>
@@ -301,7 +311,7 @@ export const AppointmentInfoStep = ({
               </label>
               <Input
                 type="date"
-                min={todayStr}
+                min={isEdit ? undefined : todayStr}
                 value={values.appointmentDate}
                 onChange={(e) => onChange('appointmentDate', e.target.value)}
                 className={errors.appointmentDate ? 'border-rose-400' : ''}

@@ -128,6 +128,13 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
       { key: 'relatorio', href: ROUTES.APPOINTMENTS.REPORT, title: 'Relatório & Pauta' },
     ];
   }
+  if (cleanPath.startsWith('/agendamentos/editar/')) {
+    return [
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
+      { key: 'editar', href: '#', title: 'Editar Agendamento' },
+    ];
+  }
 
   // Pastoral Agents
   if (cleanPath === ROUTES.PASTORAL_AGENTS.HOME) {
