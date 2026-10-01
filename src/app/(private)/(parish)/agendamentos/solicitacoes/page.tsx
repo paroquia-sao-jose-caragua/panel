@@ -27,6 +27,7 @@ import {
   MoreHorizontal,
   Copy,
   ExternalLink,
+  RotateCcw,
 } from 'lucide-react';
 
 import { AppHeader } from '@/components/common/header';
@@ -63,6 +64,30 @@ import {
   AppointmentWhatsAppDialog,
   type WhatsAppTemplateType,
 } from '@/components/features/appointments/appointment-whatsapp-dialog';
+import { ConfirmDialog } from '@/components/common/dialog/confirm-dialog';
+
+const isAppointmentWithinDeadline = (dateStr: string, timeStr?: string): boolean => {
+  if (!dateStr) return false;
+  try {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    if (!year || !month || !day) return false;
+
+    let hours = 23;
+    let minutes = 59;
+    if (timeStr && timeStr.includes(':')) {
+      const [h, m] = timeStr.split(':').map(Number);
+      if (!isNaN(h) && !isNaN(m)) {
+        hours = h;
+        minutes = m;
+      }
+    }
+
+    const appointmentDateTime = new Date(year, month - 1, day, hours, minutes, 0);
+    return appointmentDateTime.getTime() >= Date.now();
+  } catch {
+    return false;
+  }
+};
 
 export default function AppointmentsListPage() {
   const { user } = useAuthStore();
@@ -73,6 +98,7 @@ export default function AppointmentsListPage() {
   const [selectedAgentId, setSelectedAgentId] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [cancellingAppointment, setCancellingAppointment] = useState<Appointment | null>(null);
+  const [revertingAppointment, setRevertingAppointment] = useState<Appointment | null>(null);
   const [processingAppointmentId, setProcessingAppointmentId] = useState<string | null>(null);
   const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
     open: boolean;
@@ -161,6 +187,21 @@ export default function AppointmentsListPage() {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(trackingUrl);
       showAlert('Link de acompanhamento copiado!');
+    }
+  };
+
+  const handleRevertCancel = async () => {
+    if (!revertingAppointment) return;
+    setProcessingAppointmentId(revertingAppointment.id);
+    try {
+      await updateStatus({
+        id: revertingAppointment.id,
+        status: 'confirmed',
+        cancellationReason: null,
+      });
+      setRevertingAppointment(null);
+    } finally {
+      setProcessingAppointmentId(null);
     }
   };
 
@@ -660,49 +701,50 @@ export default function AppointmentsListPage() {
 
                 {/* Bottom Actions */}
                 <div className="pt-3 border-t border-zinc-100 flex items-center justify-between gap-2 min-w-0">
-                  {/* Left: WhatsApp Unificado */}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="h-8 text-xs font-semibold text-emerald-800 border-emerald-300/80 bg-emerald-50/70 hover:bg-emerald-100 hover:text-emerald-900 cursor-pointer gap-1.5 px-2.5 shadow-2xs"
-                      >
-                        <MessageCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>WhatsApp</span>
-                        <ChevronDown className="w-3 h-3 text-emerald-600 opacity-70 shrink-0" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-64 p-1.5 shadow-lg border-zinc-200">
-                      <DropdownMenuLabel className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 px-2 py-1">
-                        Mensagens Prontas
-                      </DropdownMenuLabel>
+                  {/* Left: WhatsApp conforme o status */}
+                  {appointment.status === 'confirmed' ? (
+                    /* Confirmado: Opções detalhadas */
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="h-8 text-xs font-semibold text-emerald-800 border-emerald-300/80 bg-emerald-50/70 hover:bg-emerald-100 hover:text-emerald-900 cursor-pointer gap-1.5 px-2.5 shadow-2xs"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>WhatsApp</span>
+                          <ChevronDown className="w-3 h-3 text-emerald-600 opacity-70 shrink-0" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" className="w-64 p-1.5 shadow-lg border-zinc-200">
+                        <DropdownMenuLabel className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 px-2 py-1">
+                          Mensagens Prontas
+                        </DropdownMenuLabel>
 
-                      <DropdownMenuItem
-                        className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-emerald-50 focus:bg-emerald-50"
-                        onClick={() =>
-                          setWhatsAppDialogState({
-                            open: true,
-                            appointment,
-                            template: 'confirmation',
-                          })
-                        }
-                      >
-                        <div className="w-7 h-7 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                          <CheckCircle2 className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <span className="font-semibold block text-zinc-900">
-                            Enviar Confirmação
-                          </span>
-                          <span className="text-[11px] text-zinc-500 block leading-tight">
-                            Aprovado + link de acompanhamento
-                          </span>
-                        </div>
-                      </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-emerald-50 focus:bg-emerald-50"
+                          onClick={() =>
+                            setWhatsAppDialogState({
+                              open: true,
+                              appointment,
+                              template: 'confirmation',
+                            })
+                          }
+                        >
+                          <div className="w-7 h-7 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                            <CheckCircle2 className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <span className="font-semibold block text-zinc-900">
+                              Enviar Confirmação
+                            </span>
+                            <span className="text-[11px] text-zinc-500 block leading-tight">
+                              Aprovado + link de acompanhamento
+                            </span>
+                          </div>
+                        </DropdownMenuItem>
 
-                      {appointment.status !== 'completed' && (
                         <DropdownMenuItem
                           className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-rose-50 focus:bg-rose-50"
                           onClick={() =>
@@ -728,58 +770,150 @@ export default function AppointmentsListPage() {
                             </span>
                           </div>
                         </DropdownMenuItem>
-                      )}
 
-                      <DropdownMenuItem
-                        className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-blue-50 focus:bg-blue-50"
-                        onClick={() =>
-                          setWhatsAppDialogState({
-                            open: true,
-                            appointment,
-                            template: 'reminder',
-                          })
-                        }
-                      >
-                        <div className="w-7 h-7 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-                          <BellRing className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <span className="font-semibold block text-zinc-900">
-                            Enviar Lembrete
-                          </span>
-                          <span className="text-[11px] text-zinc-500 block leading-tight">
-                            Horário, local e orientações
-                          </span>
-                        </div>
-                      </DropdownMenuItem>
-
-                      <DropdownMenuSeparator className="my-1 bg-zinc-100" />
-
-                      <DropdownMenuItem
-                        asChild
-                        className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-zinc-100 focus:bg-zinc-100"
-                      >
-                        <a
-                          href={directWhatsAppUrl || '#'}
-                          target={directWhatsAppUrl ? '_blank' : undefined}
-                          rel="noopener noreferrer"
-                          className={!directWhatsAppUrl ? 'pointer-events-none opacity-50' : ''}
+                        <DropdownMenuItem
+                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-blue-50 focus:bg-blue-50"
+                          onClick={() =>
+                            setWhatsAppDialogState({
+                              open: true,
+                              appointment,
+                              template: 'reminder',
+                            })
+                          }
                         >
-                          <div className="w-7 h-7 rounded-md bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
-                            <ExternalLink className="w-3.5 h-3.5" />
+                          <div className="w-7 h-7 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                            <BellRing className="w-4 h-4" />
                           </div>
                           <div>
                             <span className="font-semibold block text-zinc-900">
-                              Abrir Conversa Direta
+                              Enviar Lembrete
                             </span>
                             <span className="text-[11px] text-zinc-500 block leading-tight">
-                              Chat no WhatsApp Web / App
+                              Horário, local e orientações
                             </span>
                           </div>
-                        </a>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuSeparator className="my-1 bg-zinc-100" />
+
+                        <DropdownMenuItem
+                          asChild
+                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-zinc-100 focus:bg-zinc-100"
+                        >
+                          <a
+                            href={directWhatsAppUrl || '#'}
+                            target={directWhatsAppUrl ? '_blank' : undefined}
+                            rel="noopener noreferrer"
+                            className={!directWhatsAppUrl ? 'pointer-events-none opacity-50' : ''}
+                          >
+                            <div className="w-7 h-7 rounded-md bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </div>
+                            <div>
+                              <span className="font-semibold block text-zinc-900">
+                                Abrir Conversa Direta
+                              </span>
+                              <span className="text-[11px] text-zinc-500 block leading-tight">
+                                Chat no WhatsApp Web / App
+                              </span>
+                            </div>
+                          </a>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : appointment.status === 'cancelled' ? (
+                    /* Cancelado: Só deve ficar o de Avisar Cancelamento (e conversa direta) */
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="h-8 text-xs font-semibold text-rose-800 border-rose-300/80 bg-rose-50/70 hover:bg-rose-100 hover:text-rose-900 cursor-pointer gap-1.5 px-2.5 shadow-2xs"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                          <span>WhatsApp</span>
+                          <ChevronDown className="w-3 h-3 text-rose-600 opacity-70 shrink-0" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" className="w-64 p-1.5 shadow-lg border-zinc-200">
+                        <DropdownMenuItem
+                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-rose-50 focus:bg-rose-50"
+                          onClick={() =>
+                            setWhatsAppDialogState({
+                              open: true,
+                              appointment,
+                              template: 'cancellation',
+                              cancellationReason:
+                                appointment.cancellationReason ||
+                                'Houve um imprevisto na agenda pastoral',
+                            })
+                          }
+                        >
+                          <div className="w-7 h-7 rounded-md bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                            <XCircle className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <span className="font-semibold block text-zinc-900">
+                              Avisar Cancelamento
+                            </span>
+                            <span className="text-[11px] text-zinc-500 block leading-tight">
+                              Imprevisto + link para reagendar
+                            </span>
+                          </div>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuSeparator className="my-1 bg-zinc-100" />
+
+                        <DropdownMenuItem
+                          asChild
+                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-zinc-100 focus:bg-zinc-100"
+                        >
+                          <a
+                            href={directWhatsAppUrl || '#'}
+                            target={directWhatsAppUrl ? '_blank' : undefined}
+                            rel="noopener noreferrer"
+                            className={!directWhatsAppUrl ? 'pointer-events-none opacity-50' : ''}
+                          >
+                            <div className="w-7 h-7 rounded-md bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </div>
+                            <div>
+                              <span className="font-semibold block text-zinc-900">
+                                Abrir Conversa Direta
+                              </span>
+                              <span className="text-[11px] text-zinc-500 block leading-tight">
+                                Chat no WhatsApp Web / App
+                              </span>
+                            </div>
+                          </a>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    /* Pendente ou Realizado: Apenas link de WhatsApp direto! */
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="sm"
+                      className={`h-8 text-xs font-semibold px-2.5 gap-1.5 shadow-2xs ${
+                        directWhatsAppUrl
+                          ? 'text-emerald-800 border-emerald-300/80 bg-emerald-50/70 hover:bg-emerald-100 hover:text-emerald-900 cursor-pointer'
+                          : 'text-zinc-400 bg-zinc-100 border-zinc-200 cursor-not-allowed pointer-events-none'
+                      }`}
+                    >
+                      <a
+                        href={directWhatsAppUrl || '#'}
+                        target={directWhatsAppUrl ? '_blank' : undefined}
+                        rel="noopener noreferrer"
+                        title={directWhatsAppUrl ? 'Abrir conversa direta no WhatsApp' : 'Telefone não informado'}
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>WhatsApp Direto</span>
+                        <ExternalLink className="w-3 h-3 text-emerald-600/70 shrink-0" />
+                      </a>
+                    </Button>
+                  )}
 
                   {/* Right: Actions */}
                   <div className="flex items-center gap-1.5">
@@ -819,6 +953,23 @@ export default function AppointmentsListPage() {
                       </Button>
                     )}
 
+                    {appointment.status === 'cancelled' &&
+                      isAppointmentWithinDeadline(
+                        appointment.appointmentDate,
+                        appointment.endTime || appointment.startTime
+                      ) && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 text-xs font-semibold text-amber-800 border-amber-300 bg-amber-50/70 hover:bg-amber-100 hover:text-amber-900 cursor-pointer"
+                          onClick={() => setRevertingAppointment(appointment)}
+                          isLoading={isUpdatingStatus && processingAppointmentId === appointment.id}
+                        >
+                          <RotateCcw className="w-3.5 h-3.5 mr-1 text-amber-700 shrink-0" />
+                          Reverter
+                        </Button>
+                      )}
+
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
@@ -839,6 +990,23 @@ export default function AppointmentsListPage() {
                           <Copy className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
                           <span>Copiar Link do Fiel</span>
                         </DropdownMenuItem>
+
+                        {appointment.status === 'cancelled' &&
+                          isAppointmentWithinDeadline(
+                            appointment.appointmentDate,
+                            appointment.endTime || appointment.startTime
+                          ) && (
+                            <>
+                              <DropdownMenuSeparator className="my-1 bg-zinc-100" />
+                              <DropdownMenuItem
+                                className="text-xs cursor-pointer gap-2 py-2 text-amber-800 focus:text-amber-900 focus:bg-amber-50"
+                                onClick={() => setRevertingAppointment(appointment)}
+                              >
+                                <RotateCcw className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                <span>Reverter Cancelamento</span>
+                              </DropdownMenuItem>
+                            </>
+                          )}
 
                         {appointment.status !== 'cancelled' && appointment.status !== 'completed' && (
                           <>
@@ -925,6 +1093,18 @@ export default function AppointmentsListPage() {
         appointment={whatsAppDialogState.appointment}
         initialTemplate={whatsAppDialogState.template}
         cancellationReason={whatsAppDialogState.cancellationReason}
+      />
+
+      {/* Dialog para Reverter Cancelamento */}
+      <ConfirmDialog
+        open={!!revertingAppointment}
+        onOpenChange={(open) => !open && setRevertingAppointment(null)}
+        title="Reverter Cancelamento"
+        description={`Deseja reverter o cancelamento do agendamento de "${revertingAppointment?.requesterName}" em ${revertingAppointment ? formatDate(revertingAppointment.appointmentDate) : ''}? O atendimento voltará para a situação de Confirmado.`}
+        confirmText="Sim, Reverter"
+        cancelText="Voltar"
+        isPending={isUpdatingStatus && processingAppointmentId === revertingAppointment?.id}
+        onConfirm={handleRevertCancel}
       />
     </main>
     </>
