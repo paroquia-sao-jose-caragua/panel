@@ -169,7 +169,9 @@ export function AppointmentWhatsAppDialog({
   // Synchronize initialTemplate when dialog opens
   useEffect(() => {
     if (open) {
-      if (appointment?.status === 'completed' && initialTemplate === 'cancellation') {
+      if (appointment?.status === 'cancelled') {
+        setTemplate('cancellation');
+      } else if (appointment?.status === 'completed' && initialTemplate === 'cancellation') {
         setTemplate('confirmation');
       } else {
         setTemplate(initialTemplate);
@@ -255,22 +257,22 @@ export function AppointmentWhatsAppDialog({
           </div>
         </DialogHeader>
 
-        {/* Template Selector Tabs */}
-        <div className="flex items-center gap-1.5 p-1 bg-zinc-100/90 rounded-xl border border-zinc-200 w-full min-w-0">
-          <button
-            type="button"
-            onClick={() => setTemplate('confirmation')}
-            className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
-              template === 'confirmation'
-                ? 'bg-white text-emerald-800 shadow-2xs border border-emerald-200'
-                : 'text-zinc-600 hover:text-zinc-900'
-            }`}
-          >
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-            <span className="truncate">Confirmação</span>
-          </button>
+        {/* Template Selector Tabs - Apenas exibe se o agendamento não for cancelado ou concluído */}
+        {appointment?.status !== 'cancelled' && appointment?.status !== 'completed' && (
+          <div className="flex items-center gap-1.5 p-1 bg-zinc-100/90 rounded-xl border border-zinc-200 w-full min-w-0">
+            <button
+              type="button"
+              onClick={() => setTemplate('confirmation')}
+              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                template === 'confirmation'
+                  ? 'bg-white text-emerald-800 shadow-2xs border border-emerald-200'
+                  : 'text-zinc-600 hover:text-zinc-900'
+              }`}
+            >
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <span className="truncate">Confirmação</span>
+            </button>
 
-          {appointment?.status !== 'completed' && (
             <button
               type="button"
               onClick={() => setTemplate('cancellation')}
@@ -283,21 +285,21 @@ export function AppointmentWhatsAppDialog({
               <XCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
               <span className="truncate">Cancelamento</span>
             </button>
-          )}
 
-          <button
-            type="button"
-            onClick={() => setTemplate('reminder')}
-            className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
-              template === 'reminder'
-                ? 'bg-white text-blue-800 shadow-2xs border border-blue-200'
-                : 'text-zinc-600 hover:text-zinc-900'
-            }`}
-          >
-            <BellRing className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-            <span className="truncate">Lembrete</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={() => setTemplate('reminder')}
+              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                template === 'reminder'
+                  ? 'bg-white text-blue-800 shadow-2xs border border-blue-200'
+                  : 'text-zinc-600 hover:text-zinc-900'
+              }`}
+            >
+              <BellRing className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <span className="truncate">Lembrete</span>
+            </button>
+          </div>
+        )}
 
         {/* Fiel / Atendimento summary card */}
         <div className="p-3 bg-zinc-50 border border-zinc-200/80 rounded-xl space-y-1.5 text-xs w-full min-w-0">
