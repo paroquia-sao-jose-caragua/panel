@@ -359,7 +359,7 @@ export const SendPushForm = () => {
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Ex: /avisos ou /agenda"
+              placeholder="Ex: /avisos ou /programacao-paroquial"
               className="w-full rounded-xl border border-zinc-300 px-3.5 py-2 text-sm text-zinc-900 focus:border-amber-600 focus:outline-none"
             />
             <span className="text-[11px] text-zinc-400 mt-1 block">

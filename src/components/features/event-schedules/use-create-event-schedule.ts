@@ -69,7 +69,7 @@ export const useCreateEventSchedule = ({
         {
           onSuccess: ({ eventSchedule }) => {
             if (eventSchedule) {
-              navigate.replace('/agenda');
+              navigate.replace('/programacao-paroquial');
             }
           },
         }

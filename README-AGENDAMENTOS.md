@@ -1,4 +1,4 @@
-# 📅 Plano de Implementação: Módulo de Agendamentos Pastorais e Portal do Agente
+# 📅 Plano de Implementação: Módulo de Atendimentos Pastorais e Portal do Agente
 
 > Documento vivo de planejamento técnico e arquitetural para o sistema de agendamentos da Paróquia São José de Caraguatatuba.
 > 
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS agent_blocked_dates (
   reason VARCHAR(255)
 );
 
--- 6. Agendamentos dos Fiéis
+-- 6. Atendimentos dos Fiéis
 CREATE TABLE IF NOT EXISTS appointments (
   id VARCHAR(26) PRIMARY KEY NOT NULL,
   agent_id VARCHAR(26) NOT NULL REFERENCES pastoral_agents(id) ON DELETE CASCADE,
@@ -190,7 +190,7 @@ Exigir criação de conta, login e senha afastaria idosos, pessoas em momentos d
 O fiel recebe a resposta e acompanha de 3 formas automáticas e sem atrito:
 1. **WhatsApp Instantâneo**: No momento em que conclui a solicitação, ele recebe uma mensagem no seu WhatsApp confirmando o recebimento. Quando o padre ou a secretaria aprova/confirma, recebe outra mensagem confirmando o horário.
 2. **E-mail com Convite**: Caso informe o e-mail, recebe o comprovante com botão *"Adicionar ao Google Agenda / Apple Calendar (.ics)"*.
-3. **Link de Acompanhamento (Código/Token)**: Ao finalizar no site, é gerado um link seguro (ex.: `site.../agendamentos/acompanhar?token=abc...`) onde ele pode ver o status em tempo real (*Pendente*, *Confirmado*, *Realizado*, *Cancelado*) e cancelar o atendimento caso tenha um imprevisto.
+3. **Link de Acompanhamento (Código/Token)**: Ao finalizar no site, é gerado um link seguro (ex.: `site.../atendimentos/acompanhar?token=abc...`) onde ele pode ver o status em tempo real (*Pendente*, *Confirmado*, *Realizado*, *Cancelado*) e cancelar o atendimento caso tenha um imprevisto.
 
 ---
 
@@ -287,7 +287,7 @@ Os campos solicitados são divididos conforme a natureza do serviço:
 - [ ] Tabela e calendário geral de agendamentos para a secretária.
 
 ### Fase 4: Fluxo de Agendamento no Site (`site`)
-- [ ] Criar página `/agendamentos` com stepper amigável (Serviço $\rightarrow$ Agente $\rightarrow$ Horário $\rightarrow$ Dados).
+- [ ] Criar página `/atendimentos` com stepper amigável (Serviço $\rightarrow$ Agente $\rightarrow$ Horário $\rightarrow$ Dados).
 - [ ] Suporte a formulário especial para Visitas a Enfermos (endereço + observações).
 
 ### Fase 5: Notificações no Celular

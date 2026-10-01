@@ -125,13 +125,13 @@ export default function CalendarPage() {
     <>
       <AppHeader
         links={[
-          { key: 'calendar', href: '/agenda', title: 'Agenda', icon: CalendarIcon },
+          { key: 'calendar', href: '/programacao-paroquial', title: 'Programação Paroquial', icon: CalendarIcon },
         ]}
       />
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
-        <TypographyH1>Agenda</TypographyH1>
+        <TypographyH1>Programação Paroquial</TypographyH1>
 
         <div className="flex items-center gap-2">
           <Dialog open={openFilter} onOpenChange={setOpenFilter}>
@@ -145,7 +145,7 @@ export default function CalendarPage() {
 
               <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
-                  <DialogTitle>Filtrar Agenda</DialogTitle>
+                  <DialogTitle>Filtrar</DialogTitle>
                 </DialogHeader>
 
                 <FieldGroup className="px-4 pb-4 gap-2">
@@ -195,7 +195,7 @@ export default function CalendarPage() {
           </Dialog>
 
           <Button asChild size="sm" className="gap-1.5 h-9 text-xs">
-            <Link href="/agenda/adicionar-evento">
+            <Link href="/programacao-paroquial/adicionar-evento">
               <PlusIcon className="w-3.5 h-3.5" />
               <span>Adicionar Evento</span>
             </Link>
@@ -204,7 +204,7 @@ export default function CalendarPage() {
       </div>
 
       <Describe className="mb-6">
-        Acompanhe a agenda pastoral da paróquia, consulte as missas recorrentes e adicione eventos pontuais para cada comunidade.
+        Acompanhe a programação pastoral da paróquia, consulte as missas recorrentes e adicione eventos pontuais para cada comunidade.
       </Describe>
 
       {Object.keys(filters).length > 0 && (

@@ -67,7 +67,7 @@ export const useEditEventSchedule = () => {
           onSuccess: ({ eventSchedule }) => {
             if (eventSchedule) {
               setEventSchedule(eventSchedule);
-              navigate.replace('/agenda');
+              navigate.replace('/programacao-paroquial');
             }
           },
         }

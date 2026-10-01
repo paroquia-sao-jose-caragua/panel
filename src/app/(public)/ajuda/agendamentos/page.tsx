@@ -42,21 +42,21 @@ export default function AppointmentsHelpPage() {
             </Button>
             <div className="h-4 w-px bg-zinc-200 hidden sm:block" />
             <span className="text-xs font-semibold text-zinc-500 hidden sm:inline">
-              Manual de Agendamentos Pastorais
+              Manual de Atendimentos Pastorais
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <Button asChild variant="outline" size="sm" className="text-xs border-zinc-300 text-zinc-700 hover:bg-zinc-50">
-              <Link href="/agendamentos/relatorio">
+              <Link href="/atendimentos/relatorio">
                 <Printer className="w-3.5 h-3.5 mr-1.5 text-zinc-600" />
                 Abrir Pauta em PDF
               </Link>
             </Button>
 
             <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-xs">
-              <Link href="/agendamentos">
-                Ir p/ Agendamentos
+              <Link href="/atendimentos">
+                Ir p/ Atendimentos
               </Link>
             </Button>
           </div>
@@ -72,7 +72,7 @@ export default function AppointmentsHelpPage() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-bold font-serif">
-            Manual Completo: Atendimentos & Agendamentos Pastorais
+            Manual Completo: Atendimentos & Atendimentos Pastorais
           </h1>
 
           <p className="text-sm sm:text-base text-brand-100 max-w-2xl leading-relaxed">
@@ -96,7 +96,7 @@ export default function AppointmentsHelpPage() {
                 1. Visão Geral da Arquitetura
               </a>
               <a href="#como-agendar" className="block p-1.5 rounded-lg text-zinc-600 hover:text-brand-700 hover:bg-zinc-50 font-medium transition">
-                2. Cadastro de Agendamentos (Secretaria)
+                2. Cadastro de Atendimentos (Secretaria)
               </a>
               <a href="#visitas-domiciliares" className="block p-1.5 rounded-lg text-zinc-600 hover:text-brand-700 hover:bg-zinc-50 font-medium transition">
                 3. Visitas a Enfermos e Unção
@@ -111,13 +111,13 @@ export default function AppointmentsHelpPage() {
                 6. Grade de Horários e Bloqueios
               </a>
               <a href="#pausar-agendamento" className="block p-1.5 rounded-lg text-zinc-600 hover:text-brand-700 hover:bg-zinc-50 font-medium transition">
-                7. Pausar Agendamento Online
+                7. Pausar Atendimento Online
               </a>
             </nav>
 
             <div className="pt-3 border-t border-zinc-100">
               <Button asChild variant="outline" size="sm" className="w-full justify-center text-xs">
-                <Link href="/agendamentos/adicionar">
+                <Link href="/atendimentos/adicionar">
                   <CalendarCheck className="w-3.5 h-3.5 mr-1.5 text-brand-600" />
                   Abrir Formulário Novo
                 </Link>
@@ -135,7 +135,7 @@ export default function AppointmentsHelpPage() {
                 1
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
-                Visão Geral da Arquitetura de Agendamentos
+                Visão Geral da Arquitetura de Atendimentos
               </h2>
             </div>
 
@@ -174,12 +174,12 @@ export default function AppointmentsHelpPage() {
                 2
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
-                Como Registrar um Agendamento pelo Painel
+                Como Registrar um Atendimento pelo Painel
               </h2>
             </div>
 
             <p className="text-sm text-zinc-600">
-              Sempre que um paroquiano ligar ou for à secretaria paroquial para marcar uma confissão, direção espiritual, bênção ou visita aos enfermos, utilize o assistente em <strong>Novo Agendamento</strong> (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/agendamentos/adicionar</code>).
+              Sempre que um paroquiano ligar ou for à secretaria paroquial para marcar uma confissão, direção espiritual, bênção ou visita aos enfermos, utilize o assistente em <strong>Novo Atendimento</strong> (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/atendimentos/adicionar</code>).
             </p>
 
             <div className="space-y-4">
@@ -281,7 +281,7 @@ export default function AppointmentsHelpPage() {
 
             <div className="space-y-3 text-xs text-zinc-700">
               <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200">
-                <strong>1. Acesse o menu:</strong> Clique em <em>Relatório & Pauta (PDF)</em> na sidebar ou pelo botão no topo de <em>Atendimentos & Visitas</em> (<code className="bg-white px-1 py-0.5 rounded border">/agendamentos/relatorio</code>).
+                <strong>1. Acesse o menu:</strong> Clique em <em>Relatório & Pauta (PDF)</em> na sidebar ou pelo botão no topo de <em>Atendimentos & Visitas</em> (<code className="bg-white px-1 py-0.5 rounded border">/atendimentos/relatorio</code>).
               </div>
               <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200">
                 <strong>2. Escolha o período:</strong> Use os botões rápidos como <em>"Hoje"</em>, <em>"Amanhã"</em>, <em>"Esta Semana"</em> ou selecione datas personalizadas.
@@ -326,7 +326,7 @@ export default function AppointmentsHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              Na tela de relatório (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/agendamentos/relatorio</code>), há um botão inteligente chamado <strong>"Copiar p/ WhatsApp"</strong>:
+              Na tela de relatório (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/atendimentos/relatorio</code>), há um botão inteligente chamado <strong>"Copiar p/ WhatsApp"</strong>:
             </p>
 
             <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2 text-xs">
@@ -392,7 +392,7 @@ export default function AppointmentsHelpPage() {
                 7
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
-                Pausar ou Ativar o Agendamento Online
+                Pausar ou Ativar o Atendimento Online
               </h2>
             </div>
 
@@ -402,7 +402,7 @@ export default function AppointmentsHelpPage() {
 
             <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl text-xs space-y-2">
               <ul className="space-y-1.5 list-disc pl-5 text-zinc-600">
-                <li>Acesse o topo da tela de <strong>Visão Geral de Agendamentos</strong> (<code className="bg-white px-1 py-0.5 rounded border">/agendamentos</code>).</li>
+                <li>Acesse o topo da tela de <strong>Visão Geral de Atendimentos</strong> (<code className="bg-white px-1 py-0.5 rounded border">/atendimentos</code>).</li>
                 <li>Alterne o interruptor do banner para <strong>"Desativado"</strong>.</li>
                 <li>Você pode personalizar o título do aviso e o recado explicativo que os fiéis verão ao acessar a página de agendamentos no site.</li>
                 <li>A equipe da secretaria continua com acesso irrestrito para registrar agendamentos manuais quando necessário.</li>

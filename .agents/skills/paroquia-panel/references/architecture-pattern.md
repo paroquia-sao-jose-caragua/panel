@@ -46,7 +46,7 @@ src/
 │   ├── (private)/       # Rotas protegidas envolvidas pelo layout administrativo
 │   │   ├── (parish)/    # Rotas principais da administração paroquial
 │   │   │   ├── (churches)/ # Lista (/), adição (/adicionar-comunidade), detalhes e sub-rotas (/[slug], /[slug]/editar, /[slug]/sobre, /[slug]/padroeiro, /[slug]/galeria)
-│   │   │   ├── agenda/      # Visualização e gestão do calendário (/agenda, /agenda/adicionar-evento)
+│   │   │   ├── programacao-paroquial/      # Visualização e gestão do calendário (/programacao-paroquial, /programacao-paroquial/adicionar-evento)
 │   │   │   ├── avisos/      # Gerenciamento de avisos e banners (/avisos, /avisos/adicionar, /avisos/alerta/editar)
 │   │   │   ├── clerigos/    # Gestão de padres e diáconos (/clerigos, /clerigos/adicionar, /clerigos/editar/[id])
 │   │   │   └── pastorais/   # Gestão de equipes pastorais (/pastorais)
@@ -112,9 +112,9 @@ Todas as rotas da aplicação administrativa são definidas de forma tipada em `
 - `ROUTES.PARISH.ANNOUNCEMENTS.ADD`: `/avisos/adicionar`
 - `ROUTES.PARISH.ANNOUNCEMENTS.EDIT(id)`: `/avisos/editar/${id}`
 - `ROUTES.PARISH.ANNOUNCEMENTS.URGENT_ALERT`: `/avisos/alerta/editar`
-- `ROUTES.PARISH.CALENDAR.LIST`: `/agenda`
-- `ROUTES.PARISH.CALENDAR.ADD`: `/agenda/adicionar-evento`
-- `ROUTES.PARISH.CALENDAR.EDIT(id)`: `/agenda/evento/${id}/editar`
+- `ROUTES.PARISH.CALENDAR.LIST`: `/programacao-paroquial`
+- `ROUTES.PARISH.CALENDAR.ADD`: `/programacao-paroquial/adicionar-evento`
+- `ROUTES.PARISH.CALENDAR.EDIT(id)`: `/programacao-paroquial/evento/${id}/editar`
 - `ROUTES.PARISH.CLERGY.LIST`: `/clerigos`
 - `ROUTES.PARISH.CLERGY.ADD`: `/clerigos/adicionar`
 - `ROUTES.PARISH.CLERGY.EDIT(id)`: `/clerigos/editar/${id}`

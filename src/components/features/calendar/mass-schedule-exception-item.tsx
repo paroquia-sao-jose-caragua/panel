@@ -174,7 +174,7 @@ export const MassScheduleExceptionItem = ({
 
             <DialogContent className="sm:max-w-sm">
               <DialogHeader>
-                <DialogTitle>Remarcar Agendamento</DialogTitle>
+                <DialogTitle>Remarcar Atendimento</DialogTitle>
                 <DialogDescription>
                   Você está prestes a reativar o agendamento recorrente abaixo
                   para esta data. Confirme os dados.

@@ -64,7 +64,7 @@ export const ServiceConfirmStep = ({ values, mode }: ServiceConfirmStepProps) =>
           {values.active ? (
             <Badge variant="outline" className="bg-emerald-50 text-emerald-800 border-emerald-300">
               <CheckCircle2 className="w-3 h-3 mr-1" />
-              Ativa para Agendamentos
+              Ativa para Atendimentos
             </Badge>
           ) : (
             <Badge variant="outline" className="bg-zinc-100 text-zinc-600 border-zinc-300">

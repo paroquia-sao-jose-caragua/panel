@@ -206,7 +206,7 @@ export const MassScheduleItem = ({
 
             <DialogContent className="sm:max-w-sm">
               <DialogHeader>
-                <DialogTitle>Desmarcar Agendamento</DialogTitle>
+                <DialogTitle>Desmarcar Atendimento</DialogTitle>
                 <DialogDescription>
                   Você está prestes a desmarcar um agendamento recorrente.
                   Confirme os dados abaixo.

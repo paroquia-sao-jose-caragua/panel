@@ -234,7 +234,7 @@ export default function AppointmentsReportPage() {
     text += `*Paróquia São José de Caraguatatuba*\n`;
     text += `📅 Período: ${formatDisplayDate(dates.startDate)} até ${formatDisplayDate(dates.endDate)}\n`;
     text += `👤 Atendente: ${currentAgentName}\n`;
-    text += `📊 Total de Agendamentos: ${totalCount}\n\n`;
+    text += `📊 Total de Atendimentos: ${totalCount}\n\n`;
 
     Object.entries(groupedByDate).forEach(([dateStr, items]) => {
       text += `━━━━━━━━━━━━━━━━━━━━\n`;
@@ -329,7 +329,7 @@ export default function AppointmentsReportPage() {
             {
               key: 'agendamentos-hub',
               href: ROUTES.APPOINTMENTS.HOME,
-              title: 'Agendamentos',
+              title: 'Atendimentos',
               icon: Calendar,
             },
             {
@@ -487,7 +487,7 @@ export default function AppointmentsReportPage() {
                 {/* Status Selector */}
                 <div>
                   <label className="text-xs text-zinc-500 font-medium block mb-1">
-                    Status dos Agendamentos
+                    Status dos Atendimentos
                   </label>
                   <select
                     value={statusFilter}

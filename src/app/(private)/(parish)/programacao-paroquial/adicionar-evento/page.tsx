@@ -47,7 +47,7 @@ export default function AddEventSchedulePage() {
     <div className="w-full lg:col-start-2">
       <header className="bg-white border-b border-zinc-200/80 relative lg:sticky lg:top-0 z-10 lg:z-40 shadow-2xs mt-16 lg:mt-0 md:mt-20">
         <div className="mx-auto w-full max-w-200 px-4 lg:px-8 py-4">
-          <BackButton href={'/agenda'} />
+          <BackButton href={'/programacao-paroquial'} />
 
           <div className="flex flex-row items-center gap-4">
             <div>
@@ -78,7 +78,7 @@ export default function AddEventSchedulePage() {
           <>
             <InfoFormStep formik={formik} />
             <div className="flex gap-3 pt-4 mt-8 justify-between border-t border-divider">
-              <Link href={'/agenda'}>
+              <Link href={'/programacao-paroquial'}>
                 <Button variant="outline" size="lg">
                   Cancelar
                 </Button>

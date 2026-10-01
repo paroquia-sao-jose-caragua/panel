@@ -205,7 +205,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
           </div>
         </div>
 
-        {/* Agendamento Opcional */}
+        {/* Atendimento Opcional */}
         <div className="pt-4 border-t border-gray-100">
           <div className="flex items-center justify-between mb-2">
             <FieldLabel className="flex items-center gap-1.5 text-xs text-zinc-700">

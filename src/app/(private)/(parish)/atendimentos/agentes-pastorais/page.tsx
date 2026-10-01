@@ -36,7 +36,7 @@ export default function PastoralAgentsPage() {
           {
             key: 'agendamentos-hub',
             href: ROUTES.APPOINTMENTS.HOME,
-            title: 'Agendamentos',
+            title: 'Atendimentos',
             icon: CalendarCheck,
           },
           {

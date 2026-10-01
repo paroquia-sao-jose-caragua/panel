@@ -275,13 +275,13 @@ export default function EditAppointmentPage({
 
           <div className="flex flex-row items-center gap-4 mt-2">
             <div>
-              <TypographyH1>Editar Agendamento</TypographyH1>
+              <TypographyH1>Editar Atendimento</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {isLoadingAppointment
                   ? 'Carregando dados do agendamento...'
                   : appointment
                   ? `${appointment.requesterName} • ${appointment.appointmentDate} às ${appointment.startTime}`
-                  : 'Agendamento não encontrado'}
+                  : 'Atendimento não encontrado'}
               </span>
             </div>
           </div>
@@ -312,7 +312,7 @@ export default function EditAppointmentPage({
         ) : !appointment ? (
           <div className="border border-dashed border-zinc-300 rounded-2xl p-12 text-center bg-zinc-50/50">
             <CalendarX className="w-12 h-12 text-zinc-300 mx-auto mb-3" />
-            <h3 className="text-lg font-semibold text-zinc-800">Agendamento não encontrado</h3>
+            <h3 className="text-lg font-semibold text-zinc-800">Atendimento não encontrado</h3>
             <p className="text-sm text-zinc-500 mt-1 max-w-md mx-auto">
               O agendamento solicitado não foi localizado ou você não tem permissão para acessá-lo.
             </p>
@@ -386,15 +386,15 @@ export default function EditAppointmentPage({
                 className="text-xs text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Excluir Agendamento</span>
+                <span>Excluir Atendimento</span>
               </Button>
             </div>
 
             <DeleteConfirmationDialog
               open={confirmDelete}
               onOpenChange={setConfirmDelete}
-              title="Excluir Agendamento"
-              itemName={appointment.requesterName || 'Agendamento'}
+              title="Excluir Atendimento"
+              itemName={appointment.requesterName || 'Atendimento'}
               description={`Tem certeza que deseja excluir o agendamento de "${appointment.requesterName}" em ${appointment.appointmentDate}? Esta ação é irreversível.`}
               isPending={isDeleting}
               onConfirm={handleDelete}

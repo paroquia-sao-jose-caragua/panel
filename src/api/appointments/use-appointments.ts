@@ -392,7 +392,7 @@ export const useDeleteAppointment = () => {
     mutationFn: (id: string) => deleteAppointment(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['appointments'] });
-      showAlert('Agendamento excluído com sucesso!');
+      showAlert('Atendimento excluído com sucesso!');
     },
     onError: (err: Error) => {
       showAlert(`Erro ao excluir agendamento: ${err.message}`);

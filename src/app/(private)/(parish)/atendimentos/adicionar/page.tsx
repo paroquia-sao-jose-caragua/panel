@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { BackButton } from '@/components/common/back-button';
 import { TypographyH1 } from '@/components/ui/typography/h1';
@@ -21,6 +21,8 @@ import useAuthStore from '@/stores/useAuthStore';
 
 export default function AddAppointmentPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const dateParam = searchParams?.get('date') || '';
   const { user } = useAuthStore();
   const isPastoralAgent = user?.role === 'pastoral_agent';
 
@@ -35,7 +37,7 @@ export default function AddAppointmentPage() {
     agentId: '',
     serviceId: '',
     communityId: null,
-    appointmentDate: '',
+    appointmentDate: dateParam,
     startTime: '',
     requesterName: '',
     requesterPhone: '',
@@ -157,7 +159,7 @@ export default function AddAppointmentPage() {
 
           <div className="flex flex-row items-center gap-4 mt-2">
             <div>
-              <TypographyH1>Novo Agendamento</TypographyH1>
+              <TypographyH1>Novo Atendimento</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {isPastoralAgent
                   ? 'Agendar novo atendimento pastoral na sua agenda'
@@ -216,7 +218,7 @@ export default function AddAppointmentPage() {
                 onClick={handleSubmit}
                 className="cursor-pointer"
               >
-                Confirmar e Criar Agendamento
+                Confirmar e Criar Atendimento
               </Button>
             </div>
           </>

@@ -58,7 +58,7 @@ export const AgentConfirmStep = ({ values, mode }: AgentConfirmStepProps) => {
 
           {values.acceptsAppointments ? (
             <Badge variant="outline" className="bg-emerald-50 text-emerald-800 border-emerald-300">
-              Recebendo Agendamentos Públicos
+              Recebendo Atendimentos Públicos
             </Badge>
           ) : (
             <Badge variant="outline" className="bg-amber-50 text-amber-800 border-amber-300">

@@ -63,7 +63,7 @@ export const AppointmentConfirmStep = ({
         <div className="border-b border-zinc-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <span className="text-xs font-semibold text-brand-700 uppercase tracking-wider">
-              {isEdit ? 'Revisão das Alterações' : 'Revisão do Agendamento'}
+              {isEdit ? 'Revisão das Alterações' : 'Revisão do Atendimento'}
             </span>
             <h2 className="text-xl font-bold text-zinc-900 mt-0.5">
               {service?.title || 'Atendimento Pastoral'}
@@ -249,7 +249,7 @@ export const AppointmentConfirmStep = ({
         <CheckCircle2 className="w-5 h-5 text-brand-700 shrink-0 mt-0.5" />
         <div>
           <span className="font-bold block">Pronto para agendar o atendimento</span>
-          Revise as informações acima com atenção. Ao clicar em &quot;Confirmar e Criar Agendamento&quot;,
+          Revise as informações acima com atenção. Ao clicar em &quot;Confirmar e Criar Atendimento&quot;,
           o atendimento será registrado no sistema e ficará visível na listagem da secretaria e na agenda do agente pastoral.
         </div>
       </div>

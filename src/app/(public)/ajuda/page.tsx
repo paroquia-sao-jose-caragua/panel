@@ -68,13 +68,13 @@ const TOPICS: HelpTopic[] = [
     id: 'main-agendamentos',
     isMainForPage: true,
     category: 'appointments',
-    title: 'Guia Completo: Atendimentos & Agendamentos Pastorais',
+    title: 'Guia Completo: Atendimentos & Atendimentos Pastorais',
     description:
-      'Manual unificado da página de Agendamentos: marcação presencial e por telefone, pauta impressa em PDF com checklist para o Padre, grade de horários semanais e visitas a enfermos.',
-    badge: 'Manual de Agendamentos',
+      'Manual unificado da página de Atendimentos: marcação presencial e por telefone, pauta impressa em PDF com checklist para o Padre, grade de horários semanais e visitas a enfermos.',
+    badge: 'Manual de Atendimentos',
     role: 'Todos',
     readTime: '5 min',
-    href: '/ajuda/agendamentos',
+    href: '/ajuda/atendimentos',
     highlights: [
       'Registro de atendimentos presenciais e validação de horários livres',
       'Emissão da folha timbrada de pauta em PDF e checklist para o sacerdote',
@@ -263,19 +263,19 @@ const TOPICS: HelpTopic[] = [
 
   // ==========================================
   // TOPICOS DETALHADOS: AGENDAMENTOS PASTORAIS
-  // Exibidos ao filtrar por "Agendamentos" ou na busca
+  // Exibidos ao filtrar por "Atendimentos" ou na busca
   // ==========================================
   {
     id: 'novo-agendamento',
     isMainForPage: false,
     category: 'appointments',
-    title: 'Como registrar um Novo Agendamento pelo Painel',
+    title: 'Como registrar um Novo Atendimento pelo Painel',
     description:
       'Guia para secretárias e agentes registrarem atendimentos presenciais ou por telefone com validação de horários.',
-    badge: 'Agendamentos',
+    badge: 'Atendimentos',
     role: 'Secretaria',
     readTime: '3 min',
-    href: '/ajuda/agendamentos#como-agendar',
+    href: '/ajuda/atendimentos#como-agendar',
     highlights: [
       'Seleção automática do sacerdote ou escolha de agente',
       'Carga dinâmica de horários livres no calendário',
@@ -300,13 +300,13 @@ const TOPICS: HelpTopic[] = [
     id: 'gestao-agendamentos',
     isMainForPage: false,
     category: 'appointments',
-    title: 'Gestão da Fila de Agendamentos, Status e Confirmações',
+    title: 'Gestão da Fila de Atendimentos, Status e Confirmações',
     description:
       'Como acompanhar a lista de atendimentos, aprovar pedidos do site público, alterar status e remarcar fiéis.',
-    badge: 'Agendamentos',
+    badge: 'Atendimentos',
     role: 'Secretaria',
     readTime: '3 min',
-    href: '/ajuda/agendamentos#como-agendar',
+    href: '/ajuda/atendimentos#como-agendar',
     highlights: [
       'Filtros por data, sacerdote e situação (Pendente, Confirmado, Concluído)',
       'Aprovação rápida de solicitações públicas feitas pelos fiéis pelo site',
@@ -337,7 +337,7 @@ const TOPICS: HelpTopic[] = [
     badge: 'Disponibilidade',
     role: 'Padres & Agentes',
     readTime: '4 min',
-    href: '/ajuda/agendamentos#grade-e-bloqueios',
+    href: '/ajuda/atendimentos#grade-e-bloqueios',
     highlights: [
       'Ativação dos dias da semana com horário de início e término',
       'Configuração da duração do atendimento (ex: 30 ou 45 min)',
@@ -369,7 +369,7 @@ const TOPICS: HelpTopic[] = [
     badge: 'Visitas Domiciliares',
     role: 'Todos',
     readTime: '3 min',
-    href: '/ajuda/agendamentos#visitas-domiciliares',
+    href: '/ajuda/atendimentos#visitas-domiciliares',
     highlights: [
       'Endereço completo com ponto de referência',
       'Condições do paciente: acamado, lúcido, deglute hóstia',
@@ -395,13 +395,13 @@ const TOPICS: HelpTopic[] = [
     id: 'pausa-agendamento-online',
     isMainForPage: false,
     category: 'appointments',
-    title: 'Pausar ou Ativar o Agendamento Online no Site',
+    title: 'Pausar ou Ativar o Atendimento Online no Site',
     description:
       'Como suspender temporariamente novos agendamentos públicos com aviso personalizado aos fiéis.',
     badge: 'Configurações',
     role: 'Secretaria',
     readTime: '2 min',
-    href: '/ajuda/agendamentos#pausar-agendamento',
+    href: '/ajuda/atendimentos#pausar-agendamento',
     highlights: [
       'Interrupção imediata de novas solicitações pelo site',
       'Mensagem e título personalizados na página pública',
@@ -1179,7 +1179,7 @@ const TOPICS: HelpTopic[] = [
     category: 'announcements',
     title: 'Validade Programada e Expiração Automática de Campanhas',
     description:
-      'Agendamento de campanhas com data de início e término para que o banner saia do ar sozinho ao terminar o evento.',
+      'Atendimento de campanhas com data de início e término para que o banner saia do ar sozinho ao terminar o evento.',
     badge: 'Expiração Automática',
     role: 'Secretaria',
     readTime: '3 min',
@@ -1230,7 +1230,7 @@ const TOPICS: HelpTopic[] = [
 
 const CATEGORIES = [
   { id: 'all', label: 'Todos os Tópicos' },
-  { id: 'appointments', label: 'Agendamentos Pastorais' },
+  { id: 'appointments', label: 'Atendimentos Pastorais' },
   { id: 'secretariat', label: 'Secretaria & PIX' },
   { id: 'communities', label: 'Comunidades & Missas' },
   { id: 'clergy', label: 'Clérigos & Padres' },
@@ -1239,7 +1239,7 @@ const CATEGORIES = [
 ] as const;
 
 const QUICK_TAGS = [
-  'Agendamentos',
+  'Atendimentos',
   'Banners & Avisos',
   'Clérigos & Padres',
   'Horários de Missa',
@@ -1272,7 +1272,7 @@ const FAQS = [
     category: 'appointments',
     question: 'O fiel pode cancelar um agendamento sozinho?',
     answer:
-      'Sim. Quando o fiel faz um agendamento pelo site, ele recebe um link com token de acesso exclusivo (ex: /agendamentos/track/CODIGO). Por essa página, ele pode verificar o status do pedido e cancelar o atendimento com justificativa, liberando automaticamente a vaga na agenda do padre.',
+      'Sim. Quando o fiel faz um agendamento pelo site, ele recebe um link com token de acesso exclusivo (ex: /atendimentos/track/CODIGO). Por essa página, ele pode verificar o status do pedido e cancelar o atendimento com justificativa, liberando automaticamente a vaga na agenda do padre.',
   },
   {
     category: 'appointments',
@@ -1399,7 +1399,7 @@ export default function HelpCenterPage() {
   const categoryCounts = useMemo(() => {
     if (!hasSearch) {
       return {
-        all: 6, // 1 per page of the help center! (Agendamentos, Secretaria, Comunidades, Clérigos, Avisos, Usuários)
+        all: 6, // 1 per page of the help center! (Atendimentos, Secretaria, Comunidades, Clérigos, Avisos, Usuários)
         appointments: TOPICS.filter((t) => t.category === 'appointments' && !t.isMainForPage).length,
         secretariat: TOPICS.filter((t) => t.category === 'secretariat' && !t.isMainForPage).length,
         communities: TOPICS.filter((t) => t.category === 'communities' && !t.isMainForPage).length,

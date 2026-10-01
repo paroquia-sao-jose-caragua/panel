@@ -269,10 +269,10 @@ export const AppointmentInfoStep = ({
             </p>
           </div>
 
-          {/* Status do Agendamento */}
+          {/* Status do Atendimento */}
           <div>
             <label className="text-sm font-semibold text-zinc-800 block mb-1.5">
-              {isEdit ? 'Status do Agendamento' : 'Status Inicial'}
+              {isEdit ? 'Status do Atendimento' : 'Status Inicial'}
             </label>
             <select
               value={values.status}
@@ -297,7 +297,7 @@ export const AppointmentInfoStep = ({
             <p className="text-xs text-zinc-500 mt-1">
               {isEdit
                 ? 'Atualize a situação do atendimento conforme o andamento pastoral.'
-                : 'Agendamentos inseridos pelo painel geralmente nascem confirmados.'}
+                : 'Atendimentos inseridos pelo painel geralmente nascem confirmados.'}
             </p>
           </div>
         </div>

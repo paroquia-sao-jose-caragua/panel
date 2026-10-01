@@ -40,7 +40,7 @@ export function buildWhatsAppConfirmationMessage(
   siteBaseUrl: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
   const formattedDate =
@@ -75,8 +75,8 @@ export function buildWhatsAppCancellationMessage(
   cancellationReason?: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
-  const newBookingUrl = `${cleanBaseUrl}/agendamentos`;
+  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
+  const newBookingUrl = `${cleanBaseUrl}/atendimentos`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
   const formattedDate =
@@ -122,7 +122,7 @@ export function buildWhatsAppReminderMessage(
   siteBaseUrl: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
   const formattedDate =
@@ -198,7 +198,7 @@ export function AppointmentWhatsAppDialog({
   if (!appointment) return null;
 
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
 
   let cleanPhone = (appointment.requesterPhone || '').replace(/\D/g, '');
   if (cleanPhone.length <= 11) {
@@ -244,7 +244,7 @@ export function AppointmentWhatsAppDialog({
                   ? 'Avisar Cancelamento ao Fiel'
                   : template === 'reminder'
                   ? 'Enviar Lembrete de Atendimento'
-                  : 'Agendamento Aprovado! Notificar Fiel'}
+                  : 'Atendimento Aprovado! Notificar Fiel'}
               </DialogTitle>
               <DialogDescription className="text-xs text-zinc-500 line-clamp-2">
                 {template === 'cancellation'

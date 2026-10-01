@@ -107,66 +107,72 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
 
   // Appointments
   if (cleanPath === ROUTES.APPOINTMENTS.HOME) {
-    return [{ key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' }];
+    return [{ key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' }];
+  }
+  if (cleanPath === ROUTES.APPOINTMENTS.MANAGE) {
+    return [
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'gerenciar', href: ROUTES.APPOINTMENTS.MANAGE, title: 'Gerenciar' },
+    ];
   }
   if (cleanPath === ROUTES.APPOINTMENTS.LIST) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
     ];
   }
   if (cleanPath === ROUTES.APPOINTMENTS.ADD) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
-      { key: 'adicionar', href: ROUTES.APPOINTMENTS.ADD, title: 'Novo Agendamento' },
+      { key: 'adicionar', href: ROUTES.APPOINTMENTS.ADD, title: 'Novo Atendimento' },
     ];
   }
   if (cleanPath === ROUTES.APPOINTMENTS.REPORT) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'relatorio', href: ROUTES.APPOINTMENTS.REPORT, title: 'Relatório & Pauta' },
     ];
   }
-  if (cleanPath.startsWith('/agendamentos/editar/')) {
+  if (cleanPath.startsWith('/atendimentos/editar/')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
-      { key: 'editar', href: '#', title: 'Editar Agendamento' },
+      { key: 'editar', href: '#', title: 'Editar Atendimento' },
     ];
   }
 
   // Pastoral Agents
   if (cleanPath === ROUTES.PASTORAL_AGENTS.HOME) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
     ];
   }
   if (cleanPath === ROUTES.PASTORAL_AGENTS.ADD) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
       { key: 'adicionar', href: ROUTES.PASTORAL_AGENTS.ADD, title: 'Novo Agente' },
     ];
   }
-  if (cleanPath.startsWith('/agendamentos/agentes-pastorais/editar/')) {
+  if (cleanPath.startsWith('/atendimentos/agentes-pastorais/editar/')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
       { key: 'editar', href: '#', title: 'Editar Agente' },
     ];
   }
-  if (cleanPath.includes('/agendamentos/agentes-pastorais/') && cleanPath.endsWith('/horarios')) {
+  if (cleanPath.includes('/atendimentos/agentes-pastorais/') && cleanPath.endsWith('/horarios')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
       { key: 'horarios', href: '#', title: 'Horários' },
     ];
   }
-  if (cleanPath.includes('/agendamentos/agentes-pastorais/') && cleanPath.endsWith('/bloqueios')) {
+  if (cleanPath.includes('/atendimentos/agentes-pastorais/') && cleanPath.endsWith('/bloqueios')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
       { key: 'bloqueios', href: '#', title: 'Bloqueios' },
     ];
@@ -175,20 +181,20 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
   // Appointment Services
   if (cleanPath === ROUTES.APPOINTMENT_SERVICES.HOME) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'categorias-atendimento', href: ROUTES.APPOINTMENT_SERVICES.HOME, title: 'Categorias de Atendimento' },
     ];
   }
   if (cleanPath === ROUTES.APPOINTMENT_SERVICES.ADD) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'categorias-atendimento', href: ROUTES.APPOINTMENT_SERVICES.HOME, title: 'Categorias de Atendimento' },
       { key: 'adicionar', href: ROUTES.APPOINTMENT_SERVICES.ADD, title: 'Nova Categoria' },
     ];
   }
-  if (cleanPath.startsWith('/agendamentos/categorias-atendimento/editar/')) {
+  if (cleanPath.startsWith('/atendimentos/categorias-atendimento/editar/')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agendamentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
       { key: 'categorias-atendimento', href: ROUTES.APPOINTMENT_SERVICES.HOME, title: 'Categorias de Atendimento' },
       { key: 'editar', href: '#', title: 'Editar Categoria' },
     ];
@@ -204,7 +210,7 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
       { key: 'adicionar-evento', href: ROUTES.CALENDAR.ADD_EVENT, title: 'Novo Evento' },
     ];
   }
-  if (cleanPath.includes('/agenda/evento/') && cleanPath.endsWith('/editar')) {
+  if (cleanPath.includes('/programacao-paroquial/evento/') && cleanPath.endsWith('/editar')) {
     return [
       { key: 'agenda', href: ROUTES.CALENDAR.HOME, title: 'Agenda Paroquial', icon: 'calendar' },
       { key: 'editar', href: '#', title: 'Editar Evento' },

@@ -89,7 +89,7 @@ export default function AppointmentServicesPage() {
           {
             key: 'agendamentos-hub',
             href: ROUTES.APPOINTMENTS.HOME,
-            title: 'Agendamentos',
+            title: 'Atendimentos',
             icon: CalendarCheck,
           },
           {

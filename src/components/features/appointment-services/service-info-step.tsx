@@ -236,7 +236,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-brand-700" />
               <span className="font-semibold text-sm text-zinc-900">
-                Exigir Endereço Residencial no Agendamento
+                Exigir Endereço Residencial no Atendimento
               </span>
             </div>
             <p className="text-xs text-zinc-500">
@@ -255,7 +255,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-brand-700" />
               <span className="font-semibold text-sm text-zinc-900">
-                Categoria Ativa para Agendamentos
+                Categoria Ativa para Atendimentos
               </span>
             </div>
             <p className="text-xs text-zinc-500">

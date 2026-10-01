@@ -65,17 +65,17 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/calendar',
-        destination: '/agenda',
+        destination: '/programacao-paroquial',
         permanent: true,
       },
       {
         source: '/calendar/add-event-schedule',
-        destination: '/agenda/adicionar-evento',
+        destination: '/programacao-paroquial/adicionar-evento',
         permanent: true,
       },
       {
         source: '/calendar/event-schedule/:id/edit',
-        destination: '/agenda/evento/:id/editar',
+        destination: '/programacao-paroquial/evento/:id/editar',
         permanent: true,
       },
       {

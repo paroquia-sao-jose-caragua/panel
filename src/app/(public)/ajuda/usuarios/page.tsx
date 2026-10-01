@@ -213,7 +213,7 @@ export default function UsersPermissionsHelpPage() {
                   <li><strong>Atribuição de Papéis:</strong> Definir se um usuário é Administrador, Secretária ou Agente Pastoral.</li>
                   <li><strong>Redefinição Emergencial de Senhas:</strong> Gerar nova senha diretamente pelo painel para colaboradores que esqueceram suas credenciais.</li>
                   <li><strong>Gerenciamento de Dispositivos:</strong> Visualizar dispositivos conectados e enviar notificações push administrativas.</li>
-                  <li><strong>Acesso Completo a Todos os Módulos:</strong> Comunidades, Clérigos, Banners, Programação, Agendamentos e Secretaria.</li>
+                  <li><strong>Acesso Completo a Todos os Módulos:</strong> Comunidades, Clérigos, Banners, Programação, Atendimentos e Secretaria.</li>
                 </ul>
               </div>
 
@@ -297,7 +297,7 @@ export default function UsersPermissionsHelpPage() {
                 </p>
                 <ul className="space-y-1 list-disc pl-5 text-emerald-900">
                   <li><strong>Meus Atendimentos:</strong> Lista de atendimentos atribuídos a ele com dados de contato do fiel e justificativa.</li>
-                  <li><strong>Novo Agendamento:</strong> Opção de agendar diretamente com um paroquiano presencialmente.</li>
+                  <li><strong>Novo Atendimento:</strong> Opção de agendar diretamente com um paroquiano presencialmente.</li>
                   <li><strong>Relatório & Pauta (PDF):</strong> Folha timbrada com checklist para impressão rápida e botão de cópia para WhatsApp.</li>
                   <li><strong>Grade de Horários & Bloqueios:</strong> Definição de seus horários semanais e bloqueio de datas para férias ou retiros espirituais.</li>
                 </ul>

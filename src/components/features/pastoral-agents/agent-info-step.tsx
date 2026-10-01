@@ -314,7 +314,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
       <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-4">
         <div className="border-b border-zinc-100 pb-3">
           <h2 className="text-base font-bold text-zinc-900">
-            Regras de Agendamento e Visibilidade
+            Regras de Atendimento e Visibilidade
           </h2>
           <p className="text-xs text-zinc-500 mt-0.5">
             Controle a exibição no site público e o recebimento de novos pedidos.
@@ -325,7 +325,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
           <div className="flex items-center justify-between gap-4 p-3 bg-zinc-50 rounded-xl">
             <div>
               <span className="text-sm font-semibold text-zinc-800 block">
-                Receber Agendamentos Públicos
+                Receber Atendimentos Públicos
               </span>
               <span className="text-xs text-zinc-500">
                 Se desativado, o agente não aparece na lista de opções para os fiéis no site.

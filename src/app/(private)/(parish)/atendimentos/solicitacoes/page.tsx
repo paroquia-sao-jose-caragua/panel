@@ -182,7 +182,7 @@ export default function AppointmentsListPage() {
       process.env.NEXT_PUBLIC_SITE_BASE_URL ||
       (typeof window !== 'undefined' ? window.location.origin : '');
     const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-    const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
+    const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
 
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(trackingUrl);
@@ -303,7 +303,7 @@ export default function AppointmentsListPage() {
           {
             key: 'agendamentos-hub',
             href: ROUTES.APPOINTMENTS.HOME,
-            title: 'Agendamentos',
+            title: 'Atendimentos',
             icon: CalendarCheck,
           },
           {
@@ -333,7 +333,7 @@ export default function AppointmentsListPage() {
             <Button asChild className="cursor-pointer">
               <Link href={ROUTES.APPOINTMENTS.ADD}>
                 <Plus className="w-4 h-4 mr-1.5" />
-                Novo Agendamento
+                Novo Atendimento
               </Link>
             </Button>
           </div>
@@ -375,8 +375,8 @@ export default function AppointmentsListPage() {
               <div className="flex items-center gap-2">
                 <h2 className="text-base font-semibold text-zinc-900">
                   {settings?.enabled
-                    ? 'Agendamentos Online Habilitados'
-                    : 'Agendamentos Online Suspensos'}
+                    ? 'Atendimentos Online Habilitados'
+                    : 'Atendimentos Online Suspensos'}
                 </h2>
                 <Badge
                   variant="outline"
@@ -441,7 +441,7 @@ export default function AppointmentsListPage() {
                 <Input
                   value={customTitle}
                   onChange={(e) => setCustomTitle(e.target.value)}
-                  placeholder="Ex: Agendamentos Temporariamente Suspensos"
+                  placeholder="Ex: Atendimentos Temporariamente Suspensos"
                   className="bg-white border-amber-300 text-sm"
                 />
               </div>
@@ -1016,7 +1016,7 @@ export default function AppointmentsListPage() {
                               onClick={() => setCancellingAppointment(appointment)}
                             >
                               <XCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                              <span>Cancelar Agendamento</span>
+                              <span>Cancelar Atendimento</span>
                             </DropdownMenuItem>
                           </>
                         )}
@@ -1034,7 +1034,7 @@ export default function AppointmentsListPage() {
       <Dialog open={!!cancellingAppointment} onOpenChange={(open) => !open && setCancellingAppointment(null)}>
         <DialogContent className="sm:max-w-md p-6 flex flex-col gap-4">
           <DialogHeader className="p-0 text-left space-y-1.5">
-            <DialogTitle>Cancelar Agendamento</DialogTitle>
+            <DialogTitle>Cancelar Atendimento</DialogTitle>
             <DialogDescription>
               Informe o motivo do cancelamento para o agendamento de{' '}
               <span className="font-semibold text-zinc-900">{cancellingAppointment?.requesterName}</span>.

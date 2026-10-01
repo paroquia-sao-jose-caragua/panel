@@ -167,7 +167,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
 
               <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
-                  <DialogTitle>Excluir Agendamento</DialogTitle>
+                  <DialogTitle>Excluir Atendimento</DialogTitle>
 
                   <DialogDescription>
                     Por favor, confirme os dados abaixo para garantir que está
@@ -241,7 +241,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
             className="gap-1.5 text-xs h-8"
           >
             <Link
-              href={`/agenda/evento/${schedule.eventScheduleId}/editar`}
+              href={`/programacao-paroquial/evento/${schedule.eventScheduleId}/editar`}
             >
               <Pencil className="w-3.5 h-3.5" />
               <span>Editar</span>

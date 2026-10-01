@@ -66,15 +66,15 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
         const isAllowedForAgent =
           pathname.startsWith('/ajuda') ||
           pathname.startsWith('/central-de-ajuda') ||
-          pathname === '/agendamentos' ||
-          pathname === '/agendamentos/solicitacoes' ||
-          pathname === '/agendamentos/adicionar' ||
-          pathname === '/agendamentos/relatorio' ||
+          pathname === '/atendimentos' ||
+          pathname === '/atendimentos/solicitacoes' ||
+          pathname === '/atendimentos/adicionar' ||
+          pathname === '/atendimentos/relatorio' ||
           pathname.includes('/horarios') ||
           pathname.includes('/bloqueios');
 
         if (!isAllowedForAgent) {
-          navigate.replace('/agendamentos');
+          navigate.replace('/atendimentos');
           return;
         }
       } else if (isAuthRoute) {

@@ -76,7 +76,7 @@ API Backend Paróquia São José (Cloudflare Workers)
 7. **Upload de Mídia Desacoplado**:
    - Upload de imagens deve utilizar a infraestrutura de `useFileInputStore` e `uploadFileWithProgress` conectada ao endpoint `/attachments/images`.
 8. **Rotas e URLs em Português Centralizadas (`ROUTES`)**:
-   - Todas as URLs do painel devem ser em português (`/entrar`, `/clerigos`, `/avisos`, `/agenda`, `/secretaria`, `/doacoes`, `/adicionar-comunidade`, `/[slug]/editar`, etc.).
+   - Todas as URLs do painel devem ser em português (`/entrar`, `/clerigos`, `/avisos`, `/programacao-paroquial`, `/secretaria`, `/doacoes`, `/adicionar-comunidade`, `/[slug]/editar`, etc.).
    - Nunca utilize URLs literais hardcoded nos componentes, links ou redirects. Importe e utilize sempre a constante tipada `ROUTES` de `@/constants/routes` (ex: `ROUTES.PARISH.CLERGY.LIST`, `ROUTES.AUTH.LOGIN`, `ROUTES.PARISH.COMMUNITY.EDIT(slug)`).
 9. **Nunca crie formulários em modais (Dialogs/Sheets) para cadastro ou edição de entidades**:
    - Formulários de criação e edição **SEMPRE** devem ser páginas dedicadas no App Router (ex.: `/adicionar`, `/editar/[id]`, `/enviar-notificacao`, `/alterar-senha`), nunca modais.
@@ -110,9 +110,9 @@ src/
 ├── app/                 # Next.js App Router (Rotas, Layouts, Grupos de Rota)
 │   ├── (public)/        # Rotas públicas (/entrar, /confirm-code)
 │   ├── (private)/       # Rotas privadas administrativas
-│   │   ├── (parish)/    # Módulos centrais (churches, agenda, avisos, clerigos, pastorais)
+│   │   ├── (parish)/    # Módulos centrais (churches, programacao-paroquial, avisos, clerigos, pastorais)
 │   │   │   ├── (churches)/ # Comunidades (/, /adicionar-comunidade, /[slug], /[slug]/editar, /[slug]/sobre, /[slug]/padroeiro, /[slug]/galeria)
-│   │   │   ├── agenda/  # Gestão do calendário (/agenda, /agenda/adicionar-evento, /agenda/evento/[id]/editar)
+│   │   │   ├── programacao-paroquial/  # Gestão do calendário (/programacao-paroquial, /programacao-paroquial/adicionar-evento, /programacao-paroquial/evento/[id]/editar)
 │   │   │   ├── avisos/  # Gestão de avisos (/avisos, /avisos/adicionar, /avisos/alerta/editar, /avisos/editar/[id])
 │   │   │   ├── clerigos/ # Gestão do clero (/clerigos, /clerigos/adicionar, /clerigos/editar/[id])
 │   │   │   └── pastorais/ # Gestão de pastorais (/pastorais)

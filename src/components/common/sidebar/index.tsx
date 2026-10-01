@@ -97,7 +97,7 @@ export const AppSidebar = () => {
                   href: ROUTES.APPOINTMENTS.LIST,
                 },
                 {
-                  title: 'Novo Agendamento',
+                  title: 'Novo Atendimento',
                   href: ROUTES.APPOINTMENTS.ADD,
                 },
                 {
@@ -151,19 +151,19 @@ export const AppSidebar = () => {
                 links={[
                   {
                     title: 'Programação Paroquial',
-                    href: '/agenda',
+                    href: '/programacao-paroquial',
                   },
                 ]}
                 onLinkClick={handleClose}
               />
 
               <NavItem
-                title="Agendamentos"
+                title="Atendimentos"
                 icon={CalendarCheck}
                 collapsedHref={ROUTES.APPOINTMENTS.HOME}
                 links={[
                   {
-                    title: 'Agendamentos',
+                    title: 'Atendimentos',
                     href: ROUTES.APPOINTMENTS.HOME,
                   },
                 ]}

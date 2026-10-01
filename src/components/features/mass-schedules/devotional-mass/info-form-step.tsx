@@ -362,7 +362,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 pb-5">
         <div>
-          <FieldLabel htmlFor="day-of-month">Agendamento Automático</FieldLabel>
+          <FieldLabel htmlFor="day-of-month">Atendimento Automático</FieldLabel>
           <span className="block text-zinc-600 mt-2">
             Defina datas para publicar e/ou despublicar este horário
             automaticamente
