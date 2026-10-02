@@ -12,6 +12,7 @@ import { MassScheduleExceptionItem } from './mass-schedule-exception-item';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { EventScheduleItem } from './event-schedule-item';
+import { ROUTES } from '@/constants/routes';
 
 interface CalendarViewProps {
   schedules: CalendarSchedule[];
@@ -43,7 +44,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
           Não há missas ou eventos programados para o período selecionado.
         </p>
         <Button asChild size="sm" className="rounded-full px-6 shadow-md gap-1.5">
-          <Link href="/programacao-paroquial/adicionar-evento">
+          <Link href={ROUTES.CALENDAR.ADD_EVENT}>
             <Plus className="w-4 h-4 mr-1.5" />
             <span>Adicionar primeiro evento</span>
           </Link>
@@ -96,7 +97,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
                 size="sm"
                 className="border-dashed border-zinc-300 text-zinc-600 hover:border-[#B8872E] hover:text-[#B8872E] hover:bg-[#fefbf6] gap-1.5 text-xs h-8 self-start sm:self-center shrink-0 shadow-2xs"
               >
-                <Link href={`/programacao-paroquial/adicionar-evento?date=${group.date}`}>
+                <Link href={ROUTES.CALENDAR.ADD_EVENT_WITH_DATE(group.date)}>
                   <Plus className="h-3.5 w-3.5" />
                   <span>Adicionar Evento</span>
                 </Link>

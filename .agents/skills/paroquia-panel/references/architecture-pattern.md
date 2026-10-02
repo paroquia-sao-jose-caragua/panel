@@ -49,7 +49,6 @@ src/
 │   │   │   ├── programacao-paroquial/      # Visualização e gestão do calendário (/programacao-paroquial, /programacao-paroquial/adicionar-evento)
 │   │   │   ├── avisos/      # Gerenciamento de avisos e banners (/avisos, /avisos/adicionar, /avisos/alerta/editar)
 │   │   │   ├── clerigos/    # Gestão de padres e diáconos (/clerigos, /clerigos/adicionar, /clerigos/editar/[id])
-│   │   │   └── pastorais/   # Gestão de equipes pastorais (/pastorais)
 │   │   ├── doacoes/     # Gestão de doações (/doacoes)
 │   │   ├── secretaria/  # Informações da secretaria paroquial (/secretaria/editar, /secretaria/doacoes)
 │   │   ├── (pending-development)/ # Páginas planejadas traduzidas (/artigos, /noticias, /comunicados, /albuns, /fotos, /gerenciar-acessos, /alterar-senha)
@@ -118,7 +117,6 @@ Todas as rotas da aplicação administrativa são definidas de forma tipada em `
 - `ROUTES.PARISH.CLERGY.LIST`: `/clerigos`
 - `ROUTES.PARISH.CLERGY.ADD`: `/clerigos/adicionar`
 - `ROUTES.PARISH.CLERGY.EDIT(id)`: `/clerigos/editar/${id}`
-- `ROUTES.PARISH.PASTORALS`: `/pastorais`
 - `ROUTES.PARISH.DONATIONS`: `/doacoes`
 - `ROUTES.SECRETARIAT.EDIT`: `/secretaria/editar`
 - `ROUTES.SECRETARIAT.DONATIONS`: `/secretaria/doacoes`

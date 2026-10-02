@@ -232,7 +232,7 @@ export const AnnouncementFormStep = ({
                   name="actionUrl"
                   value={values.actionUrl}
                   onChange={(e) => onChange('actionUrl', e.target.value)}
-                  placeholder="Ex: /programacao-paroquial ou https://..."
+                  placeholder="Ex: /programacao-e-eventos ou https://..."
                 />
               </InputRoot>
             </div>

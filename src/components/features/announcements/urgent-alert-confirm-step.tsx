@@ -15,15 +15,10 @@ import {
 } from '@/components/ui/dialog';
 import {
   Check,
-  AlertTriangle,
-  Info,
-  Sparkles,
   CheckCircle2,
   XCircle,
   Eye,
   ExternalLink,
-  ArrowRight,
-  X,
 } from 'lucide-react';
 
 interface UrgentAlertConfirmStepProps {
@@ -106,13 +101,21 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
         </div>
 
         <div
-          className={`w-full overflow-hidden py-3 px-4 rounded-xl shadow-xs flex items-center justify-between gap-4 ${currentVariant.barBg}`}
+          onClick={() => values.hasModal && setPreviewModalOpen(true)}
+          className={`w-full overflow-hidden py-3.5 px-4 rounded-xl shadow-xs flex items-center transition-all select-none ${
+            values.hasModal ? 'cursor-pointer hover:brightness-105 active:brightness-95' : 'cursor-default'
+          } ${currentVariant.barBg}`}
+          title={values.hasModal ? 'Clique na faixa para abrir o modal' : undefined}
         >
-          <div className="flex items-center gap-3 overflow-hidden flex-1">
-            <span className="text-base sm:text-lg font-semibold tracking-wide truncate">
-              {values.text || 'Nenhum texto informado'}
-            </span>
-            <span className="opacity-60 text-sm sm:text-base shrink-0">☩</span>
+          <div className="overflow-hidden relative w-full flex items-center">
+            <div className="text-base sm:text-lg font-semibold tracking-wide flex items-center gap-6 whitespace-nowrap overflow-x-hidden">
+              {[1, 2, 3].map((i) => (
+                <span key={i} className="inline-flex items-center gap-6 shrink-0">
+                  <span>{values.text || 'Nenhum texto informado'}</span>
+                  <span className="opacity-60 text-sm sm:text-base">☩</span>
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>

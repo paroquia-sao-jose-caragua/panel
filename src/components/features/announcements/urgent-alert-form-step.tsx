@@ -291,18 +291,22 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
         {/* Prévia em tempo real */}
         <div className="pt-2">
           <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">
-            Prévia em Tempo Real
+            Prévia em Tempo Real (Letreiro Contínuo)
           </span>
           <div
-            className={`w-full overflow-hidden py-3 px-4 rounded-xl shadow-xs flex items-center justify-between gap-3 ${
+            className={`w-full overflow-hidden py-3 px-4 rounded-xl shadow-xs flex items-center select-none ${
               variantBarStyles[values.variant] || variantBarStyles.alert
             }`}
           >
-            <div className="flex items-center gap-3 overflow-hidden flex-1">
-              <span className="text-base sm:text-lg font-semibold tracking-wide truncate">
-                {values.text || 'Digite a mensagem acima para visualizar a prévia...'}
-              </span>
-              <span className="opacity-60 text-sm sm:text-base shrink-0">☩</span>
+            <div className="overflow-hidden relative w-full flex items-center">
+              <div className="text-base sm:text-lg font-semibold tracking-wide flex items-center gap-6 whitespace-nowrap overflow-x-hidden">
+                {[1, 2, 3].map((i) => (
+                  <span key={i} className="inline-flex items-center gap-6 shrink-0">
+                    <span>{values.text || 'Digite a mensagem acima para visualizar a prévia...'}</span>
+                    <span className="opacity-60 text-sm sm:text-base">☩</span>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -317,7 +321,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
               Modal com Mais Informações (Opcional)
             </h3>
             <p className="text-xs text-zinc-500 mt-0.5">
-              Habilita um botão na faixa para que o visitante abra uma janela com o comunicado completo e imagem.
+              Torna toda a faixa clicável no site para que o visitante abra uma janela com o comunicado completo e imagem.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -330,21 +334,6 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
 
         {values.hasModal && (
           <div className="space-y-6 animate-in fade-in duration-200">
-            <div>
-              <FieldLabel htmlFor="modalButtonText">Texto do Botão na Faixa</FieldLabel>
-              <InputRoot className="mt-1">
-                <InputControl
-                  id="modalButtonText"
-                  value={values.modalButtonText}
-                  onChange={(e) => onChange('modalButtonText', e.target.value)}
-                  maxLength={50}
-                  placeholder="Ex: Ver Detalhes, Saiba Mais"
-                />
-              </InputRoot>
-              {errors.modalButtonText && (
-                <p className="text-xs text-red-500 mt-1">{errors.modalButtonText}</p>
-              )}
-            </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">

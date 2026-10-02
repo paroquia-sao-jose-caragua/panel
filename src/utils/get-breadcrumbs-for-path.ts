@@ -10,11 +10,14 @@ function formatSegmentTitle(segment: string): string {
 export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
   const cleanPath = pathname.split('?')[0].replace(/\/$/, '') || '/';
 
-  if (cleanPath === '/' || cleanPath === '') {
-    return [{ key: 'origin', href: ROUTES.HOME, title: 'Início', icon: 'church' }];
+  // Root or Dados Institucionais Home
+  if (cleanPath === '/' || cleanPath === '' || cleanPath === ROUTES.HOME) {
+    return [{ key: 'dados-institucionais', href: ROUTES.HOME, title: 'Comunidades & Capelas', icon: 'church' }];
   }
 
-  // Settings
+  // ==========================================
+  // 1. CONFIGURAÇÕES
+  // ==========================================
   if (cleanPath === ROUTES.SETTINGS.HOME) {
     return [{ key: 'settings', href: ROUTES.SETTINGS.HOME, title: 'Configurações', icon: 'settings' }];
   }
@@ -65,196 +68,246 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
     ];
   }
 
+  // ==========================================
+  // 2. DADOS INSTITUCIONAIS
+  // ==========================================
   // Clergy
-  if (cleanPath === ROUTES.CLERGY.HOME) {
+  if (cleanPath === ROUTES.CLERGY.HOME || cleanPath === '/clerigos') {
     return [{ key: 'clerigos', href: ROUTES.CLERGY.HOME, title: 'Clérigos', icon: 'users' }];
   }
-  if (cleanPath === ROUTES.CLERGY.ADD) {
+  if (cleanPath === ROUTES.CLERGY.ADD || cleanPath === '/clerigos/adicionar') {
     return [
       { key: 'clerigos', href: ROUTES.CLERGY.HOME, title: 'Clérigos', icon: 'users' },
       { key: 'adicionar', href: ROUTES.CLERGY.ADD, title: 'Novo Clérigo' },
     ];
   }
-  if (cleanPath.startsWith('/clerigos/editar/')) {
+  if (cleanPath.includes('/clerigos/editar/')) {
     return [
       { key: 'clerigos', href: ROUTES.CLERGY.HOME, title: 'Clérigos', icon: 'users' },
       { key: 'editar', href: '#', title: 'Editar Clérigo' },
     ];
   }
 
-  // Announcements
-  if (cleanPath === ROUTES.ANNOUNCEMENTS.HOME) {
-    return [{ key: 'avisos', href: ROUTES.ANNOUNCEMENTS.HOME, title: 'Avisos & Alertas', icon: 'bell' }];
+  // Secretariat
+  if (cleanPath === ROUTES.SECRETARIAT.HOME || cleanPath === '/secretaria') {
+    return [{ key: 'secretaria', href: ROUTES.SECRETARIAT.HOME, title: 'Secretaria Paroquial', icon: 'building' }];
   }
-  if (cleanPath === ROUTES.ANNOUNCEMENTS.ADD) {
+  if (cleanPath === ROUTES.SECRETARIAT.EDIT || cleanPath === '/secretaria/editar') {
     return [
-      { key: 'avisos', href: ROUTES.ANNOUNCEMENTS.HOME, title: 'Avisos & Alertas', icon: 'bell' },
-      { key: 'adicionar', href: ROUTES.ANNOUNCEMENTS.ADD, title: 'Novo Aviso' },
+      { key: 'secretaria', href: ROUTES.SECRETARIAT.HOME, title: 'Secretaria Paroquial', icon: 'building' },
+      { key: 'editar', href: ROUTES.SECRETARIAT.EDIT, title: 'Editar Dados' },
     ];
   }
-  if (cleanPath === ROUTES.ANNOUNCEMENTS.EDIT_ALERT) {
+  if (cleanPath === ROUTES.SECRETARIAT.DONATIONS || cleanPath === '/secretaria/doacoes') {
     return [
-      { key: 'avisos', href: ROUTES.ANNOUNCEMENTS.HOME, title: 'Avisos & Alertas', icon: 'bell' },
-      { key: 'alerta-editar', href: ROUTES.ANNOUNCEMENTS.EDIT_ALERT, title: 'Editar Alerta' },
-    ];
-  }
-  if (cleanPath.startsWith('/avisos/editar/')) {
-    return [
-      { key: 'avisos', href: ROUTES.ANNOUNCEMENTS.HOME, title: 'Avisos & Alertas', icon: 'bell' },
-      { key: 'editar', href: '#', title: 'Editar Aviso' },
+      { key: 'secretaria', href: ROUTES.SECRETARIAT.HOME, title: 'Secretaria Paroquial', icon: 'building' },
+      { key: 'doacoes', href: ROUTES.SECRETARIAT.DONATIONS, title: 'Doações & Dízimo' },
     ];
   }
 
-  // Appointments
-  if (cleanPath === ROUTES.APPOINTMENTS.HOME) {
-    return [{ key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' }];
+  // Pastorals
+  if (cleanPath === ROUTES.PASTORALS || cleanPath === '/pastorais') {
+    return [{ key: 'pastorais', href: ROUTES.PASTORALS, title: 'Pastorais', icon: 'users' }];
   }
-  if (cleanPath === ROUTES.APPOINTMENTS.MANAGE) {
+
+  // Community creation
+  if (cleanPath === ROUTES.COMMUNITIES.ADD || cleanPath === '/adicionar-comunidade') {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'dados-institucionais', href: ROUTES.HOME, title: 'Comunidades & Capelas', icon: 'church' },
+      { key: 'adicionar', href: ROUTES.COMMUNITIES.ADD, title: 'Nova Comunidade' },
+    ];
+  }
+
+  // ==========================================
+  // 3. PROGRAMAÇÃO & EVENTOS
+  // ==========================================
+  // Calendar
+  if (cleanPath === ROUTES.CALENDAR.HOME || cleanPath === '/programacao-paroquial') {
+    return [{ key: 'agenda', href: ROUTES.CALENDAR.HOME, title: 'Calendário Paroquial', icon: 'calendar' }];
+  }
+  if (cleanPath === ROUTES.CALENDAR.ADD_EVENT || cleanPath === '/programacao-paroquial/adicionar-evento') {
+    return [
+      { key: 'agenda', href: ROUTES.CALENDAR.HOME, title: 'Calendário Paroquial', icon: 'calendar' },
+      { key: 'adicionar-evento', href: ROUTES.CALENDAR.ADD_EVENT, title: 'Novo Evento' },
+    ];
+  }
+  if (cleanPath.includes('/evento/') && cleanPath.endsWith('/editar')) {
+    return [
+      { key: 'agenda', href: ROUTES.CALENDAR.HOME, title: 'Calendário Paroquial', icon: 'calendar' },
+      { key: 'editar', href: '#', title: 'Editar Evento' },
+    ];
+  }
+
+  // Banners
+  if (cleanPath === ROUTES.ANNOUNCEMENTS.HOME || cleanPath === '/avisos') {
+    return [{ key: 'banners', href: ROUTES.ANNOUNCEMENTS.HOME, title: 'Banners em Destaque', icon: 'megaphone' }];
+  }
+  if (cleanPath === ROUTES.ANNOUNCEMENTS.ADD || cleanPath === '/avisos/adicionar') {
+    return [
+      { key: 'banners', href: ROUTES.ANNOUNCEMENTS.HOME, title: 'Banners em Destaque', icon: 'megaphone' },
+      { key: 'adicionar', href: ROUTES.ANNOUNCEMENTS.ADD, title: 'Novo Banner' },
+    ];
+  }
+  if (cleanPath.includes('/banners/editar/') || cleanPath.includes('/avisos/editar/')) {
+    return [
+      { key: 'banners', href: ROUTES.ANNOUNCEMENTS.HOME, title: 'Banners em Destaque', icon: 'megaphone' },
+      { key: 'editar', href: '#', title: 'Editar Banner' },
+    ];
+  }
+
+  // Faixa de Alerta
+  if (cleanPath === ROUTES.ANNOUNCEMENTS.ALERT || cleanPath === '/avisos/alerta') {
+    return [{ key: 'alerta', href: ROUTES.ANNOUNCEMENTS.ALERT, title: 'Faixa de Alerta', icon: 'alert-triangle' }];
+  }
+  if (cleanPath === ROUTES.ANNOUNCEMENTS.EDIT_ALERT || cleanPath === '/avisos/alerta/editar') {
+    return [
+      { key: 'alerta', href: ROUTES.ANNOUNCEMENTS.ALERT, title: 'Faixa de Alerta', icon: 'alert-triangle' },
+      { key: 'alerta-editar', href: ROUTES.ANNOUNCEMENTS.EDIT_ALERT, title: 'Editar Faixa' },
+    ];
+  }
+
+  // ==========================================
+  // 4. AGENDA PASTORAL
+  // ==========================================
+  const isAgendaHome = cleanPath === ROUTES.APPOINTMENTS.HOME || cleanPath === '/atendimentos';
+  if (isAgendaHome) {
+    return [{ key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Início', icon: 'calendar-check' }];
+  }
+  if (cleanPath === ROUTES.APPOINTMENTS.AGENDA || cleanPath === '/atendimentos/agenda') {
+    return [
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
+      { key: 'agenda', href: ROUTES.APPOINTMENTS.AGENDA, title: 'Agenda' },
+    ];
+  }
+  if (cleanPath === ROUTES.APPOINTMENTS.BLOCKS || cleanPath === '/atendimentos/bloqueios') {
+    return [
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
+      { key: 'bloqueios', href: ROUTES.APPOINTMENTS.BLOCKS, title: 'Bloqueios' },
+    ];
+  }
+  if (cleanPath === ROUTES.APPOINTMENTS.MANAGE || cleanPath === '/atendimentos/gerenciar') {
+    return [
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'gerenciar', href: ROUTES.APPOINTMENTS.MANAGE, title: 'Gerenciar' },
     ];
   }
-  if (cleanPath === ROUTES.APPOINTMENTS.LIST) {
+  if (cleanPath === ROUTES.APPOINTMENTS.LIST || cleanPath === '/atendimentos/solicitacoes') {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
     ];
   }
-  if (cleanPath === ROUTES.APPOINTMENTS.ADD) {
+  if (cleanPath === ROUTES.APPOINTMENTS.ADD || cleanPath === '/atendimentos/adicionar') {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
       { key: 'adicionar', href: ROUTES.APPOINTMENTS.ADD, title: 'Novo Atendimento' },
     ];
   }
-  if (cleanPath === ROUTES.APPOINTMENTS.REPORT) {
+  if (cleanPath === ROUTES.APPOINTMENTS.REPORT || cleanPath === '/atendimentos/relatorio') {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'relatorio', href: ROUTES.APPOINTMENTS.REPORT, title: 'Relatório & Pauta' },
     ];
   }
-  if (cleanPath.startsWith('/atendimentos/editar/')) {
+  if (cleanPath.includes('/editar/') && (cleanPath.startsWith('/agenda-pastoral') || cleanPath.startsWith('/atendimentos'))) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'solicitacoes', href: ROUTES.APPOINTMENTS.LIST, title: 'Solicitações' },
       { key: 'editar', href: '#', title: 'Editar Atendimento' },
     ];
   }
 
   // Pastoral Agents
-  if (cleanPath === ROUTES.PASTORAL_AGENTS.HOME) {
+  if (cleanPath === ROUTES.PASTORAL_AGENTS.HOME || cleanPath === '/atendimentos/agentes-pastorais') {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
     ];
   }
-  if (cleanPath === ROUTES.PASTORAL_AGENTS.ADD) {
+  if (cleanPath === ROUTES.PASTORAL_AGENTS.ADD || cleanPath === '/atendimentos/agentes-pastorais/adicionar') {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
       { key: 'adicionar', href: ROUTES.PASTORAL_AGENTS.ADD, title: 'Novo Agente' },
     ];
   }
-  if (cleanPath.startsWith('/atendimentos/agentes-pastorais/editar/')) {
+  if (cleanPath.includes('/agentes-pastorais/editar/')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
       { key: 'editar', href: '#', title: 'Editar Agente' },
     ];
   }
-  if (cleanPath.includes('/atendimentos/agentes-pastorais/') && cleanPath.endsWith('/horarios')) {
+  if (cleanPath.includes('/agentes-pastorais/') && cleanPath.endsWith('/horarios')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
       { key: 'horarios', href: '#', title: 'Horários' },
     ];
   }
-  if (cleanPath.includes('/atendimentos/agentes-pastorais/') && cleanPath.endsWith('/bloqueios')) {
+  if (cleanPath.includes('/agentes-pastorais/') && cleanPath.endsWith('/bloqueios')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'agentes-pastorais', href: ROUTES.PASTORAL_AGENTS.HOME, title: 'Agentes Pastorais' },
       { key: 'bloqueios', href: '#', title: 'Bloqueios' },
     ];
   }
 
   // Appointment Services
-  if (cleanPath === ROUTES.APPOINTMENT_SERVICES.HOME) {
+  if (cleanPath === ROUTES.APPOINTMENT_SERVICES.HOME || cleanPath === '/atendimentos/categorias-atendimento') {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'categorias-atendimento', href: ROUTES.APPOINTMENT_SERVICES.HOME, title: 'Categorias de Atendimento' },
     ];
   }
-  if (cleanPath === ROUTES.APPOINTMENT_SERVICES.ADD) {
+  if (cleanPath === ROUTES.APPOINTMENT_SERVICES.ADD || cleanPath === '/atendimentos/categorias-atendimento/adicionar') {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'categorias-atendimento', href: ROUTES.APPOINTMENT_SERVICES.HOME, title: 'Categorias de Atendimento' },
       { key: 'adicionar', href: ROUTES.APPOINTMENT_SERVICES.ADD, title: 'Nova Categoria' },
     ];
   }
-  if (cleanPath.startsWith('/atendimentos/categorias-atendimento/editar/')) {
+  if (cleanPath.includes('/categorias-atendimento/editar/')) {
     return [
-      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Atendimentos', icon: 'calendar-check' },
+      { key: 'agendamentos', href: ROUTES.APPOINTMENTS.HOME, title: 'Agenda Pastoral', icon: 'calendar-check' },
       { key: 'categorias-atendimento', href: ROUTES.APPOINTMENT_SERVICES.HOME, title: 'Categorias de Atendimento' },
       { key: 'editar', href: '#', title: 'Editar Categoria' },
     ];
   }
 
-  // Calendar
-  if (cleanPath === ROUTES.CALENDAR.HOME) {
-    return [{ key: 'agenda', href: ROUTES.CALENDAR.HOME, title: 'Agenda Paroquial', icon: 'calendar' }];
-  }
-  if (cleanPath === ROUTES.CALENDAR.ADD_EVENT) {
-    return [
-      { key: 'agenda', href: ROUTES.CALENDAR.HOME, title: 'Agenda Paroquial', icon: 'calendar' },
-      { key: 'adicionar-evento', href: ROUTES.CALENDAR.ADD_EVENT, title: 'Novo Evento' },
-    ];
-  }
-  if (cleanPath.includes('/programacao-paroquial/evento/') && cleanPath.endsWith('/editar')) {
-    return [
-      { key: 'agenda', href: ROUTES.CALENDAR.HOME, title: 'Agenda Paroquial', icon: 'calendar' },
-      { key: 'editar', href: '#', title: 'Editar Evento' },
-    ];
-  }
-
-  // Secretariat
-  if (cleanPath === ROUTES.SECRETARIAT.HOME) {
-    return [{ key: 'secretaria', href: ROUTES.SECRETARIAT.HOME, title: 'Secretaria Paroquial', icon: 'building' }];
-  }
-
-  // Community creation
-  if (cleanPath === ROUTES.COMMUNITIES.ADD) {
-    return [
-      { key: 'origin', href: ROUTES.HOME, title: 'Início', icon: 'church' },
-      { key: 'adicionar', href: ROUTES.COMMUNITIES.ADD, title: 'Nova Comunidade' },
-    ];
-  }
-
-  // Subpaths of community (e.g. /[slug], /[slug]/editar, /[slug]/sobre, /[slug]/padroeiro, /[slug]/galeria)
+  // ==========================================
+  // Subpaths of Dados Institucionais (e.g. /dados-institucionais/[slug], /[slug])
+  // ==========================================
   const parts = cleanPath.split('/').filter(Boolean);
   if (parts.length > 0) {
-    const items: BreadcrumbLinkItem[] = [
-      { key: 'origin', href: ROUTES.HOME, title: 'Início', icon: 'church' },
-    ];
+    const isUnderDados = parts[0] === 'dados-institucionais';
+    const slugIdx = isUnderDados ? 1 : 0;
 
-    const slug = parts[0];
-    items.push({
-      key: 'church',
-      href: `/${slug}`,
-      title: formatSegmentTitle(slug),
-    });
+    if (parts.length > slugIdx) {
+      const items: BreadcrumbLinkItem[] = [
+        { key: 'dados-institucionais', href: ROUTES.HOME, title: 'Comunidades & Capelas', icon: 'church' },
+      ];
 
-    if (parts.length > 1) {
-      const subAction = parts[parts.length - 1];
+      const slug = parts[slugIdx];
       items.push({
-        key: `sub-${subAction}`,
-        href: '#',
-        title: formatSegmentTitle(subAction),
+        key: 'church',
+        href: ROUTES.COMMUNITIES.DETAILS(slug),
+        title: formatSegmentTitle(slug),
       });
-    }
 
-    return items;
+      if (parts.length > slugIdx + 1) {
+        const subAction = parts[parts.length - 1];
+        items.push({
+          key: `sub-${subAction}`,
+          href: '#',
+          title: formatSegmentTitle(subAction),
+        });
+      }
+
+      return items;
+    }
   }
 
-  return [{ key: 'origin', href: ROUTES.HOME, title: 'Início', icon: 'church' }];
+  return [{ key: 'dados-institucionais', href: ROUTES.HOME, title: 'Comunidades & Capelas', icon: 'church' }];
 }

@@ -212,7 +212,6 @@ Fluxo geral da aplicação:
 | `/secretaria`                                   | Dados da secretaria e doações.                 |
 | `/secretaria/editar`                            | Edição dos dados da secretaria de atendimento. |
 | `/secretaria/doacoes`                           | Gestão de contas bancárias e chave PIX.        |
-| `/pastorais`                                    | Área de pastorais.                             |
 
 Algumas telas em `src/app/(private)/(pending-development)` existem como páginas previstas para evolução futura, como blog, galeria, configurações e suporte.
 

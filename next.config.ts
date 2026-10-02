@@ -23,89 +23,132 @@ const nextConfig: NextConfig = {
         destination: '/entrar',
         permanent: true,
       },
+      // Standardized: Agenda Pastoral
       {
-        source: '/clergies',
-        destination: '/clerigos',
+        source: '/atendimentos',
+        destination: '/agenda-pastoral',
         permanent: true,
       },
       {
-        source: '/clergies/add',
-        destination: '/clerigos/adicionar',
+        source: '/atendimentos/:path*',
+        destination: '/agenda-pastoral/:path*',
+        permanent: true,
+      },
+      // Standardized: Programação & Eventos
+      {
+        source: '/programacao-paroquial',
+        destination: '/programacao-e-eventos',
         permanent: true,
       },
       {
-        source: '/clergies/edit/:id',
-        destination: '/clerigos/editar/:id',
-        permanent: true,
-      },
-      {
-        source: '/clergies/:id/edit',
-        destination: '/clerigos/editar/:id',
-        permanent: true,
-      },
-      {
-        source: '/announcements',
-        destination: '/avisos',
-        permanent: true,
-      },
-      {
-        source: '/announcements/add',
-        destination: '/avisos/adicionar',
-        permanent: true,
-      },
-      {
-        source: '/announcements/alert/edit',
-        destination: '/avisos/alerta/editar',
-        permanent: true,
-      },
-      {
-        source: '/announcements/edit/:id',
-        destination: '/avisos/editar/:id',
+        source: '/programacao-paroquial/:path*',
+        destination: '/programacao-e-eventos/:path*',
         permanent: true,
       },
       {
         source: '/calendar',
-        destination: '/programacao-paroquial',
+        destination: '/programacao-e-eventos',
         permanent: true,
       },
       {
-        source: '/calendar/add-event-schedule',
-        destination: '/programacao-paroquial/adicionar-evento',
+        source: '/calendar/:path*',
+        destination: '/programacao-e-eventos/:path*',
         permanent: true,
       },
       {
-        source: '/calendar/event-schedule/:id/edit',
-        destination: '/programacao-paroquial/evento/:id/editar',
+        source: '/avisos/alerta/editar',
+        destination: '/programacao-e-eventos/alerta/editar',
+        permanent: true,
+      },
+      {
+        source: '/avisos/alerta',
+        destination: '/programacao-e-eventos/alerta',
+        permanent: true,
+      },
+      {
+        source: '/avisos/adicionar',
+        destination: '/programacao-e-eventos/banners/adicionar',
+        permanent: true,
+      },
+      {
+        source: '/avisos/editar/:id',
+        destination: '/programacao-e-eventos/banners/editar/:id',
+        permanent: true,
+      },
+      {
+        source: '/avisos',
+        destination: '/programacao-e-eventos/banners',
+        permanent: true,
+      },
+      {
+        source: '/announcements',
+        destination: '/programacao-e-eventos/banners',
+        permanent: true,
+      },
+      {
+        source: '/announcements/:path*',
+        destination: '/programacao-e-eventos/banners/:path*',
+        permanent: true,
+      },
+      // Standardized: Dados Institucionais
+      {
+        source: '/clerigos',
+        destination: '/dados-institucionais/clerigos',
+        permanent: true,
+      },
+      {
+        source: '/clerigos/:path*',
+        destination: '/dados-institucionais/clerigos/:path*',
+        permanent: true,
+      },
+      {
+        source: '/clergies',
+        destination: '/dados-institucionais/clerigos',
+        permanent: true,
+      },
+      {
+        source: '/clergies/:path*',
+        destination: '/dados-institucionais/clerigos/:path*',
+        permanent: true,
+      },
+      {
+        source: '/secretaria',
+        destination: '/dados-institucionais/secretaria',
+        permanent: true,
+      },
+      {
+        source: '/secretaria/:path*',
+        destination: '/dados-institucionais/secretaria/:path*',
         permanent: true,
       },
       {
         source: '/secretariat',
-        destination: '/secretaria',
+        destination: '/dados-institucionais/secretaria',
         permanent: true,
       },
       {
-        source: '/secretariat/edit',
-        destination: '/secretaria/editar',
+        source: '/secretariat/:path*',
+        destination: '/dados-institucionais/secretaria/:path*',
         permanent: true,
       },
       {
-        source: '/secretariat/donations',
-        destination: '/secretaria/doacoes',
-        permanent: true,
-      },
-      {
-        source: '/donations',
-        destination: '/secretaria/doacoes',
-        permanent: true,
-      },
-      {
-        source: '/add',
-        destination: '/adicionar-comunidade',
+        source: '/pastorais',
+        destination: '/dados-institucionais/pastorais',
         permanent: true,
       },
       {
         source: '/pastorals',
-        destination: '/pastorais',
+        destination: '/dados-institucionais/pastorais',
+        permanent: true,
+      },
+      {
+        source: '/adicionar-comunidade',
+        destination: '/dados-institucionais/adicionar-comunidade',
+        permanent: true,
+      },
+      {
+        source: '/add',
+        destination: '/dados-institucionais/adicionar-comunidade',
         permanent: true,
       },
     ];

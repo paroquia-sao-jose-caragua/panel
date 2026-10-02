@@ -1,5 +1,6 @@
 import { updateEventSchedule } from '@/api/event-schedules/update';
 import { useEventSchedule } from '@/api/event-schedules/use-event-schedule';
+import { ROUTES } from '@/constants/routes';
 import type { EventSchedule } from '@/entities/EventSchedule';
 import type { MassSchedule } from '@/entities/MassSchedule';
 import { useNavigate } from '@/hooks/use-navigate';
@@ -67,7 +68,7 @@ export const useEditEventSchedule = () => {
           onSuccess: ({ eventSchedule }) => {
             if (eventSchedule) {
               setEventSchedule(eventSchedule);
-              navigate.replace('/programacao-paroquial');
+              navigate.replace(ROUTES.CALENDAR.HOME);
             }
           },
         }

@@ -20,7 +20,7 @@ export default function Layout({
           'min-h-screen bg-zinc-50/75 lg:grid w-full min-w-0 overflow-x-clip transition-all duration-300 print:block print:bg-white print:min-h-0 print:p-0',
           isCollapsed
             ? 'lg:grid-cols-[5rem_minmax(0,1fr)]'
-            : 'lg:grid-cols-[20rem_minmax(0,1fr)]'
+            : 'lg:grid-cols-[18rem_minmax(0,1fr)]'
         )}
       >
         <AppSidebar />

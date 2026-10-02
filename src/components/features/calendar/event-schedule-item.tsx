@@ -27,6 +27,7 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { ChurchAvatar } from '../churches/church-avatar';
+import { ROUTES } from '@/constants/routes';
 
 interface ScheduleItemProps {
   schedule: EventSchedule;
@@ -241,7 +242,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
             className="gap-1.5 text-xs h-8"
           >
             <Link
-              href={`/programacao-paroquial/evento/${schedule.eventScheduleId}/editar`}
+              href={ROUTES.CALENDAR.EDIT_EVENT(schedule.eventScheduleId)}
             >
               <Pencil className="w-3.5 h-3.5" />
               <span>Editar</span>

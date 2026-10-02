@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { updateMassSchedule } from '@/api/mass-schedules/update';
 import { deleteMassSchedule } from '@/api/mass-schedules/delete';
 import { useCommunity } from '@/api/communities/use-community';
+import { ROUTES } from '@/constants/routes';
 import { useNavigate } from '@/hooks/use-navigate';
 import { showAlert } from '@/utils/showAlert';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -45,7 +46,7 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
             queryClient.invalidateQueries({ queryKey: ['communities'] });
             queryClient.invalidateQueries({ queryKey: ['mass-schedules'] });
             showAlert('Horário de missa excluído com sucesso!');
-            navigate.replace(`/${community?.slug}`);
+            navigate.replace(ROUTES.COMMUNITIES.DETAILS(community?.slug || ''));
           } else {
             showAlert('Não foi possível excluir o horário de missa. Tente novamente mais tarde.');
           }
@@ -108,7 +109,7 @@ export const useEditMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
             if (massSchedule && statusCode === 200) {
               queryClient.invalidateQueries({ queryKey: ['communities'] });
               queryClient.invalidateQueries({ queryKey: ['mass-schedules'] });
-              navigate.replace(`/${community?.slug}`);
+              navigate.replace(ROUTES.COMMUNITIES.DETAILS(community?.slug || ''));
               showAlert('Missa atualizada com sucesso!');
             } else {
               showAlert(`Erro ao atualizar missa: ${message}`);

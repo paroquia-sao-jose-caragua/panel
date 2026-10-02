@@ -4,6 +4,7 @@ import React, { type ElementType, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UserNav } from './user-nav';
+import { AreaSelector } from './area-selector';
 import { BreadcrumbIcon } from '@/components/common/breadcrumb';
 import { getBreadcrumbsForPath } from '@/utils/get-breadcrumbs-for-path';
 import {
@@ -46,52 +47,53 @@ export function AppHeader({ links: propLinks, className }: AppHeaderProps = {}) 
       )}
     >
       <div className="max-w-325 flex items-center justify-between w-full px-4 lg:px-8 mx-auto">
-        {/* Left: Breadcrumbs (Visible on both mobile and desktop) */}
-        <div className="flex items-center gap-2 min-w-0">
-          {links && links.length > 0 ? (
-            <Breadcrumb className="mb-0">
-              <BreadcrumbList className="mb-0">
-                {links.map(({ key, href, title, icon }, index) => {
-                  const isLast = index === links.length - 1;
-                  return (
-                    <div
-                      key={`header-breadcrumb-${key}`}
-                      className="flex items-center gap-1.5"
-                    >
-                      {index > 0 && <BreadcrumbSeparator />}
-                      {index === 0 && icon && (
-                        <BreadcrumbItem>
-                          <BreadcrumbIcon
-                            icon={icon}
-                            className="w-4 text-zinc-500"
-                          />
-                        </BreadcrumbItem>
-                      )}
-                      <BreadcrumbItem>
-                        {isLast ? (
-                          <BreadcrumbPage className="font-semibold text-zinc-900">
-                            {title}
-                          </BreadcrumbPage>
-                        ) : href ? (
-                          <BreadcrumbLink
-                            asChild
-                            className="text-zinc-500 hover:text-zinc-900"
-                          >
-                            <Link href={href}>{title}</Link>
-                          </BreadcrumbLink>
-                        ) : (
-                          <span className="text-zinc-500">{title}</span>
+        {/* Left: Area Selector + Subpage Breadcrumbs */}
+        <div className="flex items-center gap-3 min-w-0">
+          <AreaSelector />
+
+          {links && links.length > 1 && (
+            <>
+              <span className="text-zinc-300 text-sm hidden sm:inline">/</span>
+              <Breadcrumb className="mb-0 hidden sm:flex">
+                <BreadcrumbList className="mb-0">
+                  {links.slice(1).map(({ key, href, title, icon }, index) => {
+                    const isLast = index === links.length - 2;
+                    return (
+                      <div
+                        key={`header-breadcrumb-${key}`}
+                        className="flex items-center gap-1.5"
+                      >
+                        {index > 0 && <BreadcrumbSeparator />}
+                        {icon && (
+                          <BreadcrumbItem>
+                            <BreadcrumbIcon
+                              icon={icon}
+                              className="w-3.5 h-3.5 text-zinc-500"
+                            />
+                          </BreadcrumbItem>
                         )}
-                      </BreadcrumbItem>
-                    </div>
-                  );
-                })}
-              </BreadcrumbList>
-            </Breadcrumb>
-          ) : (
-            <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-              Painel Administrativo
-            </span>
+                        <BreadcrumbItem>
+                          {isLast ? (
+                            <BreadcrumbPage className="font-semibold text-zinc-900">
+                              {title}
+                            </BreadcrumbPage>
+                          ) : href ? (
+                            <BreadcrumbLink
+                              asChild
+                              className="text-zinc-500 hover:text-zinc-900"
+                            >
+                              <Link href={href}>{title}</Link>
+                            </BreadcrumbLink>
+                          ) : (
+                            <span className="text-zinc-500">{title}</span>
+                          )}
+                        </BreadcrumbItem>
+                      </div>
+                    );
+                  })}
+                </BreadcrumbList>
+              </Breadcrumb>
+            </>
           )}
         </div>
 

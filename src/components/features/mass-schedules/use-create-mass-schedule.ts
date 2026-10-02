@@ -1,5 +1,6 @@
 import { createMassSchedule } from '@/api/communities/mass-schedules/create';
 import { useCommunity } from '@/api/communities/use-community';
+import { ROUTES } from '@/constants/routes';
 import { useNavigate } from '@/hooks/use-navigate';
 import { useMutation } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -64,7 +65,7 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
         {
           onSuccess: ({ massSchedule, statusCode, message }) => {
             if (massSchedule) {
-              navigate.replace(`/${community?.slug}`);
+              navigate.replace(ROUTES.COMMUNITIES.DETAILS(community?.slug || ''));
             }
           },
         }
