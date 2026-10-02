@@ -1,7 +1,6 @@
 'use client';
 
 import { TooltipProvider } from '@/components/ui/tooltip';
-import '../globals.css';
 import { AppSidebar } from '@/components/common/sidebar';
 import { useSidebarStore } from '@/stores/useSidebarStore';
 import { cn } from '@/lib/utils';
