@@ -66,10 +66,7 @@ export const AppointmentCalendarItem = ({
 
         {/* Content: Title & Orientations */}
         <div className="space-y-1">
-          <h4
-            className="text-lg sm:text-xl font-semibold text-zinc-900 leading-snug"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          >
+          <h4 className="text-lg sm:text-xl font-semibold text-zinc-900 leading-snug">
             {appointment.service?.title || 'Atendimento Pastoral'}
           </h4>
 

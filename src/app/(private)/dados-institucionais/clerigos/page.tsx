@@ -103,10 +103,7 @@ export default function ClergiesPage() {
             <div className="size-16 rounded-2xl bg-[#fef8ed] border border-[#D6A64A]/40 flex items-center justify-center text-[#B8872E] mx-auto mb-4">
               <Users className="w-8 h-8" />
             </div>
-            <h3
-              className="text-2xl font-semibold text-zinc-900 mb-2"
-              style={{ fontFamily: 'Cormorant Garamond, serif' }}
-            >
+            <h3 className="text-2xl font-semibold text-zinc-900 mb-2">
               Nenhum clérigo cadastrado
             </h3>
             <p className="text-sm text-zinc-500 max-w-md mx-auto mb-6">
@@ -145,10 +142,7 @@ export default function ClergiesPage() {
                         <span className="text-xs font-bold text-[#B8872E] uppercase tracking-widest block mb-1">
                           {mainMember.roleName || 'PÁROCO'}
                         </span>
-                        <h2
-                          className="text-2xl md:text-4xl font-semibold text-zinc-900 leading-tight"
-                          style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                        >
+                        <h2 className="text-2xl md:text-4xl font-semibold text-zinc-900 leading-tight">
                           {mainMember.name}
                         </h2>
                       </div>
@@ -192,10 +186,7 @@ export default function ClergiesPage() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <UsersIcon className="w-5 h-5 text-zinc-700" />
-                  <h3
-                    className="text-2xl md:text-3xl font-semibold text-zinc-900"
-                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                  >
+                  <h3 className="text-2xl md:text-3xl font-semibold text-zinc-900">
                     Outros Ministros e Pastores
                   </h3>
                 </div>
@@ -222,10 +213,7 @@ export default function ClergiesPage() {
                     </span>
 
                     {/* Name */}
-                    <h4
-                      className="text-lg font-semibold text-zinc-900 leading-snug mb-2 line-clamp-1"
-                      style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                    >
+                    <h4 className="text-lg font-semibold text-zinc-900 leading-snug mb-2 line-clamp-1">
                       {member.name}
                     </h4>
 
@@ -259,10 +247,7 @@ export default function ClergiesPage() {
                   <div className="w-12 h-12 rounded-full bg-white shadow-xs border border-zinc-200 flex items-center justify-center text-zinc-500 group-hover:text-brand-600 group-hover:border-brand-300 group-hover:scale-110 transition-all mb-3">
                     <Plus className="w-6 h-6" strokeWidth={2} />
                   </div>
-                  <h4
-                    className="text-base font-semibold text-zinc-700 group-hover:text-brand-700 transition-colors mb-1"
-                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                  >
+                  <h4 className="text-base font-semibold text-zinc-700 group-hover:text-brand-700 transition-colors mb-1">
                     Adicionar clérigo
                   </h4>
                   <p className="text-xs text-zinc-400 max-w-[180px]">

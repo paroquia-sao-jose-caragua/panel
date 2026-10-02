@@ -157,10 +157,7 @@ export const MassScheduleItem = ({
 
         {/* Content: Title & Orientations */}
         <div className="space-y-1">
-          <h4
-            className="text-lg sm:text-xl font-semibold text-zinc-900 leading-snug"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          >
+          <h4 className="text-lg sm:text-xl font-semibold text-zinc-900 leading-snug">
             Santa Missa
             {schedule.massType === 'devotional' && schedule.title
               ? ` Devocional — ${schedule.title}`

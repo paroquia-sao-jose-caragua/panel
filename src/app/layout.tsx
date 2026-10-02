@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Lora } from "next/font/google";
+import { Cormorant_Garamond, Geist, Geist_Mono, Lora } from "next/font/google";
 import './globals.css';
 import AppProvider from '@/providers/AppProvider';
 import { PwaNotificationManager } from '@/components/pwa/PwaNotificationManager';
@@ -14,7 +14,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const cormorantGaramond = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
 const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -50,7 +57,7 @@ export default async function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} ${lora.className} antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cormorantGaramond.variable} ${lora.variable} antialiased`}
     >
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

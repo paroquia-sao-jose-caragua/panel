@@ -260,10 +260,7 @@ export default function ChurchPage() {
             {isCommunityPending ? (
               <Skeleton className="h-10 w-3/4 mb-3" />
             ) : (
-              <h1
-                className="text-3xl sm:text-4xl font-semibold text-zinc-900 mb-2 leading-tight"
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}
-              >
+              <h1 className="text-3xl sm:text-4xl font-semibold text-zinc-900 mb-2 leading-tight">
                 {displayName}
               </h1>
             )}

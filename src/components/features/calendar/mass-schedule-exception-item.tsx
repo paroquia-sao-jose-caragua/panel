@@ -116,10 +116,7 @@ export const MassScheduleExceptionItem = ({
 
         {/* Content: Title & Orientations / Reason */}
         <div className="space-y-1.5">
-          <h4
-            className="text-base sm:text-lg font-semibold text-zinc-500 line-through leading-snug"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          >
+          <h4 className="text-base sm:text-lg font-semibold text-zinc-500 line-through leading-snug">
             Santa Missa
             {schedule.massType === 'devotional' && schedule.title
               ? ` Devocional — ${schedule.title}`

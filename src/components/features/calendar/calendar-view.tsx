@@ -34,10 +34,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
         <div className="size-16 rounded-2xl bg-[#fef8ed] border border-[#D6A64A]/40 flex items-center justify-center text-[#B8872E] mx-auto mb-4">
           <CalendarDays className="w-8 h-8" />
         </div>
-        <h3
-          className="text-2xl font-semibold text-zinc-900 mb-2"
-          style={{ fontFamily: 'Cormorant Garamond, serif' }}
-        >
+        <h3 className="text-2xl font-semibold text-zinc-900 mb-2">
           Nenhum agendamento para este mês
         </h3>
         <p className="text-sm text-zinc-500 max-w-md mx-auto mb-6">
@@ -75,10 +72,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
                 </div>
 
                 <div>
-                  <h3
-                    className="text-xl sm:text-2xl font-semibold text-zinc-900 capitalize"
-                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                  >
+                  <h3 className="text-xl sm:text-2xl font-semibold text-zinc-900 capitalize">
                     {t(`week-day-${group.dayOfWeek}`)},{' '}
                     {dayjs(group.date).locale('pt-br').format('D [de] MMMM')}
                   </h3>

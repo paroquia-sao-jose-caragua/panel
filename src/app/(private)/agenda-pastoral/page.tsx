@@ -63,6 +63,7 @@ import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
 import { showAlert } from '@/utils/showAlert';
 import { cn } from '@/lib/utils';
+import { Describe } from '@/components/ui/typography/describe';
 
 export default function AppointmentsDashboardPage() {
   const { user } = useAuthStore();
@@ -313,12 +314,12 @@ export default function AppointmentsDashboardPage() {
         {/* Top Greeting Header */}
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-900 font-serif tracking-tight">
+            <TypographyH1>
               {greeting}, {userFirstName}!
-            </h1>
-            <p className="text-zinc-600 text-sm sm:text-base mt-2 max-w-2xl font-normal leading-relaxed">
+            </TypographyH1>
+            <Describe>
               Veja o que precisa de atenção hoje e mantenha a agenda pastoral sempre organizada.
-            </p>
+            </Describe>
           </div>
 
           <div className="flex items-center gap-2 text-zinc-500 text-xs sm:text-sm font-medium bg-white/80 border border-zinc-200/80 px-3.5 py-2 rounded-xl shadow-2xs self-start shrink-0">
@@ -337,7 +338,9 @@ export default function AppointmentsDashboardPage() {
               </div>
 
               <div>
-                <h3 className="font-bold text-xl text-zinc-900 font-serif">Hoje</h3>
+                <h3 className="text-2xl font-semibold text-zinc-900 mb-2">
+                  Hoje
+                </h3>
                 <p className="text-sm text-zinc-600 mt-1">
                   <span className="font-semibold text-zinc-900">
                     {todayAppointments.length}
@@ -366,7 +369,9 @@ export default function AppointmentsDashboardPage() {
               </div>
 
               <div>
-                <h3 className="font-bold text-xl text-zinc-900 font-serif">Solicitações</h3>
+                <h3 className="text-2xl font-semibold text-zinc-900 mb-2">
+                  Solicitações
+                </h3>
                 <p className="text-sm text-zinc-600 mt-1">
                   <span className="font-semibold text-zinc-900">
                     {pendingAppointments?.length || 0}
@@ -395,7 +400,9 @@ export default function AppointmentsDashboardPage() {
               </div>
 
               <div>
-                <h3 className="font-bold text-xl text-zinc-900 font-serif">Bloqueios</h3>
+                <h3 className="text-2xl font-semibold text-zinc-900 mb-2">
+                  Bloqueios
+                </h3>
                 <p className="text-sm text-zinc-600 mt-1">
                   <span className="font-semibold text-zinc-900">
                     {activeBlocks ?? 0}

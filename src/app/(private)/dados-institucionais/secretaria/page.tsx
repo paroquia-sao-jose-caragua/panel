@@ -238,10 +238,7 @@ export default function SecretariatOverviewPage() {
             <div>
               <div className="flex items-center gap-2 text-zinc-900">
                 <Building2 className="w-5 h-5 text-zinc-900 shrink-0" />
-                <h2
-                  className="text-xl sm:text-2xl font-semibold text-zinc-900"
-                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                >
+                <h2 className="text-xl sm:text-2xl font-semibold text-zinc-900">
                   Atendimento & Secretaria Paroquial
                 </h2>
               </div>
@@ -447,10 +444,7 @@ export default function SecretariatOverviewPage() {
             <div>
               <div className="flex items-center gap-2 text-zinc-900">
                 <Heart className="w-5 h-5 text-zinc-900 shrink-0" />
-                <h2
-                  className="text-xl sm:text-2xl font-semibold text-zinc-900"
-                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                >
+                <h2 className="text-xl sm:text-2xl font-semibold text-zinc-900">
                   Quero Contribuir & Dízimo
                 </h2>
               </div>

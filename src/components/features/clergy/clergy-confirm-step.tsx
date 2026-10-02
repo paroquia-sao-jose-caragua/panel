@@ -68,10 +68,7 @@ export const ClergyConfirmStep = ({
               {roleName || 'MINISTRO DA IGREJA'}
             </span>
 
-            <h3
-              className="text-2xl sm:text-3xl font-semibold text-[#18351E] leading-tight mb-2"
-              style={{ fontFamily: 'Cormorant Garamond, serif' }}
-            >
+            <h3 className="text-2xl sm:text-3xl font-semibold text-[#18351E] leading-tight mb-2">
               {name || 'Nome do Clérigo'}
             </h3>
 
