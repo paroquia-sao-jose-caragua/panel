@@ -80,6 +80,20 @@ export const ROUTES = {
     ADD: '/agenda-pastoral/categorias-atendimento/adicionar',
     EDIT: (id: string) => `/agenda-pastoral/categorias-atendimento/editar/${id}`,
   },
+  MY_AGENDA: {
+    HOME: '/minha-agenda',
+    SCHEDULE: '/minha-agenda/agenda',
+    REQUESTS: '/minha-agenda/solicitacoes',
+    PROFILE: '/minha-agenda/perfil',
+    NEW: '/minha-agenda/novo',
+    NEW_WITH_DATE: (date: string) => `/minha-agenda/novo?date=${date}`,
+    DETAILS: (id: string) => `/minha-agenda/${id}`,
+    ARCHIVE: '/minha-agenda/arquivo',
+    SETTINGS: {
+      AVAILABILITY: '/minha-agenda/configuracoes/disponibilidade',
+      BLOCKS: '/minha-agenda/configuracoes/bloqueios',
+    },
+  },
   HELP: {
     HOME: '/ajuda',
     APPOINTMENTS: '/ajuda/atendimentos',

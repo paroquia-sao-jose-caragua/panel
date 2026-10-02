@@ -66,11 +66,12 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
         const isAllowedForAgent =
           pathname.startsWith('/ajuda') ||
           pathname.startsWith('/central-de-ajuda') ||
+          pathname.startsWith('/minha-agenda') ||
           pathname.startsWith('/agenda-pastoral') ||
           pathname.startsWith('/atendimentos');
 
         if (!isAllowedForAgent) {
-          navigate.replace('/agenda-pastoral');
+          navigate.replace('/minha-agenda');
           return;
         }
       } else if (isAuthRoute) {
