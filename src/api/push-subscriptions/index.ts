@@ -3,7 +3,9 @@ import type { PushSubscriptionEntity } from '@/entities/push-subscription';
 
 export async function listPushSubscriptions(origin?: 'site' | 'panel') {
   const query = origin ? `?origin=${origin}` : '';
-  return api<{ subscriptions: PushSubscriptionEntity[] }>(`/push-subscriptions${query}`);
+  return api<{ subscriptions: PushSubscriptionEntity[] }>(
+    `/push-subscriptions${query}`
+  );
 }
 
 export async function deletePushSubscription(id: string) {
@@ -19,8 +21,28 @@ export async function sendTestPushNotification(payload: {
   targetId?: string;
   targetOrigin?: 'site' | 'panel';
 }) {
-  return api<{ sentCount: number; failedCount: number }>('/push-subscriptions/test', {
+  return api<{ sentCount: number; failedCount: number }>(
+    '/push-subscriptions/test',
+    {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }
+  );
+}
+
+export async function subscribePushNotification(data: {
+  userName?: string | null;
+  userId?: string | null;
+  origin: 'site' | 'panel';
+  deviceInfo?: string | null;
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+}) {
+  return api<{ subscription: PushSubscriptionEntity }>('/push-subscriptions', {
     method: 'POST',
-    body: JSON.stringify(payload),
+    body: JSON.stringify(data),
   });
 }
