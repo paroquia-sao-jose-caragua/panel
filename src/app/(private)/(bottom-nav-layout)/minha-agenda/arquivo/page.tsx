@@ -52,10 +52,7 @@ export default function MinhaAgendaArchivePage() {
 
   return (
     <div className="flex flex-col flex-1">
-      <MinhaAgendaHeader
-        title="Arquivo de Atendimentos"
-        backHref={ROUTES.MY_AGENDA.SCHEDULE}
-      />
+      <MinhaAgendaHeader title="Arquivo de Atendimentos" />
 
       <div className="px-4 pt-4 pb-8 space-y-5">
         {/* Intro */}

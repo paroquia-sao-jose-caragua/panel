@@ -31,6 +31,13 @@ import { showAlert } from '@/utils/showAlert';
 import { cn } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 
+interface FormErrors {
+  date?: string;
+  time?: string;
+  serviceId?: string;
+  requesterName?: string;
+}
+
 export default function MinhaAgendaNovoPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -52,6 +59,9 @@ export default function MinhaAgendaNovoPage() {
   const [requesterName, setRequesterName] = useState('');
   const [requesterPhone, setRequesterPhone] = useState('');
   const [notes, setNotes] = useState('');
+
+  // Validation errors
+  const [errors, setErrors] = useState<FormErrors>({});
 
   // Auto-select first service if available
   useEffect(() => {
@@ -82,25 +92,60 @@ export default function MinhaAgendaNovoPage() {
       return;
     }
 
+    const newErrors: FormErrors = {};
+
     if (!appointmentDate) {
-      showAlert('Por favor, selecione a data do atendimento.');
-      return;
+      newErrors.date = 'Por favor, selecione uma data para o atendimento.';
     }
 
     if (!selectedTime) {
-      showAlert('Por favor, selecione ou informe o horário do atendimento.');
-      return;
+      newErrors.time =
+        timeMode === 'available'
+          ? 'Por favor, selecione um dos horários disponíveis abaixo.'
+          : 'Por favor, informe o horário do atendimento (ex: 14:30).';
     }
 
     if (!serviceId) {
-      showAlert('Por favor, selecione o tipo de atendimento.');
-      return;
+      newErrors.serviceId = 'Por favor, selecione o tipo de atendimento pastoral.';
     }
 
     if (!requesterName.trim()) {
-      showAlert('Por favor, informe o nome do solicitante.');
+      newErrors.requesterName = 'Por favor, informe o nome completo do solicitante.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+
+      // Focus and scroll to the first field with an error
+      setTimeout(() => {
+        let targetId = '';
+        if (newErrors.date) {
+          targetId = 'new-appointment-date';
+        } else if (newErrors.time) {
+          targetId =
+            timeMode === 'custom'
+              ? 'custom-appointment-time'
+              : 'slots-container';
+        } else if (newErrors.serviceId) {
+          targetId = 'service-select';
+        } else if (newErrors.requesterName) {
+          targetId = 'requester-name';
+        }
+
+        if (targetId) {
+          const el = document.getElementById(targetId);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.focus();
+          }
+        }
+      }, 50);
+
+      showAlert('Por favor, preencha os campos obrigatórios destacados em vermelho.');
       return;
     }
+
+    setErrors({});
 
     try {
       await createAppointment({
@@ -115,8 +160,11 @@ export default function MinhaAgendaNovoPage() {
         status: 'confirmed',
       });
 
-      showAlert('Atendimento agendado com sucesso!');
-      router.push(ROUTES.MY_AGENDA.HOME);
+      if (typeof window !== 'undefined' && window.history.length > 1) {
+        router.back();
+      } else {
+        router.push(ROUTES.MY_AGENDA.SCHEDULE);
+      }
     } catch {
       // Handled in mutation hook
     }
@@ -124,13 +172,10 @@ export default function MinhaAgendaNovoPage() {
 
   return (
     <div className="flex flex-col flex-1">
-      <MinhaAgendaHeader
-        title="Novo Atendimento"
-        backHref={ROUTES.MY_AGENDA.HOME}
-      />
+      <MinhaAgendaHeader title="Novo Atendimento" />
 
       <div className="px-4 pt-4 pb-12">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form noValidate onSubmit={handleSubmit} className="space-y-6">
           {/* Section 1: Data e Horário */}
           <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
@@ -156,17 +201,36 @@ export default function MinhaAgendaNovoPage() {
                 onChange={(e) => {
                   setAppointmentDate(e.target.value);
                   setSelectedSlotTime('');
+                  if (errors.date) {
+                    setErrors((prev) => ({ ...prev, date: undefined }));
+                  }
                 }}
-                className="h-11 rounded-xl text-sm"
+                className={cn(
+                  'h-11 rounded-xl text-sm transition-colors',
+                  errors.date
+                    ? 'border-red-500 focus-visible:ring-red-500 focus-error'
+                    : ''
+                )}
                 required
               />
+              {errors.date && (
+                <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                  <span>{errors.date}</span>
+                </p>
+              )}
             </div>
 
             {/* Mode Switcher Chips */}
             <div className="flex items-center gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => setTimeMode('available')}
+                onClick={() => {
+                  setTimeMode('available');
+                  if (errors.time) {
+                    setErrors((prev) => ({ ...prev, time: undefined }));
+                  }
+                }}
                 className={cn(
                   'px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none',
                   timeMode === 'available'
@@ -179,7 +243,12 @@ export default function MinhaAgendaNovoPage() {
 
               <button
                 type="button"
-                onClick={() => setTimeMode('custom')}
+                onClick={() => {
+                  setTimeMode('custom');
+                  if (errors.time) {
+                    setErrors((prev) => ({ ...prev, time: undefined }));
+                  }
+                }}
                 className={cn(
                   'px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none',
                   timeMode === 'custom'
@@ -193,10 +262,26 @@ export default function MinhaAgendaNovoPage() {
 
             {/* Slots or Custom Input */}
             {timeMode === 'available' ? (
-              <div className="space-y-2 pt-1">
-                <span className="text-xs font-semibold text-zinc-600 block">
-                  Horários disponíveis
-                </span>
+              <div
+                id="slots-container"
+                tabIndex={-1}
+                className={cn(
+                  'space-y-2 pt-1 p-2 rounded-2xl transition-all focus:outline-none',
+                  errors.time
+                    ? 'border-2 border-red-500 bg-red-50/20 focus-error'
+                    : ''
+                )}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-zinc-600 block">
+                    Horários disponíveis *
+                  </span>
+                  {errors.time && (
+                    <span className="text-[11px] font-semibold text-red-600">
+                      Seleção obrigatória
+                    </span>
+                  )}
+                </div>
 
                 {isSlotsPending ? (
                   <div className="grid grid-cols-4 gap-2">
@@ -221,7 +306,12 @@ export default function MinhaAgendaNovoPage() {
                         <button
                           key={slot.startTime}
                           type="button"
-                          onClick={() => setSelectedSlotTime(slot.startTime)}
+                          onClick={() => {
+                            setSelectedSlotTime(slot.startTime);
+                            if (errors.time) {
+                              setErrors((prev) => ({ ...prev, time: undefined }));
+                            }
+                          }}
                           className={cn(
                             'py-2 px-1 text-center rounded-xl text-xs font-bold transition-all cursor-pointer border select-none',
                             isSelected
@@ -234,6 +324,13 @@ export default function MinhaAgendaNovoPage() {
                       );
                     })}
                   </div>
+                )}
+
+                {errors.time && (
+                  <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 pt-1 animate-in fade-in duration-200">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{errors.time}</span>
+                  </p>
                 )}
               </div>
             ) : (
@@ -248,10 +345,26 @@ export default function MinhaAgendaNovoPage() {
                   id="custom-appointment-time"
                   type="time"
                   value={customTime}
-                  onChange={(e) => setCustomTime(e.target.value)}
-                  className="h-11 rounded-xl text-sm"
+                  onChange={(e) => {
+                    setCustomTime(e.target.value);
+                    if (errors.time) {
+                      setErrors((prev) => ({ ...prev, time: undefined }));
+                    }
+                  }}
+                  className={cn(
+                    'h-11 rounded-xl text-sm transition-colors',
+                    errors.time
+                      ? 'border-red-500 focus-visible:ring-red-500 focus-error'
+                      : ''
+                  )}
                   required
                 />
+                {errors.time && (
+                  <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{errors.time}</span>
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -268,24 +381,41 @@ export default function MinhaAgendaNovoPage() {
             {isServicesPending ? (
               <Skeleton className="h-11 rounded-xl" />
             ) : (
-              <select
-                value={serviceId}
-                onChange={(e) => {
-                  setServiceId(e.target.value);
-                  setSelectedSlotTime('');
-                }}
-                className="w-full h-11 px-3 rounded-xl border border-zinc-300 bg-white text-sm font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
-                required
-              >
-                <option value="" disabled>
-                  Selecione o tipo de atendimento
-                </option>
-                {services?.map((svc) => (
-                  <option key={svc.id} value={svc.id}>
-                    {svc.title} ({svc.defaultDurationMinutes} min)
+              <div>
+                <select
+                  id="service-select"
+                  value={serviceId}
+                  onChange={(e) => {
+                    setServiceId(e.target.value);
+                    setSelectedSlotTime('');
+                    if (errors.serviceId) {
+                      setErrors((prev) => ({ ...prev, serviceId: undefined }));
+                    }
+                  }}
+                  className={cn(
+                    'w-full h-11 px-3 rounded-xl border bg-white text-sm font-medium text-zinc-900 transition-all focus:outline-none cursor-pointer',
+                    errors.serviceId
+                      ? 'border-red-500 ring-2 ring-red-200 focus-error'
+                      : 'border-zinc-300 focus:ring-2 focus:ring-brand-500'
+                  )}
+                  required
+                >
+                  <option value="" disabled>
+                    Selecione o tipo de atendimento
                   </option>
-                ))}
-              </select>
+                  {services?.map((svc) => (
+                    <option key={svc.id} value={svc.id}>
+                      {svc.title} ({svc.defaultDurationMinutes} min)
+                    </option>
+                  ))}
+                </select>
+                {errors.serviceId && (
+                  <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{errors.serviceId}</span>
+                  </p>
+                )}
+              </div>
             )}
           </div>
 
@@ -301,7 +431,7 @@ export default function MinhaAgendaNovoPage() {
             <select
               value={communityId}
               onChange={(e) => setCommunityId(e.target.value)}
-              className="w-full h-11 px-3 rounded-xl border border-zinc-300 bg-white text-sm font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+              className="w-full h-11 px-3 rounded-xl border border-zinc-300 bg-white text-sm font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all cursor-pointer"
             >
               <option value="">Matriz / Gabinete Pastoral</option>
               {communities?.map((comm) => (
@@ -333,11 +463,27 @@ export default function MinhaAgendaNovoPage() {
                   id="requester-name"
                   type="text"
                   value={requesterName}
-                  onChange={(e) => setRequesterName(e.target.value)}
+                  onChange={(e) => {
+                    setRequesterName(e.target.value);
+                    if (errors.requesterName) {
+                      setErrors((prev) => ({ ...prev, requesterName: undefined }));
+                    }
+                  }}
                   placeholder="Nome do fiel solicitante"
-                  className="h-11 rounded-xl text-sm"
+                  className={cn(
+                    'h-11 rounded-xl text-sm transition-colors',
+                    errors.requesterName
+                      ? 'border-red-500 focus-visible:ring-red-500 focus-error'
+                      : ''
+                  )}
                   required
                 />
+                {errors.requesterName && (
+                  <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{errors.requesterName}</span>
+                  </p>
+                )}
               </div>
 
               <div>
@@ -359,7 +505,7 @@ export default function MinhaAgendaNovoPage() {
             </div>
           </div>
 
-          {/* Section 5: Observações (Opcional) */}
+          {/* Section 5: Observações */}
           <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -387,7 +533,7 @@ export default function MinhaAgendaNovoPage() {
           <Button
             type="submit"
             isLoading={isCreating}
-            className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-md active:scale-[0.99]"
+            className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-md active:scale-[0.99] cursor-pointer"
           >
             Agendar atendimento
           </Button>

@@ -52,7 +52,7 @@ export default function MinhaAgendaPerfilPage() {
 
   return (
     <div className="flex flex-col flex-1">
-      <MinhaAgendaHeader title="Meu Perfil" />
+      <MinhaAgendaHeader title="Meu Perfil" hideBackButton />
 
       <div className="px-4 pt-4 pb-12 space-y-6">
         {/* Pastoral Agent Profile Card */}

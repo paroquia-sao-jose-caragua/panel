@@ -81,7 +81,7 @@ export default function MinhaAgendaRequestsPage() {
 
   return (
     <div className="flex flex-col flex-1">
-      <MinhaAgendaHeader title="Solicitações" />
+      <MinhaAgendaHeader title="Solicitações" hideBackButton />
 
       <div className="px-4 pt-4 pb-8 space-y-5">
         {/* Intro */}

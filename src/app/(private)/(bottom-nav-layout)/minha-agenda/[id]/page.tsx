@@ -174,12 +174,7 @@ export default function MinhaAgendaDetalhesPage({
 
   return (
     <div className="flex flex-col flex-1">
-      <MinhaAgendaHeader
-        title="Detalhes do Atendimento"
-        backHref={
-          isArchived ? ROUTES.MY_AGENDA.ARCHIVE : ROUTES.MY_AGENDA.SCHEDULE
-        }
-      />
+      <MinhaAgendaHeader title="Detalhes do Atendimento" />
 
       <div className="px-4 pt-4 pb-12 space-y-5">
         {/* Main Details Card (Screen 4 visual) */}

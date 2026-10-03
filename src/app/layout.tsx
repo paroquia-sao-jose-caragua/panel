@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Geist, Geist_Mono, Lora } from "next/font/google";
 import './globals.css';
+import { Toaster } from 'sonner';
 import AppProvider from '@/providers/AppProvider';
 import { PwaNotificationManager } from '@/components/pwa/PwaNotificationManager';
 
@@ -57,7 +58,7 @@ export default async function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} ${cormorantGaramond.variable} ${lora.variable} antialiased`}
+      className={`${cormorantGaramond.variable} ${geistSans.variable} ${geistMono.variable} ${lora.variable} antialiased`}
     >
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -67,6 +68,7 @@ export default async function RootLayout({
         <AppProvider>
           <div className="min-h-screen">{children}</div>
           <PwaNotificationManager />
+          <Toaster position="top-center" richColors closeButton />
         </AppProvider>
       </body>
     </html>

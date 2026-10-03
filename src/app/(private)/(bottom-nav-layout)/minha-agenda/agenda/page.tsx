@@ -1,15 +1,19 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, {
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import Link from 'next/link';
 import {
   ChevronLeft,
   ChevronRight,
-  Calendar as CalendarIcon,
+  CalendarPlus,
   Info,
-  History,
   Clock,
-  Sparkles,
   ArrowRight,
 } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -24,38 +28,59 @@ import { cn } from '@/lib/utils';
 export default function MinhaAgendaSchedulePage() {
   const { appointments, isPending } = useAppointments();
 
+  const todayStr = useMemo(() => dayjs().format('YYYY-MM-DD'), []);
+
   // Current selected date state (defaults to today)
   const [selectedDate, setSelectedDate] = useState(() =>
     dayjs().format('YYYY-MM-DD')
   );
 
-  // Current viewing month
-  const [currentMonth, setCurrentMonth] = useState(() => dayjs());
+  const selectedDateRef = useRef(selectedDate);
+  useEffect(() => {
+    selectedDateRef.current = selectedDate;
+  }, [selectedDate]);
 
-  // Month title formatted, e.g. "Outubro 2026"
-  const monthTitle = useMemo(() => {
-    const raw = currentMonth.locale('pt-br').format('MMMM YYYY');
-    return raw.charAt(0).toUpperCase() + raw.slice(1);
-  }, [currentMonth]);
+  // Strip scrolling and element refs
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const dayRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const isProgrammaticScroll = useRef<boolean>(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Center date for the 7-day strip (O dia de hoje fica no centro!)
-  const centerDate = useMemo(() => {
+  // Desktop mouse dragging support
+  const isMouseDownRef = useRef<boolean>(false);
+  const startXRef = useRef<number>(0);
+  const scrollLeftStartRef = useRef<number>(0);
+  const hasDraggedRef = useRef<boolean>(false);
+
+  // Generate a continuous rolling range of days (60 days in past to 120 days in future)
+  const daysList = useMemo(() => {
     const today = dayjs();
-    if (currentMonth.isSame(today, 'month')) {
-      return today;
-    }
-    const targetDay = Math.min(today.date(), currentMonth.daysInMonth());
-    return currentMonth.date(targetDay);
-  }, [currentMonth]);
+    const selected = dayjs(selectedDate);
+    const defaultStart = today.subtract(60, 'day');
+    const defaultEnd = today.add(120, 'day');
 
-  // Generate 7-day strip with centerDate (HOJE no mês atual) exactly at the center (index 3)
-  const weekDays = useMemo(() => {
-    const days = [];
-    for (let offset = -3; offset <= 3; offset++) {
-      days.push(centerDate.add(offset, 'day'));
+    const start = selected.isBefore(defaultStart)
+      ? selected.subtract(30, 'day')
+      : defaultStart;
+    const end = selected.isAfter(defaultEnd)
+      ? selected.add(30, 'day')
+      : defaultEnd;
+
+    const count = end.diff(start, 'day');
+    const list = [];
+    for (let i = 0; i <= count; i++) {
+      list.push(start.add(i, 'day'));
     }
-    return days;
-  }, [centerDate]);
+    return list;
+  }, [Math.floor(dayjs(selectedDate).diff(dayjs(), 'day') / 60)]);
+
+  // Month title formatted based on currently selected/centered date, e.g. "Outubro 2026"
+  const monthTitle = useMemo(() => {
+    const raw = dayjs(selectedDate).locale('pt-br').format('MMMM YYYY');
+    return raw.charAt(0).toUpperCase() + raw.slice(1);
+  }, [selectedDate]);
+
+  const isCurrentSelectedToday = selectedDate === todayStr;
 
   // Appointments mapping by date for indicators (only confirmed)
   const confirmedByDate = useMemo(() => {
@@ -93,65 +118,258 @@ export default function MinhaAgendaSchedulePage() {
     return raw.charAt(0).toUpperCase() + raw.slice(1);
   }, [selectedDate]);
 
-  const handlePrevMonth = () => {
-    const prev = currentMonth.subtract(1, 'month');
-    setCurrentMonth(prev);
-    const targetDay = Math.min(dayjs().date(), prev.daysInMonth());
-    setSelectedDate(prev.date(targetDay).format('YYYY-MM-DD'));
+  // Center a given date element in the container using viewport-independent getBoundingClientRect
+  const centerDateInView = useCallback(
+    (dateStr: string, smooth: boolean = true) => {
+      const container = scrollContainerRef.current;
+      const element = dayRefs.current.get(dateStr);
+      if (!container || !element) return;
+
+      isProgrammaticScroll.current = true;
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      const elementCenter = elementRect.left + elementRect.width / 2;
+      const diff = elementCenter - containerCenter;
+
+      if (Math.abs(diff) > 1) {
+        container.scrollTo({
+          left: container.scrollLeft + diff,
+          behavior: smooth ? 'smooth' : ('instant' as ScrollBehavior),
+        });
+      }
+
+      scrollTimeoutRef.current = setTimeout(
+        () => {
+          isProgrammaticScroll.current = false;
+        },
+        smooth ? 450 : 100
+      );
+    },
+    []
+  );
+
+  // Position today in center on initial mount
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      centerDateInView(selectedDateRef.current, false);
+    });
+    const timer = setTimeout(() => {
+      centerDateInView(selectedDateRef.current, false);
+    }, 100);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(timer);
+    };
+  }, [centerDateInView]);
+
+  // Keep selected date centered when window or viewport resizes
+  useEffect(() => {
+    const handleResize = () => {
+      centerDateInView(selectedDateRef.current, false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [centerDateInView]);
+
+  // Click on a day
+  const handleDateClick = useCallback(
+    (dateStr: string) => {
+      if (hasDraggedRef.current) return;
+      setSelectedDate(dateStr);
+      centerDateInView(dateStr, true);
+    },
+    [centerDateInView]
+  );
+
+  // Chevron arrow navigation (rolls days and centers)
+  const handlePrevDay = useCallback(() => {
+    const prevDate = dayjs(selectedDateRef.current)
+      .subtract(1, 'day')
+      .format('YYYY-MM-DD');
+    setSelectedDate(prevDate);
+    centerDateInView(prevDate, true);
+  }, [centerDateInView]);
+
+  const handleNextDay = useCallback(() => {
+    const nextDate = dayjs(selectedDateRef.current)
+      .add(1, 'day')
+      .format('YYYY-MM-DD');
+    setSelectedDate(nextDate);
+    centerDateInView(nextDate, true);
+  }, [centerDateInView]);
+
+  const handleGoToToday = useCallback(() => {
+    setSelectedDate(todayStr);
+    centerDateInView(todayStr, true);
+  }, [todayStr, centerDateInView]);
+
+  // Debounced scroll listener to detect center date when scrolling with touch/trackpad/mouse
+  const handleScroll = useCallback(() => {
+    if (isProgrammaticScroll.current) return;
+
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+
+    scrollTimeoutRef.current = setTimeout(() => {
+      if (isProgrammaticScroll.current) return;
+
+      const container = scrollContainerRef.current;
+      if (!container) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter =
+        containerRect.left + containerRect.width / 2;
+
+      let closestDate = selectedDateRef.current;
+      let minDistance = Infinity;
+
+      dayRefs.current.forEach((el, dateStr) => {
+        const elRect = el.getBoundingClientRect();
+        const elCenter = elRect.left + elRect.width / 2;
+        const distance = Math.abs(elCenter - containerCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestDate = dateStr;
+        }
+      });
+
+      if (closestDate) {
+        if (closestDate !== selectedDateRef.current) {
+          setSelectedDate(closestDate);
+        }
+
+        // Snap the closest date to the exact center
+        const closestEl = dayRefs.current.get(closestDate);
+        if (closestEl) {
+          const elRect = closestEl.getBoundingClientRect();
+          const elCenter = elRect.left + elRect.width / 2;
+          const diff = elCenter - containerCenter;
+          if (Math.abs(diff) > 1) {
+            container.scrollTo({
+              left: container.scrollLeft + diff,
+              behavior: 'smooth',
+            });
+          }
+        }
+      }
+    }, 100);
+  }, []);
+
+  // Desktop mouse drag handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    isMouseDownRef.current = true;
+    startXRef.current = e.pageX - container.offsetLeft;
+    scrollLeftStartRef.current = container.scrollLeft;
+    hasDraggedRef.current = false;
   };
 
-  const handleNextMonth = () => {
-    const next = currentMonth.add(1, 'month');
-    setCurrentMonth(next);
-    const targetDay = Math.min(dayjs().date(), next.daysInMonth());
-    setSelectedDate(next.date(targetDay).format('YYYY-MM-DD'));
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDownRef.current) return;
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const x = e.pageX - container.offsetLeft;
+    const walk = x - startXRef.current;
+    if (Math.abs(walk) > 5) {
+      hasDraggedRef.current = true;
+    }
+    container.scrollLeft = scrollLeftStartRef.current - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    if (isMouseDownRef.current) {
+      isMouseDownRef.current = false;
+      if (hasDraggedRef.current) {
+        handleScroll();
+      }
+    }
   };
 
   return (
     <div className="flex flex-col flex-1">
       <MinhaAgendaHeader
         title="Minha Agenda"
+        hideBackButton
         rightAction={
-          <div className="p-1 text-brand-300">
-            <CalendarIcon className="w-5 h-5" />
-          </div>
+          <Link
+            href={ROUTES.MY_AGENDA.NEW_WITH_DATE(selectedDate)}
+            aria-label="Agendar atendimento"
+            className="p-1.5 rounded-full text-brand-300 hover:text-white hover:bg-brand-800 transition active:scale-95 flex items-center justify-center cursor-pointer"
+          >
+            <CalendarPlus className="w-5 h-5" />
+          </Link>
         }
       />
 
       <div className="px-4 pt-4 pb-8 space-y-6">
-        {/* Month Navigator */}
-        <section className="bg-white rounded-2xl p-4 border border-zinc-200/90 shadow-2xs space-y-4">
+        {/* Month Navigator & Rolling Days Strip */}
+        <section className="bg-white rounded-2xl p-4 border border-zinc-200/90 shadow-2xs space-y-3 overflow-hidden">
+          {/* Header with Chevrons and dynamic month title */}
           <div className="flex items-center justify-between px-1">
             <button
               type="button"
-              onClick={handlePrevMonth}
-              aria-label="Mês anterior"
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 transition active:scale-95"
+              onClick={handlePrevDay}
+              aria-label="Dia anterior"
+              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 transition active:scale-95 cursor-pointer"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
 
-            <span className="text-base font-bold text-zinc-900 tracking-tight">
-              {monthTitle}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-base font-bold text-zinc-900 tracking-tight capitalize">
+                {monthTitle}
+              </span>
+              {!isCurrentSelectedToday && (
+                <button
+                  type="button"
+                  onClick={handleGoToToday}
+                  className="text-[11px] font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 border border-brand-200/80 px-2 py-0.5 rounded-full transition active:scale-95 cursor-pointer"
+                >
+                  Hoje
+                </button>
+              )}
+            </div>
 
             <button
               type="button"
-              onClick={handleNextMonth}
-              aria-label="Próximo mês"
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 transition active:scale-95"
+              onClick={handleNextDay}
+              aria-label="Próximo dia"
+              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 transition active:scale-95 cursor-pointer"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Weekday Strip */}
-          <div className="grid grid-cols-7 gap-1 text-center">
-            {weekDays.map((d) => {
+          {/* Horizontally Rolling Weekday Strip */}
+          <div
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            className="flex items-center gap-1.5 overflow-x-auto select-none py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
+          >
+            {/* Left spacer so the first day can be perfectly centered */}
+            <div
+              className="shrink-0 pointer-events-none"
+              style={{ width: 'calc(50% - 26px)' }}
+              aria-hidden="true"
+            />
+
+            {daysList.map((d) => {
               const dateStr = d.format('YYYY-MM-DD');
               const isSelected = dateStr === selectedDate;
               const hasAppointments = (confirmedByDate.get(dateStr) || 0) > 0;
-              const isToday = dateStr === dayjs().format('YYYY-MM-DD');
+              const isToday = dateStr === todayStr;
 
               // Weekday short, e.g. "Seg", "Ter", ...
               const weekDayName = d.locale('pt-br').format('ddd');
@@ -162,20 +380,27 @@ export default function MinhaAgendaSchedulePage() {
               return (
                 <button
                   key={dateStr}
+                  ref={(el) => {
+                    if (el) {
+                      dayRefs.current.set(dateStr, el);
+                    } else {
+                      dayRefs.current.delete(dateStr);
+                    }
+                  }}
                   type="button"
-                  onClick={() => setSelectedDate(dateStr)}
+                  onClick={() => handleDateClick(dateStr)}
                   className={cn(
-                    'flex flex-col items-center py-2 px-1 rounded-xl transition-all cursor-pointer relative select-none group',
+                    'flex flex-col items-center py-2 px-1.5 rounded-xl transition-all cursor-pointer relative select-none shrink-0 w-[52px]',
                     isSelected
-                      ? 'bg-brand-900 text-white shadow-xs'
+                      ? 'bg-brand-900 text-white shadow-xs scale-105 z-10'
                       : isToday
-                      ? 'bg-brand-50 text-brand-900 font-semibold border border-brand-200/80'
+                      ? 'bg-brand-50 text-brand-900 font-semibold border border-brand-200/80 hover:bg-brand-100'
                       : 'hover:bg-zinc-100 text-zinc-600'
                   )}
                 >
                   <span
                     className={cn(
-                      'text-[10px] font-semibold mb-1',
+                      'text-[10px] font-semibold mb-0.5 tracking-tight',
                       isSelected ? 'text-brand-300' : 'text-zinc-400'
                     )}
                   >
@@ -184,7 +409,7 @@ export default function MinhaAgendaSchedulePage() {
 
                   <span
                     className={cn(
-                      'text-sm font-bold tracking-tight',
+                      'text-base font-bold tracking-tight',
                       isSelected ? 'text-white' : 'text-zinc-800',
                       isToday && !isSelected && 'text-brand-800 underline'
                     )}
@@ -206,6 +431,13 @@ export default function MinhaAgendaSchedulePage() {
                 </button>
               );
             })}
+
+            {/* Right spacer so the last day can be perfectly centered */}
+            <div
+              className="shrink-0 pointer-events-none"
+              style={{ width: 'calc(50% - 26px)' }}
+              aria-hidden="true"
+            />
           </div>
         </section>
 

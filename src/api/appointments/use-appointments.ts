@@ -54,7 +54,6 @@ export const useAppointments = (params?: ListAppointmentsParams) => {
       updateAppointmentStatus(updateParams),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['appointments'] });
-      showAlert('Status do atendimento atualizado com sucesso!');
     },
     onError: (err: Error) => {
       showAlert(`Erro ao atualizar status: ${err.message}`);
