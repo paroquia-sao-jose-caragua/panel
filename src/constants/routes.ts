@@ -83,6 +83,7 @@ export const ROUTES = {
   MY_AGENDA: {
     HOME: '/minha-agenda',
     SCHEDULE: '/minha-agenda/agenda',
+    SCHEDULE_WITH_DATE: (date: string) => `/minha-agenda/agenda?date=${date}`,
     REQUESTS: '/minha-agenda/solicitacoes',
     PROFILE: '/minha-agenda/perfil',
     NEW: '/minha-agenda/novo',
@@ -92,6 +93,8 @@ export const ROUTES = {
     SETTINGS: {
       AVAILABILITY: '/minha-agenda/configuracoes/disponibilidade',
       BLOCKS: '/minha-agenda/configuracoes/bloqueios',
+      NEW_BLOCK: '/minha-agenda/configuracoes/bloqueios/novo',
+      NEW_BLOCK_WITH_DATE: (date: string) => `/minha-agenda/configuracoes/bloqueios/novo?date=${date}`,
     },
   },
   HELP: {

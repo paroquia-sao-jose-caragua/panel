@@ -19,6 +19,22 @@ export function MinhaAgendaBottomNav() {
     return appointments.filter((a) => a.status === 'pending').length;
   }, [appointments]);
 
+  // Guard: Hide bottom nav on internal subpages with back button
+  const isRootTab = React.useMemo(() => {
+    if (!pathname) return true;
+    const cleanPath = pathname.replace(/\/$/, '');
+    return (
+      cleanPath === ROUTES.MY_AGENDA.HOME ||
+      cleanPath === ROUTES.MY_AGENDA.SCHEDULE ||
+      cleanPath === ROUTES.MY_AGENDA.REQUESTS ||
+      cleanPath === ROUTES.MY_AGENDA.PROFILE
+    );
+  }, [pathname]);
+
+  if (!isRootTab) {
+    return null;
+  }
+
   const navItems = [
     {
       label: 'Início',
@@ -69,10 +85,10 @@ export function MinhaAgendaBottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                'relative flex flex-col items-center justify-center flex-1 py-1 px-2 rounded-xl transition-all duration-200 select-none outline-none group',
+                'relative flex flex-col items-center justify-center flex-1 py-1.5 px-2 rounded-xl transition-all duration-200 select-none outline-none group',
                 active
-                  ? 'text-brand-800 font-semibold'
-                  : 'text-zinc-600 hover:text-zinc-800 hover:bg-zinc-100/60 active:scale-95'
+                  ? 'bg-brand-700/10 text-brand-900 font-semibold'
+                  : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/60 active:scale-95'
               )}
             >
               <div className="relative flex items-center justify-center">

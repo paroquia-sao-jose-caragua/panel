@@ -42,9 +42,9 @@ export function FullLoading({
         <Image
           src="/loading-icon.png"
           alt="Paróquia São José"
-          width={156}
-          height={156}
-          className="w-39 h-39 z-10 object-contain drop-shadow-md"
+          width={154}
+          height={154}
+          className="w-38 h-38 z-10 object-contain drop-shadow-md"
           priority
         />
       </div>

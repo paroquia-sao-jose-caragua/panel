@@ -3,10 +3,11 @@
 import React, { useMemo } from 'react';
 import Link from 'next/link';
 import {
-  CalendarDays,
+  Calendar,
   CalendarPlus,
+  CalendarX,
   ChevronRight,
-  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
@@ -24,19 +25,23 @@ export default function MinhaAgendaHomePage() {
 
   const todayStr = useMemo(() => dayjs().format('YYYY-MM-DD'), []);
 
-  // Filter ONLY confirmed appointments from today onwards, sorted chronologically
-  const upcomingConfirmed = useMemo(() => {
+  // Filter ONLY confirmed appointments for TODAY
+  const todayAppointments = useMemo(() => {
     if (!appointments) return [];
 
     return appointments
-      .filter((app) => app.status === 'confirmed' && app.appointmentDate >= todayStr)
-      .sort((a, b) => {
-        if (a.appointmentDate !== b.appointmentDate) {
-          return a.appointmentDate.localeCompare(b.appointmentDate);
-        }
-        return a.startTime.localeCompare(b.startTime);
-      });
+      .filter(
+        (app) =>
+          app.status === 'confirmed' && app.appointmentDate === todayStr
+      )
+      .sort((a, b) => a.startTime.localeCompare(b.startTime));
   }, [appointments, todayStr]);
+
+  // Formatted date string for today, e.g. "Sexta-feira, 2 de outubro"
+  const todayFormatted = useMemo(() => {
+    const raw = dayjs().locale('pt-br').format('dddd, D [de] MMMM');
+    return raw.charAt(0).toUpperCase() + raw.slice(1);
+  }, []);
 
   const firstName = useMemo(() => {
     if (!user?.name) return 'Agente Pastoral';
@@ -55,24 +60,33 @@ export default function MinhaAgendaHomePage() {
             Olá, {firstName}!
           </h1>
           <p className="text-sm text-zinc-600 leading-relaxed">
-            Aqui estão seus próximos atendimentos e a sua agenda.
+            Aqui está a sua programação pastoral para o dia de hoje.
           </p>
         </section>
 
-        {/* Section: Próximos Atendimentos */}
+        {/* Section: Atendimentos de Hoje */}
         <section className="space-y-3">
           <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-[36px] h-[36px] rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-800 shrink-0">
+                <Calendar className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-zinc-900">
+                  Atendimentos de hoje
+                </h2>
+                <p className="text-[11px] text-zinc-500 font-medium">
+                  {todayFormatted}
+                </p>
+              </div>
+            </div>
+
             <Link
               href={ROUTES.MY_AGENDA.SCHEDULE}
-              className="flex items-center gap-2 group cursor-pointer"
+              className="text-xs font-semibold text-brand-800 hover:text-brand-900 transition flex items-center gap-1 group py-1 px-2 rounded-lg hover:bg-brand-50 cursor-pointer"
             >
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-800">
-                <CalendarDays className="w-4 h-4" />
-              </div>
-              <h2 className="text-base font-bold text-zinc-900 group-hover:text-brand-800 transition-colors">
-                Próximos atendimentos
-              </h2>
-              <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-zinc-700 group-hover:translate-x-0.5 transition-all" />
+              <span>Ver agenda</span>
+              <ChevronRight className="w-3.5 h-3.5 text-brand-700 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
 
@@ -81,29 +95,45 @@ export default function MinhaAgendaHomePage() {
             <div className="space-y-3">
               <Skeleton className="h-24 w-full rounded-2xl" />
               <Skeleton className="h-24 w-full rounded-2xl" />
-              <Skeleton className="h-24 w-full rounded-2xl" />
             </div>
-          ) : upcomingConfirmed.length === 0 ? (
-            <div className="p-6 text-center bg-white rounded-2xl border border-dashed border-zinc-300 space-y-3">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-800 flex items-center justify-center mx-auto">
-                <Sparkles className="w-6 h-6" />
+          ) : todayAppointments.length === 0 ? (
+            <div className="p-7 text-center bg-white rounded-3xl border border-dashed border-zinc-200 shadow-2xs space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-zinc-100 border border-zinc-200/80 text-zinc-500 flex items-center justify-center mx-auto shadow-2xs">
+                <CalendarX className="w-6 h-6 text-zinc-500" />
               </div>
-              <div className="space-y-1">
-                <p className="text-sm font-semibold text-zinc-800">
-                  Nenhum atendimento agendado
+
+              <div className="space-y-1.5">
+                <p className="text-base font-bold text-zinc-900 font-serif">
+                  Nenhum atendimento para hoje
                 </p>
-                <p className="text-xs text-zinc-500 max-w-xs mx-auto">
-                  Você não possui atendimentos confirmados nos próximos dias.
+                <p className="text-xs text-zinc-500 max-w-xs mx-auto leading-relaxed">
+                  Você não possui atendimentos agendados para a data de hoje.
+                  Aproveite para conferir os próximos dias na sua agenda completa.
                 </p>
+              </div>
+
+              <div className="pt-1">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="rounded-xl border-zinc-300 hover:bg-zinc-50 text-xs font-semibold gap-1.5 shadow-2xs cursor-pointer"
+                >
+                  <Link href={ROUTES.MY_AGENDA.SCHEDULE}>
+                    <Calendar className="w-4 h-4 text-brand-800" />
+                    <span>Abrir agenda completa</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </Link>
+                </Button>
               </div>
             </div>
           ) : (
             <div className="space-y-3">
-              {upcomingConfirmed.slice(0, 4).map((item) => (
+              {todayAppointments.map((item) => (
                 <AppointmentCard
                   key={item.id}
                   appointment={item}
-                  showDate
+                  showDate={false}
                 />
               ))}
             </div>
@@ -115,25 +145,13 @@ export default function MinhaAgendaHomePage() {
           {/* Main CTA: Agendar atendimento */}
           <Button
             asChild
-            className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-sm active:scale-[0.99] gap-2"
+            className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-sm active:scale-[0.99] gap-2 cursor-pointer"
           >
             <Link href={ROUTES.MY_AGENDA.NEW}>
               <CalendarPlus className="w-5 h-5 text-brand-300" />
               <span>Agendar atendimento</span>
             </Link>
           </Button>
-
-          {/* Secondary CTA: Ver toda a agenda */}
-          <Link
-            href={ROUTES.MY_AGENDA.SCHEDULE}
-            className="w-full h-12 rounded-2xl bg-white border border-zinc-200/90 hover:bg-zinc-50 text-zinc-800 font-medium text-sm flex items-center justify-between px-4 shadow-2xs active:scale-[0.99] transition-all group"
-          >
-            <div className="flex items-center gap-2.5">
-              <CalendarDays className="w-4 h-4 text-zinc-500 group-hover:text-brand-800 transition-colors" />
-              <span>Ver toda a agenda</span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-zinc-700 group-hover:translate-x-0.5 transition-all" />
-          </Link>
         </section>
       </div>
     </div>

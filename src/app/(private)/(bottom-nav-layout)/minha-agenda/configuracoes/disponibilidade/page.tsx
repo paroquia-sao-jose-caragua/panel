@@ -232,7 +232,7 @@ export default function MinhaDisponibilidadePage() {
         backHref={ROUTES.MY_AGENDA.PROFILE}
       />
 
-      <div className="px-4 pt-4 pb-12 space-y-5">
+      <div className="px-4 pt-4 pb-28 space-y-5">
         {/* Intro */}
         <section className="space-y-1">
           <h2 className="text-xl font-bold tracking-tight text-zinc-900 font-serif">
@@ -375,18 +375,20 @@ export default function MinhaDisponibilidadePage() {
           </section>
         )}
 
-        {/* Save Button */}
-        <section className="pt-2">
-          <Button
-            type="button"
-            onClick={handleSave}
-            isLoading={isSavingAvailabilities}
-            className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-md active:scale-[0.99] gap-2"
-          >
-            <Save className="w-4 h-4 text-brand-300" />
-            <span>Salvar disponibilidade</span>
-          </Button>
-        </section>
+        {/* Fixed Save Button Bar */}
+        <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-zinc-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] px-4 py-3">
+          <div className="max-w-lg mx-auto">
+            <Button
+              type="button"
+              onClick={handleSave}
+              isLoading={isSavingAvailabilities}
+              className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-md active:scale-[0.99] gap-2 cursor-pointer"
+            >
+              <Save className="w-4 h-4 text-brand-300" />
+              <span>Salvar disponibilidade</span>
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

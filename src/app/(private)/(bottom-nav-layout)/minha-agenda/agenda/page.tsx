@@ -8,6 +8,7 @@ import React, {
   useCallback,
 } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,6 +16,7 @@ import {
   Info,
   Clock,
   ArrowRight,
+  ArrowLeft,
 } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
@@ -25,15 +27,21 @@ import { AppointmentCard } from '@/components/features/minha-agenda/appointment-
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
-export default function MinhaAgendaSchedulePage() {
+function MinhaAgendaScheduleContent() {
+  const searchParams = useSearchParams();
+  const queryDate = searchParams?.get('date');
+
   const { appointments, isPending } = useAppointments();
 
   const todayStr = useMemo(() => dayjs().format('YYYY-MM-DD'), []);
 
-  // Current selected date state (defaults to today)
-  const [selectedDate, setSelectedDate] = useState(() =>
-    dayjs().format('YYYY-MM-DD')
-  );
+  // Current selected date state (defaults to queryDate if present and valid, otherwise today)
+  const [selectedDate, setSelectedDate] = useState(() => {
+    if (queryDate && dayjs(queryDate).isValid()) {
+      return queryDate;
+    }
+    return dayjs().format('YYYY-MM-DD');
+  });
 
   const selectedDateRef = useRef(selectedDate);
   useEffect(() => {
@@ -153,20 +161,51 @@ export default function MinhaAgendaSchedulePage() {
     []
   );
 
-  // Position today in center on initial mount
+  // Position selected date in center on initial mount
   useEffect(() => {
+    const targetDate =
+      queryDate && dayjs(queryDate).isValid()
+        ? queryDate
+        : selectedDateRef.current;
+
     const frame = requestAnimationFrame(() => {
-      centerDateInView(selectedDateRef.current, false);
+      centerDateInView(targetDate, false);
     });
     const timer = setTimeout(() => {
-      centerDateInView(selectedDateRef.current, false);
+      centerDateInView(targetDate, false);
     }, 100);
+    const timer2 = setTimeout(() => {
+      centerDateInView(targetDate, false);
+    }, 250);
 
     return () => {
       cancelAnimationFrame(frame);
       clearTimeout(timer);
+      clearTimeout(timer2);
     };
-  }, [centerDateInView]);
+  }, [centerDateInView, queryDate]);
+
+  // Synchronize when query parameter 'date' changes (e.g. navigated after adding appointment)
+  useEffect(() => {
+    if (queryDate && dayjs(queryDate).isValid()) {
+      setSelectedDate(queryDate);
+      const frame = requestAnimationFrame(() => {
+        centerDateInView(queryDate, false);
+      });
+      const timer = setTimeout(() => {
+        centerDateInView(queryDate, false);
+      }, 100);
+      const timer2 = setTimeout(() => {
+        centerDateInView(queryDate, false);
+      }, 250);
+
+      return () => {
+        cancelAnimationFrame(frame);
+        clearTimeout(timer);
+        clearTimeout(timer2);
+      };
+    }
+  }, [queryDate, centerDateInView]);
 
   // Keep selected date centered when window or viewport resizes
   useEffect(() => {
@@ -331,9 +370,10 @@ export default function MinhaAgendaSchedulePage() {
                 <button
                   type="button"
                   onClick={handleGoToToday}
-                  className="text-[11px] font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 border border-brand-200/80 px-2 py-0.5 rounded-full transition active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 border border-brand-200/80 px-2 py-0.5 rounded-full transition active:scale-95 cursor-pointer"
                 >
-                  Hoje
+                  <ArrowLeft className="w-2.5 h-2.5 text-brand-700" />
+                  <span>Hoje</span>
                 </button>
               )}
             </div>
@@ -502,5 +542,21 @@ export default function MinhaAgendaSchedulePage() {
         </section>
       </div>
     </div>
+  );
+}
+
+export default function MinhaAgendaSchedulePage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="flex flex-col flex-1 p-4 space-y-4">
+          <Skeleton className="h-14 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-40 w-full rounded-2xl" />
+        </div>
+      }
+    >
+      <MinhaAgendaScheduleContent />
+    </React.Suspense>
   );
 }

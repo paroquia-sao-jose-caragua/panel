@@ -160,11 +160,7 @@ export default function MinhaAgendaNovoPage() {
         status: 'confirmed',
       });
 
-      if (typeof window !== 'undefined' && window.history.length > 1) {
-        router.back();
-      } else {
-        router.push(ROUTES.MY_AGENDA.SCHEDULE);
-      }
+      router.push(ROUTES.MY_AGENDA.SCHEDULE_WITH_DATE(appointmentDate));
     } catch {
       // Handled in mutation hook
     }
@@ -174,7 +170,7 @@ export default function MinhaAgendaNovoPage() {
     <div className="flex flex-col flex-1">
       <MinhaAgendaHeader title="Novo Atendimento" />
 
-      <div className="px-4 pt-4 pb-12">
+      <div className="px-4 pt-4 pb-28">
         <form noValidate onSubmit={handleSubmit} className="space-y-6">
           {/* Section 1: Data e Horário */}
           <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-4">
@@ -529,14 +525,18 @@ export default function MinhaAgendaNovoPage() {
             />
           </div>
 
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            isLoading={isCreating}
-            className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-md active:scale-[0.99] cursor-pointer"
-          >
-            Agendar atendimento
-          </Button>
+          {/* Fixed Bottom Submit Bar */}
+          <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-zinc-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] px-4 py-3">
+            <div className="max-w-lg mx-auto">
+              <Button
+                type="submit"
+                isLoading={isCreating}
+                className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-md active:scale-[0.99] cursor-pointer"
+              >
+                Agendar atendimento
+              </Button>
+            </div>
+          </div>
         </form>
       </div>
     </div>

@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
-import { ParishLogoIcon } from '@/components/ui/logos/parish-logo-icon';
 import useAuthStore from '@/stores/useAuthStore';
 import { ROUTES } from '@/constants/routes';
 
@@ -51,7 +50,7 @@ export function MinhaAgendaHeader({
           <img
             src="/logo-mark-dark.png"
             alt="Paróquia São José"
-            className="lg:hidden transition-all duration-200 object-contain h-10 sm:h-12"
+            className="transition-all duration-200 object-contain h-10 sm:h-12"
           />
 
           {/* User Profile Avatar / Link */}
