@@ -39,6 +39,20 @@ function areKeysEqual(
   return true;
 }
 
+function getOrCreateDeviceId(): string {
+  if (typeof window === 'undefined') return '';
+  const STORAGE_KEY = 'paroquia_push_device_id';
+  let deviceId = localStorage.getItem(STORAGE_KEY);
+  if (!deviceId) {
+    deviceId =
+      typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `dev_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    localStorage.setItem(STORAGE_KEY, deviceId);
+  }
+  return deviceId;
+}
+
 export function PwaNotificationManager() {
   const { user, isLogged } = useAuthStore();
   const [deferredPrompt, setDeferredPrompt] =
@@ -90,6 +104,7 @@ export function PwaNotificationManager() {
         userName: userNameToSave,
         userId: user.id,
         origin: 'panel',
+        deviceId: getOrCreateDeviceId(),
         deviceInfo: getDeviceInfo(),
         endpoint: subscription.endpoint,
         keys: { p256dh, auth },

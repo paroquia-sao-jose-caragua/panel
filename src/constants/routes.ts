@@ -10,7 +10,9 @@ export const ROUTES = {
     CHANGE_PASSWORD: '/configuracoes/alterar-senha',
     USERS: '/configuracoes/usuarios',
     NEW_USER: '/configuracoes/usuarios/novo',
-    RESET_USER_PASSWORD: (id: string) => `/configuracoes/usuarios/${id}/redefinir-senha`,
+    EDIT_USER: (id: string) => `/configuracoes/usuarios/${id}/editar`,
+    RESET_USER_PASSWORD: (id: string) =>
+      `/configuracoes/usuarios/${id}/redefinir-senha`,
     EDIT_USER_ROLE: (id: string) => `/configuracoes/usuarios/${id}/papel`,
     DEVICES: '/configuracoes/dispositivos',
     SEND_PUSH: '/configuracoes/dispositivos/enviar-notificacao',
@@ -24,12 +26,18 @@ export const ROUTES = {
     PATRON: (slug: string) => `/dados-institucionais/${slug}/padroeiro`,
     GALLERY: (slug: string) => `/dados-institucionais/${slug}/galeria`,
     MASS_SCHEDULES: {
-      ADD_ORDINARY: (slug: string) => `/dados-institucionais/${slug}/adicionar-missa-regular`,
-      EDIT_ORDINARY: (slug: string, id: string) => `/dados-institucionais/${slug}/missa-regular/${id}/editar`,
-      ADD_DEVOTIONAL: (slug: string) => `/dados-institucionais/${slug}/adicionar-missa-devocional`,
-      EDIT_DEVOTIONAL: (slug: string, id: string) => `/dados-institucionais/${slug}/missa-devocional/${id}/editar`,
-      ADD_ANNUAL: (slug: string) => `/dados-institucionais/${slug}/adicionar-missa-anual`,
-      EDIT_ANNUAL: (slug: string, id: string) => `/dados-institucionais/${slug}/missa-anual/${id}/editar`,
+      ADD_ORDINARY: (slug: string) =>
+        `/dados-institucionais/${slug}/adicionar-missa-regular`,
+      EDIT_ORDINARY: (slug: string, id: string) =>
+        `/dados-institucionais/${slug}/missa-regular/${id}/editar`,
+      ADD_DEVOTIONAL: (slug: string) =>
+        `/dados-institucionais/${slug}/adicionar-missa-devocional`,
+      EDIT_DEVOTIONAL: (slug: string, id: string) =>
+        `/dados-institucionais/${slug}/missa-devocional/${id}/editar`,
+      ADD_ANNUAL: (slug: string) =>
+        `/dados-institucionais/${slug}/adicionar-missa-anual`,
+      EDIT_ANNUAL: (slug: string, id: string) =>
+        `/dados-institucionais/${slug}/missa-anual/${id}/editar`,
     },
   },
   CLERGY: {
@@ -47,7 +55,8 @@ export const ROUTES = {
   CALENDAR: {
     HOME: '/programacao-e-eventos',
     ADD_EVENT: '/programacao-e-eventos/adicionar-evento',
-    ADD_EVENT_WITH_DATE: (date: string) => `/programacao-e-eventos/adicionar-evento?date=${date}`,
+    ADD_EVENT_WITH_DATE: (date: string) =>
+      `/programacao-e-eventos/adicionar-evento?date=${date}`,
     EDIT_EVENT: (id: string) => `/programacao-e-eventos/evento/${id}/editar`,
   },
   SECRETARIAT: {
@@ -72,13 +81,16 @@ export const ROUTES = {
     HOME: '/agenda-pastoral/agentes-pastorais',
     ADD: '/agenda-pastoral/agentes-pastorais/adicionar',
     EDIT: (id: string) => `/agenda-pastoral/agentes-pastorais/editar/${id}`,
-    SCHEDULE: (id: string) => `/agenda-pastoral/agentes-pastorais/${id}/horarios`,
-    BLOCKED_DATES: (id: string) => `/agenda-pastoral/agentes-pastorais/${id}/bloqueios`,
+    SCHEDULE: (id: string) =>
+      `/agenda-pastoral/agentes-pastorais/${id}/horarios`,
+    BLOCKED_DATES: (id: string) =>
+      `/agenda-pastoral/agentes-pastorais/${id}/bloqueios`,
   },
   APPOINTMENT_SERVICES: {
     HOME: '/agenda-pastoral/categorias-atendimento',
     ADD: '/agenda-pastoral/categorias-atendimento/adicionar',
-    EDIT: (id: string) => `/agenda-pastoral/categorias-atendimento/editar/${id}`,
+    EDIT: (id: string) =>
+      `/agenda-pastoral/categorias-atendimento/editar/${id}`,
   },
   MY_AGENDA: {
     HOME: '/minha-agenda',
@@ -94,7 +106,8 @@ export const ROUTES = {
       AVAILABILITY: '/minha-agenda/configuracoes/disponibilidade',
       BLOCKS: '/minha-agenda/configuracoes/bloqueios',
       NEW_BLOCK: '/minha-agenda/configuracoes/bloqueios/novo',
-      NEW_BLOCK_WITH_DATE: (date: string) => `/minha-agenda/configuracoes/bloqueios/novo?date=${date}`,
+      NEW_BLOCK_WITH_DATE: (date: string) =>
+        `/minha-agenda/configuracoes/bloqueios/novo?date=${date}`,
     },
   },
   HELP: {

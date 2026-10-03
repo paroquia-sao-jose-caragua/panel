@@ -34,6 +34,7 @@ export async function subscribePushNotification(data: {
   userName?: string | null;
   userId?: string | null;
   origin: 'site' | 'panel';
+  deviceId?: string | null;
   deviceInfo?: string | null;
   endpoint: string;
   keys: {

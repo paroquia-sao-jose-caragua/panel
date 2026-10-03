@@ -11,6 +11,7 @@ import {
   UserCheck,
   LogOut,
   Mail,
+  Pencil,
 } from 'lucide-react';
 import { User, UserRole, UserStatus } from '@/entities/user';
 import useAuthStore from '@/stores/useAuthStore';
@@ -41,26 +42,33 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
   const queryClient = useQueryClient();
   const { user: currentUser } = useAuthStore();
 
-  const [userToToggleStatus, setUserToToggleStatus] = useState<User | null>(null);
-  const [userToRevokeSessions, setUserToRevokeSessions] = useState<User | null>(null);
-  const [userToResendInvite, setUserToResendInvite] = useState<User | null>(null);
+  const [userToToggleStatus, setUserToToggleStatus] = useState<User | null>(
+    null
+  );
+  const [userToRevokeSessions, setUserToRevokeSessions] = useState<User | null>(
+    null
+  );
+  const [userToResendInvite, setUserToResendInvite] = useState<User | null>(
+    null
+  );
 
-  const { mutate: mutateResendInvite, isPending: isResendingInvite } = useMutation({
-    mutationFn: resendUserInvite,
-    onSuccess: ({ statusCode, message }) => {
-      if (statusCode === 200) {
-        showAlert(message || t('invite-resent-successfully'));
-        queryClient.invalidateQueries({ queryKey: ['users'] });
-        setUserToResendInvite(null);
-      } else {
-        showAlert(message || t('something-went-wrong'));
-      }
-    },
-    onError: (error) => {
-      console.error(error);
-      showAlert(t('something-went-wrong'));
-    },
-  });
+  const { mutate: mutateResendInvite, isPending: isResendingInvite } =
+    useMutation({
+      mutationFn: resendUserInvite,
+      onSuccess: ({ statusCode, message }) => {
+        if (statusCode === 200) {
+          showAlert(message || t('invite-resent-successfully'));
+          queryClient.invalidateQueries({ queryKey: ['users'] });
+          setUserToResendInvite(null);
+        } else {
+          showAlert(message || t('something-went-wrong'));
+        }
+      },
+      onError: (error) => {
+        console.error(error);
+        showAlert(t('something-went-wrong'));
+      },
+    });
 
   const { mutate: mutateStatus, isPending: isUpdatingStatus } = useMutation({
     mutationFn: updateUserStatus,
@@ -217,7 +225,10 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
               const isSelf = currentUser?.email === u.email;
 
               return (
-                <tr key={u.id} className="hover:bg-zinc-50/50 transition-colors">
+                <tr
+                  key={u.id}
+                  className="hover:bg-zinc-50/50 transition-colors"
+                >
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-brand-100 text-brand-800 font-semibold flex items-center justify-center text-sm shrink-0">
@@ -232,7 +243,9 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
                             </span>
                           )}
                         </div>
-                        <div className="text-xs text-zinc-500 truncate">{u.email}</div>
+                        <div className="text-xs text-zinc-500 truncate">
+                          {u.email}
+                        </div>
                       </div>
                     </div>
                   </td>
@@ -243,6 +256,18 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
                   </td>
                   <td className="py-3.5 px-4 text-right">
                     <div className="flex items-center justify-end gap-1">
+                      <Button
+                        asChild
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-zinc-500 hover:text-brand-700 hover:bg-brand-50"
+                        title={t('edit-user')}
+                      >
+                        <Link href={ROUTES.SETTINGS.EDIT_USER(u.id)}>
+                          <Pencil className="h-4 w-4" />
+                        </Link>
+                      </Button>
+
                       {u.status === 'pending' && (
                         <Button
                           variant="ghost"
@@ -264,7 +289,20 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48 bg-white">
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-48 bg-white"
+                        >
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href={ROUTES.SETTINGS.EDIT_USER(u.id)}
+                              className="flex items-center gap-2 cursor-pointer font-medium text-zinc-900"
+                            >
+                              <Pencil className="w-4 h-4 text-brand-600" />
+                              <span>{t('edit-user')}</span>
+                            </Link>
+                          </DropdownMenuItem>
+
                           {u.status === 'pending' && (
                             <DropdownMenuItem
                               onClick={() => setUserToResendInvite(u)}
@@ -311,7 +349,9 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
                               {u.status === 'suspended' ? (
                                 <>
                                   <UserCheck className="w-4 h-4 text-emerald-600" />
-                                  <span className="text-emerald-700">{t('reactivate-account')}</span>
+                                  <span className="text-emerald-700">
+                                    {t('reactivate-account')}
+                                  </span>
                                 </>
                               ) : (
                                 <>
@@ -369,12 +409,16 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
         }
         confirmText={t('confirm')}
         cancelText={t('cancel')}
-        variant={userToToggleStatus?.status === 'suspended' ? 'default' : 'destructive'}
+        variant={
+          userToToggleStatus?.status === 'suspended' ? 'default' : 'destructive'
+        }
         isPending={isUpdatingStatus}
         onConfirm={() => {
           if (userToToggleStatus) {
             const nextStatus: UserStatus =
-              userToToggleStatus.status === 'suspended' ? 'active' : 'suspended';
+              userToToggleStatus.status === 'suspended'
+                ? 'active'
+                : 'suspended';
             mutateStatus({ id: userToToggleStatus.id, status: nextStatus });
           }
         }}
