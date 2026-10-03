@@ -74,9 +74,17 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
           navigate.replace('/minha-agenda');
           return;
         }
-      } else if (isAuthRoute) {
-        navigate.replace('/dados-institucionais');
-        return;
+      } else {
+        // Apenas agentes pastorais podem visualizar e acessar as rotas de /minha-agenda
+        if (pathname.startsWith('/minha-agenda')) {
+          navigate.replace('/agenda-pastoral');
+          return;
+        }
+
+        if (isAuthRoute) {
+          navigate.replace('/dados-institucionais');
+          return;
+        }
       }
     }
 

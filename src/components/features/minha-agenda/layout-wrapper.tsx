@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
-import { usePathname } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { MinhaAgendaBottomNav } from './bottom-nav';
 import { cn } from '@/lib/utils';
+import useAuthStore from '@/stores/useAuthStore';
+import { FullLoading } from '@/components/ui/loading/full-loading';
 
 interface MinhaAgendaLayoutWrapperProps {
   children: React.ReactNode;
@@ -21,8 +23,22 @@ export function MinhaAgendaLayoutWrapper({
   children,
 }: MinhaAgendaLayoutWrapperProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isLogged } = useAuthStore();
+
   const cleanPath = pathname ? pathname.replace(/\/$/, '') : '';
   const isRootTab = ROOT_TABS.has(cleanPath);
+
+  useEffect(() => {
+    if (isLogged && user && user.role !== 'pastoral_agent') {
+      router.replace(ROUTES.APPOINTMENTS.HOME);
+    }
+  }, [isLogged, user, router]);
+
+  // Se o usuário logado não for agente pastoral, bloqueia a renderização
+  if (isLogged && user && user.role !== 'pastoral_agent') {
+    return <FullLoading />;
+  }
 
   return (
     <div

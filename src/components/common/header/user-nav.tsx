@@ -112,15 +112,17 @@ export function UserNav() {
 
           {/* Navigation Options Group */}
           <DropdownMenuGroup className="space-y-0.5">
-            <DropdownMenuItem asChild>
-              <Link
-                href={ROUTES.MY_AGENDA.HOME}
-                className="flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-emerald-800 rounded-lg hover:bg-emerald-50 transition cursor-pointer"
-              >
-                <Calendar className="w-4 h-4 text-emerald-600" />
-                <span>Minha Agenda Pastoral</span>
-              </Link>
-            </DropdownMenuItem>
+            {user?.role === 'pastoral_agent' && (
+              <DropdownMenuItem asChild>
+                <Link
+                  href={ROUTES.MY_AGENDA.HOME}
+                  className="flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-emerald-800 rounded-lg hover:bg-emerald-50 transition cursor-pointer"
+                >
+                  <Calendar className="w-4 h-4 text-emerald-600" />
+                  <span>Minha Agenda Pastoral</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
 
             {user?.role !== 'pastoral_agent' && (
               <DropdownMenuItem asChild>

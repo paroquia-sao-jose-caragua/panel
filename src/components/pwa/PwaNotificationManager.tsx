@@ -26,6 +26,19 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
+function areKeysEqual(
+  buf1: ArrayBuffer | null | undefined,
+  buf2: Uint8Array
+): boolean {
+  if (!buf1) return false;
+  const a = new Uint8Array(buf1);
+  if (a.length !== buf2.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== buf2[i]) return false;
+  }
+  return true;
+}
+
 export function PwaNotificationManager() {
   const { user, isLogged } = useAuthStore();
   const [deferredPrompt, setDeferredPrompt] =
@@ -149,6 +162,26 @@ export function PwaNotificationManager() {
         );
 
         let subscription = await registration.pushManager.getSubscription();
+
+        // Se o aparelho já estava inscrito, mas com chave VAPID antiga/diferente, renova automaticamente
+        if (subscription) {
+          const currentKey = subscription.options?.applicationServerKey;
+          const hasKeyMismatch =
+            currentKey && !areKeysEqual(currentKey, applicationServerKey);
+          const storedKey = localStorage.getItem('paroquia_panel_push_vapid_key');
+          const needsRenewal =
+            hasKeyMismatch || (storedKey && storedKey !== DEFAULT_VAPID_PUBLIC_KEY);
+
+          if (needsRenewal) {
+            try {
+              await subscription.unsubscribe();
+              subscription = null;
+            } catch (err) {
+              console.error('Erro ao cancelar inscrição push antiga no painel:', err);
+            }
+          }
+        }
+
         if (!subscription) {
           subscription = await registration.pushManager
             .subscribe({
@@ -165,6 +198,7 @@ export function PwaNotificationManager() {
         }
 
         if (subscription) {
+          localStorage.setItem('paroquia_panel_push_vapid_key', DEFAULT_VAPID_PUBLIC_KEY);
           await sendSubscriptionToApi(subscription);
         }
       });
@@ -255,6 +289,25 @@ export function PwaNotificationManager() {
         );
 
         let subscription = await registration.pushManager.getSubscription();
+
+        if (subscription) {
+          const currentKey = subscription.options?.applicationServerKey;
+          const hasKeyMismatch =
+            currentKey && !areKeysEqual(currentKey, applicationServerKey);
+          const storedKey = localStorage.getItem('paroquia_panel_push_vapid_key');
+          const needsRenewal =
+            hasKeyMismatch || (storedKey && storedKey !== DEFAULT_VAPID_PUBLIC_KEY);
+
+          if (needsRenewal) {
+            try {
+              await subscription.unsubscribe();
+              subscription = null;
+            } catch (err) {
+              console.error('Erro ao cancelar inscrição push antiga no painel:', err);
+            }
+          }
+        }
+
         if (!subscription) {
           subscription = await registration.pushManager
             .subscribe({
@@ -268,6 +321,7 @@ export function PwaNotificationManager() {
         }
 
         if (subscription) {
+          localStorage.setItem('paroquia_panel_push_vapid_key', DEFAULT_VAPID_PUBLIC_KEY);
           await sendSubscriptionToApi(subscription);
         }
 
