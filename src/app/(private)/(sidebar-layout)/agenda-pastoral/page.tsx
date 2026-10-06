@@ -622,60 +622,6 @@ export default function AppointmentsDashboardPage() {
                 <span>Novo bloqueio</span>
               </Button>
             </div>
-
-            {/* Card: Atendimentos por categoria */}
-            <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-zinc-700 shrink-0" />
-                  <h3 className="text-lg font-bold text-zinc-900 font-serif">
-                    Atendimentos por categoria
-                  </h3>
-                </div>
-
-                <div className="w-36">
-                  <Select
-                    name="categoryRange"
-                    placeholder="Filtrar período"
-                    value={categoryTimeRange}
-                    onValueChange={(val) =>
-                      setCategoryTimeRange(val as '7' | '30' | 'month')
-                    }
-                  >
-                    <SelectItem value="7" text="Últimos 7 dias" />
-                    <SelectItem value="30" text="Últimos 30 dias" />
-                    <SelectItem value="month" text="Este mês" />
-                  </Select>
-                </div>
-              </div>
-
-              {categoryStats.length === 0 ? (
-                <p className="text-xs text-zinc-500 py-3 text-center">
-                  Nenhum atendimento categorizado registrado neste período.
-                </p>
-              ) : (
-                <div className="space-y-3 pt-1">
-                  {categoryStats.map((item) => (
-                    <div key={item.name} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium text-zinc-700">
-                          {item.name}
-                        </span>
-                        <span className="font-semibold text-zinc-900">
-                          {item.count} ({item.percentage}%)
-                        </span>
-                      </div>
-                      <div className="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
-                        <div
-                          className="bg-[#18392b] h-full rounded-full transition-all"
-                          style={{ width: `${Math.max(item.percentage, 5)}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Right Column (4 cols): Próximos dias */}

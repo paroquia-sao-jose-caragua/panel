@@ -81,10 +81,10 @@ export function AreaSelector() {
 
   const getAreaLabel = () => {
     switch (effectiveArea) {
-      case 'agenda':
-        return 'Agenda Pastoral';
       case 'events':
         return 'Programação & Eventos';
+      case 'agenda':
+        return 'Agenda Pastoral';
       case 'parish':
       default:
         return 'Dados da Paróquia';
@@ -93,10 +93,10 @@ export function AreaSelector() {
 
   const getAreaIcon = () => {
     switch (effectiveArea) {
-      case 'agenda':
-        return <CalendarDays className="w-4 h-4 text-emerald-700 shrink-0" />;
       case 'events':
         return <CalendarRange className="w-4 h-4 text-[#B8872E] shrink-0" />;
+      case 'agenda':
+        return <CalendarDays className="w-4 h-4 text-emerald-700 shrink-0" />;
       case 'parish':
       default:
         return <Church className="w-4 h-4 text-brand-700 shrink-0" />;
@@ -109,7 +109,7 @@ export function AreaSelector() {
         <button
           type="button"
           className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-brand-500/20 transition-all cursor-pointer border border-transparent hover:border-zinc-200/80 text-zinc-900 font-semibold text-sm group"
-          aria-label="Selecionar área de gerenciamento"
+          aria-label="Selecionar módulo de gerenciamento"
         >
           {getAreaIcon()}
 
@@ -125,46 +125,10 @@ export function AreaSelector() {
         className="w-80 p-2 rounded-2xl bg-white border border-zinc-200 shadow-xl space-y-1 z-50"
       >
         <DropdownMenuLabel className="px-3 pt-2 pb-1 text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
-          Área de gerenciamento
+          Módulo
         </DropdownMenuLabel>
 
-        {/* Option 1: Agenda Pastoral */}
-        <DropdownMenuItem
-          onClick={() => handleSelectArea('agenda')}
-          className={cn(
-            'flex items-start gap-3 p-2.5 rounded-xl transition-colors cursor-pointer',
-            effectiveArea === 'agenda'
-              ? 'bg-emerald-50/70 text-emerald-950 hover:bg-emerald-50'
-              : 'hover:bg-zinc-100 text-zinc-700'
-          )}
-        >
-          <div
-            className={cn(
-              'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5',
-              effectiveArea === 'agenda'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-zinc-100 text-zinc-600'
-            )}
-          >
-            <CalendarDays className="w-4 h-4" />
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold leading-tight">
-                Agenda Pastoral
-              </span>
-              {effectiveArea === 'agenda' && (
-                <Check className="w-4 h-4 text-emerald-700" />
-              )}
-            </div>
-            <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
-              Atendimentos, solicitações e disponibilidade
-            </p>
-          </div>
-        </DropdownMenuItem>
-
-        {/* Option 2: Programação & Eventos */}
+        {/* Option 1: Programação & Eventos */}
         <DropdownMenuItem
           onClick={() => handleSelectArea('events')}
           className={cn(
@@ -195,7 +159,43 @@ export function AreaSelector() {
               )}
             </div>
             <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
-              Calendário litúrgico, missas, festas e avisos
+              Calendário e comunicação
+            </p>
+          </div>
+        </DropdownMenuItem>
+
+        {/* Option 2: Agenda Pastoral */}
+        <DropdownMenuItem
+          onClick={() => handleSelectArea('agenda')}
+          className={cn(
+            'flex items-start gap-3 p-2.5 rounded-xl transition-colors cursor-pointer',
+            effectiveArea === 'agenda'
+              ? 'bg-emerald-50/70 text-emerald-950 hover:bg-emerald-50'
+              : 'hover:bg-zinc-100 text-zinc-700'
+          )}
+        >
+          <div
+            className={cn(
+              'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5',
+              effectiveArea === 'agenda'
+                ? 'bg-emerald-700 text-white'
+                : 'bg-zinc-100 text-zinc-600'
+            )}
+          >
+            <CalendarDays className="w-4 h-4" />
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold leading-tight">
+                Agenda Pastoral
+              </span>
+              {effectiveArea === 'agenda' && (
+                <Check className="w-4 h-4 text-emerald-700" />
+              )}
+            </div>
+            <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
+              Atendimentos e agentes
             </p>
           </div>
         </DropdownMenuItem>
@@ -231,10 +231,47 @@ export function AreaSelector() {
               )}
             </div>
             <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
-              Comunidades, capelas, clero e secretaria
+              Informações institucionais
             </p>
           </div>
         </DropdownMenuItem>
+
+        {/* Option 4: Comunicação / Pascom (Futuro) */}
+        <div
+          className="flex items-start gap-3 p-2.5 rounded-xl opacity-60 cursor-not-allowed select-none"
+          title="Módulo de blog e publicações da Pascom (em breve)"
+        >
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 bg-zinc-100 text-zinc-500">
+            <svg
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+              <path d="M18 14h-8" />
+              <path d="M15 18h-5" />
+              <path d="M10 6h8v4h-8V6Z" />
+            </svg>
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold leading-tight text-zinc-600">
+                Comunicação / Pascom
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-zinc-200/80 text-zinc-600">
+                Em breve
+              </span>
+            </div>
+            <p className="text-xs text-zinc-400 mt-0.5 line-clamp-2">
+              Blog e publicações
+            </p>
+          </div>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

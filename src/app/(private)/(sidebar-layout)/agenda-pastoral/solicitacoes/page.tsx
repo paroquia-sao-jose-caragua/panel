@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
   CalendarCheck,
@@ -12,23 +12,19 @@ import {
   Search,
   User,
   XCircle,
-  AlertCircle,
-  AlertTriangle,
+  Check,
+  X,
   HeartHandshake,
   Calendar as CalendarIcon,
-  Settings2,
-  Save,
-  Plus,
-  Printer,
+  Home,
+  Eye,
   Pencil,
-  Send,
-  ChevronDown,
-  BellRing,
-  MoreHorizontal,
   Copy,
-  ExternalLink,
-  RotateCcw,
+  MoreHorizontal,
+  Filter,
 } from 'lucide-react';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
 
 import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
@@ -37,8 +33,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+import { BackButton } from '@/components/common/back-button';
+import { Select, SelectItem } from '@/components/common/select';
 import {
   Dialog,
   DialogContent,
@@ -49,57 +45,48 @@ import {
 } from '@/components/ui/dialog';
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { FieldGroup } from '@/components/ui/field';
 import { showAlert } from '@/utils/showAlert';
-import { useAppointments, useAppointmentSettings, usePastoralAgents } from '@/api/appointments/use-appointments';
-import type { Appointment, AppointmentStatus } from '@/entities/appointment';
+import {
+  useAppointments,
+  usePastoralAgents,
+  useMyPastoralAgent,
+} from '@/api/appointments/use-appointments';
+import type { Appointment } from '@/entities/appointment';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
 import {
   AppointmentWhatsAppDialog,
   type WhatsAppTemplateType,
 } from '@/components/features/appointments/appointment-whatsapp-dialog';
-import { ConfirmDialog } from '@/components/common/dialog/confirm-dialog';
 
-const isAppointmentWithinDeadline = (dateStr: string, timeStr?: string): boolean => {
-  if (!dateStr) return false;
-  try {
-    const [year, month, day] = dateStr.split('-').map(Number);
-    if (!year || !month || !day) return false;
+dayjs.locale('pt-br');
 
-    let hours = 23;
-    let minutes = 59;
-    if (timeStr && timeStr.includes(':')) {
-      const [h, m] = timeStr.split(':').map(Number);
-      if (!isNaN(h) && !isNaN(m)) {
-        hours = h;
-        minutes = m;
-      }
-    }
-
-    const appointmentDateTime = new Date(year, month - 1, day, hours, minutes, 0);
-    return appointmentDateTime.getTime() >= Date.now();
-  } catch {
-    return false;
-  }
-};
-
-export default function AppointmentsListPage() {
+export default function AppointmentsRequestsPage() {
   const { user } = useAuthStore();
   const isPastoralAgent = user?.role === 'pastoral_agent';
-  const isStaffSecretaryOrAdmin = user?.role === 'admin' || user?.role === 'secretary';
+  const isStaffSecretaryOrAdmin =
+    user?.role === 'admin' || user?.role === 'secretary';
 
-  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const { agent: myAgent } = useMyPastoralAgent(isPastoralAgent);
+  const { agents } = usePastoralAgents();
+
   const [selectedAgentId, setSelectedAgentId] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [cancellingAppointment, setCancellingAppointment] = useState<Appointment | null>(null);
-  const [revertingAppointment, setRevertingAppointment] = useState<Appointment | null>(null);
-  const [processingAppointmentId, setProcessingAppointmentId] = useState<string | null>(null);
+
+  // Cancellation and confirmation states
+  const [cancellingAppointment, setCancellingAppointment] =
+    useState<Appointment | null>(null);
+  const [cancellationReason, setCancellationReason] = useState('');
+  const [processingAppointmentId, setProcessingAppointmentId] = useState<
+    string | null
+  >(null);
+
   const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
     open: boolean;
     appointment: Appointment | null;
@@ -110,38 +97,47 @@ export default function AppointmentsListPage() {
     appointment: null,
     template: 'confirmation',
   });
-  const [cancellationReason, setCancellationReason] = useState('');
-  const [showNoticeEditor, setShowNoticeEditor] = useState(false);
-  const [customTitle, setCustomTitle] = useState('');
-  const [customMessage, setCustomMessage] = useState('');
 
-  const { appointments, isPending, updateStatus, isUpdatingStatus } = useAppointments();
-  const { agents } = usePastoralAgents();
-  const {
-    settings,
-    isPending: isSettingsPending,
-    updateSettings,
-    isUpdatingSettings,
-  } = useAppointmentSettings();
+  const effectiveAgentId = isPastoralAgent
+    ? myAgent?.id
+    : selectedAgentId !== 'all'
+    ? selectedAgentId
+    : undefined;
 
-  const filteredAppointments = (appointments || []).filter((appointment) => {
-    if (selectedStatus !== 'all' && appointment.status !== selectedStatus) {
-      return false;
-    }
-    if (!isPastoralAgent && selectedAgentId !== 'all' && appointment.agentId !== selectedAgentId) {
-      return false;
-    }
-    if (searchTerm.trim()) {
-      const term = searchTerm.toLowerCase();
-      const matchRequester = appointment.requesterName?.toLowerCase().includes(term);
-      const matchPatient = appointment.patientName?.toLowerCase().includes(term);
-      const matchAgent = appointment.agent?.name?.toLowerCase().includes(term);
-      const matchService = appointment.service?.title?.toLowerCase().includes(term);
-      return matchRequester || matchPatient || matchAgent || matchService;
-    }
-    return true;
+  // Query ONLY pending appointments
+  const { appointments, isPending, updateStatus } = useAppointments({
+    status: 'pending',
+    agentId: effectiveAgentId,
   });
 
+  // Filter pending requests by search term and sort by date/time
+  const pendingRequests = useMemo(() => {
+    if (!appointments) return [];
+
+    return appointments
+      .filter((app) => {
+        if (app.status !== 'pending') return false;
+
+        if (searchTerm.trim()) {
+          const term = searchTerm.toLowerCase();
+          const matchRequester = app.requesterName?.toLowerCase().includes(term);
+          const matchPatient = app.patientName?.toLowerCase().includes(term);
+          const matchAgent = app.agent?.name?.toLowerCase().includes(term);
+          const matchService = app.service?.title?.toLowerCase().includes(term);
+          return matchRequester || matchPatient || matchAgent || matchService;
+        }
+
+        return true;
+      })
+      .sort((a, b) => {
+        if (a.appointmentDate !== b.appointmentDate) {
+          return (a.appointmentDate || '').localeCompare(b.appointmentDate || '');
+        }
+        return (a.startTime || '').localeCompare(b.startTime || '');
+      });
+  }, [appointments, searchTerm]);
+
+  // Handle confirming appointment
   const handleConfirm = async (appointment: Appointment) => {
     setProcessingAppointmentId(appointment.id);
     try {
@@ -149,6 +145,8 @@ export default function AppointmentsListPage() {
         id: appointment.id,
         status: 'confirmed',
       });
+
+      showAlert('Atendimento confirmado com sucesso!');
 
       if (isStaffSecretaryOrAdmin) {
         setWhatsAppDialogState({
@@ -165,46 +163,7 @@ export default function AppointmentsListPage() {
     }
   };
 
-  const handleComplete = async (appointment: Appointment) => {
-    setProcessingAppointmentId(appointment.id);
-    try {
-      await updateStatus({
-        id: appointment.id,
-        status: 'completed',
-      });
-    } finally {
-      setProcessingAppointmentId(null);
-    }
-  };
-
-  const handleCopyTrackingLink = (appointment: Appointment) => {
-    const siteBaseUrl =
-      process.env.NEXT_PUBLIC_SITE_BASE_URL ||
-      (typeof window !== 'undefined' ? window.location.origin : '');
-    const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-    const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
-
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(trackingUrl);
-      showAlert('Link de acompanhamento copiado!');
-    }
-  };
-
-  const handleRevertCancel = async () => {
-    if (!revertingAppointment) return;
-    setProcessingAppointmentId(revertingAppointment.id);
-    try {
-      await updateStatus({
-        id: revertingAppointment.id,
-        status: 'confirmed',
-        cancellationReason: null,
-      });
-      setRevertingAppointment(null);
-    } finally {
-      setProcessingAppointmentId(null);
-    }
-  };
-
+  // Handle cancelling/rejecting appointment
   const handleCancelSubmit = async () => {
     if (!cancellingAppointment) return;
     const finalReason =
@@ -226,6 +185,7 @@ export default function AppointmentsListPage() {
 
       setCancellingAppointment(null);
       setCancellationReason('');
+      showAlert('Solicitação de atendimento recusada.');
 
       if (isStaffSecretaryOrAdmin) {
         setWhatsAppDialogState({
@@ -240,60 +200,17 @@ export default function AppointmentsListPage() {
     }
   };
 
-  const getStatusBadge = (status: AppointmentStatus) => {
-    switch (status) {
-      case 'pending':
-        return (
-          <Badge variant="outline" className="bg-amber-50 text-amber-800 border-amber-300">
-            <Clock className="w-3 h-3 mr-1" /> Pendente
-          </Badge>
-        );
-      case 'confirmed':
-        return (
-          <Badge variant="outline" className="bg-emerald-50 text-emerald-800 border-emerald-300">
-            <CheckCircle2 className="w-3 h-3 mr-1" /> Confirmado
-          </Badge>
-        );
-      case 'completed':
-        return (
-          <Badge variant="outline" className="bg-blue-50 text-blue-800 border-blue-300">
-            <CheckCircle2 className="w-3 h-3 mr-1" /> Realizado
-          </Badge>
-        );
-      case 'cancelled':
-        return (
-          <Badge variant="outline" className="bg-rose-50 text-rose-800 border-rose-300">
-            <XCircle className="w-3 h-3 mr-1" /> Cancelado
-          </Badge>
-        );
+  const handleCopyTrackingLink = (appointment: Appointment) => {
+    const siteBaseUrl =
+      process.env.NEXT_PUBLIC_SITE_BASE_URL ||
+      (typeof window !== 'undefined' ? window.location.origin : '');
+    const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
+    const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(trackingUrl);
+      showAlert('Link de acompanhamento copiado!');
     }
-  };
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const [year, month, day] = dateStr.split('-');
-    return `${day}/${month}/${year}`;
-  };
-
-  const handleToggleEnabled = async (checked: boolean) => {
-    await updateSettings({
-      enabled: checked,
-      suspendedTitle: customTitle || settings?.suspendedTitle,
-      suspendedMessage: customMessage || settings?.suspendedMessage,
-    });
-    if (!checked) {
-      setCustomTitle(settings?.suspendedTitle || '');
-      setCustomMessage(settings?.suspendedMessage || '');
-    }
-  };
-
-  const handleSaveNotice = async () => {
-    await updateSettings({
-      enabled: settings?.enabled ?? false,
-      suspendedTitle: customTitle.trim() || settings?.suspendedTitle,
-      suspendedMessage: customMessage.trim() || settings?.suspendedMessage,
-    });
-    setShowNoticeEditor(false);
   };
 
   return (
@@ -301,790 +218,354 @@ export default function AppointmentsListPage() {
       <AppHeader
         links={[
           {
-            key: 'agendamentos-hub',
+            key: 'agenda-pastoral',
             href: ROUTES.APPOINTMENTS.HOME,
-            title: 'Atendimentos',
+            title: 'Agenda Pastoral',
             icon: CalendarCheck,
           },
           {
             key: 'solicitacoes',
             href: ROUTES.APPOINTMENTS.LIST,
-            title: isPastoralAgent ? 'Meus Atendimentos' : 'Atendimentos & Visitas',
+            title: 'Solicitações',
           },
         ]}
       />
-      <main className="w-full min-w-0 max-w-325 px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
 
-      {/* Page Header */}
-      <div className="space-y-2">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <TypographyH1>
-            {isPastoralAgent ? 'Meus Atendimentos' : 'Atendimentos & Visitas'}
-          </TypographyH1>
-
-          <div className="flex items-center gap-2.5 shrink-0">
-            <Button asChild variant="outline" className="cursor-pointer">
-              <Link href={ROUTES.APPOINTMENTS.REPORT}>
-                <Printer className="w-4 h-4 mr-1.5 text-zinc-600" />
-                Relatório & Pauta (PDF)
-              </Link>
-            </Button>
-
-            <Button asChild className="cursor-pointer">
-              <Link href={ROUTES.APPOINTMENTS.ADD}>
-                <Plus className="w-4 h-4 mr-1.5" />
-                Novo Atendimento
-              </Link>
-            </Button>
-          </div>
+      <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
+        <div className="mb-2">
+          <BackButton href={ROUTES.APPOINTMENTS.HOME} />
         </div>
 
-        <Describe>
-          {isPastoralAgent
-            ? 'Consulte e gerencie as solicitações de atendimento e visitas direcionadas a você.'
-            : 'Atendimentos sacramentais, aconselhamentos e visitas a enfermos acamados solicitados pelos fiéis.'}
-        </Describe>
-      </div>
-
-      {/* Global Enabler / Scheduler Status Banner (Visible only for admins/secretaries) */}
-      {!isPastoralAgent && (
-        <div
-          className={`p-5 rounded-2xl border transition-all ${
-            settings?.enabled
-              ? 'bg-emerald-50/50 border-emerald-200/80 shadow-xs'
-              : 'bg-amber-50/70 border-amber-300 shadow-xs'
-          }`}
-        >
-        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-          <div className="flex items-start sm:items-center gap-3.5 min-w-0">
-
-            <div
-              className={`p-2.5 rounded-xl shrink-0 ${
-                settings?.enabled
-                  ? 'bg-emerald-500 text-white shadow-xs'
-                  : 'bg-amber-500 text-white shadow-xs'
-              }`}
-            >
-              {settings?.enabled ? (
-                <CalendarCheck className="w-5 h-5" />
-              ) : (
-                <AlertTriangle className="w-5 h-5" />
+        {/* Page Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <TypographyH1>Solicitações de Atendimento</TypographyH1>
+              {pendingRequests.length > 0 && (
+                <Badge className="bg-amber-100 text-amber-900 border border-amber-300 font-semibold rounded-full text-base w-8 h-8 flex items-center justify-center">
+                  {pendingRequests.length}
+                </Badge>
               )}
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-base font-semibold text-zinc-900">
-                  {settings?.enabled
-                    ? 'Atendimentos Online Habilitados'
-                    : 'Atendimentos Online Suspensos'}
-                </h2>
-                <Badge
-                  variant="outline"
-                  className={
-                    settings?.enabled
-                      ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300 text-xs font-medium'
-                      : 'bg-amber-100 text-amber-900 border-amber-300 text-xs font-semibold'
-                  }
-                >
-                  {settings?.enabled ? 'Ativo' : 'Pausado'}
-                </Badge>
-              </div>
-              <p className="text-xs sm:text-sm text-zinc-600 mt-0.5">
-                {settings?.enabled
-                  ? 'Os fiéis podem consultar horários e solicitar atendimentos normalmente no site.'
-                  : 'Nenhum agendamento novo pode ser realizado no site. Os fiéis verão um aviso informativo.'}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 self-start sm:self-auto xl:self-center shrink-0">
-            {!settings?.enabled && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setCustomTitle(settings?.suspendedTitle || '');
-                  setCustomMessage(settings?.suspendedMessage || '');
-                  setShowNoticeEditor(!showNoticeEditor);
-                }}
-                className="text-xs border-amber-300 bg-white hover:bg-amber-50 text-amber-900"
-              >
-                <Settings2 className="w-3.5 h-3.5 mr-1.5" />
-                {showNoticeEditor ? 'Ocultar aviso' : 'Editar aviso ao fiel'}
-              </Button>
-            )}
-
-            <div className="flex items-center gap-2.5 pl-3 border-l border-zinc-200">
-              <span className="text-xs font-medium text-zinc-600 hidden sm:inline">
-                {settings?.enabled ? 'Desativar agendamentos' : 'Ativar agendamentos'}
-              </span>
-              <Switch
-                checked={settings?.enabled ?? true}
-                disabled={isUpdatingSettings || isSettingsPending}
-                onCheckedChange={handleToggleEnabled}
-              />
-            </div>
+            <Describe className="mt-1">
+              Atendimentos aguardando confirmação da secretaria ou sacerdote para entrarem na agenda oficial.
+            </Describe>
           </div>
         </div>
 
-        {/* Collapsible Notice Editor for Suspended State */}
-        {showNoticeEditor && !settings?.enabled && (
-          <div className="mt-4 pt-4 border-t border-amber-200/80 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-900">
-              Mensagem exibida aos fiéis no site público
-            </h4>
-            <div className="grid gap-3">
-              <div>
-                <label className="text-xs font-medium text-zinc-700 block mb-1">
-                  Título do aviso
-                </label>
-                <Input
-                  value={customTitle}
-                  onChange={(e) => setCustomTitle(e.target.value)}
-                  placeholder="Ex: Atendimentos Temporariamente Suspensos"
-                  className="bg-white border-amber-300 text-sm"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-zinc-700 block mb-1">
-                  Mensagem explicativa / orientações
-                </label>
-                <Textarea
-                  value={customMessage}
-                  onChange={(e) => setCustomMessage(e.target.value)}
-                  placeholder="Ex: Informamos que os atendimentos estão temporariamente suspensos..."
-                  className="bg-white border-amber-300 text-sm min-h-20"
-                />
-              </div>
+        {/* Filters Bar: Search & Agent Filter */}
+         {!isPastoralAgent && agents && agents.length > 0 && (
+          <div className="bg-white border border-zinc-200/80 rounded-2xl p-4 mb-6 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Filter className="w-4 h-4 text-zinc-500" />
+              <span className="text-xs font-semibold text-zinc-700 uppercase tracking-wider">
+                Filtrar por agente:
+              </span>
             </div>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowNoticeEditor(false)}
-                className="text-xs"
+            <div className="w-full sm:w-72">
+              <Select
+                name="agentId"
+                placeholder="Todos os agentes pastorais"
+                value={selectedAgentId}
+                onValueChange={(val) => setSelectedAgentId(val)}
               >
-                Cancelar
-              </Button>
-              <Button
-                size="sm"
-                disabled={isUpdatingSettings}
-                onClick={handleSaveNotice}
-                className="text-xs bg-amber-600 hover:bg-amber-700 text-white"
-              >
-                <Save className="w-3.5 h-3.5 mr-1" />
-                {isUpdatingSettings ? 'Salvando...' : 'Salvar aviso'}
-              </Button>
+                <SelectItem value="all" text="Todos os agentes pastorais" />
+                {(agents || []).map((agent) => (
+                  <SelectItem
+                    key={agent.id}
+                    value={agent.id}
+                    text={`${agent.title ? `${agent.title} ` : ''}${agent.name}`}
+                  />
+                ))}
+              </Select>
             </div>
           </div>
         )}
-      </div>
-      )}
 
-      {/* Filter Tabs & Search */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 min-w-0">
-        {/* Status Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full p-1 bg-zinc-100/80 rounded-xl scrollbar-none shrink-0">
-          {[
-            { id: 'all', label: 'Todos' },
-            { id: 'pending', label: 'Pendentes' },
-            { id: 'confirmed', label: 'Confirmados' },
-            { id: 'completed', label: 'Realizados' },
-            { id: 'cancelled', label: 'Cancelados' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedStatus(tab.id)}
-              className={`px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-lg transition-all whitespace-nowrap cursor-pointer ${
-                selectedStatus === tab.id
-                  ? 'bg-white text-zinc-900 shadow-xs'
-                  : 'text-zinc-600 hover:text-zinc-900'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Search Input and Agent Dropdown */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full xl:w-auto min-w-0">
-          {!isPastoralAgent && agents && agents.length > 0 && (
-            <select
-              value={selectedAgentId}
-              onChange={(e) => setSelectedAgentId(e.target.value)}
-              className="h-10 px-3 rounded-xl border border-zinc-300 text-xs sm:text-sm bg-white text-zinc-700 w-full sm:w-auto min-w-0"
-            >
-              <option value="all">Todos os Agentes</option>
-              {agents.map((agent) => (
-                <option key={agent.id} value={agent.id}>
-                  {agent.title ? `${agent.title} ` : ''}{agent.name}
-                </option>
-              ))}
-            </select>
-          )}
-
-          <div className="relative w-full sm:w-72 xl:w-80 min-w-0">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-            <Input
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Buscar por fiel, enfermo ou clérigo..."
-              className="pl-9 h-10 rounded-xl bg-white border-zinc-300 w-full"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Content / List */}
-      {isPending ? (
-        <div className="grid gap-4 grid-cols-1 xl:grid-cols-2">
-          {Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="border border-zinc-200 rounded-2xl p-5 bg-white space-y-4 shadow-xs">
-              <div className="flex justify-between items-center">
-                <Skeleton className="h-6 w-32 rounded-md" />
-                <Skeleton className="h-5 w-20 rounded-full" />
+        {/* Requests List */}
+        <section className="space-y-4">
+          {isPending ? (
+            <div className="space-y-3">
+              <Skeleton className="h-44 w-full rounded-2xl" />
+              <Skeleton className="h-44 w-full rounded-2xl" />
+            </div>
+          ) : pendingRequests.length === 0 ? (
+            /* Empty State */
+            <div className="p-10 sm:p-14 text-center bg-white rounded-2xl border border-dashed border-zinc-200/90 space-y-3 shadow-2xs">
+              <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-800 flex items-center justify-center mx-auto">
+                <Check className="w-7 h-7 text-emerald-600" />
               </div>
-              <Skeleton className="h-4 w-48 rounded" />
-              <div className="pt-2 border-t border-zinc-100 flex justify-between">
-                <Skeleton className="h-8 w-24 rounded-lg" />
-                <Skeleton className="h-8 w-24 rounded-lg" />
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-zinc-900">
+                  Tudo em dia!
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-500 max-w-md mx-auto">
+                  Não há nenhuma solicitação de atendimento pendente de confirmação no momento.
+                </p>
               </div>
             </div>
-          ))}
-        </div>
-      ) : filteredAppointments.length === 0 ? (
-        <div className="border border-dashed border-zinc-300 rounded-2xl p-12 text-center bg-zinc-50/50">
-          <CalendarIcon className="w-12 h-12 text-zinc-300 mx-auto mb-3" />
-          <h3 className="text-lg font-semibold text-zinc-800">Nenhum agendamento encontrado</h3>
-          <p className="text-sm text-zinc-500 mt-1 max-w-md mx-auto">
-            {searchTerm || selectedStatus !== 'all'
-              ? 'Nenhum agendamento corresponde aos filtros selecionados.'
-              : 'Não há agendamentos solicitados no momento.'}
-          </p>
-        </div>
-      ) : (
-        <div className="grid gap-4 grid-cols-1 xl:grid-cols-2">
-          {filteredAppointments.map((appointment) => {
-            const rawPhone = (appointment.requesterPhone || '').replace(/\D/g, '');
-            const phoneWithCountry = rawPhone.length <= 11 ? `55${rawPhone}` : rawPhone;
-            const directWhatsAppUrl = rawPhone ? `https://wa.me/${phoneWithCountry}` : undefined;
+          ) : (
+            pendingRequests.map((req) => {
+              const d = dayjs(req.appointmentDate).locale('pt-br');
+              const shortDay = d.format('ddd').replace('.', '');
+              const capShortDay =
+                shortDay.charAt(0).toUpperCase() + shortDay.slice(1);
+              const shortMonth = d.format('MMM').replace('.', '').toLowerCase();
+              const shortDateStr = `${capShortDay}, ${d.format('DD')} ${shortMonth}`;
 
-            return (
-              <div
-                key={appointment.id}
-                className="border border-zinc-200 rounded-2xl p-5 bg-white shadow-xs flex flex-col justify-between hover:border-zinc-300 transition-all gap-4 min-w-0"
-              >
-                <div className="space-y-3 min-w-0">
-                  {/* Top Bar: Service title & Status */}
-                  <div className="flex items-start justify-between gap-2 min-w-0">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5 mb-1 flex-wrap">
-                        <span className="text-xs font-semibold text-brand-700 uppercase tracking-wider block">
-                          {appointment.service?.category === 'home_visit'
-                            ? 'Visita Domiciliar'
-                            : 'Atendimento Presencial'}
+              const timeRange = req.endTime
+                ? `${req.startTime} às ${req.endTime}`
+                : req.startTime;
+              const isBusy = processingAppointmentId === req.id;
+              const isHomeVisit = req.service?.category === 'home_visit';
+
+              return (
+                <div
+                  key={req.id}
+                  className="bg-white rounded-2xl border border-zinc-200/90 p-5 sm:p-6 shadow-2xs space-y-4 hover:border-zinc-300 transition-all"
+                >
+                  {/* Top Bar: Aguardando confirmação badge and Date/Time */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200">
+                        <Clock className="w-3.5 h-3.5 text-amber-700" />
+                        Aguardando confirmação
+                      </span>
+
+                      {isHomeVisit && (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                          <Home className="w-3 h-3 text-emerald-600" />
+                          Visita Domiciliar
                         </span>
-                        {appointment.service?.title?.toLowerCase().includes('confissão') && (
-                          <Badge variant="outline" className="text-[10px] py-0 px-1.5 bg-purple-50 text-purple-800 border-purple-200 font-bold shrink-0">
-                            Sacramento
-                          </Badge>
-                        )}
-                        {appointment.service?.title?.toLowerCase().includes('aconselhamento') && (
-                          <Badge variant="outline" className="text-[10px] py-0 px-1.5 bg-sky-50 text-sky-800 border-sky-200 font-semibold shrink-0">
-                            Geral / Escuta
-                          </Badge>
-                        )}
-                      </div>
-                      <h3 className="text-lg font-bold text-zinc-900 truncate">
-                        {appointment.service?.title || 'Atendimento Pastoral'}
-                      </h3>
+                      )}
                     </div>
-                    <div className="shrink-0">
-                      {getStatusBadge(appointment.status)}
+
+                    <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-700">
+                      <CalendarIcon className="w-4 h-4 text-[#B8872E]" />
+                      <span>{shortDateStr}</span>
+                      <span>•</span>
+                      <span>{timeRange}</span>
                     </div>
                   </div>
 
-                  {/* Date & Time and Assigned Agent */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 bg-zinc-50 rounded-xl text-xs text-zinc-700 min-w-0">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <Clock className="w-4 h-4 text-brand-600 shrink-0" />
-                      <div className="min-w-0">
-                        <span className="font-semibold block text-zinc-900 truncate">
-                          {formatDate(appointment.appointmentDate)}
-                        </span>
-                        <span className="text-zinc-500">
-                          {appointment.startTime} - {appointment.endTime}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 min-w-0">
-                      <HeartHandshake className="w-4 h-4 text-brand-600 shrink-0" />
-                      <div className="min-w-0">
-                        <span className="font-semibold block text-zinc-900 truncate" title={`${appointment.agent?.title ? `${appointment.agent.title} ` : ''}${appointment.agent?.name || 'Agente'}`}>
-                          {appointment.agent?.title ? `${appointment.agent.title} ` : ''}
-                          {appointment.agent?.name || 'Agente'}
-                        </span>
-                        <span className="text-zinc-500 truncate block">
-                          {appointment.agent?.actingRole || 'Pastoral'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Solicitante */}
-                  <div className="text-xs space-y-1.5 min-w-0">
-                    <div className="flex items-center justify-between gap-2 text-zinc-800 min-w-0">
-                      <div className="flex items-center gap-1.5 min-w-0 truncate">
-                        <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                        <span className="font-semibold truncate">{appointment.requesterName}</span>
-                        {appointment.requesterRelationship && (
-                          <span className="text-zinc-400 font-normal shrink-0">({appointment.requesterRelationship})</span>
-                        )}
-                      </div>
-
-                      <div className="flex items-center gap-1 text-zinc-500 text-[11px] shrink-0">
-                        <Phone className="w-3 h-3 text-zinc-400 shrink-0" />
-                        <span>{appointment.requesterPhone}</span>
-                      </div>
-                    </div>
-
-                    {appointment.requesterNotes && (
-                      <div className="mt-1 p-2 bg-amber-50/70 border border-amber-200/60 rounded-lg text-amber-900 italic text-[11px] break-words">
-                        &quot;{appointment.requesterNotes}&quot;
-                      </div>
+                  {/* Service Title and Full Date */}
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-zinc-900 leading-snug">
+                      {req.service?.title || 'Atendimento Pastoral'}
+                    </h3>
+                    {req.service?.description && (
+                      <p className="text-sm text-zinc-500 font-serif line-clamp-1 mt-1">
+                        {req.service.description}
+                      </p>
                     )}
                   </div>
 
-                  {/* Se for Visita Domiciliar */}
-                  {appointment.patientName && (
-                    <div className="p-3 bg-zinc-100/70 border border-zinc-200/80 rounded-xl text-xs space-y-1.5 min-w-0">
-                      <div className="font-semibold text-zinc-900 flex items-center gap-1.5 min-w-0">
-                        <AlertCircle className="w-3.5 h-3.5 text-brand-700 shrink-0" />
-                        <span className="truncate">Enfermo: {appointment.patientName}</span>
+                  {/* 3 Columns: Solicitante, Agente Responsável, and Local de Atendimento in light gray background with padding (no borders) */}
+                  <div className="bg-zinc-50 border border-zinc-100 rounded-2xl p-4 sm:p-5 space-y-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {/* SOLICITANTE */}
+                      <div className="space-y-1 min-w-0">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block">
+                          Solicitante
+                        </span>
+                        <p className="text-sm font-semibold text-zinc-900 truncate">
+                          {req.requesterName}
+                        </p>
+                        <p className="text-xs text-zinc-500">
+                          {req.requesterRelationship || 'O próprio fiel'}
+                        </p>
+                        {req.requesterPhone && (
+                          <div className="flex items-center gap-1.5 text-xs text-zinc-600 font-mono pt-0.5">
+                            <Phone className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                            <span>{req.requesterPhone}</span>
+                          </div>
+                        )}
+                        {req.patientName &&
+                          req.patientName !== req.requesterName && (
+                            <div className="text-[11px] text-zinc-500 pt-0.5">
+                              <span>Enfermo: </span>
+                              <strong className="text-zinc-800">
+                                {req.patientName}
+                              </strong>
+                              {req.patientConditions?.isBedridden && (
+                                <Badge
+                                  variant="outline"
+                                  className="ml-1 text-[9px] py-0 px-1 border-rose-200 text-rose-700 bg-rose-50"
+                                >
+                                  Acamado
+                                </Badge>
+                              )}
+                            </div>
+                          )}
                       </div>
 
-                      {appointment.patientAddress && (
-                        <div className="flex items-start gap-1.5 text-zinc-600 min-w-0">
+                      {/* AGENTE RESPONSÁVEL */}
+                      <div className="space-y-1 min-w-0">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block">
+                          Agente Responsável
+                        </span>
+                        <p className="text-sm font-semibold text-zinc-900 truncate">
+                          {req.agent?.title ? `${req.agent.title} ` : ''}
+                          {req.agent?.name || 'Agente Pastoral'}
+                        </p>
+                        <p className="text-xs text-zinc-500">
+                          {req.agent?.actingRole || 'Pastoral'}
+                        </p>
+                      </div>
+
+                      {/* LOCAL DE ATENDIMENTO */}
+                      <div className="space-y-1 min-w-0">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block">
+                          Local de Atendimento
+                        </span>
+                        <div className="flex items-start gap-1.5 text-sm font-semibold text-zinc-800 pt-0.5">
                           <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0 mt-0.5" />
-                          <span className="break-words">{appointment.patientAddress}</span>
+                          <span className="truncate">
+                            {isHomeVisit && req.patientAddress
+                              ? req.patientAddress
+                              : req.community?.name || 'Comunidade Matriz'}
+                          </span>
                         </div>
-                      )}
-
-                      {appointment.patientConditions && (
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {appointment.patientConditions.isBedridden && (
-                            <span className="bg-white border border-zinc-200 px-2 py-0.5 rounded text-[11px] font-medium text-zinc-700">
-                              Acamado
-                            </span>
-                          )}
-                          {appointment.patientConditions.canSwallowHost && (
-                            <span className="bg-white border border-zinc-200 px-2 py-0.5 rounded text-[11px] font-medium text-zinc-700">
-                              Engole hóstia
-                            </span>
-                          )}
-                          {appointment.patientConditions.isLucid && (
-                            <span className="bg-white border border-zinc-200 px-2 py-0.5 rounded text-[11px] font-medium text-zinc-700">
-                              Lúcido
-                            </span>
-                          )}
-                        </div>
-                      )}
+                      </div>
                     </div>
-                  )}
 
-                  {appointment.cancellationReason && (
-                    <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 break-words">
-                      <span className="font-semibold">Motivo do Cancelamento:</span> {appointment.cancellationReason}
-                    </div>
-                  )}
-                </div>
-
-                {/* Bottom Actions */}
-                <div className="pt-3 border-t border-zinc-100 flex items-center justify-between gap-2 min-w-0">
-                  {/* Left: WhatsApp conforme o status */}
-                  {appointment.status === 'confirmed' ? (
-                    /* Confirmado: Opções detalhadas */
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          className="h-8 text-xs font-semibold text-emerald-800 border-emerald-300/80 bg-emerald-50/70 hover:bg-emerald-100 hover:text-emerald-900 cursor-pointer gap-1.5 px-2.5 shadow-2xs"
-                        >
-                          <MessageCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>WhatsApp</span>
-                          <ChevronDown className="w-3 h-3 text-emerald-600 opacity-70 shrink-0" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start" className="w-64 p-1.5 shadow-lg border-zinc-200">
-                        <DropdownMenuLabel className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 px-2 py-1">
-                          Mensagens Prontas
-                        </DropdownMenuLabel>
-
-                        <DropdownMenuItem
-                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-emerald-50 focus:bg-emerald-50"
-                          onClick={() =>
-                            setWhatsAppDialogState({
-                              open: true,
-                              appointment,
-                              template: 'confirmation',
-                            })
-                          }
-                        >
-                          <div className="w-7 h-7 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                            <CheckCircle2 className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <span className="font-semibold block text-zinc-900">
-                              Enviar Confirmação
-                            </span>
-                            <span className="text-[11px] text-zinc-500 block leading-tight">
-                              Aprovado + link de acompanhamento
-                            </span>
-                          </div>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem
-                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-rose-50 focus:bg-rose-50"
-                          onClick={() =>
-                            setWhatsAppDialogState({
-                              open: true,
-                              appointment,
-                              template: 'cancellation',
-                              cancellationReason:
-                                appointment.cancellationReason ||
-                                'Houve um imprevisto na agenda pastoral',
-                            })
-                          }
-                        >
-                          <div className="w-7 h-7 rounded-md bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
-                            <XCircle className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <span className="font-semibold block text-zinc-900">
-                              Avisar Cancelamento
-                            </span>
-                            <span className="text-[11px] text-zinc-500 block leading-tight">
-                              Imprevisto + link para reagendar
-                            </span>
-                          </div>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem
-                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-blue-50 focus:bg-blue-50"
-                          onClick={() =>
-                            setWhatsAppDialogState({
-                              open: true,
-                              appointment,
-                              template: 'reminder',
-                            })
-                          }
-                        >
-                          <div className="w-7 h-7 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-                            <BellRing className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <span className="font-semibold block text-zinc-900">
-                              Enviar Lembrete
-                            </span>
-                            <span className="text-[11px] text-zinc-500 block leading-tight">
-                              Horário, local e orientações
-                            </span>
-                          </div>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator className="my-1 bg-zinc-100" />
-
-                        <DropdownMenuItem
-                          asChild
-                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-zinc-100 focus:bg-zinc-100"
-                        >
-                          <a
-                            href={directWhatsAppUrl || '#'}
-                            target={directWhatsAppUrl ? '_blank' : undefined}
-                            rel="noopener noreferrer"
-                            className={!directWhatsAppUrl ? 'pointer-events-none opacity-50' : ''}
-                          >
-                            <div className="w-7 h-7 rounded-md bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </div>
-                            <div>
-                              <span className="font-semibold block text-zinc-900">
-                                Abrir Conversa Direta
-                              </span>
-                              <span className="text-[11px] text-zinc-500 block leading-tight">
-                                Chat no WhatsApp Web / App
-                              </span>
-                            </div>
-                          </a>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  ) : appointment.status === 'cancelled' ? (
-                    /* Cancelado: Só deve ficar o de Avisar Cancelamento (e conversa direta) */
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          className="h-8 text-xs font-semibold text-rose-800 border-rose-300/80 bg-rose-50/70 hover:bg-rose-100 hover:text-rose-900 cursor-pointer gap-1.5 px-2.5 shadow-2xs"
-                        >
-                          <MessageCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                          <span>WhatsApp</span>
-                          <ChevronDown className="w-3 h-3 text-rose-600 opacity-70 shrink-0" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start" className="w-64 p-1.5 shadow-lg border-zinc-200">
-                        <DropdownMenuItem
-                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-rose-50 focus:bg-rose-50"
-                          onClick={() =>
-                            setWhatsAppDialogState({
-                              open: true,
-                              appointment,
-                              template: 'cancellation',
-                              cancellationReason:
-                                appointment.cancellationReason ||
-                                'Houve um imprevisto na agenda pastoral',
-                            })
-                          }
-                        >
-                          <div className="w-7 h-7 rounded-md bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
-                            <XCircle className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <span className="font-semibold block text-zinc-900">
-                              Avisar Cancelamento
-                            </span>
-                            <span className="text-[11px] text-zinc-500 block leading-tight">
-                              Imprevisto + link para reagendar
-                            </span>
-                          </div>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator className="my-1 bg-zinc-100" />
-
-                        <DropdownMenuItem
-                          asChild
-                          className="text-xs cursor-pointer gap-2.5 p-2 rounded-lg hover:bg-zinc-100 focus:bg-zinc-100"
-                        >
-                          <a
-                            href={directWhatsAppUrl || '#'}
-                            target={directWhatsAppUrl ? '_blank' : undefined}
-                            rel="noopener noreferrer"
-                            className={!directWhatsAppUrl ? 'pointer-events-none opacity-50' : ''}
-                          >
-                            <div className="w-7 h-7 rounded-md bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </div>
-                            <div>
-                              <span className="font-semibold block text-zinc-900">
-                                Abrir Conversa Direta
-                              </span>
-                              <span className="text-[11px] text-zinc-500 block leading-tight">
-                                Chat no WhatsApp Web / App
-                              </span>
-                            </div>
-                          </a>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  ) : (
-                    /* Pendente ou Realizado: Apenas link de WhatsApp direto! */
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className={`h-8 text-xs font-semibold px-2.5 gap-1.5 shadow-2xs ${
-                        directWhatsAppUrl
-                          ? 'text-emerald-800 border-emerald-300/80 bg-emerald-50/70 hover:bg-emerald-100 hover:text-emerald-900 cursor-pointer'
-                          : 'text-zinc-400 bg-zinc-100 border-zinc-200 cursor-not-allowed pointer-events-none'
-                      }`}
-                    >
-                      <a
-                        href={directWhatsAppUrl || '#'}
-                        target={directWhatsAppUrl ? '_blank' : undefined}
-                        rel="noopener noreferrer"
-                        title={directWhatsAppUrl ? 'Abrir conversa direta no WhatsApp' : 'Telefone não informado'}
-                      >
-                        <MessageCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>WhatsApp Direto</span>
-                        <ExternalLink className="w-3 h-3 text-emerald-600/70 shrink-0" />
-                      </a>
-                    </Button>
-                  )}
-
-                  {/* Right: Actions */}
-                  <div className="flex items-center gap-1.5">
-                    <Button
-                      asChild
-                      size="sm"
-                      variant="outline"
-                      className="h-8 text-xs font-semibold text-zinc-700 hover:text-brand-700 hover:border-brand-300 cursor-pointer"
-                    >
-                      <Link href={ROUTES.APPOINTMENTS.EDIT(appointment.id)}>
-                        <Pencil className="w-3.5 h-3.5 mr-1 text-zinc-500" />
-                        Editar
-                      </Link>
-                    </Button>
-
-                    {appointment.status === 'pending' && (
-                      <Button
-                        size="sm"
-                        variant="default"
-                        className="h-8 text-xs font-semibold cursor-pointer"
-                        onClick={() => handleConfirm(appointment)}
-                        isLoading={isUpdatingStatus && processingAppointmentId === appointment.id}
-                      >
-                        Aprovar
-                      </Button>
+                    {req.requesterNotes && (
+                      <div className="text-xs text-zinc-600 bg-white/80 border border-zinc-200/60 rounded-xl p-2.5 flex items-start gap-2 mt-2">
+                        <span className="font-semibold text-amber-900 shrink-0">
+                          Observação:
+                        </span>
+                        <span className="italic">{req.requesterNotes}</span>
+                      </div>
                     )}
+                  </div>
 
-                    {appointment.status === 'confirmed' && (
+                  {/* Actions Row: Recusar and Confirmar on the left, three dots on the far right */}
+                  <div className="flex items-center justify-between gap-3 pt-1">
+                    <div className="flex items-center gap-2.5 flex-wrap">
                       <Button
-                        size="sm"
+                        type="button"
                         variant="outline"
-                        className="h-8 text-xs font-semibold text-blue-700 border-blue-200 hover:bg-blue-50 cursor-pointer"
-                        onClick={() => handleComplete(appointment)}
-                        isLoading={isUpdatingStatus && processingAppointmentId === appointment.id}
+                        size="sm"
+                        disabled={isBusy}
+                        onClick={() => {
+                          setCancellingAppointment(req);
+                          setCancellationReason('');
+                        }}
+                        className="h-10 px-4 text-xs font-semibold rounded-xl border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200 cursor-pointer shadow-2xs"
                       >
-                        Concluir
+                        <X className="w-3.5 h-3.5 mr-1 text-red-500" />
+                        <span>Recusar</span>
                       </Button>
-                    )}
 
-                    {appointment.status === 'cancelled' &&
-                      isAppointmentWithinDeadline(
-                        appointment.appointmentDate,
-                        appointment.endTime || appointment.startTime
-                      ) && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-8 text-xs font-semibold text-amber-800 border-amber-300 bg-amber-50/70 hover:bg-amber-100 hover:text-amber-900 cursor-pointer"
-                          onClick={() => setRevertingAppointment(appointment)}
-                          isLoading={isUpdatingStatus && processingAppointmentId === appointment.id}
-                        >
-                          <RotateCcw className="w-3.5 h-3.5 mr-1 text-amber-700 shrink-0" />
-                          Reverter
-                        </Button>
-                      )}
+                      <Button
+                        type="button"
+                        size="sm"
+                        disabled={isBusy}
+                        isLoading={isBusy}
+                        loadingText="Confirmando..."
+                        onClick={() => handleConfirm(req)}
+                        className="h-10 px-4 text-xs font-semibold rounded-xl bg-[#11291f] text-white hover:bg-[#1a3d2e] cursor-pointer shadow-2xs"
+                      >
+                        <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" />
+                        <span>Confirmar atendimento</span>
+                      </Button>
+                    </div>
 
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 cursor-pointer shrink-0"
-                          title="Mais opções"
+                          variant="outline"
+                          size="icon-xs"
+                          className="hidden sm:flex h-8 w-8 text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg cursor-pointer shrink-0"
+                          aria-label="Mais opções"
                         >
                           <MoreHorizontal className="w-4 h-4" />
-                          <span className="sr-only">Mais opções</span>
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-52 p-1.5 shadow-lg border-zinc-200">
-                        <DropdownMenuItem
-                          className="text-xs cursor-pointer gap-2 py-2 text-zinc-700 focus:bg-zinc-100"
-                          onClick={() => handleCopyTrackingLink(appointment)}
-                        >
-                          <Copy className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
-                          <span>Copiar Link do Fiel</span>
+                      <DropdownMenuContent align="end" className="w-48 shadow-lg">
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href={ROUTES.APPOINTMENTS.EDIT(req.id)}
+                            className="cursor-pointer"
+                          >
+                            <Pencil className="w-4 h-4 mr-2 text-zinc-500" />
+                            <span>Editar</span>
+                          </Link>
                         </DropdownMenuItem>
-
-                        {appointment.status === 'cancelled' &&
-                          isAppointmentWithinDeadline(
-                            appointment.appointmentDate,
-                            appointment.endTime || appointment.startTime
-                          ) && (
-                            <>
-                              <DropdownMenuSeparator className="my-1 bg-zinc-100" />
-                              <DropdownMenuItem
-                                className="text-xs cursor-pointer gap-2 py-2 text-amber-800 focus:text-amber-900 focus:bg-amber-50"
-                                onClick={() => setRevertingAppointment(appointment)}
-                              >
-                                <RotateCcw className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                                <span>Reverter Cancelamento</span>
-                              </DropdownMenuItem>
-                            </>
-                          )}
-
-                        {appointment.status !== 'cancelled' && appointment.status !== 'completed' && (
-                          <>
-                            <DropdownMenuSeparator className="my-1 bg-zinc-100" />
-                            <DropdownMenuItem
-                              className="text-xs cursor-pointer gap-2 py-2 text-rose-600 focus:text-rose-700 focus:bg-rose-50"
-                              onClick={() => setCancellingAppointment(appointment)}
-                            >
-                              <XCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                              <span>Cancelar Atendimento</span>
-                            </DropdownMenuItem>
-                          </>
-                        )}
+                        <DropdownMenuItem
+                          onClick={() => handleCopyTrackingLink(req)}
+                          className="cursor-pointer"
+                        >
+                          <Copy className="w-4 h-4 mr-2 text-zinc-500" />
+                          <span>Copiar link do fiel</span>
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })
+          )}
+        </section>
+      </main>
 
-      {/* Cancellation Dialog */}
-      <Dialog open={!!cancellingAppointment} onOpenChange={(open) => !open && setCancellingAppointment(null)}>
-        <DialogContent className="sm:max-w-md p-6 flex flex-col gap-4">
-          <DialogHeader className="p-0 text-left space-y-1.5">
-            <DialogTitle>Cancelar Atendimento</DialogTitle>
+      {/* Cancellation / Rejection Dialog */}
+      <Dialog
+        open={Boolean(cancellingAppointment)}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) {
+            setCancellingAppointment(null);
+            setCancellationReason('');
+          }
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Recusar Solicitação de Atendimento</DialogTitle>
             <DialogDescription>
-              Informe o motivo do cancelamento para o agendamento de{' '}
-              <span className="font-semibold text-zinc-900">{cancellingAppointment?.requesterName}</span>.
+              Informe o motivo da recusa do atendimento de{' '}
+              <strong className="text-zinc-900">
+                {cancellingAppointment?.requesterName || 'Fiel'}
+              </strong>
+              .
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-2">
-            <label className="text-xs font-medium text-zinc-700 block">
-              Motivo do cancelamento (opcional):
-            </label>
+          <FieldGroup className="px-4 pb-2">
             <Input
+              name="reason"
+              placeholder="Ex: Horário indisponível, sacerdote em compromisso..."
               value={cancellationReason}
               onChange={(e) => setCancellationReason(e.target.value)}
-              placeholder="Ex.: Houve um imprevisto na agenda pastoral..."
-              className="w-full"
             />
-            <p className="text-[11px] text-zinc-500">
-              Se deixar em branco, o motivo padrão será &quot;Houve um imprevisto na agenda pastoral&quot;.
-            </p>
-            {isStaffSecretaryOrAdmin && (
-              <div className="p-2.5 bg-emerald-50/70 border border-emerald-200/80 rounded-lg flex items-center gap-2 text-xs text-emerald-800 mt-2">
-                <MessageCircle className="w-4 h-4 shrink-0 text-emerald-600" />
-                <span>Ao confirmar, você poderá avisar o fiel pelo WhatsApp com a mensagem pronta.</span>
-              </div>
-            )}
-          </div>
+          </FieldGroup>
 
-          <DialogFooter className="p-0 border-t-0 flex sm:justify-end gap-2 pt-2">
+          <DialogFooter>
             <Button
               variant="outline"
-              onClick={() => setCancellingAppointment(null)}
               type="button"
-              className="cursor-pointer"
+              onClick={() => {
+                setCancellingAppointment(null);
+                setCancellationReason('');
+              }}
+              disabled={Boolean(processingAppointmentId)}
             >
               Voltar
             </Button>
             <Button
               variant="destructive"
-              onClick={handleCancelSubmit}
-              isLoading={isUpdatingStatus && processingAppointmentId === cancellingAppointment?.id}
               type="button"
-              className="cursor-pointer"
+              onClick={handleCancelSubmit}
+              isLoading={Boolean(processingAppointmentId)}
+              loadingText="Recusando..."
             >
-              Confirmar Cancelamento
+              Confirmar Recusa
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* WhatsApp Dialog with Pre-made Templates */}
+      {/* WhatsApp Dialog */}
       <AppointmentWhatsAppDialog
         open={whatsAppDialogState.open}
         onOpenChange={(open) =>
@@ -1094,19 +575,6 @@ export default function AppointmentsListPage() {
         initialTemplate={whatsAppDialogState.template}
         cancellationReason={whatsAppDialogState.cancellationReason}
       />
-
-      {/* Dialog para Reverter Cancelamento */}
-      <ConfirmDialog
-        open={!!revertingAppointment}
-        onOpenChange={(open) => !open && setRevertingAppointment(null)}
-        title="Reverter Cancelamento"
-        description={`Deseja reverter o cancelamento do agendamento de "${revertingAppointment?.requesterName}" em ${revertingAppointment ? formatDate(revertingAppointment.appointmentDate) : ''}? O atendimento voltará para a situação de Confirmado.`}
-        confirmText="Sim, Reverter"
-        cancelText="Voltar"
-        isPending={isUpdatingStatus && processingAppointmentId === revertingAppointment?.id}
-        onConfirm={handleRevertCancel}
-      />
-    </main>
     </>
   );
 }

@@ -54,6 +54,9 @@ export const ROUTES = {
   },
   CALENDAR: {
     HOME: '/programacao-e-eventos',
+    VIEW: '/programacao-e-eventos/calendario',
+    RECURRING: '/programacao-e-eventos/programacao-recorrente',
+    EVENTS: '/programacao-e-eventos/eventos',
     ADD_EVENT: '/programacao-e-eventos/adicionar-evento',
     ADD_EVENT_WITH_DATE: (date: string) =>
       `/programacao-e-eventos/adicionar-evento?date=${date}`,
@@ -76,6 +79,8 @@ export const ROUTES = {
     REPORT: '/agenda-pastoral/relatorio',
     DETAILS: (id: string) => `/agenda-pastoral/${id}`,
     BLOCKS: '/agenda-pastoral/bloqueios',
+    ARCHIVE: '/agenda-pastoral/arquivos',
+    ONLINE_SETTINGS: '/agenda-pastoral/atendimentos-online',
   },
   PASTORAL_AGENTS: {
     HOME: '/agenda-pastoral/agentes-pastorais',

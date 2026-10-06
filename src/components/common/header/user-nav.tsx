@@ -142,7 +142,7 @@ export function UserNav() {
                 className="flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-zinc-700 rounded-lg hover:bg-zinc-100 hover:text-zinc-900 transition cursor-pointer"
               >
                 <HelpCircle className="w-4 h-4 text-brand-600" />
-                <span>Central de Ajuda & Manuais</span>
+                <span>Central de Ajuda</span>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>

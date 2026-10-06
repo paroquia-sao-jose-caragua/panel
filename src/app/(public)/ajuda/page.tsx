@@ -1497,7 +1497,7 @@ export default function HelpCenterPage() {
             <div className="h-5 w-px bg-zinc-200 hidden sm:block" />
             <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-full border border-brand-200/80">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Central de Ajuda & Manuais</span>
+              <span>Central de Ajuda</span>
             </div>
           </div>
 

@@ -297,30 +297,88 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
   // ==========================================
   // 3. PROGRAMAÇÃO & EVENTOS
   // ==========================================
-  // Calendar
+  // Início do módulo
   if (
     cleanPath === ROUTES.CALENDAR.HOME ||
     cleanPath === '/programacao-paroquial'
   ) {
     return [
       {
-        key: 'agenda',
+        key: 'programacao-e-eventos',
         href: ROUTES.CALENDAR.HOME,
-        title: 'Calendário Paroquial',
+        title: 'Programação & Eventos',
         icon: 'calendar',
       },
     ];
   }
+
+  // Calendário Paroquial
+  if (cleanPath === ROUTES.CALENDAR.VIEW) {
+    return [
+      {
+        key: 'programacao-e-eventos',
+        href: ROUTES.CALENDAR.HOME,
+        title: 'Programação & Eventos',
+        icon: 'calendar',
+      },
+      {
+        key: 'calendario',
+        href: ROUTES.CALENDAR.VIEW,
+        title: 'Calendário Paroquial',
+      },
+    ];
+  }
+
+  // Programação Recorrente
+  if (cleanPath === ROUTES.CALENDAR.RECURRING) {
+    return [
+      {
+        key: 'programacao-e-eventos',
+        href: ROUTES.CALENDAR.HOME,
+        title: 'Programação & Eventos',
+        icon: 'calendar',
+      },
+      {
+        key: 'recorrente',
+        href: ROUTES.CALENDAR.RECURRING,
+        title: 'Programação Recorrente',
+      },
+    ];
+  }
+
+  // Eventos
+  if (cleanPath === ROUTES.CALENDAR.EVENTS) {
+    return [
+      {
+        key: 'programacao-e-eventos',
+        href: ROUTES.CALENDAR.HOME,
+        title: 'Programação & Eventos',
+        icon: 'calendar',
+      },
+      {
+        key: 'eventos',
+        href: ROUTES.CALENDAR.EVENTS,
+        title: 'Eventos',
+      },
+    ];
+  }
+
+  // Novo Evento
   if (
     cleanPath === ROUTES.CALENDAR.ADD_EVENT ||
     cleanPath === '/programacao-paroquial/adicionar-evento'
   ) {
     return [
       {
-        key: 'agenda',
+        key: 'programacao-e-eventos',
         href: ROUTES.CALENDAR.HOME,
-        title: 'Calendário Paroquial',
+        title: 'Programação & Eventos',
         icon: 'calendar',
+      },
+      {
+        key: 'eventos',
+        href: ROUTES.CALENDAR.EVENTS,
+        title: 'Eventos',
       },
       {
         key: 'adicionar-evento',
@@ -329,13 +387,20 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
       },
     ];
   }
+
+  // Editar Evento
   if (cleanPath.includes('/evento/') && cleanPath.endsWith('/editar')) {
     return [
       {
-        key: 'agenda',
+        key: 'programacao-e-eventos',
         href: ROUTES.CALENDAR.HOME,
-        title: 'Calendário Paroquial',
+        title: 'Programação & Eventos',
         icon: 'calendar',
+      },
+      {
+        key: 'eventos',
+        href: ROUTES.CALENDAR.EVENTS,
+        title: 'Eventos',
       },
       { key: 'editar', href: '#', title: 'Editar Evento' },
     ];
@@ -344,6 +409,12 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
   // Banners
   if (cleanPath === ROUTES.ANNOUNCEMENTS.HOME || cleanPath === '/avisos') {
     return [
+      {
+        key: 'programacao-e-eventos',
+        href: ROUTES.CALENDAR.HOME,
+        title: 'Programação & Eventos',
+        icon: 'calendar',
+      },
       {
         key: 'banners',
         href: ROUTES.ANNOUNCEMENTS.HOME,
@@ -357,6 +428,12 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
     cleanPath === '/avisos/adicionar'
   ) {
     return [
+      {
+        key: 'programacao-e-eventos',
+        href: ROUTES.CALENDAR.HOME,
+        title: 'Programação & Eventos',
+        icon: 'calendar',
+      },
       {
         key: 'banners',
         href: ROUTES.ANNOUNCEMENTS.HOME,
@@ -376,6 +453,12 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
   ) {
     return [
       {
+        key: 'programacao-e-eventos',
+        href: ROUTES.CALENDAR.HOME,
+        title: 'Programação & Eventos',
+        icon: 'calendar',
+      },
+      {
         key: 'banners',
         href: ROUTES.ANNOUNCEMENTS.HOME,
         title: 'Banners em Destaque',
@@ -392,6 +475,12 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
   ) {
     return [
       {
+        key: 'programacao-e-eventos',
+        href: ROUTES.CALENDAR.HOME,
+        title: 'Programação & Eventos',
+        icon: 'calendar',
+      },
+      {
         key: 'alerta',
         href: ROUTES.ANNOUNCEMENTS.ALERT,
         title: 'Faixa de Alerta',
@@ -404,6 +493,12 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
     cleanPath === '/avisos/alerta/editar'
   ) {
     return [
+      {
+        key: 'programacao-e-eventos',
+        href: ROUTES.CALENDAR.HOME,
+        title: 'Programação & Eventos',
+        icon: 'calendar',
+      },
       {
         key: 'alerta',
         href: ROUTES.ANNOUNCEMENTS.ALERT,
@@ -539,6 +634,42 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
         key: 'relatorio',
         href: ROUTES.APPOINTMENTS.REPORT,
         title: 'Relatório & Pauta',
+      },
+    ];
+  }
+  if (
+    cleanPath === ROUTES.APPOINTMENTS.ARCHIVE ||
+    cleanPath === '/agenda-pastoral/arquivos'
+  ) {
+    return [
+      {
+        key: 'agendamentos',
+        href: ROUTES.APPOINTMENTS.HOME,
+        title: 'Agenda Pastoral',
+        icon: 'calendar-check',
+      },
+      {
+        key: 'arquivos',
+        href: ROUTES.APPOINTMENTS.ARCHIVE,
+        title: 'Arquivos',
+      },
+    ];
+  }
+  if (
+    cleanPath === ROUTES.APPOINTMENTS.ONLINE_SETTINGS ||
+    cleanPath === '/agenda-pastoral/atendimentos-online'
+  ) {
+    return [
+      {
+        key: 'agendamentos',
+        href: ROUTES.APPOINTMENTS.HOME,
+        title: 'Agenda Pastoral',
+        icon: 'calendar-check',
+      },
+      {
+        key: 'atendimentos-online',
+        href: ROUTES.APPOINTMENTS.ONLINE_SETTINGS,
+        title: 'Atendimentos Online',
       },
     ];
   }

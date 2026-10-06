@@ -18,8 +18,9 @@ import {
   Tag,
   FileSpreadsheet,
   AlertCircle,
-  PlusCircle,
-  HeartHandshake,
+  Repeat,
+  Archive,
+  Globe,
 } from 'lucide-react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { Button } from '@/components/ui/button';
@@ -188,6 +189,17 @@ export const AppSidebar = () => {
                 ]}
                 onLinkClick={handleClose}
               />
+              <NavItem
+                title="Arquivos"
+                icon={Archive}
+                links={[
+                  {
+                    title: 'Arquivos',
+                    href: ROUTES.APPOINTMENTS.ARCHIVE,
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
             </div>
 
             {/* Non-agent configuration section */}
@@ -220,6 +232,17 @@ export const AppSidebar = () => {
                       {
                         title: 'Categorias de atendimento',
                         href: ROUTES.APPOINTMENT_SERVICES.HOME,
+                      },
+                    ]}
+                    onLinkClick={handleClose}
+                  />
+                  <NavItem
+                    title="Atendimentos online"
+                    icon={Globe}
+                    links={[
+                      {
+                        title: 'Atendimentos online',
+                        href: ROUTES.APPOINTMENTS.ONLINE_SETTINGS,
                       },
                     ]}
                     onLinkClick={handleClose}
@@ -263,24 +286,49 @@ export const AppSidebar = () => {
                 </div>
               )}
               <NavItem
-                title="Calendário Paroquial"
-                icon={Calendar}
+                title="Início"
+                icon={Home}
                 exactMatch
                 links={[
                   {
-                    title: 'Calendário Paroquial',
+                    title: 'Início',
                     href: ROUTES.CALENDAR.HOME,
                   },
                 ]}
                 onLinkClick={handleClose}
               />
               <NavItem
-                title="Novo Evento"
-                icon={CalendarPlus}
+                title="Calendário Paroquial"
+                icon={Calendar}
+                exactMatch
                 links={[
                   {
-                    title: 'Novo Evento',
-                    href: ROUTES.CALENDAR.ADD_EVENT,
+                    title: 'Calendário Paroquial',
+                    href: ROUTES.CALENDAR.VIEW,
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+              <NavItem
+                title="Programação Recorrente"
+                icon={Repeat}
+                exactMatch
+                links={[
+                  {
+                    title: 'Programação Recorrente',
+                    href: ROUTES.CALENDAR.RECURRING,
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+              <NavItem
+                title="Eventos"
+                icon={CalendarPlus}
+                exactMatch
+                links={[
+                  {
+                    title: 'Eventos',
+                    href: ROUTES.CALENDAR.EVENTS,
                   },
                 ]}
                 onLinkClick={handleClose}
