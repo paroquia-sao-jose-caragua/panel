@@ -2,14 +2,12 @@
 
 import {
   Calendar,
-  CalendarPlus,
   Church,
   Megaphone,
   Menu,
   X,
   Users,
   Building2,
-  Settings,
   PanelLeftClose,
   PanelLeftOpen,
   Home,
@@ -21,7 +19,8 @@ import {
   Repeat,
   Archive,
   Globe,
-  CalendarCheck2,
+  Lock,
+  Smartphone,
 } from 'lucide-react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { Button } from '@/components/ui/button';
@@ -31,7 +30,7 @@ import { useState, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import useAuthStore from '@/stores/useAuthStore';
 import { useSidebarStore } from '@/stores/useSidebarStore';
-import { useAreaStore, type PanelArea } from '@/stores/useAreaStore';
+import type { PanelArea } from '@/stores/useAreaStore';
 import { useAppointments, useMyPastoralAgent } from '@/api/appointments/use-appointments';
 import { ROUTES } from '@/constants/routes';
 import { cn } from '@/lib/utils';
@@ -42,7 +41,7 @@ export const AppSidebar = () => {
   const pathname = usePathname();
   const { user } = useAuthStore();
   const { isCollapsed, toggleCollapsed } = useSidebarStore();
-  const { currentArea } = useAreaStore();
+  const { user: currentUser } = useAuthStore();
 
   const handleClose = () => setOpen(false);
 
@@ -66,10 +65,10 @@ export const AppSidebar = () => {
       return 'events';
     }
     if (pathname.startsWith('/configuracoes')) {
-      return currentArea || 'parish';
+      return 'settings';
     }
     return 'parish';
-  }, [pathname, isPastoralAgent, currentArea]);
+  }, [pathname, isPastoralAgent]);
 
   // Query pending appointments to show badge on "Solicitações"
   const { appointments: pendingAppointments } = useAppointments({
@@ -408,24 +407,75 @@ export const AppSidebar = () => {
           </div>
         )}
 
+         {/* Area 4: COMUNICAÇÃO */}
+
+        {/* Area 5: CONFIGURAÇÕES */}
+        {effectiveArea === 'settings' && (
+          <div className="space-y-4">
+            <div className="space-y-1">
+              {!isCollapsed && (
+                <div className="px-3 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-white/60">
+                  Configurações
+                </div>
+              )}
+              <NavItem
+                title="Home"
+                icon={Home}
+                exactMatch
+                links={[
+                  {
+                    title: 'Home',
+                    href: ROUTES.SETTINGS.HOME,
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+              <NavItem
+                title="Gerenciar Acesso"
+                icon={Lock}
+                links={[
+                  {
+                    title: 'Gerenciar Acesso',
+                    href: ROUTES.SETTINGS.MANAGE_LOGIN,
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+
+              {currentUser?.role === 'admin' && (
+                <NavItem
+                  title="Gestão de Usuários"
+                  icon={Users}
+                  links={[
+                    {
+                      title: 'Gestão de Usuários & Permissões',
+                      href: ROUTES.SETTINGS.USERS,
+                    },
+                  ]}
+                  onLinkClick={handleClose}
+                />
+              )}
+
+              {currentUser?.role === 'admin' && (
+                <NavItem
+                  title="Dispositivos Conectados"
+                  icon={Smartphone}
+                  links={[
+                    {
+                      title: 'Dispositivos Conectados',
+                      href: ROUTES.SETTINGS.DEVICES,
+                    },
+                  ]}
+                  onLinkClick={handleClose}
+                />
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Bottom Section: Settings & User Profile & Collapse Button */}
         <div className="mt-auto space-y-2 pt-2">
           <div className="h-px bg-brand-700/30 mx-1 mb-2" />
-
-          {/* Settings button */}
-          {!isPastoralAgent && (
-            <NavItem
-              title="Configurações"
-              icon={Settings}
-              links={[
-                {
-                  title: 'Configurações',
-                  href: ROUTES.SETTINGS.HOME,
-                },
-              ]}
-              onLinkClick={handleClose}
-            />
-          )}
 
           {/* Mobile Profile Display */}
           <div className="lg:hidden pt-2">
@@ -458,10 +508,10 @@ export const AppSidebar = () => {
                 type="button"
                 variant="ghost"
                 onClick={toggleCollapsed}
-                className="w-full flex items-center gap-3 text-brand-300 hover:text-white hover:bg-brand-700/40 transition-colors rounded-xl px-3 py-2 text-sm font-medium cursor-pointer justify-start"
+                className="w-full flex items-center gap-3 hover:text-white hover:bg-brand-700/40 transition-colors rounded-xl px-3 py-2 text-sm font-medium cursor-pointer justify-start"
               >
-                <PanelLeftClose className="h-4 w-4 shrink-0" />
-                <span>Recolher menu</span>
+                <PanelLeftClose className="h-4 w-4 shrink-0 text-brand-300" />
+                <span className="text-brand-100">Recolher menu</span>
               </Button>
             )}
           </div>

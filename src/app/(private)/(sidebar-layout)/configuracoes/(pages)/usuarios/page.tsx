@@ -79,20 +79,21 @@ export default function ManageUsersPage() {
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
-        <div>
-          <TypographyH1>Gestão de Usuários & Permissões</TypographyH1>
-          <Describe>
-            {t('manage-access-desc')}
-          </Describe>
+      <div>
+        <div className="flex flex-row justify-between items-center w-full">
+          <TypographyH1>Gestão de Usuários</TypographyH1>
+
+          <Link href={ROUTES.SETTINGS.NEW_USER}>
+            <Button>
+              <Plus className="w-4 h-4" />
+              <span>{t('new-user')}</span>
+            </Button>
+          </Link>
         </div>
 
-        <Button asChild size="sm" className="gap-2 shrink-0">
-          <Link href={ROUTES.SETTINGS.NEW_USER}>
-            <Plus className="w-4 h-4" />
-            <span>{t('new-user')}</span>
-          </Link>
-        </Button>
+        <Describe>
+          {t('manage-access-desc')}
+        </Describe>
       </div>
 
       <div className="h-px bg-zinc-200" />

@@ -12,6 +12,7 @@ export default function Churches() {
       <AppHeader
         links={[{ key: 'origin', href: ROUTES.HOME, title: 'Comunidades & Capelas', icon: 'church' }]}
       />
+      
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
         <TypographyH1>Bem-vindo à Paróquia São José!</TypographyH1>
 

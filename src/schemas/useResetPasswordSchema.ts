@@ -7,8 +7,8 @@ const useResetPasswordSchema = () => {
   return yup.object({
     password: yup
       .string()
-      .min(8, t('error-password-min-length', { variables: { minLength: 8 } }))
-      .max(100, t('error-password-max-length', { variables: { maxLength: 100 } }))
+      .min(8, t('error-password-min-length', { variables: { min: 8 } }))
+      .max(100, t('error-password-max-length', { variables: { max: 100 } }))
       .matches(
         /^(?=.*[a-zA-Z])(?=.*\d)/,
         t('password-requirements')

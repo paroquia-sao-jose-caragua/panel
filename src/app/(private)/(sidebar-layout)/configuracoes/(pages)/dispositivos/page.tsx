@@ -46,6 +46,7 @@ export default function DevicesPage() {
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     loadSubscriptions();
   }, []);
@@ -93,37 +94,26 @@ export default function DevicesPage() {
       />
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
-        <div>
-          <TypographyH1>Dispositivos Conectados</TypographyH1>
-          <Describe>
-            Gerencie os celulares e computadores conectados que recebem notificações push do site e do painel da Paróquia São José.
-          </Describe>
-        </div>
+      {/* Header */}
+      <div className="flex flex-row justify-between items-center w-full">
+        <TypographyH1>Dispositivos Conectados</TypographyH1>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={loadSubscriptions}
-            disabled={isLoading}
-            className="gap-1.5 cursor-pointer"
-          >
-            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-            <span>Atualizar</span>
-          </Button>
-
-          <Button asChild size="sm" className="gap-1.5 bg-amber-600 hover:bg-amber-700 text-white border-none cursor-pointer">
-            <Link href={ROUTES.SETTINGS.SEND_PUSH}>
+        <div className="hidden items-center md:flex">
+          <Link href={ROUTES.SETTINGS.SEND_PUSH}>
+            <Button>
               <Send className="w-4 h-4" />
-              <span>Enviar Notificação Push</span>
-            </Link>
-          </Button>
+              <span>Enviar Notificação</span>
+            </Button>
+          </Link>
         </div>
       </div>
 
+      <Describe>
+        Gerencie os celulares e computadores conectados que recebem notificações push do site e do painel da Paróquia São José.
+      </Describe>
+
       {/* Stats Overview Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 my-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
         <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-2xs flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 shrink-0">
             <Smartphone className="w-6 h-6" />
@@ -142,7 +132,7 @@ export default function DevicesPage() {
           </div>
           <div>
             <span className="text-sm text-zinc-500 font-medium uppercase tracking-wider block">
-              Site Público (Fiéis)
+              Site Público
             </span>
             <span className="text-2xl font-bold text-zinc-900">{siteCount}</span>
           </div>
@@ -154,21 +144,9 @@ export default function DevicesPage() {
           </div>
           <div>
             <span className="text-sm text-zinc-500 font-medium uppercase tracking-wider block">
-              Painel Administrativo
+              Painel do Admin
             </span>
             <span className="text-2xl font-bold text-zinc-900">{panelCount}</span>
-          </div>
-        </div>
-
-        <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-2xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-700 shrink-0">
-            <UserCheck className="w-6 h-6" />
-          </div>
-          <div>
-            <span className="text-sm text-zinc-500 font-medium uppercase tracking-wider block">
-              Contas Vinculadas
-            </span>
-            <span className="text-2xl font-bold text-zinc-900">{linkedCount}</span>
           </div>
         </div>
       </div>
@@ -205,10 +183,10 @@ export default function DevicesPage() {
             <table className="w-full text-left text-sm text-zinc-600">
               <thead className="bg-zinc-50 text-sm font-semibold uppercase text-zinc-500 border-b border-zinc-200">
                 <tr>
-                  <th className="px-6 py-3.5">Usuário / Identificação</th>
+                  <th className="px-6 py-3.5">Usuário</th>
                   <th className="px-6 py-3.5">Origem</th>
-                  <th className="px-6 py-3.5">Navegador / Sistema</th>
-                  <th className="px-6 py-3.5">Data da Inscrição</th>
+                  <th className="px-6 py-3.5">Navegador</th>
+                  <th className="px-6 py-3.5">Inscrição</th>
                   <th className="px-6 py-3.5 text-right">Ações</th>
                 </tr>
               </thead>
@@ -217,11 +195,6 @@ export default function DevicesPage() {
                   <tr key={device.id} className="hover:bg-zinc-50/50 transition-colors">
                     <td className="px-6 py-4 font-medium text-zinc-900">
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm uppercase shrink-0 border ${
-                          device.userId ? 'bg-purple-100 text-purple-800 border-purple-300' : 'bg-amber-100 text-amber-800 border-amber-300'
-                        }`}>
-                          {device.userName ? device.userName[0] : 'D'}
-                        </div>
                         <div className="space-y-0.5">
                           <div className="flex items-center gap-2">
                             <span className="block font-semibold text-zinc-900">
@@ -251,7 +224,7 @@ export default function DevicesPage() {
                       ) : (
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-sm font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                           <Globe className="w-3 h-3" />
-                          Site Público
+                          Site
                         </span>
                       )}
                     </td>
@@ -273,7 +246,6 @@ export default function DevicesPage() {
                           asChild
                           variant="outline"
                           size="sm"
-                          className="h-8 px-2.5 text-sm gap-1 text-amber-700 border-amber-200 hover:bg-amber-50 cursor-pointer"
                         >
                           <Link href={`${ROUTES.SETTINGS.SEND_PUSH}?deviceId=${device.id}`}>
                             <Send className="w-3.5 h-3.5" />
@@ -282,13 +254,12 @@ export default function DevicesPage() {
                         </Button>
 
                         <Button
-                          variant="outline"
+                          variant="destructive-outlined"
                           size="sm"
                           onClick={() => {
                             setSelectedDevice(device);
                             setDeleteDialogOpen(true);
                           }}
-                          className="h-8 px-2.5 text-sm gap-1 text-rose-600 border-rose-200 hover:bg-rose-50 cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                           <span>Desconectar</span>

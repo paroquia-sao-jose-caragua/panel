@@ -124,18 +124,6 @@ export function UserNav() {
               </DropdownMenuItem>
             )}
 
-            {user?.role !== 'pastoral_agent' && (
-              <DropdownMenuItem asChild>
-                <Link
-                  href={ROUTES.SETTINGS.HOME}
-                  className="flex items-center gap-2.5 px-3 py-2 text-sm sm:text-sm font-medium text-zinc-700 rounded-lg hover:bg-zinc-100 hover:text-zinc-900 transition cursor-pointer"
-                >
-                  <Settings className="w-4 h-4 text-zinc-500" />
-                  <span>Configurações</span>
-                </Link>
-              </DropdownMenuItem>
-            )}
-
             <DropdownMenuItem asChild>
               <Link
                 href={ROUTES.HELP.HOME}

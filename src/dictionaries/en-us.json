@@ -186,7 +186,7 @@
   "role-admin": "Administrator",
   "role-secretary": "Secretary",
   "role-user": "Secretary",
-  "role-pastoral_agent": "Pastoral Agent / Clergy",
+  "role-pastoral_agent": "Pastoral Agent",
   "role-viewer": "Viewer",
   "status-active": "Active",
   "status-suspended": "Suspended",

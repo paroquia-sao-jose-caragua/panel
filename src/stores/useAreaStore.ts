@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type PanelArea = 'agenda' | 'events' | 'parish';
+export type PanelArea = 'agenda' | 'events' | 'parish' | 'settings';
 
 interface AreaState {
   currentArea: PanelArea;

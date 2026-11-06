@@ -8,6 +8,7 @@ import {
   Church,
   ChevronDown,
   Check,
+  Settings,
 } from 'lucide-react';
 import { useNavigate } from '@/hooks/use-navigate';
 import useAuthStore from '@/stores/useAuthStore';
@@ -39,6 +40,7 @@ export function AreaSelector() {
     ) {
       return 'agenda';
     }
+
     if (
       pathname.startsWith('/programacao-e-eventos') ||
       pathname.startsWith('/programacao-paroquial') ||
@@ -46,11 +48,13 @@ export function AreaSelector() {
     ) {
       return 'events';
     }
+
     if (pathname.startsWith('/configuracoes')) {
-      return currentArea || 'parish';
+      return 'settings';
     }
+
     return 'parish';
-  }, [pathname, isPastoralAgent, currentArea]);
+  }, [pathname, isPastoralAgent]);
 
   // Keep store in sync
   React.useEffect(() => {
@@ -65,6 +69,8 @@ export function AreaSelector() {
       navigate.push(ROUTES.APPOINTMENTS.HOME);
     } else if (area === 'events') {
       navigate.push(ROUTES.CALENDAR.HOME);
+    } else if(area === 'settings') {
+      navigate.push(ROUTES.SETTINGS.HOME);
     } else {
       navigate.push(ROUTES.HOME);
     }
@@ -85,7 +91,8 @@ export function AreaSelector() {
         return 'Programação & Eventos';
       case 'agenda':
         return 'Agenda Pastoral';
-      case 'parish':
+      case 'settings':
+        return 'Configurações'
       default:
         return 'Dados da Paróquia';
     }
@@ -97,7 +104,8 @@ export function AreaSelector() {
         return <CalendarRange className="w-4 h-4 text-[#B8872E] shrink-0" />;
       case 'agenda':
         return <CalendarDays className="w-4 h-4 text-emerald-700 shrink-0" />;
-      case 'parish':
+      case 'settings':
+        return <Settings className="w-4 h-4 text-zinc-500 shrink-0" />
       default:
         return <Church className="w-4 h-4 text-brand-700 shrink-0" />;
     }
@@ -272,6 +280,42 @@ export function AreaSelector() {
             </p>
           </div>
         </div>
+
+        {/* Option 5: Configurações */}
+        <DropdownMenuItem
+          onClick={() => handleSelectArea('settings')}
+          className={cn(
+            'flex items-start gap-3 p-2.5 rounded-xl transition-colors cursor-pointer',
+            effectiveArea === 'settings'
+              ? 'bg-brand-50/70 text-brand-950 hover:bg-brand-50'
+              : 'hover:bg-zinc-100 text-zinc-700'
+          )}
+        >
+          <div
+            className={cn(
+              'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5',
+              effectiveArea === 'settings'
+                ? 'bg-zinc-800 text-white'
+                : 'bg-zinc-100 text-zinc-600'
+            )}
+          >
+            <Settings className="w-4 h-4" />
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold leading-tight">
+                Configurações
+              </span>
+              {effectiveArea === 'settings' && (
+                <Check className="w-4 h-4 text-brand-800" />
+              )}
+            </div>
+            <p className="text-sm text-zinc-500 mt-0.5 line-clamp-2">
+              Gerenciar conta
+            </p>
+          </div>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

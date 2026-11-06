@@ -197,22 +197,23 @@ export default function EventsAndProgrammingHomePage() {
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-8">
         {/* Top Header Section (Without Icon in Title as requested) */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
+        <div>
+          <div className="flex flex-row justify-between items-center w-full">
             <TypographyH1>Programação e Eventos</TypographyH1>
-            <Describe className="mt-1">
-              Organize a programação pastoral e os eventos das comunidades da paróquia.
-            </Describe>
+
+            <div className="hidden items-center md:flex">
+              <Link href={ROUTES.CALENDAR.ADD_EVENT}>
+                <Button>
+                  <Plus className="w-4 h-4" />
+                  <span>Novo evento</span>
+                </Button>
+              </Link>
+            </div>
           </div>
 
-          <div className="self-start sm:self-center shrink-0">
-            <Button asChild>
-              <Link href={ROUTES.CALENDAR.ADD_EVENT}>
-                <Plus className="w-4 h-4" />
-                <span>Novo evento</span>
-              </Link>
-            </Button>
-          </div>
+          <Describe className="mt-1">
+            Organize a programação pastoral e os eventos das comunidades da paróquia.
+          </Describe>
         </div>
 
         {/* 2-Column Main Content Grid */}
@@ -485,7 +486,7 @@ export default function EventsAndProgrammingHomePage() {
                         <div className="flex items-center justify-center gap-0.5 absolute bottom-0.5">
                           {dots.map((dotType, i) => (
                             <span
-                              key={i}
+                              key={`${dateStr}-${dotType}-${i+1}`}
                               className={cn(
                                 'w-1 h-1 rounded-full',
                                 dotType === 'mass' && 'bg-emerald-600',

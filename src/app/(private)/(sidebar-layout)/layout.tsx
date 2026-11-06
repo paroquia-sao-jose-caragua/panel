@@ -23,9 +23,11 @@ export default function Layout({
         )}
       >
         <AppSidebar />
+
         <div className="flex flex-col min-w-0 w-full lg:col-start-2 print:col-start-1 print:w-full print:m-0 print:p-0">
           {children}
         </div>
+        
       </div>
     </TooltipProvider>
   );

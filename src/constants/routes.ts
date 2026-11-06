@@ -1,5 +1,5 @@
 export const ROUTES = {
-  HOME: '/dados-institucionais',
+  HOME: '/programacao-e-eventos',
   AUTH: {
     LOGIN: '/entrar',
     FORGOT_PASSWORD: '/esqueci-minha-senha',
@@ -7,7 +7,8 @@ export const ROUTES = {
   },
   SETTINGS: {
     HOME: '/configuracoes',
-    CHANGE_PASSWORD: '/configuracoes/alterar-senha',
+    MANAGE_LOGIN: '/configuracoes/acesso',
+    CHANGE_PASSWORD: '/configuracoes/acesso/alterar-senha',
     USERS: '/configuracoes/usuarios',
     NEW_USER: '/configuracoes/usuarios/novo',
     EDIT_USER: (id: string) => `/configuracoes/usuarios/${id}/editar`,

@@ -180,112 +180,114 @@ export default function ParochialCalendarPage() {
       />
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
-          <div>
+        {/* Header */}
+        <div>
+          <div className="flex flex-row justify-between items-center w-full">
             <TypographyH1>Calendário Paroquial</TypographyH1>
-            <Describe className="mt-1">
-              Acompanhe a programação litúrgica e pastoral da paróquia, consulte as
-              missas e visualize os eventos pontuais de cada comunidade.
-            </Describe>
-          </div>
+          
+            <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+              {/* Filter Dialog */}
+              <Dialog open={openFilter} onOpenChange={setOpenFilter}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5 h-9 text-sm">
+                    <Filter className="w-3.5 h-3.5" />
+                    <span>Filtros</span>
+                    {(filters.communityId || filters.scheduleType !== 'all') && (
+                      <span className="w-2 h-2 rounded-full bg-[#B8872E]" />
+                    )}
+                  </Button>
+                </DialogTrigger>
 
-          <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
-            {/* Filter Dialog */}
-            <Dialog open={openFilter} onOpenChange={setOpenFilter}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-1.5 h-9 text-sm">
-                  <Filter className="w-3.5 h-3.5" />
-                  <span>Filtros</span>
-                  {(filters.communityId || filters.scheduleType !== 'all') && (
-                    <span className="w-2 h-2 rounded-full bg-[#B8872E]" />
-                  )}
-                </Button>
-              </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Filtrar Calendário</DialogTitle>
+                  </DialogHeader>
 
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Filtrar Calendário</DialogTitle>
-                </DialogHeader>
-
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    formik.handleSubmit();
-                  }}
-                  className="space-y-4 pt-2 px-4"
-                >
-                  <FieldGroup className="gap-2">
-                    <label className="text-sm font-semibold uppercase tracking-wider text-zinc-600">
-                      Comunidade
-                    </label>
-                    <Select
-                      name="communityId"
-                      placeholder="Todas as comunidades"
-                      value={formik.values.communityId}
-                      onValueChange={(val) =>
-                        formik.setFieldValue('communityId', val === 'all' ? '' : val)
-                      }
-                    >
-                      <SelectItem value="all" text="Todas as comunidades" />
-                      {!isLoadingCommunities &&
-                        communities.map((c) => (
-                          <SelectItem
-                            key={c.id}
-                            value={c.id}
-                            text={
-                              c.type === 'parish_church'
-                                ? `Paróquia ${c.name}`
-                                : `Capela ${c.name}`
-                            }
-                          />
-                        ))}
-                    </Select>
-                  </FieldGroup>
-
-                  <FieldGroup className="gap-2">
-                    <label className="text-sm font-semibold uppercase tracking-wider text-zinc-600">
-                      Tipo de Compromisso
-                    </label>
-                    <Select
-                      name="scheduleType"
-                      placeholder="Todos os tipos"
-                      value={formik.values.scheduleType}
-                      onValueChange={(val) => formik.setFieldValue('scheduleType', val)}
-                    >
-                      <SelectItem value="all" text="Todos (Missas e Eventos)" />
-                      <SelectItem value="mass" text="Apenas Missas Recorrentes" />
-                      <SelectItem value="event" text="Apenas Eventos Pontuais" />
-                    </Select>
-                  </FieldGroup>
-
-                  <DialogFooter className="pt-2">
-                    <DialogClose asChild>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => {
-                          formik.resetForm();
-                          setFilters({ scheduleType: 'all' });
-                        }}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      formik.handleSubmit();
+                    }}
+                    className="space-y-4 pt-2 px-4"
+                  >
+                    <FieldGroup className="gap-2">
+                      <label className="text-sm font-semibold uppercase tracking-wider text-zinc-600">
+                        Comunidade
+                      </label>
+                      <Select
+                        name="communityId"
+                        placeholder="Todas as comunidades"
+                        value={formik.values.communityId}
+                        onValueChange={(val) =>
+                          formik.setFieldValue('communityId', val === 'all' ? '' : val)
+                        }
                       >
-                        Limpar Filtros
-                      </Button>
-                    </DialogClose>
-                    <Button type="submit" disabled={isPending}>
-                      Aplicar Filtros
-                    </Button>
-                  </DialogFooter>
-                </form>
-              </DialogContent>
-            </Dialog>
+                        <SelectItem value="all" text="Todas as comunidades" />
+                        {!isLoadingCommunities &&
+                          communities.map((c) => (
+                            <SelectItem
+                              key={c.id}
+                              value={c.id}
+                              text={
+                                c.type === 'parish_church'
+                                  ? `Paróquia ${c.name}`
+                                  : `Capela ${c.name}`
+                              }
+                            />
+                          ))}
+                      </Select>
+                    </FieldGroup>
 
-            <Button asChild size="sm" className="gap-1.5 h-9 text-sm">
-              <Link href={ROUTES.CALENDAR.ADD_EVENT}>
-                <Plus className="w-3.5 h-3.5" />
-                <span>Adicionar Evento</span>
-              </Link>
-            </Button>
+                    <FieldGroup className="gap-2">
+                      <label className="text-sm font-semibold uppercase tracking-wider text-zinc-600">
+                        Tipo de Compromisso
+                      </label>
+                      <Select
+                        name="scheduleType"
+                        placeholder="Todos os tipos"
+                        value={formik.values.scheduleType}
+                        onValueChange={(val) => formik.setFieldValue('scheduleType', val)}
+                      >
+                        <SelectItem value="all" text="Todos (Missas e Eventos)" />
+                        <SelectItem value="mass" text="Apenas Missas Recorrentes" />
+                        <SelectItem value="event" text="Apenas Eventos Pontuais" />
+                      </Select>
+                    </FieldGroup>
+
+                    <DialogFooter className="pt-2">
+                      <DialogClose asChild>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            formik.resetForm();
+                            setFilters({ scheduleType: 'all' });
+                          }}
+                        >
+                          Limpar Filtros
+                        </Button>
+                      </DialogClose>
+                      <Button type="submit" disabled={isPending}>
+                        Aplicar Filtros
+                      </Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+
+              <Button asChild size="sm" className="gap-1.5 h-9 text-sm">
+                <Link href={ROUTES.CALENDAR.ADD_EVENT}>
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Adicionar Evento</span>
+                </Link>
+              </Button>
+            </div>
           </div>
+
+          <Describe className="mt-1">
+            Acompanhe a programação litúrgica e pastoral da paróquia, consulte as
+            missas e visualize os eventos pontuais de cada comunidade.
+          </Describe>
         </div>
 
         {/* Active Filters Badges */}

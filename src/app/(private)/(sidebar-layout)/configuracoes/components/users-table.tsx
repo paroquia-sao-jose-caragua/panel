@@ -13,7 +13,7 @@ import {
   Mail,
   Pencil,
 } from 'lucide-react';
-import { User, UserRole, UserStatus } from '@/entities/user';
+import type { User, UserRole, UserStatus } from '@/entities/user';
 import useAuthStore from '@/stores/useAuthStore';
 import useTranslator from '@/hooks/use-translator';
 import { updateUserStatus } from '@/api/users/update-user-status';
@@ -124,7 +124,7 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
             {t('role-pastoral_agent')}
           </span>
         );
-      case 'viewer':
+      // case 'viewer':
       default:
         return (
           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-zinc-100 text-zinc-700 border border-zinc-200">
@@ -182,7 +182,6 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
           {[1, 2, 3, 4, 5].map((idx) => (
             <div key={idx} className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <Skeleton className="w-10 h-10 rounded-full" />
                 <div className="space-y-1.5">
                   <Skeleton className="w-36 h-4" />
                   <Skeleton className="w-48 h-3" />
@@ -231,9 +230,6 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
                 >
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-brand-100 text-brand-800 font-semibold flex items-center justify-center text-sm shrink-0">
-                        {u.name.charAt(0).toUpperCase()}
-                      </div>
                       <div className="truncate">
                         <div className="font-medium text-zinc-900 flex items-center gap-1.5">
                           {u.name}

@@ -22,7 +22,8 @@ const buttonVariants = cva(
           'bg-red-600 text-white hover:bg-red-700 focus-visible:border-red-400 focus-visible:ring-4 focus-visible:ring-red-100 shadow-xs dark:bg-red-700 dark:hover:bg-red-800',
         'destructive-subtle':
           'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
-        gold:
+        'destructive-outlined': 'text-rose-600 border-rose-200 hover:bg-rose-50',
+          gold:
           'bg-brand-500 text-brand-900 hover:bg-brand-600 focus-visible:ring-4 focus-visible:ring-brand-200 shadow-xs font-semibold',
         link: 'text-primary underline-offset-4 hover:underline',
       },
