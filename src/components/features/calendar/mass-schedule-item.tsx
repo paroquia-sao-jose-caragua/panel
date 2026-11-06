@@ -109,10 +109,7 @@ export const MassScheduleItem = ({
             {/* Horário (sem parecer botão) */}
             <div className="flex items-center gap-1.5 font-mono text-sm sm:text-base font-bold text-zinc-900">
               <Clock className="w-4 h-4 text-[#B8872E]" />
-              <span>
-                {schedule.startTime}
-                {schedule.endTime ? ` — ${schedule.endTime}` : ''}
-              </span>
+              <span>{schedule.startTime}</span>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span className="inline-flex items-center text-zinc-400 hover:text-[#B8872E] cursor-help ml-0.5">
@@ -168,7 +165,7 @@ export const MassScheduleItem = ({
           </h4>
 
           {schedule.orientations && (
-            <p className="text-xs sm:text-sm text-zinc-600 font-serif leading-relaxed">
+            <p className="text-sm sm:text-sm text-zinc-600 font-serif leading-relaxed">
               {schedule.orientations}
             </p>
           )}
@@ -177,7 +174,7 @@ export const MassScheduleItem = ({
 
       {/* Card Footer: Location & Cancel Action */}
       <div className="mt-4 pt-3.5 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+        <div className="flex items-center gap-1.5 text-sm text-zinc-500">
           <MapPin className="w-3.5 h-3.5 text-[#B8872E] shrink-0" />
           <span className="font-medium text-zinc-700">
             {schedule.community.type === 'parish_church'
@@ -194,7 +191,7 @@ export const MassScheduleItem = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="gap-1.5 text-zinc-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-xs h-8"
+                className="gap-1.5 text-zinc-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-sm h-8"
               >
                 <X className="w-3.5 h-3.5" />
                 <span>Desmarcar</span>
@@ -210,7 +207,7 @@ export const MassScheduleItem = ({
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="mx-4 rounded-xl border border-zinc-200 bg-zinc-50 p-3.5 mb-5 space-y-2 text-xs sm:text-sm">
+              <div className="mx-4 rounded-xl border border-zinc-200 bg-zinc-50 p-3.5 mb-5 space-y-2 text-sm sm:text-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-zinc-500 font-medium">Data:</span>
                   <span className="font-mono font-semibold text-zinc-900">
@@ -221,7 +218,6 @@ export const MassScheduleItem = ({
                   <span className="text-zinc-500 font-medium">Horário:</span>
                   <span className="font-mono font-semibold text-zinc-900">
                     {schedule.startTime}
-                    {schedule.endTime ? ` — ${schedule.endTime}` : ''}
                   </span>
                 </div>
                 <div className="flex items-start justify-between gap-2">
@@ -260,7 +256,7 @@ export const MassScheduleItem = ({
               </div>
 
               <FieldGroup className="px-4 pb-4 gap-2">
-                <span className="block text-zinc-800 text-xs font-semibold">
+                <span className="block text-zinc-800 text-sm font-semibold">
                   Motivo do cancelamento
                 </span>
                 <Select

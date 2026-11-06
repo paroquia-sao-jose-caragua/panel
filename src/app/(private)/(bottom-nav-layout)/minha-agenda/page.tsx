@@ -83,7 +83,7 @@ export default function MinhaAgendaHomePage() {
 
             <Link
               href={ROUTES.MY_AGENDA.SCHEDULE}
-              className="text-xs font-semibold text-brand-800 hover:text-brand-900 transition flex items-center gap-1 group py-1 px-2 rounded-lg hover:bg-brand-50 cursor-pointer"
+              className="text-sm font-semibold text-brand-800 hover:text-brand-900 transition flex items-center gap-1 group py-1 px-2 rounded-lg hover:bg-brand-50 cursor-pointer"
             >
               <span>Ver agenda</span>
               <ChevronRight className="w-3.5 h-3.5 text-brand-700 group-hover:translate-x-0.5 transition-transform" />
@@ -106,7 +106,7 @@ export default function MinhaAgendaHomePage() {
                 <p className="text-base font-bold text-zinc-900 font-serif">
                   Nenhum atendimento para hoje
                 </p>
-                <p className="text-xs text-zinc-500 max-w-xs mx-auto leading-relaxed">
+                <p className="text-sm text-zinc-500 max-w-xs mx-auto leading-relaxed">
                   Você não possui atendimentos agendados para a data de hoje.
                   Aproveite para conferir os próximos dias na sua agenda completa.
                 </p>
@@ -117,7 +117,7 @@ export default function MinhaAgendaHomePage() {
                   asChild
                   variant="outline"
                   size="sm"
-                  className="rounded-xl border-zinc-300 hover:bg-zinc-50 text-xs font-semibold gap-1.5 shadow-2xs cursor-pointer"
+                  className="rounded-xl border-zinc-300 hover:bg-zinc-50 text-sm font-semibold gap-1.5 shadow-2xs cursor-pointer"
                 >
                   <Link href={ROUTES.MY_AGENDA.SCHEDULE}>
                     <Calendar className="w-4 h-4 text-brand-800" />

@@ -95,7 +95,7 @@ export const Form = () => {
       <div className="flex items-center justify-center pt-4">
         <Link
           href={ROUTES.AUTH.LOGIN}
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-800 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-500 hover:text-zinc-800 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>{t('back-to-login')}</span>

@@ -83,7 +83,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
       {/* Live Preview Bar */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
+          <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider">
             Prévia no Site
           </span>
           {values.hasModal && (
@@ -92,7 +92,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
               variant="outline"
               size="sm"
               onClick={() => setPreviewModalOpen(true)}
-              className="gap-1.5 text-xs h-7"
+              className="gap-1.5 text-sm h-7"
             >
               <Eye className="w-3.5 h-3.5" />
               Ver Modal Completo
@@ -126,7 +126,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
           <span className="text-zinc-500 text-sm">Status</span>
           <span className="col-span-2 text-right">
             <span
-              className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+              className={`inline-flex items-center gap-1 text-sm font-semibold px-2.5 py-0.5 rounded-full ${
                 values.active
                   ? 'bg-emerald-100 text-emerald-800'
                   : 'bg-zinc-100 text-zinc-600'
@@ -161,7 +161,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
 
         <div className="grid grid-cols-3 gap-4 py-3 items-center">
           <span className="text-zinc-500 text-sm">Período</span>
-          <span className="col-span-2 text-right text-xs text-zinc-700">
+          <span className="col-span-2 text-right text-sm text-zinc-700">
             {values.startsAt || values.endsAt ? (
               <>
                 {values.startsAt ? new Date(values.startsAt).toLocaleString('pt-BR') : 'Imediato'}{' '}
@@ -197,7 +197,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
             {values.modalDescription && (
               <div className="grid grid-cols-3 gap-4 py-3 items-start">
                 <span className="text-zinc-500 text-sm">Descrição Completa</span>
-                <span className="col-span-2 text-right text-xs text-zinc-700 whitespace-pre-line max-h-36 overflow-y-auto leading-relaxed">
+                <span className="col-span-2 text-right text-sm text-zinc-700 whitespace-pre-line max-h-36 overflow-y-auto leading-relaxed">
                   {values.modalDescription}
                 </span>
               </div>
@@ -220,7 +220,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
             {values.modalActionText && (
               <div className="grid grid-cols-3 gap-4 py-3 items-center">
                 <span className="text-zinc-500 text-sm">Botão de Ação</span>
-                <span className="col-span-2 text-right text-xs text-zinc-700 truncate">
+                <span className="col-span-2 text-right text-sm text-zinc-700 truncate">
                   {values.modalActionText} ({values.modalActionUrl || 'Sem URL'})
                 </span>
               </div>
@@ -236,7 +236,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
             <DialogTitle className="text-xl sm:text-2xl font-serif text-[#14201d] font-bold whitespace-pre-line leading-snug">
               {values.modalTitle || 'Comunicado Paroquial'}
             </DialogTitle>
-            <DialogDescription className="text-xs text-stone-500">
+            <DialogDescription className="text-sm text-stone-500">
               Pré-visualização do comunicado para os fiéis
             </DialogDescription>
           </DialogHeader>
@@ -257,7 +257,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
 
           {values.modalActionText && (
             <div className="mt-6 pt-4 border-t border-stone-200 flex justify-end">
-              <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#14201d] text-[#e8dfd1] rounded-full text-xs font-semibold shadow-xs">
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#14201d] text-[#e8dfd1] rounded-full text-sm font-semibold shadow-xs">
                 {values.modalActionText}
                 <ExternalLink className="w-3.5 h-3.5" />
               </span>

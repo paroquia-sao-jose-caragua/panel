@@ -34,6 +34,7 @@ import {
   Power,
   Info,
   X,
+  CalendarDays,
 } from 'lucide-react';
 import { getUrgentAlert, updateUrgentAlert } from '@/api/urgent-alert';
 import { apiBaseUrl } from '@/api/utils/api';
@@ -149,7 +150,6 @@ export default function UrgentAlertPage() {
               key: 'alert',
               href: ROUTES.ANNOUNCEMENTS.ALERT,
               title: 'Faixa de Alerta',
-              icon: AlertTriangle,
             },
           ]}
         />
@@ -176,16 +176,15 @@ export default function UrgentAlertPage() {
       <AppHeader
         links={[
           {
-            key: 'announcements',
-            href: ROUTES.ANNOUNCEMENTS.HOME,
-            title: 'Banners',
-            icon: Layers,
+            key: 'programacao-e-eventos',
+            href: ROUTES.CALENDAR.HOME,
+            title: 'Programação & Eventos',
+            icon: CalendarDays,
           },
           {
             key: 'alert',
             href: ROUTES.ANNOUNCEMENTS.ALERT,
             title: 'Faixa de Alerta',
-            icon: AlertTriangle,
           },
         ]}
       />
@@ -196,14 +195,14 @@ export default function UrgentAlertPage() {
           <TypographyH1>Faixa de Alerta Urgente</TypographyH1>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <Button asChild variant="outline" size="sm" className="gap-2 text-xs h-9">
+            <Button asChild variant="outline" size="sm" className="gap-2 text-sm h-9">
               <a href={siteBaseUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="w-4 h-4" />
                 <span>Ver no site público</span>
               </a>
             </Button>
 
-            <Button asChild size="sm" className="gap-2 text-xs h-9 bg-brand-800 hover:bg-brand-700 text-white">
+            <Button asChild size="sm" className="gap-2 text-sm h-9 bg-brand-800 hover:bg-brand-700 text-white">
               <Link href={ROUTES.ANNOUNCEMENTS.EDIT_ALERT}>
                 <Pencil className="w-3.5 h-3.5" />
                 <span>Editar Faixa de Alerta</span>
@@ -246,7 +245,7 @@ export default function UrgentAlertPage() {
                       {isActive ? 'Faixa Ativa no Site' : 'Faixa Desativada'}
                     </h2>
                     <span
-                      className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+                      className={`inline-flex items-center gap-1.5 text-sm font-semibold px-2.5 py-0.5 rounded-full ${
                         isActive
                           ? 'bg-emerald-100 text-emerald-800 border border-emerald-300/60'
                           : 'bg-zinc-200 text-zinc-700'
@@ -261,7 +260,7 @@ export default function UrgentAlertPage() {
                     </span>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-zinc-600 mt-1 max-w-2xl">
+                  <p className="text-sm sm:text-sm text-zinc-600 mt-1 max-w-2xl">
                     {isActive
                       ? 'O letreiro está sendo exibido para todos os fiéis que acessam a página inicial do site da paróquia.'
                       : 'A mensagem está salva no sistema, mas não está visível no site público.'}
@@ -276,7 +275,7 @@ export default function UrgentAlertPage() {
                   size="sm"
                   disabled={toggleMutation.isPending || !urgentAlert?.text}
                   onClick={() => toggleMutation.mutate(!isActive)}
-                  className={`gap-2 text-xs font-semibold cursor-pointer ${
+                  className={`gap-2 text-sm font-semibold cursor-pointer ${
                     isActive
                       ? 'border-zinc-300 text-zinc-700 hover:bg-zinc-100'
                       : 'bg-emerald-600 hover:bg-emerald-700 text-white'
@@ -305,7 +304,7 @@ export default function UrgentAlertPage() {
 
               <div className="flex items-center gap-2">
                 <span
-                  className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border ${currentVariant.colorBadge}`}
+                  className={`inline-flex items-center gap-1.5 text-sm font-semibold px-2.5 py-1 rounded-lg border ${currentVariant.colorBadge}`}
                 >
                   <VariantIcon className="w-3.5 h-3.5" />
                   <span>{currentVariant.label}</span>
@@ -315,7 +314,7 @@ export default function UrgentAlertPage() {
 
             {/* Simulated browser ribbon */}
             <div className="rounded-xl overflow-hidden border border-zinc-200 shadow-xs">
-              <div className="bg-zinc-100 px-4 py-2 border-b border-zinc-200 flex items-center gap-2 text-xs text-zinc-500 font-mono">
+              <div className="bg-zinc-100 px-4 py-2 border-b border-zinc-200 flex items-center gap-2 text-sm text-zinc-500 font-mono">
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                   <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
@@ -326,7 +325,15 @@ export default function UrgentAlertPage() {
 
               {/* Top Banner Ribbon - 100% Text & Clickable */}
               <div
+                role={urgentAlert?.hasModal ? 'button' : undefined}
+                tabIndex={urgentAlert?.hasModal ? 0 : undefined}
                 onClick={() => urgentAlert?.hasModal && setModalPreviewOpen(true)}
+                onKeyDown={(e) => {
+                  if (urgentAlert?.hasModal && (e.key === 'Enter' || e.key === ' ')) {
+                    e.preventDefault();
+                    setModalPreviewOpen(true);
+                  }
+                }}
                 className={`w-full py-3.5 px-4 sm:px-6 shadow-inner flex items-center transition-all select-none ${
                   urgentAlert?.hasModal
                     ? 'cursor-pointer hover:brightness-105 active:brightness-95'
@@ -351,7 +358,7 @@ export default function UrgentAlertPage() {
               </div>
 
               {/* Informação sobre a interação */}
-              <div className="bg-zinc-50 px-4 py-2.5 border-t border-zinc-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-zinc-500">
+              <div className="bg-zinc-50 px-4 py-2.5 border-t border-zinc-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm text-zinc-500">
                 <span className="flex items-center gap-1.5">
                   <Info className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                   <span>
@@ -373,7 +380,7 @@ export default function UrgentAlertPage() {
               </div>
 
               {/* Simulated header preview below the ribbon */}
-              <div className="bg-zinc-50/80 px-6 py-4 flex items-center justify-between text-zinc-400 text-xs border-t border-zinc-200/50">
+              <div className="bg-zinc-50/80 px-6 py-4 flex items-center justify-between text-zinc-400 text-sm border-t border-zinc-200/50">
                 <span className="font-semibold text-zinc-500">Paróquia São José de Caraguatatuba</span>
                 <span>[Menu de Navegação do Site]</span>
               </div>
@@ -394,13 +401,13 @@ export default function UrgentAlertPage() {
                   </h3>
                 </div>
 
-                <div className="space-y-4 text-xs sm:text-sm">
+                <div className="space-y-4 text-sm sm:text-sm">
                   <div>
-                    <span className="text-zinc-500 text-xs block mb-1">
+                    <span className="text-zinc-500 text-sm block mb-1">
                       Categoria / Estilo Litúrgico:
                     </span>
                     <span
-                      className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border ${currentVariant.colorBadge}`}
+                      className={`inline-flex items-center gap-1.5 text-sm font-semibold px-2.5 py-1 rounded-lg border ${currentVariant.colorBadge}`}
                     >
                       <VariantIcon className="w-3.5 h-3.5" />
                       <span>{currentVariant.label}</span>
@@ -408,7 +415,7 @@ export default function UrgentAlertPage() {
                   </div>
 
                   <div>
-                    <span className="text-zinc-500 text-xs block mb-1">
+                    <span className="text-zinc-500 text-sm block mb-1">
                       Texto da Faixa:
                     </span>
                     <p className="font-medium text-zinc-800 bg-zinc-50 border border-zinc-100 p-3.5 rounded-xl leading-relaxed whitespace-pre-line text-sm">
@@ -417,10 +424,10 @@ export default function UrgentAlertPage() {
                   </div>
 
                   <div>
-                    <span className="text-zinc-500 text-xs block mb-1">
+                    <span className="text-zinc-500 text-sm block mb-1">
                       Período de Exibição / Vigência:
                     </span>
-                    <div className="flex items-center gap-2 text-zinc-700 bg-zinc-50 border border-zinc-100 px-3.5 py-2.5 rounded-xl text-xs font-medium">
+                    <div className="flex items-center gap-2 text-zinc-700 bg-zinc-50 border border-zinc-100 px-3.5 py-2.5 rounded-xl text-sm font-medium">
                       <Clock className="w-4 h-4 text-zinc-400 shrink-0" />
                       <span>
                         {urgentAlert?.startsAt || urgentAlert?.endsAt ? (
@@ -443,7 +450,7 @@ export default function UrgentAlertPage() {
               </div>
 
               <div className="mt-6 pt-4 border-t border-zinc-100">
-                <Button asChild variant="outline" size="sm" className="w-full gap-2 text-xs">
+                <Button asChild variant="outline" size="sm" className="w-full gap-2 text-sm">
                   <Link href={ROUTES.ANNOUNCEMENTS.EDIT_ALERT}>
                     <Pencil className="w-3.5 h-3.5" />
                     <span>Editar Texto ou Estilo</span>
@@ -464,7 +471,7 @@ export default function UrgentAlertPage() {
                   </div>
 
                   <span
-                    className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+                    className={`inline-flex items-center gap-1 text-sm font-semibold px-2.5 py-0.5 rounded-full ${
                       urgentAlert?.hasModal
                         ? 'bg-blue-50 text-blue-700 border border-blue-200'
                         : 'bg-zinc-100 text-zinc-600'
@@ -475,9 +482,9 @@ export default function UrgentAlertPage() {
                 </div>
 
                 {urgentAlert?.hasModal ? (
-                  <div className="space-y-4 text-xs sm:text-sm">
+                  <div className="space-y-4 text-sm sm:text-sm">
                     <div>
-                      <span className="text-zinc-500 text-xs block mb-0.5">
+                      <span className="text-zinc-500 text-sm block mb-0.5">
                         Título do Modal:
                       </span>
                       <p className="font-semibold text-zinc-900 text-base">
@@ -486,28 +493,28 @@ export default function UrgentAlertPage() {
                     </div>
 
                     <div>
-                      <span className="text-zinc-500 text-xs block mb-1">
+                      <span className="text-zinc-500 text-sm block mb-1">
                         Conteúdo / Descrição Completa:
                       </span>
-                      <div className="max-h-32 overflow-y-auto whitespace-pre-line bg-zinc-50 p-3 rounded-xl border border-zinc-100 leading-relaxed text-zinc-600 text-xs">
+                      <div className="max-h-32 overflow-y-auto whitespace-pre-line bg-zinc-50 p-3 rounded-xl border border-zinc-100 leading-relaxed text-zinc-600 text-sm">
                         {urgentAlert.modalDescription || 'Nenhuma descrição detalhada.'}
                       </div>
                     </div>
 
                     {urgentAlert.modalActionText && (
                       <div>
-                        <span className="text-zinc-500 text-xs block mb-1">
+                        <span className="text-zinc-500 text-sm block mb-1">
                           Botão de Ação / Link Externo:
                         </span>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-brand-700 bg-brand-50 border border-brand-200 px-2.5 py-1 rounded-lg inline-flex items-center gap-1 text-xs">
+                          <span className="font-medium text-brand-700 bg-brand-50 border border-brand-200 px-2.5 py-1 rounded-lg inline-flex items-center gap-1 text-sm">
                             {urgentAlert.modalActionText}
                             {urgentAlert.modalActionUrl && (
                               <ExternalLink className="w-3 h-3" />
                             )}
                           </span>
                           {urgentAlert.modalActionUrl && (
-                            <span className="text-xs text-zinc-400 truncate max-w-xs">
+                            <span className="text-sm text-zinc-400 truncate max-w-xs">
                               {urgentAlert.modalActionUrl}
                             </span>
                           )}
@@ -517,7 +524,7 @@ export default function UrgentAlertPage() {
 
                     {urgentAlert.modalImageId && (
                       <div className="pt-2 flex items-center justify-between">
-                        <span className="text-xs text-zinc-500">
+                        <span className="text-sm text-zinc-500">
                           Cartaz / Flyer anexado:
                         </span>
                         <ImageLightbox
@@ -535,7 +542,7 @@ export default function UrgentAlertPage() {
                     <p className="text-sm font-medium text-zinc-700">
                       Nenhum modal vinculado
                     </p>
-                    <p className="text-xs text-zinc-400 mt-1 max-w-sm">
+                    <p className="text-sm text-zinc-400 mt-1 max-w-sm">
                       Ao ativar a janela modal, os fiéis podem clicar em qualquer ponto da faixa de alerta para abrir uma janela com mais detalhes, texto completo e cartaz anexado.
                     </p>
                   </div>
@@ -549,14 +556,14 @@ export default function UrgentAlertPage() {
                     variant="outline"
                     size="sm"
                     onClick={() => setModalPreviewOpen(true)}
-                    className="flex-1 gap-1.5 text-xs cursor-pointer"
+                    className="flex-1 gap-1.5 text-sm cursor-pointer"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>Testar Modal</span>
                   </Button>
                 )}
 
-                <Button asChild variant="outline" size="sm" className="flex-1 gap-1.5 text-xs">
+                <Button asChild variant="outline" size="sm" className="flex-1 gap-1.5 text-sm">
                   <Link href={ROUTES.ANNOUNCEMENTS.EDIT_ALERT}>
                     <Pencil className="w-3.5 h-3.5" />
                     <span>{urgentAlert?.hasModal ? 'Editar Modal' : 'Habilitar Modal'}</span>
@@ -578,7 +585,7 @@ export default function UrgentAlertPage() {
                 <h4 className="font-semibold text-zinc-900 text-sm sm:text-base">
                   Deseja gerenciar os Banners do Carrossel?
                 </h4>
-                <p className="text-xs text-zinc-500 mt-0.5">
+                <p className="text-sm text-zinc-500 mt-0.5">
                   Organize os banners principais da página inicial para festas, campanhas de dízimo e eventos de médio prazo.
                 </p>
               </div>

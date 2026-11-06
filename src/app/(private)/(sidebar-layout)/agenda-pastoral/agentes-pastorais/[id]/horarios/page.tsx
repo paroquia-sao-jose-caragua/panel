@@ -122,7 +122,7 @@ export default function AgentSchedulePage({
               <Clock className="w-4 h-4 text-brand-700" />
               <span>Disponibilidade Semanal para Atendimentos</span>
             </h2>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-sm text-zinc-500 mt-0.5">
               Ative os dias da semana em que este agente estará na igreja ou disponível para visitas e defina os intervalos e a duração de cada slot.
             </p>
           </div>
@@ -175,7 +175,7 @@ export default function AgentSchedulePage({
 
                       {conf.active && (
                         <div className="flex flex-wrap items-center gap-2">
-                          <div className="flex items-center gap-1.5 text-xs text-zinc-600 bg-zinc-50 px-2.5 py-1 rounded-lg border border-zinc-200">
+                          <div className="flex items-center gap-1.5 text-sm text-zinc-600 bg-zinc-50 px-2.5 py-1 rounded-lg border border-zinc-200">
                             <span>Das</span>
                             <Input
                               type="time"
@@ -186,7 +186,7 @@ export default function AgentSchedulePage({
                                   [d.id]: { ...conf, startTime: e.target.value },
                                 }))
                               }
-                              className="w-24 h-7 text-xs px-2 bg-white"
+                              className="w-24 h-7 text-sm px-2 bg-white"
                             />
                             <span>às</span>
                             <Input
@@ -198,11 +198,11 @@ export default function AgentSchedulePage({
                                   [d.id]: { ...conf, endTime: e.target.value },
                                 }))
                               }
-                              className="w-24 h-7 text-xs px-2 bg-white"
+                              className="w-24 h-7 text-sm px-2 bg-white"
                             />
                           </div>
 
-                          <div className="flex items-center gap-1 text-xs text-zinc-600">
+                          <div className="flex items-center gap-1 text-sm text-zinc-600">
                             <select
                               value={conf.slotDurationMinutes}
                               onChange={(e) =>
@@ -214,7 +214,7 @@ export default function AgentSchedulePage({
                                   },
                                 }))
                               }
-                              className="h-9 rounded-lg border border-zinc-300 text-xs px-2 bg-white"
+                              className="h-9 rounded-lg border border-zinc-300 text-sm px-2 bg-white"
                             >
                               <option value={15}>15 minutos / slot</option>
                               <option value={20}>20 minutos / slot</option>

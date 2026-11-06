@@ -53,10 +53,6 @@ export default function PastoralAgentsPage() {
         ]}
       />
       <main className="max-w-325 w-full min-w-0 px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-        <div className="mb-2">
-          <BackButton href={ROUTES.APPOINTMENTS.HOME} />
-        </div>
-
         {/* Header and Actions */}
         <div className="space-y-2 mb-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -132,21 +128,21 @@ export default function PastoralAgentsPage() {
                         {agent.title ? `${agent.title} ` : ''}
                         {agent.name}
                       </h3>
-                      <span className="text-xs text-zinc-500 font-medium block mt-0.5">
+                      <span className="text-sm text-zinc-500 font-medium block mt-0.5">
                         {agent.actingRole}
                       </span>
                     </div>
 
                     {/* Stats & Badges */}
                     <div className="pt-2 flex items-center justify-center gap-2 flex-wrap">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-700">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-zinc-100 text-zinc-700">
                         {servicesCount}{' '}
                         {servicesCount === 1 ? 'categoria' : 'categorias'}
                       </span>
 
                       <span
                         className={cn(
-                          'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold',
+                          'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-sm font-semibold',
                           isAvailable
                             ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                             : 'bg-zinc-100 text-zinc-500 border border-zinc-200'
@@ -172,7 +168,7 @@ export default function PastoralAgentsPage() {
                     <div className="flex items-center justify-center gap-2">
                       <Link
                         href={ROUTES.PASTORAL_AGENTS.SCHEDULE(agent.id)}
-                        className="text-xs font-medium text-zinc-600 hover:text-zinc-900 p-1.5 rounded-lg hover:bg-zinc-100 flex items-center gap-1 transition-colors"
+                        className="text-sm font-medium text-zinc-600 hover:text-zinc-900 p-1.5 rounded-lg hover:bg-zinc-100 flex items-center gap-1 transition-colors"
                       >
                         <Clock className="w-3.5 h-3.5 text-zinc-400" />
                         <span>Grade</span>
@@ -182,7 +178,7 @@ export default function PastoralAgentsPage() {
 
                       <Link
                         href={ROUTES.PASTORAL_AGENTS.BLOCKED_DATES(agent.id)}
-                        className="text-xs font-medium text-zinc-600 hover:text-zinc-900 p-1.5 rounded-lg hover:bg-zinc-100 flex items-center gap-1 transition-colors"
+                        className="text-sm font-medium text-zinc-600 hover:text-zinc-900 p-1.5 rounded-lg hover:bg-zinc-100 flex items-center gap-1 transition-colors"
                       >
                         <CalendarOff className="w-3.5 h-3.5 text-zinc-400" />
                         <span>Bloqueios</span>
@@ -191,7 +187,7 @@ export default function PastoralAgentsPage() {
 
                     <Link
                       href={ROUTES.PASTORAL_AGENTS.EDIT(agent.id)}
-                      className="w-full inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[#11291f] hover:text-emerald-950 py-1.5 px-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 transition-all cursor-pointer"
+                      className="w-full inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-[#11291f] hover:text-emerald-950 py-1.5 px-3 rounded-xl bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 transition-all cursor-pointer"
                     >
                       <span>Ver perfil & Editar</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />

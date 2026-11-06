@@ -141,7 +141,7 @@ export default function EditDonationsPage() {
           <div className="flex flex-row items-center gap-4 mt-1">
             <div>
               <TypographyH1>Editar Quero Contribuir</TypographyH1>
-              <span className="text-xs sm:text-sm text-zinc-500 font-medium">
+              <span className="text-sm sm:text-sm text-zinc-500 font-medium">
                 Atualize os dados de PIX, contas bancárias, envio de comprovantes e textos informativos
               </span>
             </div>

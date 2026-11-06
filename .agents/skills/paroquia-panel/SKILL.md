@@ -113,7 +113,7 @@ src/
 │   │   ├── (parish)/    # Módulos centrais (churches, programacao-paroquial, avisos, clerigos, pastorais)
 │   │   │   ├── (churches)/ # Comunidades (/, /adicionar-comunidade, /[slug], /[slug]/editar, /[slug]/sobre, /[slug]/padroeiro, /[slug]/galeria)
 │   │   │   ├── programacao-paroquial/  # Gestão do calendário (/programacao-paroquial, /programacao-paroquial/adicionar-evento, /programacao-paroquial/evento/[id]/editar)
-│   │   │   ├── avisos/  # Gestão de avisos (/avisos, /avisos/adicionar, /avisos/alerta/editar, /avisos/editar/[id])
+│   │   │   ├── avisos/  # Gestão de avisos (/avisos, /avisos/adicionar, /programacao-e-eventos/faixa-de-alerta/editar, /avisos/editar/[id])
 │   │   │   ├── clerigos/ # Gestão do clero (/clerigos, /clerigos/adicionar, /clerigos/editar/[id])
 │   │   │   └── pastorais/ # Gestão de pastorais (/pastorais)
 │   │   ├── doacoes/     # Gestão de doações (/doacoes)

@@ -193,7 +193,7 @@ export default function ParochialCalendarPage() {
             {/* Filter Dialog */}
             <Dialog open={openFilter} onOpenChange={setOpenFilter}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-1.5 h-9 text-xs">
+                <Button variant="outline" size="sm" className="gap-1.5 h-9 text-sm">
                   <Filter className="w-3.5 h-3.5" />
                   <span>Filtros</span>
                   {(filters.communityId || filters.scheduleType !== 'all') && (
@@ -212,10 +212,10 @@ export default function ParochialCalendarPage() {
                     e.preventDefault();
                     formik.handleSubmit();
                   }}
-                  className="space-y-4 pt-2"
+                  className="space-y-4 pt-2 px-4"
                 >
                   <FieldGroup className="gap-2">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                    <label className="text-sm font-semibold uppercase tracking-wider text-zinc-600">
                       Comunidade
                     </label>
                     <Select
@@ -243,7 +243,7 @@ export default function ParochialCalendarPage() {
                   </FieldGroup>
 
                   <FieldGroup className="gap-2">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                    <label className="text-sm font-semibold uppercase tracking-wider text-zinc-600">
                       Tipo de Compromisso
                     </label>
                     <Select
@@ -279,7 +279,7 @@ export default function ParochialCalendarPage() {
               </DialogContent>
             </Dialog>
 
-            <Button asChild size="sm" className="gap-1.5 h-9 text-xs">
+            <Button asChild size="sm" className="gap-1.5 h-9 text-sm">
               <Link href={ROUTES.CALENDAR.ADD_EVENT}>
                 <Plus className="w-3.5 h-3.5" />
                 <span>Adicionar Evento</span>
@@ -291,12 +291,12 @@ export default function ParochialCalendarPage() {
         {/* Active Filters Badges */}
         {(filters.communityId || (filters.scheduleType && filters.scheduleType !== 'all')) && (
           <div className="flex items-center flex-wrap gap-2 my-4">
-            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+            <span className="text-sm font-semibold text-zinc-500 uppercase tracking-wider">
               Filtros:
             </span>
 
             {selectedCommunityName && (
-              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
+              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
                 <span className="text-zinc-500">Comunidade:</span>
                 <span className="font-semibold text-zinc-900">
                   {selectedCommunityName}
@@ -321,7 +321,7 @@ export default function ParochialCalendarPage() {
             )}
 
             {filters.scheduleType && filters.scheduleType !== 'all' && (
-              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
+              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
                 <span className="text-zinc-500">Tipo:</span>
                 <span className="font-semibold text-zinc-900">
                   {filters.scheduleType === 'mass'
@@ -389,7 +389,7 @@ export default function ParochialCalendarPage() {
               size="sm"
               disabled={disabledPrevMonth}
               onClick={handlePrevMonth}
-              className="gap-1.5 text-xs h-9 shadow-2xs"
+              className="gap-1.5 text-sm h-9 shadow-2xs"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>{t(`month-${prevMonth}`)}</span>
@@ -402,7 +402,7 @@ export default function ParochialCalendarPage() {
               size="sm"
               disabled={disabledNextMonth}
               onClick={handleNextMonth}
-              className="gap-1.5 text-xs h-9 shadow-2xs ml-auto"
+              className="gap-1.5 text-sm h-9 shadow-2xs ml-auto"
             >
               <span>{t(`month-${nextMonth}`)}</span>
               <ChevronRight className="w-4 h-4" />

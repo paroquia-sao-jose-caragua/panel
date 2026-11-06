@@ -45,7 +45,7 @@ export const ServiceConfirmStep = ({ values, mode }: ServiceConfirmStepProps) =>
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-6">
         <div className="border-b border-zinc-100 pb-4">
-          <span className="text-xs font-semibold text-brand-700 uppercase tracking-wider block mb-1">
+          <span className="text-sm font-semibold text-brand-700 uppercase tracking-wider block mb-1">
             {mode === 'create' ? 'Revisão da Nova Categoria' : 'Revisão das Alterações'}
           </span>
           <h2 className="text-xl font-bold text-zinc-900 flex items-center gap-2">
@@ -88,7 +88,7 @@ export const ServiceConfirmStep = ({ values, mode }: ServiceConfirmStepProps) =>
         {/* Grid de Resumo */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
           <div className="p-4 rounded-xl bg-zinc-50/70 border border-zinc-200/80 space-y-1">
-            <span className="text-xs font-medium text-zinc-500 flex items-center gap-1.5">
+            <span className="text-sm font-medium text-zinc-500 flex items-center gap-1.5">
               <Icon className="w-3.5 h-3.5 text-zinc-400" />
               Natureza Canônica
             </span>
@@ -98,7 +98,7 @@ export const ServiceConfirmStep = ({ values, mode }: ServiceConfirmStepProps) =>
           </div>
 
           <div className="p-4 rounded-xl bg-zinc-50/70 border border-zinc-200/80 space-y-1">
-            <span className="text-xs font-medium text-zinc-500 flex items-center gap-1.5">
+            <span className="text-sm font-medium text-zinc-500 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-zinc-400" />
               Duração Estimada
             </span>
@@ -111,7 +111,7 @@ export const ServiceConfirmStep = ({ values, mode }: ServiceConfirmStepProps) =>
         {/* Descrição */}
         {values.description && (
           <div className="p-4 rounded-xl bg-zinc-50/50 border border-zinc-200/60 space-y-1.5">
-            <span className="text-xs font-medium text-zinc-500 block">
+            <span className="text-sm font-medium text-zinc-500 block">
               Descrição e Orientações aos Fiéis:
             </span>
             <p className="text-sm text-zinc-700 whitespace-pre-wrap leading-relaxed">

@@ -185,7 +185,7 @@ export default function MinhaAgendaNovoPage() {
             <div>
               <label
                 htmlFor="new-appointment-date"
-                className="text-xs font-semibold text-zinc-700 block mb-1"
+                className="text-sm font-semibold text-zinc-700 block mb-1"
               >
                 Data *
               </label>
@@ -210,7 +210,7 @@ export default function MinhaAgendaNovoPage() {
                 required
               />
               {errors.date && (
-                <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
+                <p className="text-sm text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
                   <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                   <span>{errors.date}</span>
                 </p>
@@ -228,7 +228,7 @@ export default function MinhaAgendaNovoPage() {
                   }
                 }}
                 className={cn(
-                  'px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none',
+                  'px-3 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
                   timeMode === 'available'
                     ? 'bg-brand-900 text-white shadow-xs'
                     : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
@@ -246,7 +246,7 @@ export default function MinhaAgendaNovoPage() {
                   }
                 }}
                 className={cn(
-                  'px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none',
+                  'px-3 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
                   timeMode === 'custom'
                     ? 'bg-brand-900 text-white shadow-xs'
                     : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
@@ -269,7 +269,7 @@ export default function MinhaAgendaNovoPage() {
                 )}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-zinc-600 block">
+                  <span className="text-sm font-semibold text-zinc-600 block">
                     Horários disponíveis *
                   </span>
                   {errors.time && (
@@ -287,7 +287,7 @@ export default function MinhaAgendaNovoPage() {
                     <Skeleton className="h-10 rounded-xl" />
                   </div>
                 ) : slots.length === 0 ? (
-                  <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/60 text-xs text-amber-900 space-y-1">
+                  <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/60 text-sm text-amber-900 space-y-1">
                     <p className="font-semibold">Nenhum horário livre nesta data.</p>
                     <p className="text-[11px] text-amber-800">
                       Você pode selecionar outro dia ou alternar para &ldquo;Horário
@@ -309,7 +309,7 @@ export default function MinhaAgendaNovoPage() {
                             }
                           }}
                           className={cn(
-                            'py-2 px-1 text-center rounded-xl text-xs font-bold transition-all cursor-pointer border select-none',
+                            'py-2 px-1 text-center rounded-xl text-sm font-bold transition-all cursor-pointer border select-none',
                             isSelected
                               ? 'bg-brand-900 text-white border-brand-900 shadow-xs ring-2 ring-brand-300'
                               : 'bg-zinc-50 text-zinc-800 border-zinc-200 hover:bg-zinc-100 hover:border-zinc-300'
@@ -323,7 +323,7 @@ export default function MinhaAgendaNovoPage() {
                 )}
 
                 {errors.time && (
-                  <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 pt-1 animate-in fade-in duration-200">
+                  <p className="text-sm text-red-600 font-medium flex items-center gap-1.5 pt-1 animate-in fade-in duration-200">
                     <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                     <span>{errors.time}</span>
                   </p>
@@ -333,7 +333,7 @@ export default function MinhaAgendaNovoPage() {
               <div className="pt-1">
                 <label
                   htmlFor="custom-appointment-time"
-                  className="text-xs font-semibold text-zinc-700 block mb-1"
+                  className="text-sm font-semibold text-zinc-700 block mb-1"
                 >
                   Horário específico (HH:mm) *
                 </label>
@@ -356,7 +356,7 @@ export default function MinhaAgendaNovoPage() {
                   required
                 />
                 {errors.time && (
-                  <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
+                  <p className="text-sm text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
                     <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                     <span>{errors.time}</span>
                   </p>
@@ -406,7 +406,7 @@ export default function MinhaAgendaNovoPage() {
                   ))}
                 </select>
                 {errors.serviceId && (
-                  <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
+                  <p className="text-sm text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
                     <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                     <span>{errors.serviceId}</span>
                   </p>
@@ -451,7 +451,7 @@ export default function MinhaAgendaNovoPage() {
               <div>
                 <label
                   htmlFor="requester-name"
-                  className="text-xs font-semibold text-zinc-700 block mb-1"
+                  className="text-sm font-semibold text-zinc-700 block mb-1"
                 >
                   Nome completo *
                 </label>
@@ -475,7 +475,7 @@ export default function MinhaAgendaNovoPage() {
                   required
                 />
                 {errors.requesterName && (
-                  <p className="text-xs text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
+                  <p className="text-sm text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in fade-in duration-200">
                     <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                     <span>{errors.requesterName}</span>
                   </p>
@@ -485,7 +485,7 @@ export default function MinhaAgendaNovoPage() {
               <div>
                 <label
                   htmlFor="requester-phone"
-                  className="text-xs font-semibold text-zinc-700 block mb-1"
+                  className="text-sm font-semibold text-zinc-700 block mb-1"
                 >
                   Telefone / WhatsApp (opcional)
                 </label>

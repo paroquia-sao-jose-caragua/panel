@@ -116,7 +116,7 @@ export const CommunitiesList = () => {
               alt={matriz.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#18351E] border border-[#D6A64A]/40 text-[#D6A64A] text-xs font-semibold tracking-wider uppercase shadow-md">
+            <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#18351E] border border-[#D6A64A]/40 text-[#D6A64A] text-sm font-semibold tracking-wider uppercase shadow-md">
               <Sparkles className="w-3 h-3 text-[#D6A64A]" />
               <span>
                 {matriz.type === 'parish_church'
@@ -152,7 +152,7 @@ export const CommunitiesList = () => {
               </p>
 
               {/* Address Row */}
-              <div className="py-4 border-t border-b border-[#D6A64A]/20 mb-6 text-xs sm:text-sm text-zinc-600">
+              <div className="py-4 border-t border-b border-[#D6A64A]/20 mb-6 text-sm sm:text-sm text-zinc-600">
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-[#B8872E] shrink-0 mt-0.5" />
                   <div>
@@ -169,7 +169,7 @@ export const CommunitiesList = () => {
 
             {/* Manage Button */}
             <div>
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#18351E] text-white text-xs sm:text-sm font-semibold group-hover:bg-[#27442A] transition-all shadow-md">
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#18351E] text-white text-sm sm:text-sm font-semibold group-hover:bg-[#27442A] transition-all shadow-md">
                 <span>Gerenciar comunidade</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -214,7 +214,7 @@ export const CommunitiesList = () => {
                   </h3>
 
                   {/* Info */}
-                  <div className="flex items-center gap-1.5 text-xs text-zinc-500 mb-3">
+                  <div className="flex items-center gap-1.5 text-sm text-zinc-500 mb-3">
                     <MapPin className="w-3.5 h-3.5 text-[#B8872E] shrink-0" />
                     <span className="truncate">
                       {item.address || 'Caraguatatuba / SP'}
@@ -223,7 +223,7 @@ export const CommunitiesList = () => {
                 </div>
 
                 {/* Link Footer */}
-                <div className="flex items-center gap-1 text-xs font-semibold text-[#18351E] group-hover:text-[#B8872E] transition-colors pt-2 border-t border-[#D6A64A]/20">
+                <div className="flex items-center gap-1 text-sm font-semibold text-[#18351E] group-hover:text-[#B8872E] transition-colors pt-2 border-t border-[#D6A64A]/20">
                   <span>Gerenciar comunidade</span>
                   <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -242,7 +242,7 @@ export const CommunitiesList = () => {
             <h4 className="text-base font-semibold text-zinc-700 group-hover:text-brand-700 transition-colors mb-1">
               Adicionar comunidade
             </h4>
-            <p className="text-xs text-zinc-400 max-w-[180px]">
+            <p className="text-sm text-zinc-400 max-w-[180px]">
               Cadastre uma nova capela ou igreja na paróquia
             </p>
           </Link>

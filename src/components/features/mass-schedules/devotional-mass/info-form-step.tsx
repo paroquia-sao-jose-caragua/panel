@@ -1,5 +1,4 @@
-import { Select } from '@/components/common/select';
-import { SelectItem } from '@/components/common/select';
+import { Select, SelectItem } from '@/components/common/select';
 import { FieldLabel } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -7,29 +6,10 @@ import {
   Root as InputRoot,
   Control as InputControl,
 } from '@/components/common/input';
-import {
-  ClockIcon,
-  PlusIcon,
-  Trash2,
-  CalendarIcon,
-} from 'lucide-react';
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/ui/empty';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
+import { ClockIcon, CalendarIcon } from 'lucide-react';
 import { DatePicker } from '@/components/ui/date-picker';
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch } from '@/components/ui/switch';
-import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import type { useCreateMassSchedule } from '../use-create-mass-schedule';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -39,12 +19,9 @@ interface InfoStepProps {
 }
 
 export const InfoFormStep = ({ formik }: InfoStepProps) => {
-  const startTimeRef = React.useRef<HTMLInputElement>(null);
-  const [timeToRemove, setTimeToRemove] = useState<{ startTime: string } | null>(null);
-
   return (
     <form
-      id="add-ordinary-mass"
+      id="add-devotional-mass"
       className="flex w-full flex-col gap-8 divide-y divide-divider"
     >
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
@@ -63,87 +40,67 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
         <div className="flex-1">
-          <FieldLabel htmlFor="recurrence-type">Tipo de Recorrência</FieldLabel>
+          <FieldLabel htmlFor="recurrence-type">
+            <CalendarIcon className="text-zinc-400" />
+            Quando Acontece
+          </FieldLabel>
           <span className="block text-zinc-600 mt-2">
-            Escolha se essa missa acontece toda semana no mesmo dia ou todo mês
-            no mesmo dia.
+            Escolha como a devoção se repete ao longo do mês.
           </span>
         </div>
 
         <RadioGroup
           name="recurrenceType"
-          defaultValue="monthly"
           value={formik.values.recurrenceType}
-          className="w-full"
-          onValueChange={(newValue) =>
-            formik.setFieldValue('recurrenceType', newValue)
-          }
+          onValueChange={(value) => formik.setFieldValue('recurrenceType', value)}
+          className="flex flex-col gap-4"
         >
-          <div
-            className={`flex items-center gap-4 border ${formik.values.recurrenceType === 'weekly' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
-          >
-            <RadioGroupItem value="weekly" id="r1" />
-
-            <Label
-              htmlFor="r1"
-              className="flex flex-col items-start text-zinc-700 text-md gap-0"
-            >
-              Dia da semana
-              <span className="block text-sm text-zinc-500 font-normal">
-                Toda semana no mesmo dia (ex: toda quinta-feira)
+          <div className="flex items-start gap-3 p-4 rounded-xl border border-zinc-200 hover:border-zinc-300 cursor-pointer">
+            <RadioGroupItem value="weekly" id="rec-weekly" className="mt-1" />
+            <label htmlFor="rec-weekly" className="flex-1 cursor-pointer">
+              <span className="block font-semibold text-zinc-800 text-sm">
+                Semanalmente (em dias específicos)
               </span>
-            </Label>
+              <span className="block text-zinc-500 text-sm mt-0.5">
+                Exemplo: Todas as terças-feiras ou todas as sextas-feiras
+              </span>
+            </label>
           </div>
 
-          <div
-            className={`flex items-center gap-3 border ${formik.values.recurrenceType === 'monthly' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
-          >
-            <RadioGroupItem value="monthly" id="r2" />
-
-            <Label
-              htmlFor="r2"
-              className="flex flex-col items-start text-zinc-700 text-md font-medium gap-0"
-            >
-              Dia do mês
-              <span className="block text-sm text-zinc-500 font-normal">
-                Todo mês no mesmo dia (ex: dia 13 de cada mês)
+          <div className="flex items-start gap-3 p-4 rounded-xl border border-zinc-200 hover:border-zinc-300 cursor-pointer">
+            <RadioGroupItem value="week-of-month" id="rec-week-of-month" className="mt-1" />
+            <label htmlFor="rec-week-of-month" className="flex-1 cursor-pointer">
+              <span className="block font-semibold text-zinc-800 text-sm">
+                Em uma semana específica do mês
               </span>
-            </Label>
+              <span className="block text-zinc-500 text-sm mt-0.5">
+                Exemplo: 1ª sexta-feira do mês, 1º sábado do mês
+              </span>
+            </label>
           </div>
 
-          <div
-            className={`flex items-center gap-3 border ${formik.values.recurrenceType === 'week-of-month' ? 'border-brand-600 bg-brand-0' : 'border-divider'} rounded-xl p-3`}
-          >
-            <RadioGroupItem value="week-of-month" id="r3" />
-
-            <Label
-              htmlFor="r3"
-              className="flex flex-col items-start text-zinc-700 text-md font-medium gap-0"
-            >
-              Semana específica do mês
-              <span className="block text-sm text-zinc-500 font-normal">
-                Todo mês em uma semana específica (ex: toda primeira semana do
-                mês)
+          <div className="flex items-start gap-3 p-4 rounded-xl border border-zinc-200 hover:border-zinc-300 cursor-pointer">
+            <RadioGroupItem value="monthly" id="rec-monthly" className="mt-1" />
+            <label htmlFor="rec-monthly" className="flex-1 cursor-pointer">
+              <span className="block font-semibold text-zinc-800 text-sm">
+                Em um dia fixo do mês
               </span>
-            </Label>
+              <span className="block text-zinc-500 text-sm mt-0.5">
+                Exemplo: Todo dia 19 de cada mês
+              </span>
+            </label>
           </div>
         </RadioGroup>
-      </div>
 
-      {formik.values.recurrenceType === 'weekly' && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
-          <FieldLabel htmlFor="day-of-week">
-            <CalendarIcon className="text-zinc-400" />
-            Quando
-          </FieldLabel>
-          <div className="flex flex-col gap-2">
+        {formik.values.recurrenceType === 'weekly' && (
+          <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-zinc-100">
             <Label className="text-sm text-zinc-700 font-semibold">
               Dia da semana
             </Label>
             <Select
               name="dayOfWeek"
               placeholder="Selecione o dia"
-              value={String(formik.values.dayOfWeek)}
+              value={String(formik.values.dayOfWeek ?? '')}
               onValueChange={(newValue: string) => {
                 formik.setFieldValue('dayOfWeek', Number(newValue));
               }}
@@ -157,103 +114,83 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
               <SelectItem value="6" text="Sábado" />
             </Select>
           </div>
-        </div>
-      )}
+        )}
 
-      {formik.values.recurrenceType === 'week-of-month' && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
-          <div>
-            <FieldLabel htmlFor="day-of-week">
-              <CalendarIcon className="text-zinc-400" />
-              Quando
-            </FieldLabel>
-
-            <span className="block text-zinc-600 mt-2">
-              Escolha a semana do mês e o dia da semana em que essa missa
-              acontece (ex: toda primeira semana do mês, às quintas-feiras)
-            </span>
+        {formik.values.recurrenceType === 'week-of-month' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 pt-4 border-t border-zinc-100">
+            <div className="flex flex-col gap-2">
+              <Label className="text-sm text-zinc-700 font-semibold">
+                Semana do mês
+              </Label>
+              <Select
+                name="weekOfMonth"
+                placeholder="Selecione a semana"
+                value={String(formik.values.weekOfMonth ?? '')}
+                onValueChange={(newValue: string) => {
+                  formik.setFieldValue('weekOfMonth', Number(newValue));
+                }}
+              >
+                <SelectItem value="1" text="1ª Semana" />
+                <SelectItem value="2" text="2ª Semana" />
+                <SelectItem value="3" text="3ª Semana" />
+                <SelectItem value="4" text="4ª Semana" />
+                <SelectItem value="5" text="Última Semana" />
+              </Select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label className="text-sm text-zinc-700 font-semibold">
+                Dia da semana
+              </Label>
+              <Select
+                name="dayOfWeek"
+                placeholder="Selecione o dia"
+                value={String(formik.values.dayOfWeek ?? '')}
+                onValueChange={(newValue: string) => {
+                  formik.setFieldValue('dayOfWeek', Number(newValue));
+                }}
+              >
+                <SelectItem value="0" text="Domingo" />
+                <SelectItem value="1" text="Segunda-feira" />
+                <SelectItem value="2" text="Terça-feira" />
+                <SelectItem value="3" text="Quarta-feira" />
+                <SelectItem value="4" text="Quinta-feira" />
+                <SelectItem value="5" text="Sexta-feira" />
+                <SelectItem value="6" text="Sábado" />
+              </Select>
+            </div>
           </div>
+        )}
 
-          <div className="flex flex-col gap-2">
+        {formik.values.recurrenceType === 'monthly' && (
+          <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-zinc-100">
             <Label className="text-sm text-zinc-700 font-semibold">
-              Semana específica do mês
+              Dia do mês (1 a 31)
             </Label>
-            <Select
-              name="weekOfMonth"
-              placeholder="Selecione o dia"
-              value={String(formik.values.weekOfMonth)}
-              onValueChange={(newValue: string) => {
-                formik.setFieldValue('weekOfMonth', Number(newValue));
-              }}
-            >
-              <SelectItem value="1" text="1ª semana do mês" />
-              <SelectItem value="2" text="2ª semana do mês" />
-              <SelectItem value="3" text="3ª semana do mês" />
-              <SelectItem value="4" text="4ª semana do mês" />
-              <SelectItem value="5" text="Última semana do mês" />
-            </Select>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <Label className="text-sm text-zinc-700 font-semibold">
-              Dia da semana
-            </Label>
-            <Select
-              name="dayOfWeek"
-              placeholder="Selecione o dia"
-              defaultValue="chapel"
-              value={String(formik.values.dayOfWeek)}
-              onValueChange={(newValue: string) => {
-                formik.setFieldValue('dayOfWeek', Number(newValue));
-              }}
-            >
-              <SelectItem value="0" text="Domingo" />
-              <SelectItem value="1" text="Segunda-feira" />
-              <SelectItem value="2" text="Terça-feira" />
-              <SelectItem value="3" text="Quarta-feira" />
-              <SelectItem value="4" text="Quinta-feira" />
-              <SelectItem value="5" text="Sexta-feira" />
-              <SelectItem value="6" text="Sábado" />
-            </Select>
-          </div>
-        </div>
-      )}
-
-      {formik.values.recurrenceType === 'monthly' && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
-          <FieldLabel htmlFor="day-of-month">
-            <CalendarIcon className="text-zinc-400" />
-            Quando
-          </FieldLabel>
-          <div className="flex flex-col gap-2">
-            <Label className="text-sm text-zinc-700 font-semibold">
-              Dia do mês
-            </Label>
-            <InputRoot helperText='Exemplo: Digite 19 para "todo dia 19 do mês"'>
+            <InputRoot>
               <InputControl
-                id="day-of-month"
                 name="dayOfMonth"
                 type="number"
-                inputMode="numeric"
-                max={31}
                 min={1}
-                value={formik.values.dayOfMonth}
+                max={31}
+                value={formik.values.dayOfMonth || ''}
                 onChange={formik.handleChange}
+                placeholder="Exemplo: 19"
               />
             </InputRoot>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-row gap-4 pb-5">
         <div className="flex-1">
-          <FieldLabel htmlFor="day-of-month">Missa de Preceito</FieldLabel>
+          <FieldLabel htmlFor="is-precept">Missa de Preceito</FieldLabel>
           <span className="block text-zinc-600 mt-2">
             Missas de preceito são aquelas que os fiéis católicos têm obrigação
-            de participar (ex: domingos e dias santos).
+            de participar.
           </span>
         </div>
         <Switch
+          id="is-precept"
           name="isPrecept"
           checked={formik.values.isPrecept}
           onCheckedChange={(newValue) =>
@@ -264,105 +201,33 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 pb-5">
         <div>
-          <FieldLabel htmlFor="day-of-month">
+          <FieldLabel htmlFor="start-time">
             <ClockIcon className="text-zinc-400" />
-            Horários
+            Horário da Missa
           </FieldLabel>
           <span className="block text-zinc-600 mt-2">
-            Você pode adicionar quantos horários quiser para esse agendamento
-            (ex: 8h às 9h, 18h às 19h, etc).
+            Defina o horário de início da celebração.
           </span>
         </div>
-        <div className="flex flex-col gap-6">
-          <div className="w-full flex flex-wrap gap-4 items-end">
-            <div className="flex-1">
-              <span className="block mb-2 text-sm text-zinc-700 font-semibold">
-                Horário da Missa
-              </span>
-              <InputRoot>
-                <InputControl ref={startTimeRef} type="time" />
-              </InputRoot>
-            </div>
-            <Button
-              type="button"
-              size="lg"
-              className="w-full sm:w-fit"
-              onClick={() => {
-                const startTime = startTimeRef.current?.value;
-
-                if (startTime) {
-                  formik.setFieldValue('times', [
-                    ...formik.values.times,
-                    { startTime },
-                  ]);
-
-                  if (startTimeRef.current) {
-                    startTimeRef.current.value = '';
-                  }
-                }
-              }}
-            >
-              <PlusIcon /> Adicionar
-            </Button>
-          </div>
-
-          {formik.values.times.length === 0 && (
-            <Empty className="border-2 border-dashed">
-              <EmptyHeader>
-                <EmptyMedia className="text-zinc-300">
-                  <ClockIcon className="h-10 w-10" />
-                </EmptyMedia>
-                <EmptyTitle className="text-zinc-500 text-md">
-                  Nenhum horário adicionado ainda
-                </EmptyTitle>
-                <EmptyDescription>
-                  Adicione pelo menos um horário
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          )}
-
-          {formik.values.times.length > 0 && (
-            <div className="flex flex-col gap-4">
-              <span className="block mt-2 text-zinc-700 text-md font-semibold">
-                Horários Adicionados {`(${formik.values.times.length})`}
-              </span>
-              <div className="divide-y divide-divider space-y-4">
-                {formik.values.times.map((time) => (
-                  <div
-                    key={time.startTime}
-                    className="flex flex-row items-center justify-between bg-brand-0/30 pl-4 pr-2 py-2 rounded-lg border border-brand-500/50"
-                  >
-                    <span className="flex-1 text-md font-medium text-brand-800">
-                      {time.startTime}
-                    </span>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-lg"
-                          onClick={() => setTimeToRemove(time)}
-                          className="hover:text-red-600 cursor-pointer"
-                        >
-                          <Trash2 className="w-4 h-4 text-red-600" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom">
-                        <p>Remover horário</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        <div className="w-full">
+          <span className="block mb-2 text-sm text-zinc-700 font-semibold">
+            Horário de Início
+          </span>
+          <InputRoot>
+            <InputControl
+              id="start-time"
+              name="startTime"
+              type="time"
+              value={formik.values.startTime}
+              onChange={formik.handleChange}
+            />
+          </InputRoot>
         </div>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 pb-5">
         <div>
-          <FieldLabel htmlFor="day-of-month">Atendimento Automático</FieldLabel>
+          <FieldLabel htmlFor="date-range">Atendimento Automático</FieldLabel>
           <span className="block text-zinc-600 mt-2">
             Defina datas para publicar e/ou despublicar este horário
             automaticamente
@@ -396,7 +261,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
         <div className="w-full flex flex-col sm:flex-row gap-4">
           <Textarea
             name="orientations"
-            value={formik.values.orientations}
+            value={formik.values.orientations || ''}
             onChange={formik.handleChange}
             placeholder="Exemplo: 'Trazer o terço, chegar 15 minutos antes, etc...'"
             maxLength={255}
@@ -404,23 +269,6 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
           />
         </div>
       </div>
-
-      <DeleteConfirmationDialog
-        open={timeToRemove !== null}
-        onOpenChange={(open) => !open && setTimeToRemove(null)}
-        title="Remover Horário"
-        description={`Deseja remover o horário das ${timeToRemove?.startTime} da devoção?`}
-        confirmText="Remover"
-        onConfirm={() => {
-          if (timeToRemove) {
-            formik.setFieldValue(
-              'times',
-              formik.values.times.filter((t) => t.startTime !== timeToRemove.startTime)
-            );
-            setTimeToRemove(null);
-          }
-        }}
-      />
     </form>
   );
 };

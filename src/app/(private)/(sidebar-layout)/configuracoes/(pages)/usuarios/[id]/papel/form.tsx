@@ -57,7 +57,7 @@ export const EditRoleForm = ({ user }: EditRoleFormProps) => {
           </div>
           <div className="truncate">
             <p className="font-semibold text-zinc-900">{user.name}</p>
-            <p className="text-xs text-zinc-500 truncate">{user.email}</p>
+            <p className="text-sm text-zinc-500 truncate">{user.email}</p>
           </div>
         </div>
 

@@ -95,7 +95,6 @@ const useCalendarStore = create<State & Action>()((set) => ({
                 orientations: exceptionSchedule.orientations,
                 isPrecept: exceptionSchedule.isPrecept,
                 startTime: exceptionSchedule.startTime,
-                endTime: exceptionSchedule.endTime,
                 cancellationReason: exceptionSchedule.cancellationReason,
                 community: exceptionSchedule.community,
               }

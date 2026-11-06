@@ -373,7 +373,7 @@ export function PwaNotificationManager() {
               <h4 className="text-sm font-semibold text-zinc-100">
                 Instalar App do Painel
               </h4>
-              <p className="mt-1 text-xs text-zinc-400">
+              <p className="mt-1 text-sm text-zinc-400">
                 Instale o painel como aplicativo no desktop ou celular para
                 acesso rápido.
               </p>
@@ -381,14 +381,14 @@ export function PwaNotificationManager() {
                 <button
                   type="button"
                   onClick={handleInstallClick}
-                  className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-amber-500 active:scale-95 cursor-pointer"
+                  className="rounded-lg bg-amber-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-amber-500 active:scale-95 cursor-pointer"
                 >
                   Instalar Painel
                 </button>
                 <button
                   type="button"
                   onClick={dismissInstallBanner}
-                  className="rounded-lg px-2 py-1.5 text-xs text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                  className="rounded-lg px-2 py-1.5 text-sm text-zinc-400 hover:text-zinc-200 cursor-pointer"
                 >
                   Depois
                 </button>
@@ -414,7 +414,7 @@ export function PwaNotificationManager() {
               <h4 className="text-sm font-semibold text-zinc-100">
                 Notificações do Painel
               </h4>
-              <p className="mt-1 text-xs text-zinc-400">
+              <p className="mt-1 text-sm text-zinc-400">
                 Receba alertas em tempo real sobre agendamentos, novos eventos e
                 avisos.
               </p>
@@ -422,14 +422,14 @@ export function PwaNotificationManager() {
                 <button
                   type="button"
                   onClick={handleRequestNotification}
-                  className="rounded-lg bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-zinc-100 border border-zinc-600 hover:bg-zinc-700 active:scale-95 cursor-pointer"
+                  className="rounded-lg bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-zinc-100 border border-zinc-600 hover:bg-zinc-700 active:scale-95 cursor-pointer"
                 >
                   Ativar Alertas
                 </button>
                 <button
                   type="button"
                   onClick={dismissNotificationBanner}
-                  className="rounded-lg px-2 py-1.5 text-xs text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                  className="rounded-lg px-2 py-1.5 text-sm text-zinc-400 hover:text-zinc-200 cursor-pointer"
                 >
                   Agora Não
                 </button>

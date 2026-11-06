@@ -22,6 +22,7 @@ import {
   Layers,
   ArrowRight,
   ExternalLink,
+  CalendarDays,
 } from 'lucide-react';
 import { listAnnouncements, reorderAnnouncements } from '@/api/announcements';
 import { getUrgentAlert } from '@/api/urgent-alert';
@@ -102,10 +103,15 @@ export default function AnnouncementsPage() {
         <AppHeader
           links={[
             {
+              key: 'programacao-e-eventos',
+              href: ROUTES.CALENDAR.HOME,
+              title: 'Programação & Eventos',
+              icon: CalendarDays,
+            },
+            {
               key: 'announcements',
               href: ROUTES.ANNOUNCEMENTS.HOME,
               title: 'Banners',
-              icon: Megaphone,
             },
           ]}
         />
@@ -133,10 +139,15 @@ export default function AnnouncementsPage() {
       <AppHeader
         links={[
           {
+            key: 'programacao-e-eventos',
+            href: ROUTES.CALENDAR.HOME,
+            title: 'Programação & Eventos',
+            icon: CalendarDays,
+          },
+          {
             key: 'announcements',
             href: ROUTES.ANNOUNCEMENTS.HOME,
             title: 'Banners',
-            icon: Megaphone,
           },
         ]}
       />
@@ -147,14 +158,14 @@ export default function AnnouncementsPage() {
           <TypographyH1>Banners em Destaque</TypographyH1>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <Button asChild variant="outline" size="sm" className="gap-2 text-xs h-9">
+            <Button asChild variant="outline" size="sm" className="gap-2 text-sm h-9">
               <a href={siteBaseUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="w-4 h-4" />
                 <span>Ver no site público</span>
               </a>
             </Button>
 
-            <Button asChild size="sm" className="gap-2 text-xs h-9 bg-brand-800 hover:bg-brand-700 text-white">
+            <Button asChild size="sm" className="gap-2 text-sm h-9 bg-brand-800 hover:bg-brand-700 text-white">
               <Link href={ROUTES.ANNOUNCEMENTS.ADD}>
                 <Plus className="w-4 h-4" />
                 <span>Novo Banner</span>
@@ -208,7 +219,7 @@ export default function AnnouncementsPage() {
                           >
                             <ArrowUp className="w-4 h-4" />
                           </button>
-                          <span className="text-xs font-bold text-zinc-500 px-1">
+                          <span className="text-sm font-bold text-zinc-500 px-1">
                             {fullIndex + 1}
                           </span>
                           <button
@@ -247,7 +258,7 @@ export default function AnnouncementsPage() {
                         <div className="space-y-1.5 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span
-                              className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+                              className={`inline-flex items-center gap-1 text-sm font-semibold px-2.5 py-0.5 rounded-full ${
                                 item.active
                                   ? 'bg-emerald-100 text-emerald-800'
                                   : 'bg-zinc-200 text-zinc-600'
@@ -267,7 +278,7 @@ export default function AnnouncementsPage() {
                           <h4 className="font-semibold text-zinc-900 text-base">{item.title}</h4>
                           <p className="text-sm text-zinc-500 line-clamp-2">{item.description}</p>
                           {item.actionText && (
-                            <div className="flex items-center gap-1 text-xs text-brand-600 font-medium pt-1">
+                            <div className="flex items-center gap-1 text-sm text-brand-600 font-medium pt-1">
                               <span>Botão: {item.actionText}</span>
                               {item.actionUrl && (
                                 <span className="text-zinc-400">({item.actionUrl})</span>
@@ -301,7 +312,7 @@ export default function AnnouncementsPage() {
                     <span className="text-sm font-bold text-zinc-700 group-hover:text-brand-700 transition-colors block">
                       Adicionar Novo Banner
                     </span>
-                    <p className="text-xs text-zinc-400">
+                    <p className="text-sm text-zinc-400">
                       Cadastre um novo banner em destaque com suporte a múltiplos tamanhos de tela
                     </p>
                   </div>

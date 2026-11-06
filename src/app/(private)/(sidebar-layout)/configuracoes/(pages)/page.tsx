@@ -71,7 +71,7 @@ export default function SettingsHubPage() {
               <span className="font-semibold text-zinc-900 text-base">
                 {currentUser?.name}
               </span>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-purple-50 text-purple-700 border border-purple-200">
                 {getRoleLabel(currentUser?.role)}
               </span>
             </div>
@@ -99,7 +99,7 @@ export default function SettingsHubPage() {
               <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                 Alterar Senha
               </h3>
-              <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+              <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                 Altere sua senha pessoal de acesso ao painel administrativo da paróquia.
               </p>
             </div>
@@ -124,7 +124,7 @@ export default function SettingsHubPage() {
                 <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                   Gestão de Usuários
                 </h3>
-                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                   Gerencie administradores, secretárias e agentes pastorais com permissão de acesso.
                 </p>
               </div>
@@ -149,7 +149,7 @@ export default function SettingsHubPage() {
               <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                 Dispositivos Conectados
               </h3>
-              <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+              <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                 Visualize e gerencie os celulares e computadores habilitados para notificações push.
               </p>
             </div>

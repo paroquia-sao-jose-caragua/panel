@@ -206,10 +206,10 @@ export default function EditAppointmentServicePage({
             {/* DANGER ZONE: Exclusão no Footer */}
             <div className="mt-14 pt-8 border-t border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block">
+                <span className="text-sm font-semibold text-zinc-500 uppercase tracking-wider block">
                   Gerenciamento do Registro
                 </span>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-sm text-zinc-400 mt-0.5">
                   Excluir esta categoria removerá permanentemente o tipo de atendimento do catálogo da paróquia.
                 </p>
               </div>
@@ -219,7 +219,7 @@ export default function EditAppointmentServicePage({
                 variant="ghost"
                 size="sm"
                 onClick={() => setConfirmDeleteService(true)}
-                className="text-xs text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
+                className="text-sm text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Excluir Categoria</span>

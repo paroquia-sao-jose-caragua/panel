@@ -53,7 +53,7 @@ export function CancelAppointmentDialog({
           <div className="w-full mt-4 text-left">
             <label
               htmlFor="cancel-reason"
-              className="text-xs font-semibold text-zinc-700 block mb-1"
+              className="text-sm font-semibold text-zinc-700 block mb-1"
             >
               Motivo do cancelamento (opcional)
             </label>
@@ -70,7 +70,7 @@ export function CancelAppointmentDialog({
           {/* Warning / Informative notice */}
           <div className="w-full mt-4 p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200/80 flex items-start gap-3 text-left">
             <Info className="w-4 h-4 text-zinc-600 shrink-0 mt-0.5" />
-            <p className="text-xs text-zinc-700 leading-relaxed">
+            <p className="text-sm text-zinc-700 leading-relaxed">
               O cancelamento será registrado no sistema e o horário ficará liberado
               para novos agendamentos na sua disponibilidade regular.
             </p>

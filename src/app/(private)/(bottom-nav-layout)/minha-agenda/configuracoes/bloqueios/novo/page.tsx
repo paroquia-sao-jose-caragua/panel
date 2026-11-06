@@ -143,7 +143,7 @@ function NovoBloqueioContent() {
                 1. Tipo de bloqueio
               </h2>
             </div>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Escolha se deseja bloquear um dia específico ou um intervalo de datas contínuo.
             </p>
 
@@ -152,7 +152,7 @@ function NovoBloqueioContent() {
                 type="button"
                 onClick={() => setBlockMode('single')}
                 className={cn(
-                  'py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer border select-none flex flex-col items-center gap-1',
+                  'py-2.5 px-3 rounded-xl text-sm font-semibold transition-all cursor-pointer border select-none flex flex-col items-center gap-1',
                   blockMode === 'single'
                     ? 'bg-brand-900 text-white border-brand-900 shadow-xs'
                     : 'bg-zinc-50 text-zinc-700 border-zinc-200 hover:bg-zinc-100'
@@ -173,7 +173,7 @@ function NovoBloqueioContent() {
                 type="button"
                 onClick={() => setBlockMode('period')}
                 className={cn(
-                  'py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer border select-none flex flex-col items-center gap-1',
+                  'py-2.5 px-3 rounded-xl text-sm font-semibold transition-all cursor-pointer border select-none flex flex-col items-center gap-1',
                   blockMode === 'period'
                     ? 'bg-brand-900 text-white border-brand-900 shadow-xs'
                     : 'bg-zinc-50 text-zinc-700 border-zinc-200 hover:bg-zinc-100'
@@ -205,7 +205,7 @@ function NovoBloqueioContent() {
               <div>
                 <label
                   htmlFor="single-date"
-                  className="text-xs font-semibold text-zinc-700 block mb-1"
+                  className="text-sm font-semibold text-zinc-700 block mb-1"
                 >
                   Data do bloqueio *
                 </label>
@@ -224,7 +224,7 @@ function NovoBloqueioContent() {
                 <div>
                   <label
                     htmlFor="start-date"
-                    className="text-xs font-semibold text-zinc-700 block mb-1"
+                    className="text-sm font-semibold text-zinc-700 block mb-1"
                   >
                     Data inicial *
                   </label>
@@ -241,7 +241,7 @@ function NovoBloqueioContent() {
                 <div>
                   <label
                     htmlFor="end-date"
-                    className="text-xs font-semibold text-zinc-700 block mb-1"
+                    className="text-sm font-semibold text-zinc-700 block mb-1"
                   >
                     Data final *
                   </label>
@@ -273,7 +273,7 @@ function NovoBloqueioContent() {
                 type="button"
                 onClick={() => setTimeMode('full_day')}
                 className={cn(
-                  'py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer border select-none',
+                  'py-2 px-3 rounded-xl text-sm font-semibold transition-all cursor-pointer border select-none',
                   timeMode === 'full_day'
                     ? 'bg-brand-900 text-white border-brand-900 shadow-xs'
                     : 'bg-zinc-50 text-zinc-700 border-zinc-200 hover:bg-zinc-100'
@@ -285,7 +285,7 @@ function NovoBloqueioContent() {
                 type="button"
                 onClick={() => setTimeMode('specific')}
                 className={cn(
-                  'py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer border select-none',
+                  'py-2 px-3 rounded-xl text-sm font-semibold transition-all cursor-pointer border select-none',
                   timeMode === 'specific'
                     ? 'bg-brand-900 text-white border-brand-900 shadow-xs'
                     : 'bg-zinc-50 text-zinc-700 border-zinc-200 hover:bg-zinc-100'
@@ -298,7 +298,7 @@ function NovoBloqueioContent() {
             {timeMode === 'specific' && (
               <div className="grid grid-cols-2 gap-3 pt-1 animate-in fade-in-50 duration-150">
                 <div>
-                  <span className="text-xs font-medium text-zinc-600 block mb-1">
+                  <span className="text-sm font-medium text-zinc-600 block mb-1">
                     Horário inicial *
                   </span>
                   <Input
@@ -310,7 +310,7 @@ function NovoBloqueioContent() {
                   />
                 </div>
                 <div>
-                  <span className="text-xs font-medium text-zinc-600 block mb-1">
+                  <span className="text-sm font-medium text-zinc-600 block mb-1">
                     Horário final *
                   </span>
                   <Input
@@ -372,7 +372,7 @@ function NovoBloqueioContent() {
           </div>
 
           {/* Informational Note */}
-          <div className="p-3.5 rounded-2xl bg-zinc-100/80 border border-zinc-200/80 flex items-start gap-2.5 text-xs text-zinc-600">
+          <div className="p-3.5 rounded-2xl bg-zinc-100/80 border border-zinc-200/80 flex items-start gap-2.5 text-sm text-zinc-600">
             <Info className="w-4 h-4 text-zinc-500 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
               Durante o período de bloqueio, os fiéis não conseguirão agendar horários

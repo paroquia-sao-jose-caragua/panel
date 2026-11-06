@@ -75,7 +75,7 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
       {/* Top Banner Notice */}
       <div className="p-4 rounded-2xl bg-[#fef8ed] border border-[#D6A64A]/30 flex items-start gap-3">
         <Sparkles className="w-5 h-5 text-[#B8872E] shrink-0 mt-0.5" />
-        <p className="text-xs sm:text-sm text-[#5A463B] font-serif leading-relaxed">
+        <p className="text-sm sm:text-sm text-[#5A463B] font-serif leading-relaxed">
           Preencha os dados e foto do clérigo. No próximo passo, você poderá descrever a biografia completa e revisar antes de salvar.
         </p>
       </div>
@@ -114,7 +114,7 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
               {/* Upload Overlay */}
               <label className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white cursor-pointer p-2 text-center">
                 <Upload className="w-6 h-6 mb-1" />
-                <span className="text-xs font-medium">Trocar Foto</span>
+                <span className="text-sm font-medium">Trocar Foto</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -125,17 +125,17 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
             </div>
 
             {uploadProgress !== null && (
-              <span className="text-xs text-[#B8872E] font-medium mt-1">
+              <span className="text-sm text-[#B8872E] font-medium mt-1">
                 Enviando: {uploadProgress}%
               </span>
             )}
             {uploadError && (
-              <span className="text-xs text-red-600 mt-1 text-center">
+              <span className="text-sm text-red-600 mt-1 text-center">
                 {uploadError}
               </span>
             )}
 
-            <label className="mt-2 text-xs font-semibold text-[#B8872E] hover:underline cursor-pointer flex items-center gap-1">
+            <label className="mt-2 text-sm font-semibold text-[#B8872E] hover:underline cursor-pointer flex items-center gap-1">
               <Upload className="w-3.5 h-3.5" />
               <span>{values.photoUrl ? 'Alterar foto' : 'Enviar foto oficial'}</span>
               <input
@@ -151,7 +151,7 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
           <div className="flex-1 w-full space-y-4">
             {/* Position / Cargo Canônico */}
             <div>
-              <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+              <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
                 Cargo / Posição Canônica *
               </label>
               <select
@@ -169,7 +169,7 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
 
             {/* Nome Completo */}
             <div>
-              <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+              <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
                 Nome Completo *
               </label>
               <input
@@ -183,14 +183,14 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
                 } bg-white text-sm text-zinc-800 focus:outline-hidden focus:ring-2 focus:ring-[#B8872E]`}
               />
               {errors.name && (
-                <span className="text-xs text-red-500 mt-1 block">{errors.name}</span>
+                <span className="text-sm text-red-500 mt-1 block">{errors.name}</span>
               )}
             </div>
 
             {/* Título e Função Exibida */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+                <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
                   Título / Vocativo
                 </label>
                 <input
@@ -202,7 +202,7 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+                <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
                   Função Exibida no Site
                 </label>
                 <input
@@ -219,7 +219,7 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
 
         {/* Frase de Destaque */}
         <div>
-          <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+          <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
             Frase de Destaque / Introdução Curta
           </label>
           <input
@@ -241,7 +241,7 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
               className="size-4.5 rounded text-[#18351E] focus:ring-[#B8872E] accent-[#18351E]"
             />
             <div>
-              <span className="text-xs font-semibold text-zinc-900 block">
+              <span className="text-sm font-semibold text-zinc-900 block">
                 Destaque Principal (Pároco)
               </span>
               <span className="text-[11px] text-zinc-500">
@@ -251,7 +251,7 @@ export const ClergyInfoStep = ({ values, onChange, errors }: ClergyInfoStepProps
           </label>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1">
+            <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1">
               Ordem de Exibição
             </label>
             <input

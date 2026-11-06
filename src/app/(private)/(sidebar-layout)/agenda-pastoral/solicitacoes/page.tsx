@@ -232,10 +232,6 @@ export default function AppointmentsRequestsPage() {
       />
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-        <div className="mb-2">
-          <BackButton href={ROUTES.APPOINTMENTS.HOME} />
-        </div>
-
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -299,7 +295,7 @@ export default function AppointmentsRequestsPage() {
                 <h3 className="text-base font-bold text-zinc-900">
                   Tudo em dia!
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-500 max-w-md mx-auto">
+                <p className="text-sm sm:text-sm text-zinc-500 max-w-md mx-auto">
                   Não há nenhuma solicitação de atendimento pendente de confirmação no momento.
                 </p>
               </div>
@@ -327,7 +323,7 @@ export default function AppointmentsRequestsPage() {
                   {/* Top Bar: Aguardando confirmação badge and Date/Time */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-amber-50 text-amber-900 border border-amber-200">
                         <Clock className="w-3.5 h-3.5 text-amber-700" />
                         Aguardando confirmação
                       </span>
@@ -340,7 +336,7 @@ export default function AppointmentsRequestsPage() {
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-700">
+                    <div className="flex items-center gap-1.5 text-sm sm:text-sm font-semibold text-zinc-700">
                       <CalendarIcon className="w-4 h-4 text-[#B8872E]" />
                       <span>{shortDateStr}</span>
                       <span>•</span>
@@ -371,11 +367,11 @@ export default function AppointmentsRequestsPage() {
                         <p className="text-sm font-semibold text-zinc-900 truncate">
                           {req.requesterName}
                         </p>
-                        <p className="text-xs text-zinc-500">
+                        <p className="text-sm text-zinc-500">
                           {req.requesterRelationship || 'O próprio fiel'}
                         </p>
                         {req.requesterPhone && (
-                          <div className="flex items-center gap-1.5 text-xs text-zinc-600 font-mono pt-0.5">
+                          <div className="flex items-center gap-1.5 text-sm text-zinc-600 font-mono pt-0.5">
                             <Phone className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                             <span>{req.requesterPhone}</span>
                           </div>
@@ -408,7 +404,7 @@ export default function AppointmentsRequestsPage() {
                           {req.agent?.title ? `${req.agent.title} ` : ''}
                           {req.agent?.name || 'Agente Pastoral'}
                         </p>
-                        <p className="text-xs text-zinc-500">
+                        <p className="text-sm text-zinc-500">
                           {req.agent?.actingRole || 'Pastoral'}
                         </p>
                       </div>
@@ -430,7 +426,7 @@ export default function AppointmentsRequestsPage() {
                     </div>
 
                     {req.requesterNotes && (
-                      <div className="text-xs text-zinc-600 bg-white/80 border border-zinc-200/60 rounded-xl p-2.5 flex items-start gap-2 mt-2">
+                      <div className="text-sm text-zinc-600 bg-white/80 border border-zinc-200/60 rounded-xl p-2.5 flex items-start gap-2 mt-2">
                         <span className="font-semibold text-amber-900 shrink-0">
                           Observação:
                         </span>
@@ -451,7 +447,7 @@ export default function AppointmentsRequestsPage() {
                           setCancellingAppointment(req);
                           setCancellationReason('');
                         }}
-                        className="h-10 px-4 text-xs font-semibold rounded-xl border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200 cursor-pointer shadow-2xs"
+                        className="h-10 px-4 text-sm font-semibold rounded-xl border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200 cursor-pointer shadow-2xs"
                       >
                         <X className="w-3.5 h-3.5 mr-1 text-red-500" />
                         <span>Recusar</span>
@@ -464,7 +460,7 @@ export default function AppointmentsRequestsPage() {
                         isLoading={isBusy}
                         loadingText="Confirmando..."
                         onClick={() => handleConfirm(req)}
-                        className="h-10 px-4 text-xs font-semibold rounded-xl bg-[#11291f] text-white hover:bg-[#1a3d2e] cursor-pointer shadow-2xs"
+                        className="h-10 px-4 text-sm font-semibold rounded-xl bg-[#11291f] text-white hover:bg-[#1a3d2e] cursor-pointer shadow-2xs"
                       >
                         <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" />
                         <span>Confirmar atendimento</span>

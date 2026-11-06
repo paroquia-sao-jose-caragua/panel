@@ -1,34 +1,14 @@
-import { Select } from '@/components/common/select';
-import { SelectItem } from '@/components/common/select';
+import { Select, SelectItem } from '@/components/common/select';
 import { FieldLabel } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
 import {
   Root as InputRoot,
   Control as InputControl,
 } from '@/components/common/input';
-import {
-  ClockIcon,
-  PlusIcon,
-  Trash2,
-  CalendarIcon,
-} from 'lucide-react';
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/ui/empty';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
+import { ClockIcon, CalendarIcon } from 'lucide-react';
 import { DatePicker } from '@/components/ui/date-picker';
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch } from '@/components/ui/switch';
-import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import type { useCreateMassSchedule } from '../use-create-mass-schedule';
 
 interface InfoStepProps {
@@ -36,9 +16,6 @@ interface InfoStepProps {
 }
 
 export const InfoFormStep = ({ formik }: InfoStepProps) => {
-  const startTimeRef = React.useRef<HTMLInputElement>(null);
-  const [timeToRemove, setTimeToRemove] = useState<{ startTime: string } | null>(null);
-
   return (
     <form
       id="add-ordinary-mass"
@@ -62,7 +39,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
           <Select
             name="dayOfWeek"
             placeholder="Selecione o dia"
-            value={String(formik.values.dayOfWeek)}
+            value={String(formik.values.dayOfWeek ?? '')}
             onValueChange={(newValue: string) => {
               formik.setFieldValue('dayOfWeek', Number(newValue));
             }}
@@ -80,13 +57,14 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-row gap-4 pb-5">
         <div className="flex-1">
-          <FieldLabel htmlFor="day-of-month">Missa de Preceito</FieldLabel>
+          <FieldLabel htmlFor="is-precept">Missa de Preceito</FieldLabel>
           <span className="block text-zinc-600 mt-2">
             Missas de preceito são aquelas que os fiéis católicos têm obrigação
             de participar (ex: domingos e dias santos).
           </span>
         </div>
         <Switch
+          id="is-precept"
           name="isPrecept"
           checked={formik.values.isPrecept}
           onCheckedChange={(newValue) =>
@@ -97,105 +75,33 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 pb-5">
         <div>
-          <FieldLabel htmlFor="day-of-month">
+          <FieldLabel htmlFor="start-time">
             <ClockIcon className="text-zinc-400" />
-            Horários
+            Horário da Missa
           </FieldLabel>
           <span className="block text-zinc-600 mt-2">
-            Você pode adicionar quantos horários quiser para esse agendamento
-            (ex: 8h às 9h, 18h às 19h, etc).
+            Defina o horário de início da celebração.
           </span>
         </div>
-        <div className="flex flex-col gap-6">
-          <div className="w-full flex flex-wrap gap-4 items-end">
-            <div className="flex-1">
-              <span className="block mb-2 text-sm text-zinc-700 font-semibold">
-                Horário da Missa
-              </span>
-              <InputRoot>
-                <InputControl ref={startTimeRef} type="time" />
-              </InputRoot>
-            </div>
-            <Button
-              type="button"
-              size="lg"
-              className="w-full sm:w-fit"
-              onClick={() => {
-                const startTime = startTimeRef.current?.value;
-
-                if (startTime) {
-                  formik.setFieldValue('times', [
-                    ...formik.values.times,
-                    { startTime },
-                  ]);
-
-                  if (startTimeRef.current) {
-                    startTimeRef.current.value = '';
-                  }
-                }
-              }}
-            >
-              <PlusIcon /> Adicionar
-            </Button>
-          </div>
-
-          {formik.values.times.length === 0 && (
-            <Empty className="border-2 border-dashed">
-              <EmptyHeader>
-                <EmptyMedia className="text-zinc-300">
-                  <ClockIcon className="h-10 w-10" />
-                </EmptyMedia>
-                <EmptyTitle className="text-zinc-500 text-md">
-                  Nenhum horário adicionado ainda
-                </EmptyTitle>
-                <EmptyDescription>
-                  Adicione pelo menos um horário
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          )}
-
-          {formik.values.times.length > 0 && (
-            <div className="flex flex-col gap-4">
-              <span className="block mt-2 text-zinc-700 text-md font-semibold">
-                Horários Adicionados {`(${formik.values.times.length})`}
-              </span>
-              <div className="divide-y divide-divider space-y-4">
-                {formik.values.times.map((time) => (
-                  <div
-                    key={time.startTime}
-                    className="flex flex-row items-center justify-between bg-brand-0/30 pl-4 pr-2 py-2 rounded-lg border border-brand-500/50"
-                  >
-                    <span className="flex-1 text-md font-medium text-brand-800">
-                      {time.startTime}
-                    </span>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-lg"
-                          onClick={() => setTimeToRemove(time)}
-                          className="hover:text-red-600 cursor-pointer"
-                        >
-                          <Trash2 className="w-4 h-4 text-red-600" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom">
-                        <p>Remover horário</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        <div className="w-full">
+          <span className="block mb-2 text-sm text-zinc-700 font-semibold">
+            Horário de Início
+          </span>
+          <InputRoot>
+            <InputControl
+              id="start-time"
+              name="startTime"
+              type="time"
+              value={formik.values.startTime}
+              onChange={formik.handleChange}
+            />
+          </InputRoot>
         </div>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 pb-5">
         <div>
-          <FieldLabel htmlFor="day-of-month">Atendimento Automático</FieldLabel>
+          <FieldLabel htmlFor="date-range">Atendimento Automático</FieldLabel>
           <span className="block text-zinc-600 mt-2">
             Defina datas para publicar e/ou despublicar este horário
             automaticamente
@@ -215,23 +121,6 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
           />
         </div>
       </div>
-
-      <DeleteConfirmationDialog
-        open={timeToRemove !== null}
-        onOpenChange={(open) => !open && setTimeToRemove(null)}
-        title="Remover Horário"
-        description={`Deseja remover o horário das ${timeToRemove?.startTime} da lista?`}
-        confirmText="Remover"
-        onConfirm={() => {
-          if (timeToRemove) {
-            formik.setFieldValue(
-              'times',
-              formik.values.times.filter((t) => t.startTime !== timeToRemove.startTime)
-            );
-            setTimeToRemove(null);
-          }
-        }}
-      />
     </form>
   );
 };

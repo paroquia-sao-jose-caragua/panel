@@ -151,7 +151,7 @@ export const SendPushForm = () => {
             />
             <div>
               <span className="block text-sm">Todos os Dispositivos</span>
-              <span className="text-xs text-zinc-500 font-normal">
+              <span className="text-sm text-zinc-500 font-normal">
                 Site público e painel ({subscriptions.length} conectados)
               </span>
             </div>
@@ -177,7 +177,7 @@ export const SendPushForm = () => {
                 <Globe className="w-4 h-4 text-emerald-600" />
                 Apenas Site (Fiéis)
               </span>
-              <span className="text-xs text-zinc-500 font-normal">
+              <span className="text-sm text-zinc-500 font-normal">
                 {subscriptions.filter((s) => s.origin === 'site').length} dispositivos
               </span>
             </div>
@@ -203,7 +203,7 @@ export const SendPushForm = () => {
                 <Monitor className="w-4 h-4 text-blue-600" />
                 Apenas Painel (Equipe)
               </span>
-              <span className="text-xs text-zinc-500 font-normal">
+              <span className="text-sm text-zinc-500 font-normal">
                 {subscriptions.filter((s) => s.origin === 'panel').length} dispositivos
               </span>
             </div>
@@ -229,7 +229,7 @@ export const SendPushForm = () => {
                 <CheckSquare className="w-4 h-4 text-amber-600" />
                 Selecionar Específicos
               </span>
-              <span className="text-xs text-zinc-500 font-normal">
+              <span className="text-sm text-zinc-500 font-normal">
                 {selectedDeviceIds.length} de {subscriptions.length} selecionado(s)
               </span>
             </div>
@@ -240,13 +240,13 @@ export const SendPushForm = () => {
         {targetType === 'custom' && (
           <div className="pt-3 border-t border-zinc-100 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase text-zinc-500">
+              <span className="text-sm font-semibold uppercase text-zinc-500">
                 Dispositivos Disponíveis
               </span>
               <button
                 type="button"
                 onClick={toggleSelectAllCustom}
-                className="text-xs text-amber-700 font-medium hover:underline cursor-pointer"
+                className="text-sm text-amber-700 font-medium hover:underline cursor-pointer"
               >
                 {selectedDeviceIds.length === subscriptions.length
                   ? 'Desmarcar Todos'
@@ -260,7 +260,7 @@ export const SendPushForm = () => {
                 <Skeleton className="h-10 w-full rounded-lg" />
               </div>
             ) : subscriptions.length === 0 ? (
-              <p className="text-xs text-zinc-500 py-2">Nenhum dispositivo encontrado.</p>
+              <p className="text-sm text-zinc-500 py-2">Nenhum dispositivo encontrado.</p>
             ) : (
               <div className="max-h-60 overflow-y-auto divide-y divide-zinc-100 border border-zinc-200 rounded-xl">
                 {subscriptions.map((device) => {
@@ -292,14 +292,14 @@ export const SendPushForm = () => {
                               </span>
                             )}
                           </div>
-                          <span className="text-xs text-zinc-500 block">
+                          <span className="text-sm text-zinc-500 block">
                             {device.deviceInfo || 'Navegador'} • {device.origin === 'panel' ? 'Painel' : 'Site'}
                           </span>
                         </div>
                       </div>
 
                       {device.userEmail && (
-                        <span className="text-xs text-zinc-400 font-mono hidden sm:inline">
+                        <span className="text-sm text-zinc-400 font-mono hidden sm:inline">
                           {device.userEmail}
                         </span>
                       )}
@@ -323,7 +323,7 @@ export const SendPushForm = () => {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-zinc-700 mb-1">
+            <label className="block text-sm font-semibold text-zinc-700 mb-1">
               Título da Notificação *
             </label>
             <input
@@ -338,7 +338,7 @@ export const SendPushForm = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-700 mb-1">
+            <label className="block text-sm font-semibold text-zinc-700 mb-1">
               Mensagem / Conteúdo *
             </label>
             <textarea
@@ -352,7 +352,7 @@ export const SendPushForm = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-700 mb-1">
+            <label className="block text-sm font-semibold text-zinc-700 mb-1">
               Caminho / URL ao Clicar
             </label>
             <input

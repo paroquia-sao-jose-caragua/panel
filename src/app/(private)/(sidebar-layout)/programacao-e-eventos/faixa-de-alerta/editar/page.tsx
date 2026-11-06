@@ -154,7 +154,7 @@ export default function EditUrgentAlertPage() {
           <div className="flex flex-row items-center gap-4">
             <div>
               <TypographyH1>Editar Faixa de Alerta</TypographyH1>
-              <span className="text-xs sm:text-sm text-zinc-500 font-medium">
+              <span className="text-sm sm:text-sm text-zinc-500 font-medium">
                 Configure a mensagem em destaque e a janela de detalhes para avisos importantes.
               </span>
             </div>
@@ -235,10 +235,10 @@ export default function EditUrgentAlertPage() {
             {/* DANGER ZONE: Desativar / Limpar Faixa */}
             <div className="mt-14 pt-8 border-t border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block">
+                <span className="text-sm font-semibold text-zinc-500 uppercase tracking-wider block">
                   Gerenciamento do Comunicado
                 </span>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-sm text-zinc-400 mt-0.5">
                   Desativar e limpar os dados da faixa de alerta removerá o comunicado imediatamente do site.
                 </p>
               </div>
@@ -248,7 +248,7 @@ export default function EditUrgentAlertPage() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setConfirmDeleteAlert(true)}
-                className="text-xs text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
+                className="text-sm text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Desativar e Limpar Faixa</span>

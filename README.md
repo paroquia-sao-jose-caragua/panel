@@ -204,7 +204,7 @@ Fluxo geral da aplicação:
 | `/clerigos/editar/[id]`                         | Edição de dados do clérigo.                    |
 | `/avisos`                                       | Gestão de banners e faixa de alerta urgente.   |
 | `/avisos/adicionar`                             | Cadastro de novo banner responsivo.            |
-| `/avisos/alerta/editar`                         | Edição da faixa de aviso urgente.              |
+| `/programacao-e-eventos/faixa-de-alerta/editar`                         | Edição da faixa de aviso urgente.              |
 | `/avisos/editar/[id]`                           | Edição de banner existente.                    |
 | `/programacao-paroquial`                                       | Visualização da programação paroquial.   |
 | `/programacao-paroquial/adicionar-evento`                      | Cadastro de evento na agenda.                  |

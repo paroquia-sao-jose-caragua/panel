@@ -21,6 +21,7 @@ import {
   Repeat,
   Archive,
   Globe,
+  CalendarCheck2,
 } from 'lucide-react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { Button } from '@/components/ui/button';
@@ -259,11 +260,11 @@ export const AppSidebar = () => {
                     </div>
                   )}
                   <NavItem
-                    title="Relatórios & pauta"
+                    title="Pauta de atendimentos"
                     icon={FileSpreadsheet}
                     links={[
                       {
-                        title: 'Relatórios & pauta',
+                        title: 'Pauta de atendimentos',
                         href: ROUTES.APPOINTMENTS.REPORT,
                       },
                     ]}
@@ -317,18 +318,6 @@ export const AppSidebar = () => {
                   {
                     title: 'Programação Recorrente',
                     href: ROUTES.CALENDAR.RECURRING,
-                  },
-                ]}
-                onLinkClick={handleClose}
-              />
-              <NavItem
-                title="Eventos"
-                icon={CalendarPlus}
-                exactMatch
-                links={[
-                  {
-                    title: 'Eventos',
-                    href: ROUTES.CALENDAR.EVENTS,
                   },
                 ]}
                 onLinkClick={handleClose}
@@ -469,7 +458,7 @@ export const AppSidebar = () => {
                 type="button"
                 variant="ghost"
                 onClick={toggleCollapsed}
-                className="w-full flex items-center gap-3 text-brand-300 hover:text-white hover:bg-brand-700/40 transition-colors rounded-xl px-3 py-2 text-xs font-medium cursor-pointer justify-start"
+                className="w-full flex items-center gap-3 text-brand-300 hover:text-white hover:bg-brand-700/40 transition-colors rounded-xl px-3 py-2 text-sm font-medium cursor-pointer justify-start"
               >
                 <PanelLeftClose className="h-4 w-4 shrink-0" />
                 <span>Recolher menu</span>

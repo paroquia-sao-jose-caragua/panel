@@ -22,7 +22,7 @@ export const Trigger = ({ actionLabel }: { actionLabel?: string }) => {
           </span>{' '}
           a imagem
         </span>
-        <span className="text-xs">PNG ou JPG até 5MB</span>
+        <span className="text-sm">PNG ou JPG até 5MB</span>
       </div>
     </label>
   );

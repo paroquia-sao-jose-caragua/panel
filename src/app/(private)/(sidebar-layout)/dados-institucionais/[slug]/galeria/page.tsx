@@ -225,7 +225,7 @@ export default function ChurchGalleryPage() {
         />
 
         {uploadError && (
-          <div className="mb-6 p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600">
+          <div className="mb-6 p-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600">
             {uploadError}
           </div>
         )}
@@ -238,7 +238,7 @@ export default function ChurchGalleryPage() {
             <h3 className="text-base font-semibold text-zinc-800">
               Nenhuma foto na galeria
             </h3>
-            <p className="text-xs text-zinc-500 mt-1 max-w-md">
+            <p className="text-sm text-zinc-500 mt-1 max-w-md">
               Envie fotos dos altares, fachada, eventos e celebrações da comunidade para compor a galeria pública.
             </p>
             <Button
@@ -256,10 +256,10 @@ export default function ChurchGalleryPage() {
         ) : (
           <div className="space-y-4">
             <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+              <span className="text-sm font-semibold uppercase tracking-wider text-zinc-500">
                 {photos.length} {photos.length === 1 ? 'foto cadastrada' : 'fotos cadastradas'}
               </span>
-              <span className="text-xs text-zinc-400">
+              <span className="text-sm text-zinc-400">
                 Arraste ou use as setas para reordenar
               </span>
             </div>
@@ -282,7 +282,7 @@ export default function ChurchGalleryPage() {
                   </div>
 
                   <div className="flex-1 w-full space-y-1">
-                    <label className="text-xs font-medium text-zinc-600 block">
+                    <label className="text-sm font-medium text-zinc-600 block">
                       Legenda da foto
                     </label>
                     <InputRoot>

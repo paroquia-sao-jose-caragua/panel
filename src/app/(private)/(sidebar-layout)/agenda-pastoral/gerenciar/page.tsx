@@ -148,14 +148,14 @@ export default function AppointmentsManagePage() {
                         variant="outline"
                         className={
                           settings?.enabled
-                            ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300 text-xs font-medium'
-                            : 'bg-amber-100 text-amber-900 border-amber-300 text-xs font-semibold'
+                            ? 'bg-emerald-100/90 text-emerald-800 border-emerald-300 text-sm font-medium'
+                            : 'bg-amber-100 text-amber-900 border-amber-300 text-sm font-semibold'
                         }
                       >
                         {settings?.enabled ? 'Ativo' : 'Pausado'}
                       </Badge>
                     </div>
-                    <p className="text-xs sm:text-sm text-zinc-600 mt-0.5">
+                    <p className="text-sm sm:text-sm text-zinc-600 mt-0.5">
                       {settings?.enabled
                         ? 'Os fiéis podem consultar horários e solicitar atendimentos normalmente no site.'
                         : 'Nenhum agendamento novo pode ser realizado no site. Os fiéis verão um aviso informativo.'}
@@ -173,7 +173,7 @@ export default function AppointmentsManagePage() {
                         setCustomMessage(settings?.suspendedMessage || '');
                         setShowNoticeEditor(!showNoticeEditor);
                       }}
-                      className="text-xs border-amber-300 bg-white hover:bg-amber-50 text-amber-900 cursor-pointer"
+                      className="text-sm border-amber-300 bg-white hover:bg-amber-50 text-amber-900 cursor-pointer"
                     >
                       <Settings2 className="w-3.5 h-3.5 mr-1.5" />
                       {showNoticeEditor ? 'Ocultar aviso' : 'Editar aviso ao fiel'}
@@ -181,7 +181,7 @@ export default function AppointmentsManagePage() {
                   )}
 
                   <div className="flex items-center gap-2.5 pl-3 border-l border-zinc-200">
-                    <span className="text-xs font-medium text-zinc-600 hidden sm:inline">
+                    <span className="text-sm font-medium text-zinc-600 hidden sm:inline">
                       {settings?.enabled ? 'Desativar agendamentos' : 'Ativar agendamentos'}
                     </span>
                     <Switch
@@ -196,12 +196,12 @@ export default function AppointmentsManagePage() {
               {/* Collapsible Notice Editor */}
               {showNoticeEditor && !settings?.enabled && (
                 <div className="mt-4 pt-4 border-t border-amber-200/80 space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-amber-900">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-amber-900">
                     Mensagem exibida aos fiéis no site público
                   </h4>
                   <div className="grid gap-3">
                     <div>
-                      <label className="text-xs font-medium text-zinc-700 block mb-1">
+                      <label className="text-sm font-medium text-zinc-700 block mb-1">
                         Título do aviso
                       </label>
                       <Input
@@ -212,7 +212,7 @@ export default function AppointmentsManagePage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-medium text-zinc-700 block mb-1">
+                      <label className="text-sm font-medium text-zinc-700 block mb-1">
                         Mensagem explicativa / orientações
                       </label>
                       <Textarea
@@ -228,7 +228,7 @@ export default function AppointmentsManagePage() {
                       variant="outline"
                       size="sm"
                       onClick={() => setShowNoticeEditor(false)}
-                      className="text-xs cursor-pointer"
+                      className="text-sm cursor-pointer"
                     >
                       Cancelar
                     </Button>
@@ -236,7 +236,7 @@ export default function AppointmentsManagePage() {
                       size="sm"
                       disabled={isUpdatingSettings}
                       onClick={handleSaveNotice}
-                      className="text-xs bg-amber-600 hover:bg-amber-700 text-white cursor-pointer"
+                      className="text-sm bg-amber-600 hover:bg-amber-700 text-white cursor-pointer"
                     >
                       <Save className="w-3.5 h-3.5 mr-1" />
                       {isUpdatingSettings ? 'Salvando...' : 'Salvar aviso'}
@@ -261,7 +261,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Minha Agenda
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Consulte a pauta diária cronológica de atendimentos confirmados do mês.
                       </p>
                     </div>
@@ -285,7 +285,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Solicitações de Atendimento
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Aprove, gerencie pendências, remarque ou cancele solicitações de fiéis.
                       </p>
                     </div>
@@ -309,7 +309,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Novo Atendimento
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Agende diretamente um atendimento presencial ou visita domiciliar com um paroquiano.
                       </p>
                     </div>
@@ -333,7 +333,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Minha Grade de Horários
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Configure os dias da semana e faixas de horário em que você está disponível para atendimentos.
                       </p>
                     </div>
@@ -357,7 +357,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Bloqueios de Data
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Bloqueie datas pontuais por motivo de férias, retiros espirituais, viagens ou imprevistos.
                       </p>
                     </div>
@@ -381,7 +381,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Relatório & Pauta (PDF)
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Gere e imprima sua pauta de atendimentos por período com checklist de comparecimento presencial.
                       </p>
                     </div>
@@ -407,7 +407,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Agenda Cronológica
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Visualize a pauta diária e mensal de atendimentos confirmados distribuídos por horário.
                       </p>
                     </div>
@@ -431,7 +431,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Solicitações & Visitas
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Consulte, aprove, conclua ou cancele as solicitações de atendimento pastoral enviadas pelos fiéis.
                       </p>
                     </div>
@@ -455,7 +455,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Novo Atendimento
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Registre um agendamento para um fiel que ligou ou compareceu pessoalmente na secretaria.
                       </p>
                     </div>
@@ -479,7 +479,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Relatório & Pauta (PDF)
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Exporte a pauta filtrada por período para enviar ao Padre ou imprimir com campos de anotação presencial.
                       </p>
                     </div>
@@ -503,7 +503,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Agentes Pastorais
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Cadastre e gerencie os clérigos e ministros com seus respectivos horários e disponibilidades.
                       </p>
                     </div>
@@ -527,7 +527,7 @@ export default function AppointmentsManagePage() {
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         Categorias de Atendimento
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Configure os tipos de serviços disponíveis (confissões, bênçãos, conselhos e visitas domiciliares).
                       </p>
                     </div>

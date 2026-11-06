@@ -82,7 +82,7 @@ export function AppointmentCard({
         {/* Info Content */}
         <div className="flex flex-col min-w-0 flex-1 pr-2">
           {/* Date & Time pill/header */}
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-600 mb-0.5">
+          <div className="flex items-center gap-1.5 text-sm font-semibold text-zinc-600 mb-0.5">
             {showDate && (
               <>
                 <span>{dateFormatted}</span>
@@ -100,7 +100,7 @@ export function AppointmentCard({
           </h3>
 
           {/* Requester & Location */}
-          <div className="flex flex-col gap-0.5 mt-1 text-xs text-zinc-600">
+          <div className="flex flex-col gap-0.5 mt-1 text-sm text-zinc-600">
             <div className="flex items-center gap-1.5 truncate">
               <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
               <span className="font-medium text-zinc-800 truncate">

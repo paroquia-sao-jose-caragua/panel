@@ -181,10 +181,6 @@ export default function AppointmentsArchivePage() {
       />
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-        <div className="mb-2">
-          <BackButton href={ROUTES.APPOINTMENTS.HOME} />
-        </div>
-
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -203,7 +199,7 @@ export default function AppointmentsArchivePage() {
               type="button"
               onClick={() => setStatusFilter('all')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
+                'px-4 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
                 statusFilter === 'all'
                   ? 'bg-[#11291f] text-white shadow-xs'
                   : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
@@ -226,7 +222,7 @@ export default function AppointmentsArchivePage() {
               type="button"
               onClick={() => setStatusFilter('completed')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
+                'px-4 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
                 statusFilter === 'completed'
                   ? 'bg-emerald-700 text-white shadow-xs'
                   : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
@@ -250,7 +246,7 @@ export default function AppointmentsArchivePage() {
               type="button"
               onClick={() => setStatusFilter('cancelled')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
+                'px-4 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
                 statusFilter === 'cancelled'
                   ? 'bg-red-700 text-white shadow-xs'
                   : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
@@ -319,7 +315,7 @@ export default function AppointmentsArchivePage() {
                 <h3 className="text-base font-bold text-zinc-900">
                   Nenhum registro encontrado
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-500 max-w-md mx-auto">
+                <p className="text-sm sm:text-sm text-zinc-500 max-w-md mx-auto">
                   Não há atendimentos no arquivo com os filtros selecionados.
                 </p>
               </div>
@@ -352,7 +348,7 @@ export default function AppointmentsArchivePage() {
                       </div>
 
                       <div className="flex flex-col">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-900 font-mono">
+                        <div className="flex items-center gap-1.5 text-sm font-bold text-zinc-900 font-mono">
                           <Clock className="w-3.5 h-3.5 text-zinc-400" />
                           <span>{app.startTime}</span>
                         </div>
@@ -386,7 +382,7 @@ export default function AppointmentsArchivePage() {
                       </div>
 
                       {/* Requester & Community (md:col-span-4) */}
-                      <div className="md:col-span-4 min-w-0 space-y-1 text-xs">
+                      <div className="md:col-span-4 min-w-0 space-y-1 text-sm">
                         <div className="flex items-center gap-1.5 text-zinc-800 truncate">
                           <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                           <span className="font-semibold text-zinc-900 truncate">
@@ -411,7 +407,7 @@ export default function AppointmentsArchivePage() {
 
                       {/* Agent & Status Tag (md:col-span-3) */}
                       <div className="md:col-span-3 min-w-0 space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-700 truncate">
+                        <div className="flex items-center gap-1.5 text-sm text-zinc-700 truncate">
                           <HeartHandshake className="w-3.5 h-3.5 text-[#B8872E] shrink-0" />
                           <span className="font-medium text-zinc-900 truncate">
                             {app.agent?.title ? `${app.agent.title} ` : ''}
@@ -484,7 +480,7 @@ export default function AppointmentsArchivePage() {
 
                   {/* Cancellation Reason note if present */}
                   {!isCompleted && app.cancellationReason && (
-                    <div className="w-full pt-2 border-t border-zinc-100 text-xs text-red-900 bg-red-50/50 rounded-lg px-2.5 py-1.5 flex items-start gap-1.5">
+                    <div className="w-full pt-2 border-t border-zinc-100 text-sm text-red-900 bg-red-50/50 rounded-lg px-2.5 py-1.5 flex items-start gap-1.5">
                       <span className="font-semibold shrink-0">Motivo do cancelamento:</span>
                       <span className="text-zinc-600">{app.cancellationReason}</span>
                     </div>

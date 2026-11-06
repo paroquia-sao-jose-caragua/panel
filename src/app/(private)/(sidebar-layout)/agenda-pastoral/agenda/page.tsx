@@ -472,10 +472,6 @@ function AppointmentsAgendaContent() {
       />
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-        <div className="mb-2">
-          <BackButton href={ROUTES.APPOINTMENTS.HOME} />
-        </div>
-
         {/* 1. Header: Title, Subtitle, and ONLY "+ Novo atendimento" on the right */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -566,7 +562,7 @@ function AppointmentsAgendaContent() {
                 size="sm"
                 onClick={() => setOpenFilter(true)}
                 className={cn(
-                  'gap-1.5 h-8 text-xs cursor-pointer shadow-2xs',
+                  'gap-1.5 h-8 text-sm cursor-pointer shadow-2xs',
                   hasActiveFilters
                     ? 'border-[#11291f] text-[#11291f] bg-brand-50/50'
                     : 'text-zinc-600'
@@ -696,12 +692,12 @@ function AppointmentsAgendaContent() {
         {/* Active Filters Tag (Discrete) */}
         {hasActiveFilters && (
           <div className="flex items-center flex-wrap gap-2 mt-4">
-            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+            <span className="text-sm font-semibold text-zinc-500 uppercase tracking-wider">
               Filtro ativo:
             </span>
 
             {filters.agentId && (
-              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1 text-xs font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
+              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1 text-sm font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
                 <span className="text-zinc-500">Agente:</span>
                 <span className="font-semibold text-zinc-900">
                   {agents?.find((a) => a.id === filters.agentId)?.name ||
@@ -720,7 +716,7 @@ function AppointmentsAgendaContent() {
             )}
 
             {filters.serviceId && (
-              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1 text-xs font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
+              <div className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1 text-sm font-medium text-zinc-800 bg-white border border-zinc-200/80 shadow-2xs">
                 <span className="text-zinc-500">Categoria:</span>
                 <span className="font-semibold text-zinc-900">
                   {services?.find((s) => s.id === filters.serviceId)?.title ||
@@ -741,7 +737,7 @@ function AppointmentsAgendaContent() {
             <button
               type="button"
               onClick={handleClearFilter}
-              className="text-xs text-brand-800 font-semibold hover:underline ml-1 cursor-pointer"
+              className="text-sm text-brand-800 font-semibold hover:underline ml-1 cursor-pointer"
             >
               Limpar todos
             </button>
@@ -758,13 +754,13 @@ function AppointmentsAgendaContent() {
                 </h2>
                 {isCurrentSelectedToday && (
                   <Badge
-                    className="bg-[#11291f] text-white border-transparent font-sans text-xs px-2.5 py-0.5 font-semibold rounded-full shadow-xs"
+                    className="bg-[#11291f] text-white border-transparent font-sans text-sm px-2.5 py-0.5 font-semibold rounded-full shadow-xs"
                   >
                     Hoje
                   </Badge>
                 )}
               </div>
-              <p className="text-xs sm:text-sm text-zinc-500 font-medium mt-0.5">
+              <p className="text-sm sm:text-sm text-zinc-500 font-medium mt-0.5">
                 {dayAppointments.length === 0
                   ? '0 atendimentos confirmados'
                   : `${dayAppointments.length} ${
@@ -778,7 +774,7 @@ function AppointmentsAgendaContent() {
             <Button
               asChild
               size="sm"
-              className="gap-1.5 h-9 text-xs cursor-pointer shadow-2xs bg-[#11291f] text-white hover:bg-[#1a3d2e] shrink-0 self-start sm:self-center"
+              className="gap-1.5 h-9 text-sm cursor-pointer shadow-2xs bg-[#11291f] text-white hover:bg-[#1a3d2e] shrink-0 self-start sm:self-center"
             >
               <Link href={ROUTES.APPOINTMENTS.ADD_WITH_DATE(selectedDate)}>
                 <Plus className="w-3.5 h-3.5" />
@@ -803,7 +799,7 @@ function AppointmentsAgendaContent() {
                 <h3 className="text-base font-semibold text-zinc-900">
                   Nenhum atendimento confirmado nesta data
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-500 max-w-md mx-auto">
+                <p className="text-sm sm:text-sm text-zinc-500 max-w-md mx-auto">
                   Os horários livres continuam disponíveis conforme sua grade semanal.
                 </p>
               </div>
@@ -846,7 +842,7 @@ function AppointmentsAgendaContent() {
 
           <FieldGroup className="px-4 pb-2 gap-4">
             <div>
-              <label className="text-xs font-semibold text-zinc-700 block mb-1.5">
+              <label className="text-sm font-semibold text-zinc-700 block mb-1.5">
                 Agente Pastoral
               </label>
               <Select
@@ -871,7 +867,7 @@ function AppointmentsAgendaContent() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-zinc-700 block mb-1.5">
+              <label className="text-sm font-semibold text-zinc-700 block mb-1.5">
                 Categoria / Serviço
               </label>
               <Select

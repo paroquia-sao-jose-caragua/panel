@@ -16,7 +16,7 @@ interface ConfirmStepProps {
   weekOfMonth?: number;
   dayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   dayOfMonth?: number;
-  times: { startTime: string; endTime?: string }[];
+  startTime: string;
 }
 
 export const ConfirmStep = ({
@@ -28,7 +28,7 @@ export const ConfirmStep = ({
   weekOfMonth,
   dayOfWeek,
   dayOfMonth,
-  times,
+  startTime,
 }: ConfirmStepProps) => {
   const { community } = useCommunity();
   const { t } = useTranslator();
@@ -58,27 +58,14 @@ export const ConfirmStep = ({
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
             <span className="text-zinc-600">Recorrência</span>
             <span className="text-right font-medium">
-              {recurrenceType === 'weekly' ? 'Semanal' : null}
-              {recurrenceType === 'monthly' ? 'Mensal' : null}
-              {recurrenceType === 'week-of-month' && weekOfMonth
-                ? `${weekOfMonth === 5 ? 'Última' : `${weekOfMonth}ª`} semana do mês`
-                : null}
+              {recurrenceType === 'weekly' &&
+                `${dayOfWeek !== undefined && [0, 6].includes(dayOfWeek) ? 'Todo os ' : 'Todas às '} ${dayOfWeek !== undefined ? t(`week-day-${dayOfWeek}`).toLowerCase() : ''}s`}
+              {recurrenceType === 'week-of-month' &&
+                `${dayOfWeek !== undefined ? t(`week-day-${dayOfWeek}`) : ''} na ${weekOfMonth === 5 ? 'última' : `${weekOfMonth}ª`} semana do mês`}
+              {recurrenceType === 'monthly' &&
+                `Todo dia ${dayOfMonth} de cada mês`}
             </span>
           </div>
-          {dayOfWeek ? (
-            <div className="grid grid-cols-2 gap-4 pt-6 py-3">
-              <span className="text-zinc-600">Dia da semana</span>
-              <span className="text-right font-medium">
-                {t(`week-day-${dayOfWeek}`)}
-              </span>
-            </div>
-          ) : null}
-          {dayOfMonth ? (
-            <div className="grid grid-cols-2 gap-4 pt-6 py-3">
-              <span className="text-zinc-600">Dia do mês</span>
-              <span className="text-right font-medium">{dayOfMonth}</span>
-            </div>
-          ) : null}
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
             <span className="text-zinc-600">Missa de Preceito</span>
             <span
@@ -102,22 +89,10 @@ export const ConfirmStep = ({
             </div>
           )}
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
-            <span className="text-zinc-600">
-              Horários {`(${times.length})`}
+            <span className="text-zinc-600">Horário</span>
+            <span className="text-right font-medium text-brand-800">
+              {startTime}
             </span>
-            <span />
-            <div className="space-y-3 col-span-2">
-              {times.map((time) => (
-                <div
-                  key={time.startTime}
-                  className="flex flex-row items-center justify-between bg-brand-0/30 px-3 py-3 rounded-lg border border-brand-500/50"
-                >
-                  <span className="flex-1 text-md font-medium text-brand-800">
-                    {time.startTime}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

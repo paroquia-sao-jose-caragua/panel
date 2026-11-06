@@ -36,7 +36,7 @@ export const Root = ({ error, touched, helperText, ...props }: RootProps) => {
         {showError && (
           <p
             className={twMerge(
-              'mt-2 ml-4 text-xs',
+              'mt-2 ml-4 text-sm',
               ...(error ? ['text-red-700'] : ['text-brand-600']),
               props.className
             )}

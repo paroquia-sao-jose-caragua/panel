@@ -70,14 +70,14 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
             <Tag className="w-4 h-4 text-brand-700" />
             <span>Identificação da Categoria</span>
           </h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
+          <p className="text-sm text-zinc-500 mt-0.5">
             Defina o nome e os parâmetros essenciais deste tipo de atendimento pastoral.
           </p>
         </div>
 
         {/* Título */}
         <div>
-          <label className="text-xs font-semibold text-zinc-700 block mb-1">
+          <label className="text-sm font-semibold text-zinc-700 block mb-1">
             Nome do Atendimento / Categoria <span className="text-red-500">*</span>
           </label>
           <Input
@@ -87,7 +87,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
             className={`h-10 ${errors.title ? 'border-red-500 focus-error' : ''}`}
           />
           {errors.title && (
-            <span className="text-xs text-red-500 mt-1 block">{errors.title}</span>
+            <span className="text-sm text-red-500 mt-1 block">{errors.title}</span>
           )}
           <span className="text-[11px] text-zinc-400 mt-1 block">
             Nome exibido aos fiéis no momento da escolha do serviço no site.
@@ -96,7 +96,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
 
         {/* Tipo Canônico / Natureza */}
         <div>
-          <label className="text-xs font-semibold text-zinc-700 block mb-2">
+          <label className="text-sm font-semibold text-zinc-700 block mb-2">
             Natureza da Categoria <span className="text-red-500">*</span>
           </label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -131,7 +131,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
                     <span className="font-semibold text-sm text-zinc-900 block mb-1">
                       {opt.title}
                     </span>
-                    <p className="text-xs text-zinc-500 leading-relaxed">
+                    <p className="text-sm text-zinc-500 leading-relaxed">
                       {opt.description}
                     </p>
                   </div>
@@ -155,13 +155,13 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
             })}
           </div>
           {errors.category && (
-            <span className="text-xs text-red-500 mt-1 block">{errors.category}</span>
+            <span className="text-sm text-red-500 mt-1 block">{errors.category}</span>
           )}
         </div>
 
         {/* Duração Padrão */}
         <div>
-          <label className="text-xs font-semibold text-zinc-700 block mb-2 flex items-center gap-1.5">
+          <label className="text-sm font-semibold text-zinc-700 block mb-2 flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5 text-zinc-400" />
             <span>Duração Estimada por Atendimento <span className="text-red-500">*</span></span>
           </label>
@@ -173,7 +173,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
                   type="button"
                   key={mins}
                   onClick={() => onChange('defaultDurationMinutes', mins)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg text-sm font-semibold border transition-all cursor-pointer ${
                     isSelected
                       ? 'bg-brand-700 text-white border-brand-700 shadow-2xs'
                       : 'bg-zinc-50 text-zinc-700 border-zinc-200 hover:bg-zinc-100'
@@ -194,16 +194,16 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
               onChange={(e) => onChange('defaultDurationMinutes', Number(e.target.value))}
               className="h-9 w-32"
             />
-            <span className="text-xs text-zinc-500">minutos por vaga/sessão</span>
+            <span className="text-sm text-zinc-500">minutos por vaga/sessão</span>
           </div>
           {errors.defaultDurationMinutes && (
-            <span className="text-xs text-red-500 mt-1 block">{errors.defaultDurationMinutes}</span>
+            <span className="text-sm text-red-500 mt-1 block">{errors.defaultDurationMinutes}</span>
           )}
         </div>
 
         {/* Descrição e Orientações */}
         <div>
-          <label className="text-xs font-semibold text-zinc-700 block mb-1">
+          <label className="text-sm font-semibold text-zinc-700 block mb-1">
             Descrição e Orientações para os Fiéis (Opcional)
           </label>
           <Textarea
@@ -225,7 +225,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
             <Sparkles className="w-4 h-4 text-brand-700" />
             <span>Configurações Operacionais</span>
           </h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
+          <p className="text-sm text-zinc-500 mt-0.5">
             Defina requisitos de endereço e a visibilidade imediata no sistema.
           </p>
         </div>
@@ -239,7 +239,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
                 Exigir Endereço Residencial no Atendimento
               </span>
             </div>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Se ativado, o fiel ou familiar precisará obrigatoriamente preencher rua, número, bairro e condições do paciente (essencial para visitas a enfermos).
             </p>
           </div>
@@ -258,7 +258,7 @@ export const ServiceInfoStep = ({ values, onChange, errors }: ServiceInfoStepPro
                 Categoria Ativa para Atendimentos
               </span>
             </div>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Categorias desativadas não aparecerão para agendamento pelos fiéis nem na vinculação de novos agentes.
             </p>
           </div>

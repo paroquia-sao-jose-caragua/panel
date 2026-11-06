@@ -34,10 +34,6 @@ export const ROUTES = {
         `/dados-institucionais/${slug}/adicionar-missa-devocional`,
       EDIT_DEVOTIONAL: (slug: string, id: string) =>
         `/dados-institucionais/${slug}/missa-devocional/${id}/editar`,
-      ADD_ANNUAL: (slug: string) =>
-        `/dados-institucionais/${slug}/adicionar-missa-anual`,
-      EDIT_ANNUAL: (slug: string, id: string) =>
-        `/dados-institucionais/${slug}/missa-anual/${id}/editar`,
     },
   },
   CLERGY: {
@@ -49,8 +45,8 @@ export const ROUTES = {
     HOME: '/programacao-e-eventos/banners',
     ADD: '/programacao-e-eventos/banners/adicionar',
     EDIT: (id: string) => `/programacao-e-eventos/banners/editar/${id}`,
-    ALERT: '/programacao-e-eventos/alerta',
-    EDIT_ALERT: '/programacao-e-eventos/alerta/editar',
+    ALERT: '/programacao-e-eventos/faixa-de-alerta',
+    EDIT_ALERT: '/programacao-e-eventos/faixa-de-alerta/editar',
   },
   CALENDAR: {
     HOME: '/programacao-e-eventos',

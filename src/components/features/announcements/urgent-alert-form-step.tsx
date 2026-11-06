@@ -119,13 +119,13 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
               <Layers className="w-5 h-5 text-brand-600" />
               Publicação e Status
             </h3>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-sm text-zinc-500 mt-0.5">
               Defina se a faixa estará visível no site imediatamente ou conforme agendamento.
             </p>
           </div>
           <div className="flex items-center gap-3">
             <span
-              className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 ${
+              className={`text-sm font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 ${
                 values.active ? 'bg-emerald-100 text-emerald-800' : 'bg-zinc-100 text-zinc-500'
               }`}
             >
@@ -156,7 +156,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                 </div>
                 {values.variant === 'alert' && <CheckCircle2 className="w-4 h-4 text-red-600" />}
               </div>
-              <p className="text-xs text-zinc-500">
+              <p className="text-sm text-zinc-500">
                 Avisos que demandam atenção imediata, como cancelamentos ou alterações de emergência.
               </p>
             </button>
@@ -177,7 +177,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                 </div>
                 {values.variant === 'info' && <CheckCircle2 className="w-4 h-4 text-emerald-700" />}
               </div>
-              <p className="text-xs text-zinc-500">
+              <p className="text-sm text-zinc-500">
                 Informações gerais da secretaria, cursos, horários ou recados importantes da comunidade.
               </p>
             </button>
@@ -198,7 +198,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                 </div>
                 {values.variant === 'solemnity' && <CheckCircle2 className="w-4 h-4 text-amber-600" />}
               </div>
-              <p className="text-xs text-zinc-500">
+              <p className="text-sm text-zinc-500">
                 Festas de Padroeiros, Novenas, Semana Santa, Natal e celebrações especiais.
               </p>
             </button>
@@ -208,7 +208,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
         {/* Atendimento Opcional */}
         <div className="pt-4 border-t border-gray-100">
           <div className="flex items-center justify-between mb-2">
-            <FieldLabel className="flex items-center gap-1.5 text-xs text-zinc-700">
+            <FieldLabel className="flex items-center gap-1.5 text-sm text-zinc-700">
               <Calendar className="w-4 h-4 text-zinc-400" />
               Período de Exibição Automático (Opcional)
             </FieldLabel>
@@ -218,19 +218,19 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={() => setConfirmClearDates(true)}
-                className="h-7.5 px-2.5 text-xs font-medium text-red-600 hover:text-red-700 bg-red-50/50 hover:bg-red-100/70 border-red-200 hover:border-red-300 gap-1.5 transition-colors cursor-pointer"
+                className="h-7.5 px-2.5 text-sm font-medium text-red-600 hover:text-red-700 bg-red-50/50 hover:bg-red-100/70 border-red-200 hover:border-red-300 gap-1.5 transition-colors cursor-pointer"
               >
                 <X className="w-3.5 h-3.5 text-red-500" />
                 <span>Limpar datas</span>
               </Button>
             )}
           </div>
-          <p className="text-xs text-zinc-500 mb-3">
+          <p className="text-sm text-zinc-500 mb-3">
             Caso não preencha, a faixa será exibida continuamente enquanto estiver com o status &quot;Ativa&quot;.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-medium text-zinc-600 block mb-1">Início da exibição</label>
+              <label className="text-sm font-medium text-zinc-600 block mb-1">Início da exibição</label>
               <input
                 type="datetime-local"
                 value={values.startsAt}
@@ -239,7 +239,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-zinc-600 block mb-1">Término da exibição</label>
+              <label className="text-sm font-medium text-zinc-600 block mb-1">Término da exibição</label>
               <input
                 type="datetime-local"
                 value={values.endsAt}
@@ -270,11 +270,11 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
             <Volume2 className="w-5 h-5 text-brand-600" />
             Texto do Letreiro *
           </FieldLabel>
-          <span className={`text-xs ${values.text.length > 250 ? 'text-amber-600 font-semibold' : 'text-zinc-400'}`}>
+          <span className={`text-sm ${values.text.length > 250 ? 'text-amber-600 font-semibold' : 'text-zinc-400'}`}>
             {values.text.length} / 255
           </span>
         </div>
-        <p className="text-xs text-zinc-500">
+        <p className="text-sm text-zinc-500">
           Mensagem que desliza no topo da página inicial do site. Seja conciso e claro.
         </p>
         <Textarea
@@ -286,7 +286,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
           placeholder="Ex: Neste sábado teremos procissão e Missa Solene às 18h na Igreja Matriz..."
           className="resize-none"
         />
-        {errors.text && <p className="text-xs text-red-500 mt-1">{errors.text}</p>}
+        {errors.text && <p className="text-sm text-red-500 mt-1">{errors.text}</p>}
 
         {/* Prévia em tempo real */}
         <div className="pt-2">
@@ -320,12 +320,12 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
               <Eye className="w-5 h-5 text-brand-600" />
               Modal com Mais Informações (Opcional)
             </h3>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-sm text-zinc-500 mt-0.5">
               Torna toda a faixa clicável no site para que o visitante abra uma janela com o comunicado completo e imagem.
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-zinc-600">
+            <span className="text-sm font-semibold text-zinc-600">
               {values.hasModal ? 'Ativado' : 'Desativado'}
             </span>
             <Switch checked={values.hasModal} onCheckedChange={(val) => onChange('hasModal', val)} />
@@ -338,11 +338,11 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
             <div>
               <div className="flex items-center justify-between mb-1">
                 <FieldLabel htmlFor="modalTitle">Título da Janela</FieldLabel>
-                <span className={`text-xs ${values.modalTitle.length > 240 ? 'text-amber-600 font-semibold' : 'text-zinc-400'}`}>
+                <span className={`text-sm ${values.modalTitle.length > 240 ? 'text-amber-600 font-semibold' : 'text-zinc-400'}`}>
                   {values.modalTitle.length} / 255
                 </span>
               </div>
-              <p className="text-xs text-zinc-500 mb-2">
+              <p className="text-sm text-zinc-500 mb-2">
                 Suporta quebras de linha para destacar títulos e subtítulos no modal.
               </p>
               <Textarea
@@ -355,7 +355,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                 className="min-h-18 resize-y"
               />
               {errors.modalTitle && (
-                <p className="text-xs text-red-500 mt-1">{errors.modalTitle}</p>
+                <p className="text-sm text-red-500 mt-1">{errors.modalTitle}</p>
               )}
             </div>
 
@@ -363,7 +363,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
               <FieldLabel htmlFor="modalDescription" className="mb-1 block">
                 Texto Completo / Detalhes
               </FieldLabel>
-              <p className="text-xs text-zinc-500 mb-2">
+              <p className="text-sm text-zinc-500 mb-2">
                 Suporta quebras de linha e múltiplos parágrafos para detalhar comunicados e avisos.
               </p>
               <Textarea
@@ -385,7 +385,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                   </span>
                 </FieldLabel>
               </div>
-              <p className="text-xs text-zinc-500 mb-2">
+              <p className="text-sm text-zinc-500 mb-2">
                 Adicione uma arte ou comunicado visual que será exibido aos fiéis na janela modal.
               </p>
 
@@ -413,8 +413,8 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
 
                   <div className="space-y-2 flex-1">
                     <div>
-                      <p className="text-xs font-semibold text-zinc-800">Cartaz carregado</p>
-                      <p className="text-xs text-zinc-500 mt-0.5">
+                      <p className="text-sm font-semibold text-zinc-800">Cartaz carregado</p>
+                      <p className="text-sm text-zinc-500 mt-0.5">
                         Os fiéis poderão visualizar este cartaz ampliado no modal do comunicado.
                       </p>
                     </div>
@@ -426,7 +426,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                         size="sm"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploadingImage}
-                        className="gap-1.5 text-xs font-medium cursor-pointer"
+                        className="gap-1.5 text-sm font-medium cursor-pointer"
                       >
                         <Upload className="w-3.5 h-3.5 text-zinc-500" />
                         <span>Trocar imagem</span>
@@ -434,13 +434,13 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                     </div>
 
                     {uploadingImage && (
-                      <div className="flex items-center gap-2 pt-1 text-xs text-brand-600 font-medium">
+                      <div className="flex items-center gap-2 pt-1 text-sm text-brand-600 font-medium">
                         <Spinner className="w-3.5 h-3.5" />
                         <span>Enviando nova imagem... {uploadProgress}%</span>
                       </div>
                     )}
                     {uploadError && (
-                      <p className="text-xs text-red-500 pt-1">{uploadError}</p>
+                      <p className="text-sm text-red-500 pt-1">{uploadError}</p>
                     )}
                   </div>
                 </div>
@@ -453,7 +453,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                     {uploadingImage ? (
                       <div className="flex flex-col items-center gap-2">
                         <Spinner className="w-6 h-6 text-brand-600" />
-                        <span className="text-xs font-semibold text-zinc-600">
+                        <span className="text-sm font-semibold text-zinc-600">
                           Enviando... {uploadProgress}%
                         </span>
                       </div>
@@ -463,7 +463,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                           <Upload className="w-5 h-5" />
                         </div>
                         <div>
-                          <span className="text-xs font-semibold text-zinc-800 block">
+                          <span className="text-sm font-semibold text-zinc-800 block">
                             Clique para selecionar cartaz ou imagem
                           </span>
                           <span className="text-[11px] text-zinc-400 mt-0.5 block">
@@ -474,7 +474,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                           type="button"
                           variant="outline"
                           size="sm"
-                          className="mt-1 gap-1.5 text-xs pointer-events-none"
+                          className="mt-1 gap-1.5 text-sm pointer-events-none"
                         >
                           <Upload className="w-3.5 h-3.5" />
                           <span>Selecionar arquivo</span>
@@ -482,7 +482,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
                       </div>
                     )}
                   </div>
-                  {uploadError && <p className="text-xs text-red-500 mt-2">{uploadError}</p>}
+                  {uploadError && <p className="text-sm text-red-500 mt-2">{uploadError}</p>}
                 </div>
               )}
 

@@ -333,14 +333,9 @@ export default function AppointmentsReportPage() {
               icon: Calendar,
             },
             {
-              key: 'solicitacoes',
-              href: ROUTES.APPOINTMENTS.LIST,
-              title: isPastoralAgent ? 'Meus Atendimentos' : 'Atendimentos & Visitas',
-            },
-            {
               key: 'relatorio',
               href: ROUTES.APPOINTMENTS.REPORT,
-              title: 'Relatório & Pauta (PDF)',
+              title: 'Pauta de Atendimentos',
             },
           ]}
         />
@@ -349,11 +344,9 @@ export default function AppointmentsReportPage() {
       <main className="w-full min-w-0 max-w-325 px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto space-y-6">
         {/* Screen Header Controls (Hidden on Print) */}
         <div className="print-hidden space-y-4">
-          <BackButton href={ROUTES.APPOINTMENTS.HOME} />
-
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <TypographyH1>Pauta & Relatório de Atendimentos</TypographyH1>
+              <TypographyH1>Pauta de Atendimentos</TypographyH1>
               <Describe className="mt-1">
                 Gere e imprima a pauta dos atendimentos pastorais por período com campos de controle presencial para o Padre.
               </Describe>
@@ -399,7 +392,7 @@ export default function AppointmentsReportPage() {
 
             {/* Presets and Dates */}
             <div className="space-y-3">
-              <label className="text-xs font-semibold text-zinc-700 uppercase tracking-wider block">
+              <label className="text-sm font-semibold text-zinc-700 uppercase tracking-wider block">
                 Período da Pauta
               </label>
 
@@ -416,7 +409,7 @@ export default function AppointmentsReportPage() {
                     key={item.id}
                     type="button"
                     onClick={() => handlePresetChange(item.id as PeriodPreset)}
-                    className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer ${
                       preset === item.id
                         ? 'bg-brand-700 text-white shadow-xs'
                         : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80'
@@ -430,7 +423,7 @@ export default function AppointmentsReportPage() {
               {/* Date pickers */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
                 <div>
-                  <label className="text-xs text-zinc-500 font-medium block mb-1">
+                  <label className="text-sm text-zinc-500 font-medium block mb-1">
                     Data Inicial
                   </label>
                   <Input
@@ -440,12 +433,12 @@ export default function AppointmentsReportPage() {
                       setDates((prev) => ({ ...prev, startDate: e.target.value }));
                       setPreset('custom');
                     }}
-                    className="h-9 text-xs"
+                    className="h-9 text-sm"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs text-zinc-500 font-medium block mb-1">
+                  <label className="text-sm text-zinc-500 font-medium block mb-1">
                     Data Final
                   </label>
                   <Input
@@ -455,24 +448,24 @@ export default function AppointmentsReportPage() {
                       setDates((prev) => ({ ...prev, endDate: e.target.value }));
                       setPreset('custom');
                     }}
-                    className="h-9 text-xs"
+                    className="h-9 text-sm"
                   />
                 </div>
 
                 {/* Agent Selector */}
                 <div>
-                  <label className="text-xs text-zinc-500 font-medium block mb-1">
+                  <label className="text-sm text-zinc-500 font-medium block mb-1">
                     Padre / Agente Pastoral
                   </label>
                   {isPastoralAgent ? (
-                    <div className="h-9 px-3 flex items-center bg-zinc-50 border border-zinc-200 rounded-md text-xs font-medium text-zinc-800">
+                    <div className="h-9 px-3 flex items-center bg-zinc-50 border border-zinc-200 rounded-md text-sm font-medium text-zinc-800">
                       {myAgent ? `${myAgent.title ? `${myAgent.title} ` : ''}${myAgent.name}` : 'Meu Perfil'}
                     </div>
                   ) : (
                     <select
                       value={selectedAgentId}
                       onChange={(e) => setSelectedAgentId(e.target.value)}
-                      className="w-full h-9 px-2.5 bg-white border border-zinc-200 rounded-md text-xs text-zinc-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="w-full h-9 px-2.5 bg-white border border-zinc-200 rounded-md text-sm text-zinc-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
                     >
                       <option value="all">Todos os Padres e Agentes</option>
                       {agents.map((ag) => (
@@ -486,13 +479,13 @@ export default function AppointmentsReportPage() {
 
                 {/* Status Selector */}
                 <div>
-                  <label className="text-xs text-zinc-500 font-medium block mb-1">
+                  <label className="text-sm text-zinc-500 font-medium block mb-1">
                     Status dos Atendimentos
                   </label>
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value as any)}
-                    className="w-full h-9 px-2.5 bg-white border border-zinc-200 rounded-md text-xs text-zinc-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full h-9 px-2.5 bg-white border border-zinc-200 rounded-md text-sm text-zinc-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
                     <option value="active">Confirmados & Pendentes (Recomendado)</option>
                     <option value="confirmed">Apenas Confirmados</option>
@@ -504,7 +497,7 @@ export default function AppointmentsReportPage() {
             </div>
 
             {/* Customization switches */}
-            <div className="pt-2 border-t border-zinc-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+            <div className="pt-2 border-t border-zinc-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
               <label className="flex items-center gap-2 cursor-pointer text-zinc-700">
                 <Switch
                   checked={includeControlSection}
@@ -540,7 +533,7 @@ export default function AppointmentsReportPage() {
             </div>
           </div>
 
-          <div className="p-3 bg-amber-50/60 border border-amber-200/80 rounded-xl text-xs text-amber-900 flex items-start gap-2.5">
+          <div className="p-3 bg-amber-50/60 border border-amber-200/80 rounded-xl text-sm text-amber-900 flex items-start gap-2.5">
             <Sparkles className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
             <div>
               <span className="font-semibold block">Dica para salvar em PDF:</span>
@@ -559,7 +552,7 @@ export default function AppointmentsReportPage() {
                   <h2 className="text-xl font-bold tracking-tight text-zinc-950 uppercase font-serif">
                     Paróquia São José
                   </h2>
-                  <p className="text-xs text-zinc-600 font-medium">
+                  <p className="text-sm text-zinc-600 font-medium">
                     Diocese de Caraguatatuba • Secretaria Paroquial
                   </p>
                   <p className="text-[11px] text-zinc-400 mt-0.5">
@@ -569,10 +562,10 @@ export default function AppointmentsReportPage() {
               </div>
 
               <div className="text-center sm:text-right shrink-0">
-                <span className="inline-block px-3 py-1 bg-zinc-100 text-zinc-800 font-bold text-xs uppercase tracking-wider rounded border border-zinc-200">
+                <span className="inline-block px-3 py-1 bg-zinc-100 text-zinc-800 font-bold text-sm uppercase tracking-wider rounded border border-zinc-200">
                   Pauta de Atendimentos
                 </span>
-                <p className="text-xs text-zinc-500 mt-1.5">
+                <p className="text-sm text-zinc-500 mt-1.5">
                   Emissão: {new Date().toLocaleDateString('pt-BR')} às{' '}
                   {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                 </p>
@@ -580,7 +573,7 @@ export default function AppointmentsReportPage() {
             </div>
 
             {/* Subheader info block */}
-            <div className="mt-5 pt-4 border-t border-zinc-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div className="mt-5 pt-4 border-t border-zinc-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               <div className="space-y-1">
                 <div>
                   <span className="font-semibold text-zinc-600">Período: </span>
@@ -624,7 +617,7 @@ export default function AppointmentsReportPage() {
               <h3 className="text-base font-semibold text-zinc-800">
                 Nenhum atendimento encontrado para este período
               </h3>
-              <p className="text-xs text-zinc-500 max-w-md mx-auto">
+              <p className="text-sm text-zinc-500 max-w-md mx-auto">
                 Não constam agendamentos registrados entre {formatDisplayDate(dates.startDate)} e{' '}
                 {formatDisplayDate(dates.endDate)} para os filtros selecionados.
               </p>
@@ -644,7 +637,7 @@ export default function AppointmentsReportPage() {
                         {formatLongDate(dateStr)}
                       </span>
                     </div>
-                    <span className="text-xs font-semibold text-zinc-600">
+                    <span className="text-sm font-semibold text-zinc-600">
                       {items.length} atendimento(s)
                     </span>
                   </div>
@@ -701,14 +694,14 @@ export default function AppointmentsReportPage() {
                                 </span>
                               )}
 
-                              <span className="text-xs text-zinc-400 font-mono">
+                              <span className="text-sm text-zinc-400 font-mono">
                                 #{index + 1}
                               </span>
                             </div>
                           </div>
 
                           {/* Row 2: Faithful details & location */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                             <div className="space-y-0.5">
                               <div>
                                 <span className="text-zinc-500 font-medium">Fiel / Solicitante: </span>
@@ -745,7 +738,7 @@ export default function AppointmentsReportPage() {
 
                           {/* Home Visit Details */}
                           {includeAddressDetails && isHomeVisit && (app.patientAddress || app.patientName) && (
-                            <div className="bg-amber-50/50 border border-amber-200/80 rounded-lg p-3 text-xs space-y-1.5 text-zinc-800">
+                            <div className="bg-amber-50/50 border border-amber-200/80 rounded-lg p-3 text-sm space-y-1.5 text-zinc-800">
                               <div className="flex flex-wrap items-center justify-between gap-1">
                                 {app.patientName && (
                                   <div>
@@ -794,7 +787,7 @@ export default function AppointmentsReportPage() {
 
                           {/* Faithful Requester Notes */}
                           {includeFaithfulNotes && app.requesterNotes && (
-                            <div className="text-xs bg-zinc-50 rounded-lg p-2.5 border border-zinc-200/60 text-zinc-700">
+                            <div className="text-sm bg-zinc-50 rounded-lg p-2.5 border border-zinc-200/60 text-zinc-700">
                               <span className="font-semibold text-zinc-600">Motivo / Notas do Fiel: </span>
                               <span className="italic">"{app.requesterNotes}"</span>
                             </div>
@@ -802,7 +795,7 @@ export default function AppointmentsReportPage() {
 
                           {/* PRIEST'S PRESENCE CHECKLIST & NOTES (User's core request) */}
                           {includeControlSection && (
-                            <div className="pt-2.5 border-t border-zinc-200/80 bg-zinc-50/70 p-3 rounded-lg text-xs space-y-2">
+                            <div className="pt-2.5 border-t border-zinc-200/80 bg-zinc-50/70 p-3 rounded-lg text-sm space-y-2">
                               <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-4">
                                 <span className="font-bold text-zinc-800 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
                                   <CheckSquare className="w-3.5 h-3.5 text-brand-700" />
@@ -854,7 +847,7 @@ export default function AppointmentsReportPage() {
           )}
 
           {/* Document Footer */}
-          <div className="pt-8 border-t border-zinc-300 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+          <div className="pt-8 border-t border-zinc-300 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-500">
             <div>
               <p className="font-medium text-zinc-700">
                 Paróquia São José de Caraguatatuba

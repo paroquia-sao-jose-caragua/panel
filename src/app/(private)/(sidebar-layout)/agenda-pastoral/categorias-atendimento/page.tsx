@@ -127,7 +127,7 @@ export default function AppointmentServicesPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar por nome ou descrição..."
-            className="pl-9 h-9 text-xs"
+            className="pl-9 h-9 text-sm"
           />
         </div>
 
@@ -135,7 +135,7 @@ export default function AppointmentServicesPage() {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="h-9 px-3 rounded-lg border border-zinc-200 text-xs bg-white text-zinc-700"
+            className="h-9 px-3 rounded-lg border border-zinc-200 text-sm bg-white text-zinc-700"
           >
             <option value="all">Todas as naturezas</option>
             <option value="clergy_sacramental">Sacramental (Exclusivo Padres)</option>
@@ -146,7 +146,7 @@ export default function AppointmentServicesPage() {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="h-9 px-3 rounded-lg border border-zinc-200 text-xs bg-white text-zinc-700"
+            className="h-9 px-3 rounded-lg border border-zinc-200 text-sm bg-white text-zinc-700"
           >
             <option value="all">Todos os status</option>
             <option value="active">Apenas ativas</option>
@@ -176,7 +176,7 @@ export default function AppointmentServicesPage() {
           <h3 className="text-base font-bold text-zinc-900">
             Nenhuma categoria de atendimento encontrada
           </h3>
-          <p className="text-xs text-zinc-500 max-w-md mx-auto">
+          <p className="text-sm text-zinc-500 max-w-md mx-auto">
             {searchTerm || selectedCategory !== 'all' || selectedStatus !== 'all'
               ? 'Tente ajustar os filtros de busca para encontrar o atendimento desejado.'
               : 'Comece criando a primeira categoria de atendimento pastoral para permitir agendamentos.'}
@@ -225,14 +225,14 @@ export default function AppointmentServicesPage() {
                     <h3 className="text-lg font-bold text-zinc-900 leading-snug">
                       {service.title}
                     </h3>
-                    <span className="text-xs text-zinc-500 font-medium">
+                    <span className="text-sm text-zinc-500 font-medium">
                       {meta.sub}
                     </span>
                   </div>
 
                   {/* Description */}
                   {service.description && (
-                    <p className="text-xs text-zinc-600 line-clamp-3 leading-relaxed">
+                    <p className="text-sm text-zinc-600 line-clamp-3 leading-relaxed">
                       {service.description}
                     </p>
                   )}

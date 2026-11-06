@@ -1495,14 +1495,14 @@ export default function HelpCenterPage() {
               />
             </Link>
             <div className="h-5 w-px bg-zinc-200 hidden sm:block" />
-            <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-full border border-brand-200/80">
+            <div className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-full border border-brand-200/80">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Central de Ajuda</span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-xs">
+            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-sm">
               <Link href="/">
                 <span>Acessar Painel</span>
                 <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
@@ -1517,7 +1517,7 @@ export default function HelpCenterPage() {
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#d6a64a_1px,transparent_1px)] [background-size:16px_16px]" />
 
         <div className="max-w-4xl mx-auto text-center space-y-6 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-brand-200 text-xs font-medium border border-white/15 backdrop-blur-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-brand-200 text-sm font-medium border border-white/15 backdrop-blur-xs">
             <BookOpen className="w-3.5 h-3.5 text-brand-400" />
             <span>Documentação Oficial e Guias Operacionais</span>
           </div>
@@ -1545,7 +1545,7 @@ export default function HelpCenterPage() {
                 <button
                   type="button"
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 hover:text-zinc-900 font-medium px-2 py-1 bg-zinc-100 hover:bg-zinc-200 rounded-lg flex items-center gap-1 transition cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-zinc-500 hover:text-zinc-900 font-medium px-2 py-1 bg-zinc-100 hover:bg-zinc-200 rounded-lg flex items-center gap-1 transition cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                   <span>Limpar</span>
@@ -1554,7 +1554,7 @@ export default function HelpCenterPage() {
             </div>
 
             {/* Quick Search Tags */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-xs text-brand-200">
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-sm text-brand-200">
               <span className="font-semibold text-white/90 flex items-center gap-1">
                 <Tag className="w-3 h-3 text-brand-300" />
                 Buscas rápidas:
@@ -1566,7 +1566,7 @@ export default function HelpCenterPage() {
                     key={tag}
                     type="button"
                     onClick={() => handleTagClick(tag)}
-                    className={`px-2.5 py-1 rounded-full text-xs transition cursor-pointer flex items-center gap-1 ${
+                    className={`px-2.5 py-1 rounded-full text-sm transition cursor-pointer flex items-center gap-1 ${
                       isActive
                         ? 'bg-amber-400 text-zinc-950 font-bold shadow-xs'
                         : 'bg-white/10 hover:bg-white/20 text-brand-100 hover:text-white border border-white/10'
@@ -1592,11 +1592,11 @@ export default function HelpCenterPage() {
                 <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 font-serif">
                   Tópicos e Artigos de Ajuda
                 </h2>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-800 border border-brand-200 font-bold">
+                <span className="text-sm px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-800 border border-brand-200 font-bold">
                   {filteredTopics.length} {filteredTopics.length === 1 ? 'tópico' : 'tópicos'}
                 </span>
               </div>
-              <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+              <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                 {hasSearch ? (
                   <span>Resultados da busca por <strong>"{searchTerm}"</strong>:</span>
                 ) : selectedCategory === 'all' ? (
@@ -1622,7 +1622,7 @@ export default function HelpCenterPage() {
                     key={cat.id}
                     type="button"
                     onClick={() => setSelectedCategory(cat.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer flex items-center gap-1.5 ${
                       isSelected
                         ? 'bg-brand-700 text-white shadow-2xs font-semibold'
                         : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/80 hover:text-zinc-900'
@@ -1646,7 +1646,7 @@ export default function HelpCenterPage() {
 
           {/* Active search / category filter feedback banner */}
           {(searchTerm || selectedCategory !== 'all') && (
-            <div className="p-3 bg-brand-50/70 border border-brand-200/80 rounded-xl flex items-center justify-between text-xs text-brand-900">
+            <div className="p-3 bg-brand-50/70 border border-brand-200/80 rounded-xl flex items-center justify-between text-sm text-brand-900">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-brand-700" />
                 <span>
@@ -1668,7 +1668,7 @@ export default function HelpCenterPage() {
                 variant="ghost"
                 size="sm"
                 onClick={clearAllFilters}
-                className="h-7 text-xs text-brand-800 hover:text-brand-950 hover:bg-brand-100/80 cursor-pointer"
+                className="h-7 text-sm text-brand-800 hover:text-brand-950 hover:bg-brand-100/80 cursor-pointer"
               >
                 <X className="w-3.5 h-3.5 mr-1" />
                 Voltar a Todos os Tópicos
@@ -1683,14 +1683,14 @@ export default function HelpCenterPage() {
               <h3 className="text-sm font-semibold text-zinc-700">
                 Nenhum tópico encontrado para "{searchTerm}"
               </h3>
-              <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+              <p className="text-sm text-zinc-500 max-w-sm mx-auto">
                 Tente pesquisar por termos comuns como "pix", "agenda", "missa", "dízimo", "capela", "horários" ou limpe os filtros.
               </p>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={clearAllFilters}
-                className="text-xs mt-2 cursor-pointer"
+                className="text-sm mt-2 cursor-pointer"
               >
                 Limpar filtros e exibir guias principais
               </Button>
@@ -1718,14 +1718,14 @@ export default function HelpCenterPage() {
                       <h3 className="text-base font-bold text-zinc-900 group-hover:text-brand-700 transition">
                         {topic.title}
                       </h3>
-                      <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                      <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         {topic.description}
                       </p>
                     </div>
 
                     <ul className="space-y-1.5 pt-1">
                       {topic.highlights.map((h, i) => (
-                        <li key={i} className="text-xs text-zinc-600 flex items-start gap-2">
+                        <li key={i} className="text-sm text-zinc-600 flex items-start gap-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-brand-600 shrink-0 mt-0.5" />
                           <span>{h}</span>
                         </li>
@@ -1734,14 +1734,14 @@ export default function HelpCenterPage() {
                   </div>
 
                   {topic.href ? (
-                    <Button asChild variant="outline" size="sm" className="w-full justify-between border-zinc-200 group-hover:border-brand-300 group-hover:bg-brand-50/50 cursor-pointer text-xs">
+                    <Button asChild variant="outline" size="sm" className="w-full justify-between border-zinc-200 group-hover:border-brand-300 group-hover:bg-brand-50/50 cursor-pointer text-sm">
                       <Link href={topic.href}>
                         <span>Ler Manual Completo</span>
                         <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 group-hover:text-brand-700 transition" />
                       </Link>
                     </Button>
                   ) : (
-                    <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-400">
+                    <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-sm text-zinc-400">
                       <span>Artigo integrado no painel</span>
                       <CheckSquare className="w-4 h-4 text-zinc-300" />
                     </div>
@@ -1763,19 +1763,19 @@ export default function HelpCenterPage() {
                 <h2 className="text-xl font-bold text-zinc-900 font-serif">
                   Perguntas Frequentes (FAQ)
                 </h2>
-                <p className="text-xs text-zinc-500 mt-0.5">
+                <p className="text-sm text-zinc-500 mt-0.5">
                   Dúvidas operacionais mais comuns sobre agendamentos, secretaria, PIX e comunidades.
                 </p>
               </div>
             </div>
 
-            <span className="text-xs px-2.5 py-1 rounded-full bg-zinc-100 font-semibold text-zinc-600 hidden sm:inline-block">
+            <span className="text-sm px-2.5 py-1 rounded-full bg-zinc-100 font-semibold text-zinc-600 hidden sm:inline-block">
               {filteredFaqs.length} perguntas
             </span>
           </div>
 
           {filteredFaqs.length === 0 ? (
-            <div className="p-6 text-center text-xs text-zinc-500">
+            <div className="p-6 text-center text-sm text-zinc-500">
               Nenhuma pergunta frequente coincide com os termos pesquisados.
             </div>
           ) : (
@@ -1804,7 +1804,7 @@ export default function HelpCenterPage() {
                     </button>
 
                     {isOpen && (
-                      <div className="px-5 py-4 text-xs sm:text-sm text-zinc-600 bg-white border-t border-zinc-100 leading-relaxed">
+                      <div className="px-5 py-4 text-sm sm:text-sm text-zinc-600 bg-white border-t border-zinc-100 leading-relaxed">
                         {faq.answer}
                       </div>
                     )}
@@ -1821,19 +1821,19 @@ export default function HelpCenterPage() {
             <h3 className="text-lg font-bold text-brand-950 font-serif">
               Ainda tem dúvidas sobre o funcionamento do painel?
             </h3>
-            <p className="text-xs text-brand-800 max-w-xl">
+            <p className="text-sm text-brand-800 max-w-xl">
               Entre em contato com a secretaria paroquial ou consulte os manuais específicos de cada área paroquial.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <Button asChild className="bg-brand-700 hover:bg-brand-800 text-white text-xs">
+            <Button asChild className="bg-brand-700 hover:bg-brand-800 text-white text-sm">
               <Link href="/ajuda/secretaria">
                 <Building2 className="w-3.5 h-3.5 mr-1.5" />
                 Manual da Secretaria
               </Link>
             </Button>
-            <Button asChild variant="outline" className="border-brand-300 text-brand-900 bg-white hover:bg-brand-100 text-xs">
+            <Button asChild variant="outline" className="border-brand-300 text-brand-900 bg-white hover:bg-brand-100 text-sm">
               <Link href="/">
                 Ir para o Painel
               </Link>
@@ -1843,7 +1843,7 @@ export default function HelpCenterPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-xs text-brand-200">
+      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-sm text-brand-200">
         <p className="font-semibold text-white">
           Paróquia São José de Caraguatatuba • Diocese de Caraguatatuba
         </p>

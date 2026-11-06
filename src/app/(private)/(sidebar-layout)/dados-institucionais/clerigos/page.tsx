@@ -128,7 +128,7 @@ export default function ClergiesPage() {
                     alt={mainMember.name}
                     className="w-full h-full object-cover object-top"
                   />
-                  <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#18351E] border border-[#D6A64A]/40 text-[#D6A64A] text-xs font-semibold tracking-wider uppercase shadow-md">
+                  <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#18351E] border border-[#D6A64A]/40 text-[#D6A64A] text-sm font-semibold tracking-wider uppercase shadow-md">
                     <Sparkles className="w-3 h-3 text-[#D6A64A]" />
                     <span>{mainMember.roleName || 'CLÉRIGO PRINCIPAL'}</span>
                   </div>
@@ -139,7 +139,7 @@ export default function ClergiesPage() {
                   <div>
                     <div className="flex items-start justify-between gap-4 mb-2">
                       <div>
-                        <span className="text-xs font-bold text-[#B8872E] uppercase tracking-widest block mb-1">
+                        <span className="text-sm font-bold text-[#B8872E] uppercase tracking-widest block mb-1">
                           {mainMember.roleName || 'PÁROCO'}
                         </span>
                         <h2 className="text-2xl md:text-4xl font-semibold text-zinc-900 leading-tight">
@@ -163,7 +163,7 @@ export default function ClergiesPage() {
                     </div>
 
                     {mainMember.shortIntro && (
-                      <p className="text-xs sm:text-sm font-semibold text-[#B8872E] uppercase tracking-wider mb-4">
+                      <p className="text-sm sm:text-sm font-semibold text-[#B8872E] uppercase tracking-wider mb-4">
                         {mainMember.shortIntro}
                       </p>
                     )}
@@ -173,7 +173,7 @@ export default function ClergiesPage() {
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-[#D6A64A]/20 flex items-center justify-between text-xs text-zinc-500 font-serif">
+                  <div className="pt-4 border-t border-[#D6A64A]/20 flex items-center justify-between text-sm text-zinc-500 font-serif">
                     <span>Ordem de exibição: #{mainMember.orderIndex ?? 1}</span>
                     <span className="text-[#18351E] font-medium">Exibido em destaque no site</span>
                   </div>
@@ -218,7 +218,7 @@ export default function ClergiesPage() {
                     </h4>
 
                     {/* Short Intro / Bio */}
-                    <p className="text-xs text-zinc-600 font-serif leading-relaxed line-clamp-3 mb-4 px-2">
+                    <p className="text-sm text-zinc-600 font-serif leading-relaxed line-clamp-3 mb-4 px-2">
                       {member.shortIntro || member.bio || 'Sem descrição cadastrada.'}
                     </p>
 
@@ -250,7 +250,7 @@ export default function ClergiesPage() {
                   <h4 className="text-base font-semibold text-zinc-700 group-hover:text-brand-700 transition-colors mb-1">
                     Adicionar clérigo
                   </h4>
-                  <p className="text-xs text-zinc-400 max-w-[180px]">
+                  <p className="text-sm text-zinc-400 max-w-[180px]">
                     Cadastre um novo sacerdote, diácono ou autoridade
                   </p>
                 </Link>

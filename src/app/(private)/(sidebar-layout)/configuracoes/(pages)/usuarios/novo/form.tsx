@@ -140,7 +140,7 @@ export const CreateUserForm = () => {
               />
               <div className="space-y-0.5">
                 <span className="font-medium text-zinc-900">{t('invite-by-email')}</span>
-                <p className="text-xs text-zinc-500">
+                <p className="text-sm text-zinc-500">
                   Um e-mail será enviado com link exclusivo para o usuário definir sua própria senha.
                 </p>
               </div>
@@ -156,7 +156,7 @@ export const CreateUserForm = () => {
               />
               <div className="space-y-0.5">
                 <span className="font-medium text-zinc-900">{t('define-initial-password')}</span>
-                <p className="text-xs text-zinc-500">
+                <p className="text-sm text-zinc-500">
                   Defina uma senha inicial e forneça diretamente ao novo usuário.
                 </p>
               </div>

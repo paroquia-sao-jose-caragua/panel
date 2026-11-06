@@ -76,7 +76,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
                     {t(`week-day-${group.dayOfWeek}`)},{' '}
                     {dayjs(group.date).locale('pt-br').format('D [de] MMMM')}
                   </h3>
-                  <span className="text-xs text-zinc-500 font-medium">
+                  <span className="text-sm text-zinc-500 font-medium">
                     {active.length === 0
                       ? 'Nenhum compromisso ativo'
                       : `${active.length} ${active.length === 1 ? 'compromisso ativo' : 'compromissos ativos'}`}
@@ -89,7 +89,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
                 asChild
                 variant="outline"
                 size="sm"
-                className="border-dashed border-zinc-300 text-zinc-600 hover:border-[#B8872E] hover:text-[#B8872E] hover:bg-[#fefbf6] gap-1.5 text-xs h-8 self-start sm:self-center shrink-0 shadow-2xs"
+                className="border-dashed border-zinc-300 text-zinc-600 hover:border-[#B8872E] hover:text-[#B8872E] hover:bg-[#fefbf6] gap-1.5 text-sm h-8 self-start sm:self-center shrink-0 shadow-2xs"
               >
                 <Link href={ROUTES.CALENDAR.ADD_EVENT_WITH_DATE(group.date)}>
                   <Plus className="h-3.5 w-3.5" />
@@ -121,10 +121,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
             {/* Empty state for the day */}
             {totalSchedules === 0 && (
               <div className="bg-white/70 border border-dashed border-zinc-200/90 rounded-2xl p-6 text-center shadow-2xs w-full">
-                <p className="text-sm font-medium text-zinc-500">
-                  Nenhum agendamento para este dia
-                </p>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-sm text-zinc-400 mt-0.5">
                   Clique em &quot;Adicionar Evento&quot; para registrar um compromisso.
                 </p>
               </div>
@@ -134,7 +131,7 @@ export const CalendarView = ({ schedules }: CalendarViewProps) => {
             {exceptions.length > 0 && (
               <div className="w-full pt-2">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
+                  <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider">
                     Atendimentos Recorrentes Cancelados ({exceptions.length})
                   </span>
                 </div>

@@ -82,7 +82,7 @@ export const ResetUserPasswordForm = ({ user }: ResetUserPasswordFormProps) => {
           </div>
           <div className="truncate">
             <p className="font-semibold text-zinc-900">{user.name}</p>
-            <p className="text-xs text-zinc-500 truncate">{user.email}</p>
+            <p className="text-sm text-zinc-500 truncate">{user.email}</p>
           </div>
         </div>
 
@@ -90,7 +90,7 @@ export const ResetUserPasswordForm = ({ user }: ResetUserPasswordFormProps) => {
           <div className="p-4 rounded-xl bg-amber-50 border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-900">
             <div className="flex items-center gap-2.5">
               <Mail className="w-5 h-5 text-amber-600 shrink-0" />
-              <div className="text-xs sm:text-sm">
+              <div className="text-sm sm:text-sm">
                 <p className="font-semibold text-amber-950">Usuário com convite pendente</p>
                 <p className="text-amber-800">
                   Este usuário ainda não ativou a conta. Deseja reenviar o convite de 48 horas?
@@ -130,7 +130,7 @@ export const ResetUserPasswordForm = ({ user }: ResetUserPasswordFormProps) => {
               />
               <div className="space-y-0.5">
                 <span className="font-medium text-zinc-900">{t('admin-reset-method-email')}</span>
-                <p className="text-xs text-zinc-500">
+                <p className="text-sm text-zinc-500">
                   Dispara um e-mail transacional com token seguro para {user.email}.
                 </p>
               </div>
@@ -146,7 +146,7 @@ export const ResetUserPasswordForm = ({ user }: ResetUserPasswordFormProps) => {
               />
               <div className="space-y-0.5">
                 <span className="font-medium text-zinc-900">{t('admin-reset-method-manual')}</span>
-                <p className="text-xs text-zinc-500">
+                <p className="text-sm text-zinc-500">
                   Defina uma nova senha temporária para entregar diretamente ao usuário.
                 </p>
               </div>
@@ -173,7 +173,7 @@ export const ResetUserPasswordForm = ({ user }: ResetUserPasswordFormProps) => {
                   }}
                 />
               </Input.Root>
-              <span className="text-xs text-zinc-500">
+              <span className="text-sm text-zinc-500">
                 {t('password-requirements')}
               </span>
             </div>

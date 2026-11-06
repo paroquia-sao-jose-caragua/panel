@@ -53,8 +53,8 @@ O componente `Button` é a referência unificada para todas as ações do sistem
 
 #### Tamanhos (`size`):
 - `default` (`h-9 px-3`)
-- `xs` (`h-6 px-2 text-xs`)
-- `sm` (`h-8 px-2.5 text-xs`)
+- `xs` (`h-6 px-2 text-sm`)
+- `sm` (`h-8 px-2.5 text-sm`)
 - `lg` (`h-11.5 px-6 text-sm font-semibold`) — **Padrão para formulários e ações de rodapé**.
 - `icon`, `icon-xs`, `icon-sm`, `icon-lg` — Botões quadrados para ícones.
 

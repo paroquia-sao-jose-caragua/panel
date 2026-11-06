@@ -81,10 +81,6 @@ export default function OnlineAppointmentsSettingsPage() {
       />
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-        <div className="mb-2">
-          <BackButton href={ROUTES.APPOINTMENTS.HOME} />
-        </div>
-
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -120,7 +116,7 @@ export default function OnlineAppointmentsSettingsPage() {
                       </h2>
                       <Badge
                         variant="outline"
-                        className={`text-xs px-2.5 py-0.5 font-semibold rounded-full ${
+                        className={`text-sm px-2.5 py-0.5 font-semibold rounded-full ${
                           isEnabled
                             ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                             : 'bg-amber-50 text-amber-800 border-amber-200'
@@ -139,7 +135,7 @@ export default function OnlineAppointmentsSettingsPage() {
                         )}
                       </Badge>
                     </div>
-                    <p className="text-xs sm:text-sm text-zinc-500 mt-1 max-w-2xl leading-relaxed">
+                    <p className="text-sm sm:text-sm text-zinc-500 mt-1 max-w-2xl leading-relaxed">
                       {isEnabled
                         ? 'Os fiéis podem acessar o site e solicitar agendamentos com os sacerdotes e ministros nos horários disponíveis.'
                         : 'O formulário público de agendamento está bloqueado no site. Os fiéis verão a mensagem de aviso configurada abaixo.'}
@@ -148,7 +144,7 @@ export default function OnlineAppointmentsSettingsPage() {
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
-                  <span className="text-xs font-semibold text-zinc-600">
+                  <span className="text-sm font-semibold text-zinc-600">
                     {isEnabled ? 'Habilitado' : 'Desabilitado'}
                   </span>
                   <Switch
@@ -161,7 +157,7 @@ export default function OnlineAppointmentsSettingsPage() {
               </div>
 
               {!isEnabled && (
-                <div className="p-3.5 bg-amber-50/70 border border-amber-200/70 rounded-xl flex items-start gap-2.5 text-xs text-amber-900">
+                <div className="p-3.5 bg-amber-50/70 border border-amber-200/70 rounded-xl flex items-start gap-2.5 text-sm text-amber-900">
                   <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                   <p>
                     Com o agendamento online desabilitado, nenhuma nova solicitação será enviada pelos paroquianos via internet. A secretaria ainda pode criar atendimentos internos normalmente.
@@ -180,14 +176,14 @@ export default function OnlineAppointmentsSettingsPage() {
               <h3 className="text-base font-bold text-zinc-900 tracking-tight">
                 Aviso de Suspensão / Recesso
               </h3>
-              <p className="text-xs sm:text-sm text-zinc-500 mt-0.5">
+              <p className="text-sm sm:text-sm text-zinc-500 mt-0.5">
                 Esta mensagem é apresentada aos fiéis no site quando os agendamentos online estão desabilitados.
               </p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-zinc-700 block mb-1.5">
+                <label className="text-sm font-semibold text-zinc-700 block mb-1.5">
                   Título do Aviso
                 </label>
                 <Input
@@ -203,7 +199,7 @@ export default function OnlineAppointmentsSettingsPage() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-zinc-700 block mb-1.5">
+                <label className="text-sm font-semibold text-zinc-700 block mb-1.5">
                   Mensagem Explicativa aos Fiéis
                 </label>
                 <Textarea
@@ -227,7 +223,7 @@ export default function OnlineAppointmentsSettingsPage() {
               <Button
                 type="submit"
                 size="sm"
-                className="gap-1.5 h-9 text-xs cursor-pointer shadow-2xs bg-[#11291f] text-white hover:bg-[#1a3d2e]"
+                className="gap-1.5 h-9 text-sm cursor-pointer shadow-2xs bg-[#11291f] text-white hover:bg-[#1a3d2e]"
                 disabled={isPending || isUpdatingSettings || !hasChanges}
                 isLoading={isUpdatingSettings}
                 loadingText="Salvando..."
@@ -241,7 +237,7 @@ export default function OnlineAppointmentsSettingsPage() {
           {/* Informational Guidance */}
           <div className="p-4 bg-zinc-50 border border-zinc-200/80 rounded-2xl flex items-start gap-3">
             <Info className="w-4 h-4 text-zinc-500 shrink-0 mt-0.5" />
-            <div className="space-y-1 text-xs text-zinc-600 leading-relaxed">
+            <div className="space-y-1 text-sm text-zinc-600 leading-relaxed">
               <p className="font-semibold text-zinc-800">
                 Como funciona na prática:
               </p>

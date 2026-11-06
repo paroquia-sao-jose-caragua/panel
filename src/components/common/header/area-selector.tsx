@@ -158,7 +158,7 @@ export function AreaSelector() {
                 <Check className="w-4 h-4 text-[#B8872E]" />
               )}
             </div>
-            <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
+            <p className="text-sm text-zinc-500 mt-0.5 line-clamp-2">
               Calendário e comunicação
             </p>
           </div>
@@ -194,7 +194,7 @@ export function AreaSelector() {
                 <Check className="w-4 h-4 text-emerald-700" />
               )}
             </div>
-            <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
+            <p className="text-sm text-zinc-500 mt-0.5 line-clamp-2">
               Atendimentos e agentes
             </p>
           </div>
@@ -230,7 +230,7 @@ export function AreaSelector() {
                 <Check className="w-4 h-4 text-brand-800" />
               )}
             </div>
-            <p className="text-xs text-zinc-500 mt-0.5 line-clamp-2">
+            <p className="text-sm text-zinc-500 mt-0.5 line-clamp-2">
               Informações institucionais
             </p>
           </div>
@@ -267,7 +267,7 @@ export function AreaSelector() {
                 Em breve
               </span>
             </div>
-            <p className="text-xs text-zinc-400 mt-0.5 line-clamp-2">
+            <p className="text-sm text-zinc-400 mt-0.5 line-clamp-2">
               Blog e publicações
             </p>
           </div>

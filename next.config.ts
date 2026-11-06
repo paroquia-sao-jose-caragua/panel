@@ -57,12 +57,22 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/avisos/alerta/editar',
-        destination: '/programacao-e-eventos/alerta/editar',
+        destination: '/programacao-e-eventos/faixa-de-alerta/editar',
         permanent: true,
       },
       {
         source: '/avisos/alerta',
-        destination: '/programacao-e-eventos/alerta',
+        destination: '/programacao-e-eventos/faixa-de-alerta',
+        permanent: true,
+      },
+      {
+        source: '/programacao-e-eventos/alerta/editar',
+        destination: '/programacao-e-eventos/faixa-de-alerta/editar',
+        permanent: true,
+      },
+      {
+        source: '/programacao-e-eventos/alerta',
+        destination: '/programacao-e-eventos/faixa-de-alerta',
         permanent: true,
       },
       {

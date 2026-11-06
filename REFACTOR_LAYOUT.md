@@ -114,7 +114,7 @@ Confissão, aconselhamento, bênção etc.
 
 RELATÓRIOS
 
-Relatórios & pauta
+Pauta de Atendimentos
 
 Isso resolve uma coisa importante que aparece nas suas telas atuais:
 

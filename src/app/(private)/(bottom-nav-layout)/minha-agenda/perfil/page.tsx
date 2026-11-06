@@ -68,7 +68,7 @@ export default function MinhaAgendaPerfilPage() {
                 {agentTitle}
                 {agentDisplayName}
               </h2>
-              <span className="text-xs font-semibold text-brand-800 inline-block mt-0.5">
+              <span className="text-sm font-semibold text-brand-800 inline-block mt-0.5">
                 {actingRole}
               </span>
               <span className="text-[11px] text-zinc-400 truncate mt-0.5">
@@ -78,7 +78,7 @@ export default function MinhaAgendaPerfilPage() {
           </div>
 
           {/* Contact Details */}
-          <div className="pt-3 border-t border-zinc-100 space-y-2 text-xs text-zinc-600">
+          <div className="pt-3 border-t border-zinc-100 space-y-2 text-sm text-zinc-600">
             {myAgent?.phone && (
               <div className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-zinc-400" />
@@ -98,7 +98,7 @@ export default function MinhaAgendaPerfilPage() {
             <h3 className="text-sm font-bold text-zinc-900">
               Configurações da agenda
             </h3>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Personalize seus horários de atendimento e períodos indisponíveis.
             </p>
           </div>
@@ -117,7 +117,7 @@ export default function MinhaAgendaPerfilPage() {
                   <h4 className="text-sm font-bold text-zinc-900 group-hover:text-brand-800 transition-colors">
                     Minha disponibilidade
                   </h4>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-sm text-zinc-500">
                     Definir dias e horários recorrentes
                   </p>
                 </div>
@@ -138,7 +138,7 @@ export default function MinhaAgendaPerfilPage() {
                   <h4 className="text-sm font-bold text-zinc-900 group-hover:text-brand-800 transition-colors">
                     Bloqueios de agenda
                   </h4>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-sm text-zinc-500">
                     Férias, retiros e datas indisponíveis
                   </p>
                 </div>
@@ -162,7 +162,7 @@ export default function MinhaAgendaPerfilPage() {
                 <h4 className="text-sm font-bold text-zinc-900">
                   Manual do Agente Pastoral
                 </h4>
-                <p className="text-xs text-zinc-500">Dúvidas sobre a agenda</p>
+                <p className="text-sm text-zinc-500">Dúvidas sobre a agenda</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-zinc-400" />

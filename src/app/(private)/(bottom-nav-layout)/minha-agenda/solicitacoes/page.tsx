@@ -91,12 +91,12 @@ export default function MinhaAgendaRequestsPage() {
               Solicitações de Atendimento
             </h2>
             {pendingRequests.length > 0 && (
-              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900">
+              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-sm font-bold bg-amber-100 text-amber-900">
                 {pendingRequests.length}
               </span>
             )}
           </div>
-          <p className="text-xs text-zinc-500 leading-relaxed">
+          <p className="text-sm text-zinc-500 leading-relaxed">
             Atendimentos aguardando a sua confirmação para entrarem na sua agenda ativa.
           </p>
         </section>
@@ -116,7 +116,7 @@ export default function MinhaAgendaRequestsPage() {
               <p className="text-sm font-semibold text-zinc-800">
                 Tudo em dia!
               </p>
-              <p className="text-xs text-zinc-400 max-w-xs mx-auto">
+              <p className="text-sm text-zinc-400 max-w-xs mx-auto">
                 Não há nenhuma solicitação de atendimento pendente de confirmação no
                 momento.
               </p>
@@ -141,7 +141,7 @@ export default function MinhaAgendaRequestsPage() {
                       Aguardando confirmação
                     </span>
 
-                    <span className="text-xs font-bold text-zinc-800">
+                    <span className="text-sm font-bold text-zinc-800">
                       {req.startTime} às {req.endTime}
                     </span>
                   </div>
@@ -151,13 +151,13 @@ export default function MinhaAgendaRequestsPage() {
                     <h3 className="text-base font-bold text-zinc-900 leading-snug">
                       {req.service?.title || 'Atendimento Pastoral'}
                     </h3>
-                    <p className="text-xs font-semibold text-zinc-600 mt-0.5">
+                    <p className="text-sm font-semibold text-zinc-600 mt-0.5">
                       {capDate}
                     </p>
                   </div>
 
                   {/* Requester Details */}
-                  <div className="bg-zinc-50 rounded-xl p-3 space-y-1.5 text-xs text-zinc-700 border border-zinc-100">
+                  <div className="bg-zinc-50 rounded-xl p-3 space-y-1.5 text-sm text-zinc-700 border border-zinc-100">
                     <div className="flex items-center gap-2">
                       <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                       <span className="font-semibold text-zinc-900">
@@ -195,7 +195,7 @@ export default function MinhaAgendaRequestsPage() {
                       variant="outline"
                       disabled={isBusy}
                       onClick={() => setCancellingAppointment(req)}
-                      className="w-full h-10 text-xs font-semibold rounded-xl border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200"
+                      className="w-full h-10 text-sm font-semibold rounded-xl border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200"
                     >
                       <X className="w-4 h-4 mr-1 text-red-500" />
                       Recusar
@@ -206,7 +206,7 @@ export default function MinhaAgendaRequestsPage() {
                       disabled={isBusy}
                       isLoading={isBusy}
                       onClick={() => handleConfirm(req)}
-                      className="w-full h-10 text-xs font-semibold rounded-xl bg-brand-900 text-white hover:bg-brand-800"
+                      className="w-full h-10 text-sm font-semibold rounded-xl bg-brand-900 text-white hover:bg-brand-800"
                     >
                       <Check className="w-4 h-4 mr-1 text-emerald-400" />
                       Confirmar

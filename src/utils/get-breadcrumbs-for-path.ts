@@ -471,7 +471,7 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
   // Faixa de Alerta
   if (
     cleanPath === ROUTES.ANNOUNCEMENTS.ALERT ||
-    cleanPath === '/avisos/alerta'
+    cleanPath === '/programacao-e-eventos/faixa-de-alerta'
   ) {
     return [
       {
@@ -490,7 +490,7 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
   }
   if (
     cleanPath === ROUTES.ANNOUNCEMENTS.EDIT_ALERT ||
-    cleanPath === '/avisos/alerta/editar'
+    cleanPath === '/programacao-e-eventos/faixa-de-alerta/editar'
   ) {
     return [
       {

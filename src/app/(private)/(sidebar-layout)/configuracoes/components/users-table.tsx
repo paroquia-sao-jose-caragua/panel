@@ -107,27 +107,27 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
     switch (role) {
       case 'admin':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-purple-50 text-purple-700 border border-purple-200">
             {t('role-admin')}
           </span>
         );
       case 'secretary':
       case 'user':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200">
             {t('role-secretary')}
           </span>
         );
       case 'pastoral_agent':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
             {t('role-pastoral_agent')}
           </span>
         );
       case 'viewer':
       default:
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-700 border border-zinc-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-zinc-100 text-zinc-700 border border-zinc-200">
             {t('role-viewer')}
           </span>
         );
@@ -138,19 +138,19 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
     switch (status) {
       case 'active':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-green-50 text-green-700 border border-green-200">
             {t('status-active')}
           </span>
         );
       case 'suspended':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-red-50 text-red-700 border border-red-200">
             {t('status-suspended')}
           </span>
         );
       case 'pending':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-amber-50 text-amber-700 border border-amber-200">
             {t('status-pending')}
           </span>
         );
@@ -212,7 +212,7 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
       <div className="bg-white rounded-xl border border-zinc-200 shadow-xs overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-zinc-200 bg-zinc-50/60 text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+            <tr className="border-b border-zinc-200 bg-zinc-50/60 text-sm font-semibold text-zinc-500 uppercase tracking-wider">
               <th className="py-3.5 px-4">{t('user-name')}</th>
               <th className="py-3.5 px-4">{t('user-role')}</th>
               <th className="py-3.5 px-4">{t('user-status')}</th>
@@ -243,7 +243,7 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
                             </span>
                           )}
                         </div>
-                        <div className="text-xs text-zinc-500 truncate">
+                        <div className="text-sm text-zinc-500 truncate">
                           {u.email}
                         </div>
                       </div>
@@ -251,7 +251,7 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
                   </td>
                   <td className="py-3.5 px-4">{getRoleBadge(u.role)}</td>
                   <td className="py-3.5 px-4">{getStatusBadge(u.status)}</td>
-                  <td className="py-3.5 px-4 text-zinc-500 text-xs">
+                  <td className="py-3.5 px-4 text-zinc-500 text-sm">
                     {formatLastLogin(u.lastLoginAt)}
                   </td>
                   <td className="py-3.5 px-4 text-right">

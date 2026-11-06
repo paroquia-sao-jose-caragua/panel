@@ -85,7 +85,7 @@ export default function AgentBlockedDatesPage({
               <PlusCircle className="w-4 h-4 text-rose-600" />
               <span>Bloquear Nova Data</span>
             </h2>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-sm text-zinc-500 mt-0.5">
               Impeça que novos agendamentos sejam marcados nesta data (férias, retiros, viagens ou imprevistos).
             </p>
           </div>
@@ -93,7 +93,7 @@ export default function AgentBlockedDatesPage({
           <form onSubmit={handleAdd} className="space-y-4 pt-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-semibold text-zinc-700 block mb-1">
+                <label className="text-sm font-semibold text-zinc-700 block mb-1">
                   Data a Ser Bloqueada *
                 </label>
                 <Input
@@ -106,7 +106,7 @@ export default function AgentBlockedDatesPage({
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-zinc-700 block mb-1">
+                <label className="text-sm font-semibold text-zinc-700 block mb-1">
                   Motivo / Observação (opcional)
                 </label>
                 <Input
@@ -134,7 +134,7 @@ export default function AgentBlockedDatesPage({
               <Calendar className="w-4 h-4 text-brand-700" />
               <span>Datas Atualmente Bloqueadas ({blockedDates.length})</span>
             </h2>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-sm text-zinc-500 mt-0.5">
               Dias em que o sistema bloqueia automaticamente qualquer solicitação de agendamento para este agente.
             </p>
           </div>
@@ -145,7 +145,7 @@ export default function AgentBlockedDatesPage({
               <Skeleton className="h-14 w-full rounded-xl" />
             </div>
           ) : blockedDates.length === 0 ? (
-            <div className="text-xs text-zinc-500 italic p-6 text-center border border-dashed border-zinc-200 rounded-xl">
+            <div className="text-sm text-zinc-500 italic p-6 text-center border border-dashed border-zinc-200 rounded-xl">
               Nenhuma data bloqueada para este agente. O atendimento segue a grade semanal regular.
             </div>
           ) : (
@@ -153,7 +153,7 @@ export default function AgentBlockedDatesPage({
               {blockedDates.map((block) => (
                 <div
                   key={block.id}
-                  className="flex items-center justify-between p-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs hover:border-zinc-300 transition-colors"
+                  className="flex items-center justify-between p-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm hover:border-zinc-300 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="size-8 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
@@ -163,7 +163,7 @@ export default function AgentBlockedDatesPage({
                       <span className="font-bold text-sm text-zinc-900 block">
                         {formatDate(block.blockedDate)}
                       </span>
-                      <span className="text-zinc-500 text-xs">
+                      <span className="text-zinc-500 text-sm">
                         {block.reason || 'Sem motivo especificado'}
                       </span>
                     </div>
@@ -172,7 +172,7 @@ export default function AgentBlockedDatesPage({
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-8 text-xs text-zinc-400 hover:text-rose-600 hover:bg-rose-50 gap-1"
+                    className="h-8 text-sm text-zinc-400 hover:text-rose-600 hover:bg-rose-50 gap-1"
                     onClick={() => setDeletingBlockId(block.id)}
                   >
                     <Trash2 className="w-3.5 h-3.5" />

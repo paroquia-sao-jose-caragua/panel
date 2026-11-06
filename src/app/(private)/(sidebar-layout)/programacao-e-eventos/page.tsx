@@ -206,10 +206,7 @@ export default function EventsAndProgrammingHomePage() {
           </div>
 
           <div className="self-start sm:self-center shrink-0">
-            <Button
-              asChild
-              className="bg-[#11291f] text-white hover:bg-[#1a3d2e] rounded-xl px-4 py-2.5 text-xs sm:text-sm font-semibold shadow-xs shrink-0 self-start sm:self-center cursor-pointer gap-1.5"
-            >
+            <Button asChild>
               <Link href={ROUTES.CALENDAR.ADD_EVENT}>
                 <Plus className="w-4 h-4" />
                 <span>Novo evento</span>
@@ -245,7 +242,7 @@ export default function EventsAndProgrammingHomePage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => setSelectedDate(todayStr)}
-                      className="text-xs text-emerald-800 hover:text-emerald-950 hover:bg-emerald-50 h-8.5 rounded-xl cursor-pointer"
+                      className="text-sm text-emerald-800 hover:text-emerald-950 hover:bg-emerald-50 h-8.5 rounded-xl cursor-pointer"
                     >
                       Voltar para hoje
                     </Button>
@@ -255,7 +252,7 @@ export default function EventsAndProgrammingHomePage() {
                     asChild
                     variant="outline"
                     size="sm"
-                    className="text-xs gap-1.5 h-8.5 rounded-xl cursor-pointer self-start sm:self-center shadow-2xs hover:bg-zinc-50"
+                    className="text-sm gap-1.5 h-8.5 rounded-xl cursor-pointer self-start sm:self-center shadow-2xs hover:bg-zinc-50"
                   >
                     <Link href={ROUTES.CALENDAR.VIEW}>
                       <span>Ver calendário completo</span>
@@ -269,7 +266,7 @@ export default function EventsAndProgrammingHomePage() {
               {isLoadingCalendar && (
                 <div className="p-12 flex flex-col items-center justify-center gap-3">
                   <Spinner className="text-[#B8872E] w-6 h-6" />
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-sm text-zinc-500">
                     Carregando compromissos do dia...
                   </p>
                 </div>
@@ -284,7 +281,7 @@ export default function EventsAndProgrammingHomePage() {
                       ? 'Nenhuma celebração agendada para hoje'
                       : 'Nenhuma celebração agendada para esta data'}
                   </h4>
-                  <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+                  <p className="text-sm text-zinc-500 max-w-sm mx-auto">
                     {isViewingToday
                       ? 'A paróquia não possui missas ou eventos programados para o dia de hoje.'
                       : 'Não há celebrações ou eventos agendados para a data selecionada.'}
@@ -314,7 +311,7 @@ export default function EventsAndProgrammingHomePage() {
                           <h4 className="font-semibold text-sm text-zinc-900 truncate">
                             {schedule.title || (isMass ? 'Missa' : 'Celebração')}
                           </h4>
-                          <p className="text-xs text-zinc-500 truncate mt-0.5 flex items-center gap-1.5">
+                          <p className="text-sm text-zinc-500 truncate mt-0.5 flex items-center gap-1.5">
                             <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                             <span>{schedule.community.name}</span>
                             {schedule.type === 'event' &&
@@ -330,11 +327,11 @@ export default function EventsAndProgrammingHomePage() {
                         {/* Badge Recorrente / Evento */}
                         <div className="hidden sm:block shrink-0">
                           {isMass ? (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
                               Recorrente
                             </span>
                           ) : (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-800 border border-purple-200/80">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-purple-50 text-purple-800 border border-purple-200/80">
                               Evento
                             </span>
                           )}
@@ -344,7 +341,7 @@ export default function EventsAndProgrammingHomePage() {
                         <div className="shrink-0">
                           <span
                             className={cn(
-                              'inline-block text-[11px] sm:text-xs font-medium px-3 py-1 rounded-full whitespace-nowrap',
+                              'inline-block text-[11px] sm:text-sm font-medium px-3 py-1 rounded-full whitespace-nowrap',
                               pill.className
                             )}
                           >
@@ -374,7 +371,7 @@ export default function EventsAndProgrammingHomePage() {
               </div>
 
               {/* Month Navigation (< < Outubro 2026 > >) */}
-              <div className="flex items-center justify-between text-xs pt-1">
+              <div className="flex items-center justify-between text-sm pt-1">
                 <div className="flex items-center gap-0.5">
                   <Button
                     type="button"
@@ -435,7 +432,7 @@ export default function EventsAndProgrammingHomePage() {
               </div>
 
               {/* Day Headers (Seg, Ter, Qua, Qui, Sex, Sáb, Dom) */}
-              <div className="grid grid-cols-7 text-center text-xs text-zinc-500 font-medium">
+              <div className="grid grid-cols-7 text-center text-sm text-zinc-500 font-medium">
                 <span>Seg</span>
                 <span>Ter</span>
                 <span>Qua</span>
@@ -446,7 +443,7 @@ export default function EventsAndProgrammingHomePage() {
               </div>
 
               {/* Calendar Days Grid */}
-              <div className="grid grid-cols-7 gap-y-1 text-center font-mono text-xs">
+              <div className="grid grid-cols-7 gap-y-1 text-center font-mono text-sm">
                 {/* Previous month muted days */}
                 {prevMonthDays.map((dayNum) => (
                   <div
@@ -474,7 +471,7 @@ export default function EventsAndProgrammingHomePage() {
                     >
                       <span
                         className={cn(
-                          'w-7 h-7 flex items-center justify-center rounded-full text-xs font-semibold transition-all',
+                          'w-7 h-7 flex items-center justify-center rounded-full text-sm font-semibold transition-all',
                           isSelected
                             ? 'bg-[#183424] text-white shadow-2xs font-bold'
                             : 'text-zinc-800 group-hover:bg-zinc-100'
@@ -564,7 +561,7 @@ export default function EventsAndProgrammingHomePage() {
 
                     {/* Count */}
                     <div className="flex-1 text-left px-4">
-                      <span className="text-xs sm:text-sm font-medium text-zinc-700 group-hover:text-zinc-900">
+                      <span className="text-sm sm:text-sm font-medium text-zinc-700 group-hover:text-zinc-900">
                         {day.count}{' '}
                         {day.count === 1 ? 'celebração' : 'celebrações'}
                       </span>

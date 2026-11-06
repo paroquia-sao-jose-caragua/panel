@@ -13,7 +13,7 @@ interface ConfirmStepProps {
   isPrecept: boolean;
   startDate: string;
   endDate?: string;
-  times: { startTime: string; endTime?: string }[];
+  startTime: string;
 }
 
 export const ConfirmStep = ({
@@ -22,7 +22,7 @@ export const ConfirmStep = ({
   isPrecept,
   startDate,
   endDate,
-  times,
+  startTime,
 }: ConfirmStepProps) => {
   const { t } = useTranslator();
   const { community } = useCommunity();
@@ -78,22 +78,10 @@ export const ConfirmStep = ({
             </div>
           )}
           <div className="grid grid-cols-2 gap-4 pt-6 py-3">
-            <span className="text-zinc-600">
-              Horários {`(${times.length})`}
+            <span className="text-zinc-600">Horário</span>
+            <span className="text-right font-medium text-brand-800">
+              {startTime}
             </span>
-            <span />
-            <div className="space-y-3 col-span-2">
-              {times.map((time) => (
-                <div
-                  key={time.startTime}
-                  className="flex flex-row items-center justify-between bg-brand-0/30 px-3 py-3 rounded-lg border border-brand-500/50"
-                >
-                  <span className="flex-1 text-md font-medium text-brand-800">
-                    {time.startTime}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

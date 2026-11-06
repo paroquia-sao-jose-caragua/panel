@@ -37,6 +37,7 @@ import { deleteCommunity } from '@/api/communities/delete';
 import { showAlert } from '@/utils/showAlert';
 import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import useTranslator from '@/hooks/use-translator';
+import { BackButton } from '@/components/common/back-button';
 
 const WEEKDAYS = [
   'Domingo',
@@ -75,7 +76,6 @@ export default function ChurchPage() {
   const [confirmDeleteCommunity, setConfirmDeleteCommunity] = React.useState(false);
   const [showAllOrdinary, setShowAllOrdinary] = React.useState(false);
   const [showAllDevotional, setShowAllDevotional] = React.useState(false);
-  const [showAllAnnual, setShowAllAnnual] = React.useState(false);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
 
   const deleteMutation = useMutation({
@@ -127,10 +127,6 @@ export default function ChurchPage() {
     (ms) => ms.type === 'devotional' && ms.active !== false
   );
 
-  const annualMasses = (massSchedules || []).filter(
-    (ms) => ms.type === 'solemnity' && ms.active !== false
-  );
-
   const visibleOrdinaryMasses = showAllOrdinary
     ? ordinaryMasses
     : ordinaryMasses.slice(0, 3);
@@ -139,17 +135,13 @@ export default function ChurchPage() {
     ? devotionalMasses
     : devotionalMasses.slice(0, 3);
 
-  const visibleAnnualMasses = showAllAnnual
-    ? annualMasses
-    : annualMasses.slice(0, 3);
-
-  const formatTimes = (times: { startTime: string }[]) => {
-    if (!times || times.length === 0) return '';
-    return times.map((t) => t.startTime.replace(':', 'h')).join(' | ');
+  const formatTime = (startTime?: string) => {
+    if (!startTime) return '';
+    return startTime.replace(':', 'h');
   };
 
   const formatDevotionalSchedule = (ms: (typeof devotionalMasses)[0]) => {
-    const timesStr = formatTimes(ms.times);
+    const timeStr = formatTime(ms.startTime);
     let dayStr = '';
 
     if (typeof ms.dayOfMonth === 'number') {
@@ -165,24 +157,8 @@ export default function ChurchPage() {
       dayStr = `Toda ${WEEKDAYS[ms.dayOfWeek]}`;
     }
 
-    if (dayStr && timesStr) return `${dayStr} - ${timesStr}`;
-    return dayStr || timesStr || 'Conforme agendamento';
-  };
-
-  const formatAnnualSchedule = (ms: (typeof annualMasses)[0]) => {
-    if (
-      typeof ms.dayOfMonth === 'number' &&
-      typeof ms.monthOfYear === 'number'
-    ) {
-      return `${ms.dayOfMonth} de ${MONTHS[ms.monthOfYear - 1]}`;
-    }
-    if (typeof ms.monthOfYear === 'number') {
-      return MONTHS[ms.monthOfYear - 1];
-    }
-    if (typeof ms.dayOfMonth === 'number') {
-      return `Dia ${ms.dayOfMonth}`;
-    }
-    return 'Data festiva';
+    if (dayStr && timeStr) return `${dayStr} - ${timeStr}`;
+    return dayStr || timeStr || 'Conforme agendamento';
   };
 
   const isMatriz =
@@ -214,31 +190,35 @@ export default function ChurchPage() {
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
         {/* 1. TOP BAR: Action Buttons */}
-        <div className="flex items-center justify-end gap-2.5 mb-6 flex-wrap">
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-            className="gap-1.5"
-          >
-            <Link href={ROUTES.COMMUNITIES.EDIT(community?.slug || '')}>
-              <Pencil className="w-3.5 h-3.5" />
-              <span>Editar Dados Principais</span>
-            </Link>
-          </Button>
-
-          {community?.slug && (
-            <Button asChild size="sm" className="gap-2 text-xs h-9">
-              <a
-                href={publicPageUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Ver página no site público</span>
-              </a>
+        <div className="flex items-center justify-between gap-2.5 mb-6 flex-wrap w-full">
+          <div className="mb-2">
+            <BackButton href={ROUTES.COMMUNITIES.HOME} />
+          </div>
+          <div className="flex items-center justify-end gap-2.5 flex-wrap">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+            >
+              <Link href={ROUTES.COMMUNITIES.EDIT(community?.slug || '')}>
+                <Pencil className="w-3.5 h-3.5" />
+                <span>Editar Dados Principais</span>
+              </Link>
             </Button>
-          )}
+
+            {community?.slug && (
+              <Button asChild size="sm">
+                <a
+                  href={publicPageUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Ver página no site público</span>
+                </a>
+              </Button>
+            )}
+          </div>
         </div>
 
       {/* 2. HERO & COVER SECTION */}
@@ -250,7 +230,7 @@ export default function ChurchPage() {
             {isCommunityPending ? (
               <Skeleton className="h-6 w-32 rounded-full mb-3" />
             ) : (
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fef8ed] border border-[#D6A64A]/30 text-[#B8872E] text-xs font-semibold tracking-wider uppercase mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fef8ed] border border-[#D6A64A]/30 text-[#B8872E] text-sm font-semibold tracking-wider uppercase mb-3">
                 <Church className="w-3.5 h-3.5 text-[#B8872E]" />
                 <span>{isMatriz ? 'IGREJA MATRIZ' : 'CAPELA'}</span>
               </div>
@@ -279,7 +259,7 @@ export default function ChurchPage() {
 
             {/* Subtitle */}
             {community?.heroSubtitle && (
-              <p className="text-xs sm:text-sm text-zinc-500 italic mb-4 font-serif">
+              <p className="text-sm sm:text-sm text-zinc-500 italic mb-4 font-serif">
                 &ldquo;{community.heroSubtitle}&rdquo;
               </p>
             )}
@@ -298,7 +278,7 @@ export default function ChurchPage() {
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center text-zinc-400 bg-zinc-50">
                 <Church className="w-12 h-12 mb-2 stroke-1 text-zinc-300" />
-                <span className="text-xs">Nenhuma foto de capa cadastrada</span>
+                <span className="text-sm">Nenhuma foto de capa cadastrada</span>
               </div>
             )}
           </div>
@@ -330,7 +310,7 @@ export default function ChurchPage() {
               </Button>
             </div>
 
-            <p className="text-xs sm:text-sm text-zinc-600 font-serif leading-relaxed line-clamp-5">
+            <p className="text-sm sm:text-sm text-zinc-600 font-serif leading-relaxed line-clamp-5">
               {community?.aboutDescription ||
                 community?.heroSubtitle ||
                 'Nenhum texto cadastrado ainda. Clique em "Editar texto" para adicionar a história e informações sobre a comunidade.'}
@@ -342,7 +322,7 @@ export default function ChurchPage() {
               <span className="text-[11px] font-semibold text-zinc-700 uppercase tracking-wider block mb-1">
                 Marcos Históricos
               </span>
-              <p className="text-xs text-zinc-500 line-clamp-2">
+              <p className="text-sm text-zinc-500 line-clamp-2">
                 {community.historySummary}
               </p>
             </div>
@@ -390,7 +370,7 @@ export default function ChurchPage() {
                   <h4 className="font-semibold text-sm sm:text-base text-zinc-900 font-serif line-clamp-1 mb-1">
                     {community.patronName || 'Padroeiro(a)'}
                   </h4>
-                  <p className="text-xs text-zinc-600 line-clamp-3 leading-relaxed font-serif">
+                  <p className="text-sm text-zinc-600 line-clamp-3 leading-relaxed font-serif">
                     {community.patronDescription || 'Nenhuma biografia do padroeiro cadastrada.'}
                   </p>
                 </div>
@@ -398,7 +378,7 @@ export default function ChurchPage() {
             ) : (
               <div className="flex flex-col items-center justify-center py-4 text-center">
                 <User className="w-8 h-8 text-zinc-300 stroke-1 mb-1.5" />
-                <p className="text-xs font-medium text-zinc-700">Nenhum padroeiro informado</p>
+                <p className="text-sm font-medium text-zinc-700">Nenhum padroeiro informado</p>
                 <p className="text-[11px] text-zinc-400 mt-0.5">
                   Adicione o nome, foto e história do padroeiro(a) nos dados principais.
                 </p>
@@ -436,11 +416,11 @@ export default function ChurchPage() {
             <p className="text-sm font-medium text-zinc-700">
               Nenhuma foto cadastrada na galeria
             </p>
-            <p className="text-xs text-zinc-500 mt-1 max-w-sm">
+            <p className="text-sm text-zinc-500 mt-1 max-w-sm">
               Fotos adicionadas aparecerão aqui e na página pública da comunidade.
             </p>
             <Link href={ROUTES.COMMUNITIES.GALLERY(community?.slug || '')} className="mt-4">
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+              <Button variant="outline" size="sm" className="gap-1.5 text-sm">
                 <Plus className="w-3.5 h-3.5" />
                 <span>Adicionar fotos</span>
               </Button>
@@ -491,7 +471,7 @@ export default function ChurchPage() {
               className="flex items-center justify-between w-full max-w-5xl mx-auto z-10 text-white/90"
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="text-xs font-mono tracking-wider bg-white/10 px-3 py-1 rounded-full border border-white/10">
+              <span className="text-sm font-mono tracking-wider bg-white/10 px-3 py-1 rounded-full border border-white/10">
                 {lightboxIndex + 1} / {photos.length}
               </span>
 
@@ -566,7 +546,7 @@ export default function ChurchPage() {
                   {photos[lightboxIndex].caption}
                 </p>
               ) : (
-                <span className="text-xs text-white/50 font-serif">
+                <span className="text-sm text-white/50 font-serif">
                   {community?.name}
                 </span>
               )}
@@ -584,21 +564,10 @@ export default function ChurchPage() {
               Horários de Missa
             </h2>
           </div>
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-            className="gap-1.5"
-          >
-            <Link href={ROUTES.COMMUNITIES.MASS_SCHEDULES.ADD_ORDINARY(community?.slug || '')}>
-              <Pencil className="w-3.5 h-3.5" />
-              <span>Editar horários</span>
-            </Link>
-          </Button>
         </div>
 
-        {/* 3 Columns Grid for Masses */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        {/* 2 Columns Grid for Masses */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {/* Column 1: Missas Regulares */}
           <div className="bg-white border border-zinc-200/80 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between min-h-[220px]">
             <div>
@@ -607,7 +576,7 @@ export default function ChurchPage() {
                   <div className="size-6 rounded-full bg-[#18351E]/10 flex items-center justify-center text-[#18351E]">
                     <Church className="w-3.5 h-3.5" />
                   </div>
-                  <span className="font-semibold text-xs sm:text-sm text-[#18351E]">
+                  <span className="font-semibold text-sm sm:text-sm text-[#18351E]">
                     Missas Regulares
                   </span>
                 </div>
@@ -622,7 +591,7 @@ export default function ChurchPage() {
 
               <div className="divide-y divide-zinc-100">
                 {ordinaryMasses.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-zinc-500">
+                  <div className="p-6 text-center text-sm text-zinc-500">
                     Nenhum horário regular cadastrado
                   </div>
                 ) : (
@@ -630,7 +599,7 @@ export default function ChurchPage() {
                     <Link
                       key={ms.id}
                       href={ROUTES.COMMUNITIES.MASS_SCHEDULES.EDIT_ORDINARY(community?.slug || '', ms.id)}
-                      className="group px-4 py-3 flex items-center justify-between hover:bg-zinc-50 transition-colors text-xs sm:text-sm"
+                      className="group px-4 py-3 flex items-center justify-between hover:bg-zinc-50 transition-colors text-sm sm:text-sm"
                     >
                       <span className="font-medium text-zinc-800">
                         {typeof ms.dayOfWeek === 'number'
@@ -638,8 +607,8 @@ export default function ChurchPage() {
                           : 'Semanal'}
                       </span>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-semibold text-zinc-600">
-                          {formatTimes(ms.times)}
+                        <span className="font-mono text-sm font-semibold text-zinc-600">
+                          {formatTime(ms.startTime)}
                         </span>
                         <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-700 transition-colors" />
                       </div>
@@ -654,7 +623,7 @@ export default function ChurchPage() {
                 type="button"
                 variant="ghost"
                 onClick={() => setShowAllOrdinary((prev) => !prev)}
-                className="flex items-center justify-start gap-1.5 px-4 py-2.5 text-xs text-[#18351E] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full rounded-none h-auto"
+                className="flex items-center justify-start gap-1.5 px-4 py-2.5 text-sm text-[#18351E] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full rounded-none h-auto"
               >
                 {showAllOrdinary ? (
                   <>
@@ -679,7 +648,7 @@ export default function ChurchPage() {
                   <div className="size-6 rounded-full bg-[#B8872E]/10 flex items-center justify-center text-[#B8872E]">
                     <Sparkles className="w-3.5 h-3.5" />
                   </div>
-                  <span className="font-semibold text-xs sm:text-sm text-[#8c6016]">
+                  <span className="font-semibold text-sm sm:text-sm text-[#8c6016]">
                     Devocionais
                   </span>
                 </div>
@@ -694,7 +663,7 @@ export default function ChurchPage() {
 
               <div className="divide-y divide-zinc-100">
                 {devotionalMasses.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-zinc-500">
+                  <div className="p-6 text-center text-sm text-zinc-500">
                     Nenhuma devoção cadastrada
                   </div>
                 ) : (
@@ -702,13 +671,13 @@ export default function ChurchPage() {
                     <Link
                       key={ms.id}
                       href={ROUTES.COMMUNITIES.MASS_SCHEDULES.EDIT_DEVOTIONAL(community?.slug || '', ms.id)}
-                      className="group px-4 py-3 flex items-center justify-between hover:bg-zinc-50 transition-colors text-xs sm:text-sm"
+                      className="group px-4 py-3 flex items-center justify-between hover:bg-zinc-50 transition-colors text-sm sm:text-sm"
                     >
                       <span className="font-medium text-zinc-800 line-clamp-1 pr-2">
                         {ms.title || 'Devoção'}
                       </span>
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-xs text-zinc-500">
+                        <span className="text-sm text-zinc-500">
                           {formatDevotionalSchedule(ms)}
                         </span>
                         <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-700 transition-colors" />
@@ -724,79 +693,9 @@ export default function ChurchPage() {
                 type="button"
                 variant="ghost"
                 onClick={() => setShowAllDevotional((prev) => !prev)}
-                className="flex items-center justify-start gap-1.5 px-4 py-2.5 text-xs text-[#8c6016] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full rounded-none h-auto"
+                className="flex items-center justify-start gap-1.5 px-4 py-2.5 text-sm text-[#8c6016] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full rounded-none h-auto"
               >
                 {showAllDevotional ? (
-                  <>
-                    <ChevronUp className="w-3.5 h-3.5" />
-                    <span>Ver menos horários</span>
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="w-3.5 h-3.5" />
-                    <span>Ver mais horários</span>
-                  </>
-                )}
-              </Button>
-            )}
-          </div>
-
-          {/* Column 3: Anuais */}
-          <div className="bg-white border border-zinc-200/80 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between min-h-[220px]">
-            <div>
-              <div className="bg-[#f0f5fa] px-4 py-3 border-b border-zinc-100 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="size-6 rounded-full bg-[#2b5c8f]/10 flex items-center justify-center text-[#2b5c8f]">
-                    <Calendar className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="font-semibold text-xs sm:text-sm text-[#1e446d]">
-                    Anuais
-                  </span>
-                </div>
-                <Link
-                  href={ROUTES.COMMUNITIES.MASS_SCHEDULES.ADD_ANNUAL(community?.slug || '')}
-                  className="p-1 hover:bg-[#2b5c8f]/10 rounded-md text-[#1e446d] transition-colors"
-                  title="Adicionar Missa Anual / Solenidade"
-                >
-                  <Plus className="w-4 h-4" />
-                </Link>
-              </div>
-
-              <div className="divide-y divide-zinc-100">
-                {annualMasses.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-zinc-500">
-                    Nenhuma missa anual cadastrada
-                  </div>
-                ) : (
-                  visibleAnnualMasses.map((ms) => (
-                    <Link
-                      key={ms.id}
-                      href={ROUTES.COMMUNITIES.MASS_SCHEDULES.EDIT_ANNUAL(community?.slug || '', ms.id)}
-                      className="group px-4 py-3 flex items-center justify-between hover:bg-zinc-50 transition-colors text-xs sm:text-sm"
-                    >
-                      <span className="font-medium text-zinc-800 line-clamp-1 pr-2">
-                        {ms.title || 'Missa Festiva'}
-                      </span>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-xs text-zinc-500">
-                          {formatAnnualSchedule(ms)}
-                        </span>
-                        <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-700 transition-colors" />
-                      </div>
-                    </Link>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {annualMasses.length > 3 && (
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setShowAllAnnual((prev) => !prev)}
-                className="flex items-center justify-start gap-1.5 px-4 py-2.5 text-xs text-[#1e446d] font-medium hover:underline border-t border-zinc-100 bg-zinc-50/40 w-full rounded-none h-auto"
-              >
-                {showAllAnnual ? (
                   <>
                     <ChevronUp className="w-3.5 h-3.5" />
                     <span>Ver menos horários</span>
@@ -817,10 +716,10 @@ export default function ChurchPage() {
       {!isCommunityPending && community && (
         <div className="mt-14 pt-8 border-t border-zinc-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-semibold text-zinc-500 uppercase tracking-wider block">
               Gerenciamento da Comunidade
             </span>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-sm text-zinc-400 mt-0.5">
               Excluir esta comunidade removerá permanentemente suas fotos, horários e textos cadastrados.
             </p>
           </div>
@@ -830,7 +729,7 @@ export default function ChurchPage() {
             variant="ghost"
             size="sm"
             onClick={() => setConfirmDeleteCommunity(true)}
-            className="text-xs text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
+            className="text-sm text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Excluir Comunidade</span>

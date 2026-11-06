@@ -238,7 +238,7 @@ export default function MinhaDisponibilidadePage() {
           <h2 className="text-xl font-bold tracking-tight text-zinc-900 font-serif">
             Grade Semanal Recorrente
           </h2>
-          <p className="text-xs text-zinc-500 leading-relaxed">
+          <p className="text-sm text-zinc-500 leading-relaxed">
             Configure os dias e horários fixos em que você normalmente está disponível
             para atender os fiéis na paróquia.
           </p>
@@ -247,7 +247,7 @@ export default function MinhaDisponibilidadePage() {
         {/* Informational Box */}
         <section className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex items-start gap-3">
           <Info className="w-4 h-4 text-emerald-800 shrink-0 mt-0.5" />
-          <p className="text-xs text-emerald-900 leading-relaxed">
+          <p className="text-sm text-emerald-900 leading-relaxed">
             Esta é a sua disponibilidade normal. Para imprevistos, férias ou retiros,
             utilize a seção de <strong>Bloqueios</strong> no seu perfil.
           </p>
@@ -320,7 +320,7 @@ export default function MinhaDisponibilidadePage() {
                                   e.target.value
                                 )
                               }
-                              className="h-10 text-xs font-semibold rounded-xl"
+                              className="h-10 text-sm font-semibold rounded-xl"
                             />
                           </div>
 
@@ -339,7 +339,7 @@ export default function MinhaDisponibilidadePage() {
                                   e.target.value
                                 )
                               }
-                              className="h-10 text-xs font-semibold rounded-xl"
+                              className="h-10 text-sm font-semibold rounded-xl"
                             />
                           </div>
                         </div>
@@ -363,7 +363,7 @@ export default function MinhaDisponibilidadePage() {
                     <button
                       type="button"
                       onClick={() => handleAddInterval(day.dayOfWeek)}
-                      className="text-xs font-semibold text-emerald-800 hover:text-emerald-900 inline-flex items-center gap-1 pt-1 cursor-pointer"
+                      className="text-sm font-semibold text-emerald-800 hover:text-emerald-900 inline-flex items-center gap-1 pt-1 cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Adicionar outro intervalo neste dia</span>

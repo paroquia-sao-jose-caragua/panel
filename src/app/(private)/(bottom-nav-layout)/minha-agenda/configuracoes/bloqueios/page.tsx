@@ -549,7 +549,7 @@ function BloqueiosContent() {
                         <span className="p-1 rounded-lg bg-rose-50 text-rose-700 border border-rose-200/80">
                           <CalendarOff className="w-4 h-4" />
                         </span>
-                        <span className="text-xs font-bold text-rose-800">
+                        <span className="text-sm font-bold text-rose-800">
                           {isFullDay
                             ? 'Dia inteiro bloqueado'
                             : `${block.startTime} — ${block.endTime}`}
@@ -570,7 +570,7 @@ function BloqueiosContent() {
                       {block.reason || 'Indisponibilidade pastoral'}
                     </p>
 
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-mono">
+                    <div className="flex items-center gap-1.5 text-sm text-zinc-400 font-mono">
                       <Clock className="w-3 h-3 text-zinc-400 shrink-0" />
                       <span>
                         {isFullDay
@@ -591,7 +591,7 @@ function BloqueiosContent() {
                 <p className="text-sm font-bold text-zinc-900">
                   Data disponível para atendimentos
                 </p>
-                <p className="text-xs text-zinc-500 max-w-xs mx-auto leading-relaxed">
+                <p className="text-sm text-zinc-500 max-w-xs mx-auto leading-relaxed">
                   Não há nenhum bloqueio registrado para este dia. Fiéis podem solicitar
                   atendimentos conforme sua grade.
                 </p>
@@ -602,7 +602,7 @@ function BloqueiosContent() {
                   asChild
                   variant="outline"
                   size="sm"
-                  className="rounded-xl border-zinc-300 hover:bg-zinc-50 text-xs font-semibold gap-1.5 shadow-2xs cursor-pointer"
+                  className="rounded-xl border-zinc-300 hover:bg-zinc-50 text-sm font-semibold gap-1.5 shadow-2xs cursor-pointer"
                 >
                   <Link href={ROUTES.MY_AGENDA.SETTINGS.NEW_BLOCK_WITH_DATE(selectedDate)}>
                     <Plus className="w-3.5 h-3.5 text-brand-800" />

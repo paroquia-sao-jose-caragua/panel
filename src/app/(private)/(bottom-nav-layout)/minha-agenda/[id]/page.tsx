@@ -103,28 +103,28 @@ export default function MinhaAgendaDetalhesPage({
     switch (status) {
       case 'confirmed':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-900 border border-emerald-200">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
             Confirmado
           </span>
         );
       case 'pending':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-amber-100 text-amber-900 border border-amber-200">
             <Clock3 className="w-3.5 h-3.5 text-amber-700" />
             Pendente
           </span>
         );
       case 'completed':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-zinc-100 text-zinc-800 border border-zinc-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-zinc-100 text-zinc-800 border border-zinc-200">
             <CheckCircle2 className="w-3.5 h-3.5 text-zinc-600" />
             Realizado
           </span>
         );
       case 'cancelled':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold bg-red-50 text-red-700 border border-red-200">
             <XCircle className="w-3.5 h-3.5 text-red-600" />
             Cancelado
           </span>
@@ -230,7 +230,7 @@ export default function MinhaAgendaDetalhesPage({
 
           <div className="space-y-2 text-sm text-zinc-700">
             <div className="flex items-center justify-between py-1 border-b border-zinc-100">
-              <span className="text-xs text-zinc-500 font-medium">Nome</span>
+              <span className="text-sm text-zinc-500 font-medium">Nome</span>
               <span className="font-semibold text-zinc-900">
                 {appointment.requesterName}
               </span>
@@ -238,7 +238,7 @@ export default function MinhaAgendaDetalhesPage({
 
             {appointment.requesterPhone && (
               <div className="flex items-center justify-between py-1 border-b border-zinc-100">
-                <span className="text-xs text-zinc-500 font-medium">
+                <span className="text-sm text-zinc-500 font-medium">
                   Telefone / WhatsApp
                 </span>
                 <span className="font-mono text-zinc-800">
@@ -249,7 +249,7 @@ export default function MinhaAgendaDetalhesPage({
 
             {appointment.patientName && (
               <div className="flex items-center justify-between py-1 border-b border-zinc-100">
-                <span className="text-xs text-zinc-500 font-medium">
+                <span className="text-sm text-zinc-500 font-medium">
                   Pessoa a ser visitada
                 </span>
                 <span className="font-medium text-zinc-800">
@@ -271,10 +271,10 @@ export default function MinhaAgendaDetalhesPage({
         {/* Cancellation Reason if cancelled */}
         {appointment.cancellationReason && (
           <section className="bg-red-50/70 rounded-2xl p-4 border border-red-200/80 space-y-1">
-            <h3 className="text-xs font-bold text-red-900">
+            <h3 className="text-sm font-bold text-red-900">
               Motivo do Cancelamento
             </h3>
-            <p className="text-xs text-red-800 leading-relaxed">
+            <p className="text-sm text-red-800 leading-relaxed">
               {appointment.cancellationReason}
             </p>
           </section>
@@ -330,7 +330,7 @@ export default function MinhaAgendaDetalhesPage({
         )}
 
         {isArchived && (
-          <section className="p-4 rounded-2xl bg-zinc-100 text-center text-xs text-zinc-500 font-medium">
+          <section className="p-4 rounded-2xl bg-zinc-100 text-center text-sm text-zinc-500 font-medium">
             Este atendimento está arquivado como histórico e não pode mais ser
             alterado.
           </section>

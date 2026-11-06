@@ -204,7 +204,7 @@ export const AnnouncementFormStep = ({
               className="w-full border-input focus:border-brand-300 focus:ring-brand-100 rounded-lg p-3"
             />
             {errors?.description && (
-              <p className="mt-1 text-xs text-red-700">{errors.description}</p>
+              <p className="mt-1 text-sm text-red-700">{errors.description}</p>
             )}
           </div>
 
@@ -260,11 +260,11 @@ export const AnnouncementFormStep = ({
                 <Monitor className="w-4 h-4 text-brand-600" /> Versão Desktop (1440x632) *
               </span>
               {values.coverDesktopId ? (
-                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 text-sm font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Enviada
                 </span>
               ) : (
-                <span className="text-xs text-amber-700 bg-amber-50 font-medium px-2 py-0.5 rounded border border-amber-200">
+                <span className="text-sm text-amber-700 bg-amber-50 font-medium px-2 py-0.5 rounded border border-amber-200">
                   Obrigatória
                 </span>
               )}
@@ -288,15 +288,15 @@ export const AnnouncementFormStep = ({
                   type="file"
                   accept="image/*"
                   onChange={handleUploadDesktop}
-                  className="text-xs file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-700 file:text-white hover:file:bg-brand-800 cursor-pointer"
+                  className="text-sm file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-700 file:text-white hover:file:bg-brand-800 cursor-pointer"
                 />
                 {uploadingDesktop && (
-                  <div className="text-xs text-brand-600 flex items-center gap-2">
+                  <div className="text-sm text-brand-600 flex items-center gap-2">
                     <Spinner className="w-3.5 h-3.5" /> Upload em andamento: {progressDesktop}%
                   </div>
                 )}
                 {errors?.coverDesktopId && (
-                  <p className="text-xs text-red-700">{errors.coverDesktopId}</p>
+                  <p className="text-sm text-red-700">{errors.coverDesktopId}</p>
                 )}
               </div>
             </div>
@@ -310,7 +310,7 @@ export const AnnouncementFormStep = ({
               </span>
               {values.coverTabletId && (
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
+                  <span className="inline-flex items-center gap-1 text-sm font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Enviada
                   </span>
                   <Button
@@ -345,10 +345,10 @@ export const AnnouncementFormStep = ({
                   type="file"
                   accept="image/*"
                   onChange={handleUploadTablet}
-                  className="text-xs file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-zinc-700 file:text-white hover:file:bg-zinc-800 cursor-pointer"
+                  className="text-sm file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-white hover:file:bg-zinc-800 cursor-pointer"
                 />
                 {uploadingTablet && (
-                  <div className="text-xs text-zinc-600 flex items-center gap-2">
+                  <div className="text-sm text-zinc-600 flex items-center gap-2">
                     <Spinner className="w-3.5 h-3.5" /> Upload em andamento: {progressTablet}%
                   </div>
                 )}
@@ -364,7 +364,7 @@ export const AnnouncementFormStep = ({
               </span>
               {values.coverMobileId && (
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
+                  <span className="inline-flex items-center gap-1 text-sm font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Enviada
                   </span>
                   <Button
@@ -399,10 +399,10 @@ export const AnnouncementFormStep = ({
                   type="file"
                   accept="image/*"
                   onChange={handleUploadMobile}
-                  className="text-xs file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-zinc-700 file:text-white hover:file:bg-zinc-800 cursor-pointer"
+                  className="text-sm file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-white hover:file:bg-zinc-800 cursor-pointer"
                 />
                 {uploadingMobile && (
-                  <div className="text-xs text-zinc-600 flex items-center gap-2">
+                  <div className="text-sm text-zinc-600 flex items-center gap-2">
                     <Spinner className="w-3.5 h-3.5" /> Upload em andamento: {progressMobile}%
                   </div>
                 )}

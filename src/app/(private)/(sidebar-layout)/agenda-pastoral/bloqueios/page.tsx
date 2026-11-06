@@ -305,10 +305,6 @@ export default function BloqueiosPage() {
       />
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-        <div className="mb-2">
-          <BackButton href={ROUTES.APPOINTMENTS.HOME} />
-        </div>
-
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -378,12 +374,12 @@ export default function BloqueiosPage() {
             <h3 className="text-base font-bold text-zinc-800">
               Nenhum bloqueio cadastrado
             </h3>
-            <p className="text-xs sm:text-sm text-zinc-500 mt-1 max-w-md mx-auto mb-5">
+            <p className="text-sm sm:text-sm text-zinc-500 mt-1 max-w-md mx-auto mb-5">
               Não há períodos de indisponibilidade ativos para o filtro selecionado. Quando um sacerdote ou ministro precisar se ausentar, adicione um bloqueio.
             </p>
             <Button
               onClick={() => setIsNewDialogOpen(true)}
-              className="bg-[#11291f] text-white hover:bg-[#1a3d2e] gap-1.5 text-xs"
+              className="bg-[#11291f] text-white hover:bg-[#1a3d2e] gap-1.5 text-sm"
             >
               <Plus className="w-4 h-4" />
               <span>Adicionar Primeiro Bloqueio</span>
@@ -406,7 +402,7 @@ export default function BloqueiosPage() {
                         <h3 className="font-bold text-base text-zinc-900 leading-snug">
                           {group.agentName}
                         </h3>
-                        <span className="text-xs text-zinc-500 font-medium">
+                        <span className="text-sm text-zinc-500 font-medium">
                           {group.agentRole}
                         </span>
                       </div>
@@ -414,7 +410,7 @@ export default function BloqueiosPage() {
                       <Badge
                         variant="secondary"
                         className={cn(
-                          'text-xs font-semibold px-2.5 py-0.5 rounded-full shrink-0',
+                          'text-sm font-semibold px-2.5 py-0.5 rounded-full shrink-0',
                           isFuture
                             ? 'bg-purple-50 text-purple-700 border-purple-200'
                             : 'bg-zinc-100 text-zinc-500 border-zinc-200'
@@ -426,12 +422,12 @@ export default function BloqueiosPage() {
 
                     {/* Period and Duration */}
                     <div className="p-3 bg-zinc-50/80 rounded-xl space-y-1.5 border border-zinc-100">
-                      <div className="flex items-center gap-2 text-xs font-semibold text-zinc-800">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-zinc-800">
                         <Calendar className="w-4 h-4 text-purple-600 shrink-0" />
                         <span>{formatPeriod(group.startDate, group.endDate)}</span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs text-zinc-600">
+                      <div className="flex items-center gap-2 text-sm text-zinc-600">
                         <Clock className="w-4 h-4 text-zinc-400 shrink-0" />
                         <span>{group.timeLabel}</span>
                         {group.dayCount > 1 && (
@@ -470,7 +466,7 @@ export default function BloqueiosPage() {
                           reason: group.reason,
                         })
                       }
-                      className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 h-8 px-2.5 text-xs font-semibold gap-1.5 cursor-pointer rounded-lg"
+                      className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 h-8 px-2.5 text-sm font-semibold gap-1.5 cursor-pointer rounded-lg"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Remover</span>
@@ -500,7 +496,7 @@ export default function BloqueiosPage() {
             {/* Agente Selector */}
             {!isPastoralAgent && (
               <div>
-                <label className="text-xs font-semibold text-zinc-700 block mb-1">
+                <label className="text-sm font-semibold text-zinc-700 block mb-1">
                   Agente Pastoral *
                 </label>
                 <Select
@@ -523,7 +519,7 @@ export default function BloqueiosPage() {
             {/* Date Range: De ... Até */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-zinc-700 block mb-1">
+                <label className="text-sm font-semibold text-zinc-700 block mb-1">
                   A partir de *
                 </label>
                 <Input
@@ -535,7 +531,7 @@ export default function BloqueiosPage() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-zinc-700 block mb-1">
+                <label className="text-sm font-semibold text-zinc-700 block mb-1">
                   Até *
                 </label>
                 <Input
@@ -549,7 +545,7 @@ export default function BloqueiosPage() {
 
             {/* Time Mode: Dia inteiro vs Horário Específico */}
             <div>
-              <label className="text-xs font-semibold text-zinc-700 block mb-1.5">
+              <label className="text-sm font-semibold text-zinc-700 block mb-1.5">
                 Horário
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -557,7 +553,7 @@ export default function BloqueiosPage() {
                   type="button"
                   onClick={() => setTimeMode('all_day')}
                   className={cn(
-                    'p-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer text-center',
+                    'p-2.5 rounded-xl border text-sm font-semibold transition-all cursor-pointer text-center',
                     timeMode === 'all_day'
                       ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
                       : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50'
@@ -570,7 +566,7 @@ export default function BloqueiosPage() {
                   type="button"
                   onClick={() => setTimeMode('specific_time')}
                   className={cn(
-                    'p-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer text-center',
+                    'p-2.5 rounded-xl border text-sm font-semibold transition-all cursor-pointer text-center',
                     timeMode === 'specific_time'
                       ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
                       : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50'
@@ -610,7 +606,7 @@ export default function BloqueiosPage() {
 
             {/* Reason */}
             <div>
-              <label className="text-xs font-semibold text-zinc-700 block mb-1">
+              <label className="text-sm font-semibold text-zinc-700 block mb-1">
                 Motivo do Bloqueio *
               </label>
               <Select

@@ -60,7 +60,7 @@ export default function MinhaAgendaArchivePage() {
           <h2 className="text-xl font-bold tracking-tight text-zinc-900 font-serif">
             Histórico de Atendimentos
           </h2>
-          <p className="text-xs text-zinc-500 leading-relaxed">
+          <p className="text-sm text-zinc-500 leading-relaxed">
             Atendimentos anteriores realizados ou cancelados para simples consulta.
           </p>
         </section>
@@ -71,7 +71,7 @@ export default function MinhaAgendaArchivePage() {
             type="button"
             onClick={() => setFilter('all')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none',
+              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
               filter === 'all'
                 ? 'bg-brand-900 text-white shadow-xs'
                 : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
@@ -84,7 +84,7 @@ export default function MinhaAgendaArchivePage() {
             type="button"
             onClick={() => setFilter('completed')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none',
+              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
               filter === 'completed'
                 ? 'bg-emerald-700 text-white shadow-xs'
                 : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
@@ -97,7 +97,7 @@ export default function MinhaAgendaArchivePage() {
             type="button"
             onClick={() => setFilter('cancelled')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer select-none',
+              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
               filter === 'cancelled'
                 ? 'bg-red-700 text-white shadow-xs'
                 : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
@@ -123,7 +123,7 @@ export default function MinhaAgendaArchivePage() {
               <p className="text-sm font-semibold text-zinc-700">
                 Nenhum registro encontrado
               </p>
-              <p className="text-xs text-zinc-400">
+              <p className="text-sm text-zinc-400">
                 Não há atendimentos no arquivo com os filtros selecionados.
               </p>
             </div>
@@ -153,7 +153,7 @@ export default function MinhaAgendaArchivePage() {
 
                     {/* Details */}
                     <div className="flex flex-col min-w-0 flex-1 pr-1">
-                      <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-semibold mb-0.5">
+                      <div className="flex items-center gap-1.5 text-sm text-zinc-500 font-semibold mb-0.5">
                         <Clock className="w-3 h-3 text-zinc-400" />
                         <span>{app.startTime}</span>
                       </div>
@@ -162,7 +162,7 @@ export default function MinhaAgendaArchivePage() {
                         {app.service?.title || 'Atendimento Pastoral'}
                       </h3>
 
-                      <div className="flex items-center gap-1.5 text-xs text-zinc-600 mt-1 truncate">
+                      <div className="flex items-center gap-1.5 text-sm text-zinc-600 mt-1 truncate">
                         <User className="w-3 h-3 text-zinc-400 shrink-0" />
                         <span className="truncate">{app.requesterName}</span>
                       </div>

@@ -57,7 +57,7 @@ export function MinhaAgendaHeader({
           <Link
             href={ROUTES.MY_AGENDA.PROFILE}
             aria-label="Meu Perfil"
-            className="w-9 h-9 rounded-full bg-brand-800 border border-brand-500/50 flex items-center justify-center text-xs font-bold text-brand-200 hover:border-brand-300 transition-colors shadow-xs active:scale-95"
+            className="w-9 h-9 rounded-full bg-brand-800 border border-brand-500/50 flex items-center justify-center text-sm font-bold text-brand-200 hover:border-brand-300 transition-colors shadow-xs active:scale-95"
           >
             {userInitials}
           </Link>

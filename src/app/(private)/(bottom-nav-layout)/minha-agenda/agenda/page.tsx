@@ -487,7 +487,7 @@ function MinhaAgendaScheduleContent() {
             <h2 className="text-sm font-bold text-zinc-900">
               {selectedDateLabel}
             </h2>
-            <span className="text-xs font-medium text-zinc-500">
+            <span className="text-sm font-medium text-zinc-500">
               {dayAppointments.length === 1
                 ? '1 atendimento'
                 : `${dayAppointments.length} atendimentos`}
@@ -508,7 +508,7 @@ function MinhaAgendaScheduleContent() {
               <p className="text-sm font-semibold text-zinc-700">
                 Nenhum atendimento confirmado nesta data
               </p>
-              <p className="text-xs text-zinc-400">
+              <p className="text-sm text-zinc-400">
                 Os horários livres continuam disponíveis conforme sua grade semanal.
               </p>
             </div>
@@ -524,7 +524,7 @@ function MinhaAgendaScheduleContent() {
         {/* Informational Warning Note */}
         <section className="p-3.5 rounded-2xl bg-zinc-100/80 border border-zinc-200/80 flex items-start gap-3">
           <Info className="w-4 h-4 text-zinc-500 shrink-0 mt-0.5" />
-          <p className="text-xs text-zinc-600 leading-relaxed">
+          <p className="text-sm text-zinc-600 leading-relaxed">
             A agenda pode estar sujeita a alterações. Em caso de cancelamento, você
             e o solicitante serão comunicados.
           </p>
@@ -534,7 +534,7 @@ function MinhaAgendaScheduleContent() {
         <section className="pt-2 text-center">
           <Link
             href={ROUTES.MY_AGENDA.ARCHIVE}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-800 transition-colors py-2 px-3 rounded-lg hover:bg-zinc-100 group"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-500 hover:text-zinc-800 transition-colors py-2 px-3 rounded-lg hover:bg-zinc-100 group"
           >
             <span>Ver histórico de atendimentos</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />

@@ -199,7 +199,7 @@ export default function SecretariatOverviewPage() {
 
         {/* Public Site Shortcuts */}
         <div className="flex items-center gap-2 flex-wrap">
-          <Button asChild variant="outline" size="sm" className="gap-2 text-xs h-9">
+          <Button asChild variant="outline" size="sm" className="gap-2 text-sm h-9">
             <a
               href={`${siteBaseUrl}/contato-e-secretaria`}
               target="_blank"
@@ -210,7 +210,7 @@ export default function SecretariatOverviewPage() {
             </a>
           </Button>
 
-          <Button asChild size="sm" className="gap-2 text-xs h-9">
+          <Button asChild size="sm" className="gap-2 text-sm h-9">
             <a
               href={`${siteBaseUrl}/quero-contribuir`}
               target="_blank"
@@ -242,7 +242,7 @@ export default function SecretariatOverviewPage() {
                   Atendimento & Secretaria Paroquial
                 </h2>
               </div>
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-sm text-zinc-500 mt-1">
                 Canais de atendimento ao público, horários de expediente e redes sociais
               </p>
             </div>
@@ -267,16 +267,16 @@ export default function SecretariatOverviewPage() {
                   </h3>
                 </div>
 
-                <div className="space-y-3.5 text-xs sm:text-sm">
+                <div className="space-y-3.5 text-sm sm:text-sm">
                   <div>
-                    <span className="text-zinc-500 text-xs block mb-0.5">Telefone Fixo:</span>
+                    <span className="text-zinc-500 text-sm block mb-0.5">Telefone Fixo:</span>
                     <span className="font-medium text-zinc-800">
                       {contact?.phone || 'Não informado'}
                     </span>
                   </div>
 
                   <div>
-                    <span className="text-zinc-500 text-xs block mb-0.5">WhatsApp de Atendimento:</span>
+                    <span className="text-zinc-500 text-sm block mb-0.5">WhatsApp de Atendimento:</span>
                     {contact?.whatsapp ? (
                       <span className="font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md inline-block">
                         {contact.whatsapp}
@@ -287,7 +287,7 @@ export default function SecretariatOverviewPage() {
                   </div>
 
                   <div>
-                    <span className="text-zinc-500 text-xs block mb-0.5">E-mail Oficial:</span>
+                    <span className="text-zinc-500 text-sm block mb-0.5">E-mail Oficial:</span>
                     <span className="font-medium text-zinc-800 break-all">
                       {contact?.email || 'Não informado'}
                     </span>
@@ -307,13 +307,13 @@ export default function SecretariatOverviewPage() {
                 </div>
 
                 {contact?.officeHours ? (
-                  <div className="space-y-2 text-xs sm:text-sm text-zinc-800 font-medium leading-relaxed">
+                  <div className="space-y-2 text-sm sm:text-sm text-zinc-800 font-medium leading-relaxed">
                     {contact.officeHours.split('\n').map((line, idx) => (
                       <p key={idx}>{line}</p>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-zinc-400 italic">
+                  <p className="text-sm text-zinc-400 italic">
                     Nenhum horário cadastrado. Clique em &quot;Editar Atendimento&quot; para configurar.
                   </p>
                 )}
@@ -334,7 +334,7 @@ export default function SecretariatOverviewPage() {
                   <span className="text-[11px] text-zinc-500 uppercase tracking-wider block mb-1 font-semibold">
                     Local de acolhimento presencial
                   </span>
-                  <p className="text-xs sm:text-sm text-zinc-800 font-medium leading-relaxed">
+                  <p className="text-sm sm:text-sm text-zinc-800 font-medium leading-relaxed">
                     {contact?.address || 'Endereço ainda não cadastrado.'}
                   </p>
                 </div>
@@ -352,7 +352,7 @@ export default function SecretariatOverviewPage() {
                     </h3>
                   </div>
 
-                  <Button asChild variant="outline" size="sm" className="gap-1.5 h-7.5 px-2.5 text-xs">
+                  <Button asChild variant="outline" size="sm" className="gap-1.5 h-7.5 px-2.5 text-sm">
                     <Link href={ROUTES.SECRETARIAT.EDIT}>
                       <Pencil className="w-3.5 h-3.5" />
                       <span>Editar</span>
@@ -373,7 +373,7 @@ export default function SecretariatOverviewPage() {
                           <net.icon className={`w-4 h-4 ${net.iconColor}`} />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <span className="text-xs font-semibold text-zinc-800 block">
+                          <span className="text-sm font-semibold text-zinc-800 block">
                             {net.name}
                           </span>
                           {net.url ? (
@@ -448,7 +448,7 @@ export default function SecretariatOverviewPage() {
                   Quero Contribuir & Dízimo
                 </h2>
               </div>
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-sm text-zinc-500 mt-1">
                 Chave PIX, contas bancárias para transferência, envio de comprovantes e obras
               </p>
             </div>
@@ -502,11 +502,11 @@ export default function SecretariatOverviewPage() {
                       {/* Pix Key and Details */}
                       <div className="flex-1 min-w-0 w-full space-y-3">
                         <div>
-                          <span className="text-zinc-500 text-xs block mb-1 font-medium">
+                          <span className="text-zinc-500 text-sm block mb-1 font-medium">
                             Chave PIX ({getPixTypeLabel(donations.pixKeyType)}):
                           </span>
                           <div className="flex items-center justify-between gap-2 bg-zinc-50 border border-zinc-200/80 px-3 py-2 rounded-xl">
-                            <span className="font-mono text-xs sm:text-sm font-semibold text-zinc-800 break-all">
+                            <span className="font-mono text-sm sm:text-sm font-semibold text-zinc-800 break-all">
                               {donations.pixKey}
                             </span>
                             <Button
@@ -514,7 +514,7 @@ export default function SecretariatOverviewPage() {
                               size="xs"
                               variant="outline"
                               onClick={handleCopyPixKey}
-                              className="gap-1.5 shrink-0 h-7.5 px-2.5 text-xs font-medium"
+                              className="gap-1.5 shrink-0 h-7.5 px-2.5 text-sm font-medium"
                             >
                               {copiedPixKey ? (
                                 <>
@@ -531,7 +531,7 @@ export default function SecretariatOverviewPage() {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2 text-xs text-zinc-600">
+                        <div className="grid grid-cols-2 gap-2 text-sm text-zinc-600">
                           <div>
                             <span className="text-zinc-400 block text-[11px] mb-0.5">Favorecido:</span>
                             <span className="font-medium text-zinc-800 truncate block">
@@ -551,7 +551,7 @@ export default function SecretariatOverviewPage() {
                     {/* Pix Copia e Cola Payload Block */}
                     <div className="pt-3 border-t border-zinc-100 space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <span className="text-zinc-500 text-xs font-medium">
+                        <span className="text-zinc-500 text-sm font-medium">
                           Código Pix Copia e Cola:
                         </span>
                         <span className="text-[10px] text-zinc-400">Padrão EMV Banco Central</span>
@@ -568,7 +568,7 @@ export default function SecretariatOverviewPage() {
                           size="xs"
                           variant="outline"
                           onClick={handleCopyPixPayload}
-                          className="gap-1.5 shrink-0 h-7.5 px-2.5 text-xs text-zinc-700 font-medium hover:text-zinc-900"
+                          className="gap-1.5 shrink-0 h-7.5 px-2.5 text-sm text-zinc-700 font-medium hover:text-zinc-900"
                         >
                           {copiedPixPayload ? (
                             <>
@@ -586,7 +586,7 @@ export default function SecretariatOverviewPage() {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-xs text-zinc-400 italic">
+                  <p className="text-sm text-zinc-400 italic">
                     Nenhuma chave PIX cadastrada. Clique em &quot;Editar Doações&quot; para adicionar.
                   </p>
                 )}
@@ -603,7 +603,7 @@ export default function SecretariatOverviewPage() {
                   </h3>
                 </div>
 
-                <div className="space-y-3 text-xs sm:text-sm">
+                <div className="space-y-3 text-sm sm:text-sm">
                   <div className="flex justify-between items-center pb-2 border-b border-zinc-100">
                     <span className="text-zinc-500">Banco:</span>
                     <span className="font-semibold text-zinc-800">{donations?.bankName || 'Não informado'}</span>
@@ -611,19 +611,19 @@ export default function SecretariatOverviewPage() {
 
                   <div className="grid grid-cols-2 gap-2 pb-2 border-b border-zinc-100">
                     <div>
-                      <span className="text-zinc-500 block text-xs mb-0.5">Agência:</span>
+                      <span className="text-zinc-500 block text-sm mb-0.5">Agência:</span>
                       <span className="font-mono font-medium text-zinc-800">{donations?.bankAgency || '—'}</span>
                     </div>
                     <div>
-                      <span className="text-zinc-500 block text-xs mb-0.5">Conta ({donations?.bankAccountType || 'Corrente'}):</span>
+                      <span className="text-zinc-500 block text-sm mb-0.5">Conta ({donations?.bankAccountType || 'Corrente'}):</span>
                       <span className="font-mono font-medium text-zinc-800">{donations?.bankAccount || '—'}</span>
                     </div>
                   </div>
 
                   <div>
-                    <span className="text-zinc-500 block text-xs mb-0.5">Favorecido / CNPJ:</span>
+                    <span className="text-zinc-500 block text-sm mb-0.5">Favorecido / CNPJ:</span>
                     <span className="font-medium text-zinc-800 block">{donations?.bankBeneficiary || 'Mitra Diocesana'}</span>
-                    <span className="font-mono text-zinc-500 text-xs block">{donations?.bankCnpj || '—'}</span>
+                    <span className="font-mono text-zinc-500 text-sm block">{donations?.bankCnpj || '—'}</span>
                   </div>
                 </div>
               </div>
@@ -639,9 +639,9 @@ export default function SecretariatOverviewPage() {
                   </h3>
                 </div>
 
-                <div className="space-y-3.5 text-xs sm:text-sm">
+                <div className="space-y-3.5 text-sm sm:text-sm">
                   <div>
-                    <span className="text-zinc-500 text-xs block mb-0.5">WhatsApp para Comprovantes:</span>
+                    <span className="text-zinc-500 text-sm block mb-0.5">WhatsApp para Comprovantes:</span>
                     {donations?.receiptWhatsapp ? (
                       <span className="font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md inline-block">
                         {donations.receiptWhatsapp}
@@ -652,7 +652,7 @@ export default function SecretariatOverviewPage() {
                   </div>
 
                   <div>
-                    <span className="text-zinc-500 text-xs block mb-0.5">E-mail para Comprovantes:</span>
+                    <span className="text-zinc-500 text-sm block mb-0.5">E-mail para Comprovantes:</span>
                     <span className="font-medium text-zinc-800 break-all">
                       {donations?.receiptEmail || 'Não informado'}
                     </span>
@@ -672,7 +672,7 @@ export default function SecretariatOverviewPage() {
                     </h3>
                   </div>
 
-                  <Button asChild variant="outline" size="sm" className="gap-1.5 h-7.5 px-2.5 text-xs">
+                  <Button asChild variant="outline" size="sm" className="gap-1.5 h-7.5 px-2.5 text-sm">
                     <Link href={ROUTES.SECRETARIAT.DONATIONS}>
                       <Edit className="w-3.5 h-3.5" />
                       <span>Editar texto</span>
@@ -685,7 +685,7 @@ export default function SecretariatOverviewPage() {
                     <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-0.5">
                       Título da Página
                     </span>
-                    <p className="text-xs sm:text-sm font-semibold text-zinc-800">
+                    <p className="text-sm sm:text-sm font-semibold text-zinc-800">
                       {donations?.title || 'Quero Contribuir'}
                     </p>
                   </div>
@@ -695,7 +695,7 @@ export default function SecretariatOverviewPage() {
                       <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-0.5">
                         Mensagem Pastoral
                       </span>
-                      <p className="text-xs text-zinc-600 line-clamp-3 font-serif leading-relaxed">
+                      <p className="text-sm text-zinc-600 line-clamp-3 font-serif leading-relaxed">
                         {donations.description}
                       </p>
                     </div>
@@ -707,7 +707,7 @@ export default function SecretariatOverviewPage() {
                         {donations.pastoralCenterTitle}
                       </span>
                       {donations.pastoralCenterDescription && (
-                        <p className="text-xs text-zinc-600 line-clamp-2">
+                        <p className="text-sm text-zinc-600 line-clamp-2">
                           {donations.pastoralCenterDescription}
                         </p>
                       )}

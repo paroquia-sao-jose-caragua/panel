@@ -86,7 +86,7 @@ export default function EditCommunityPatronPage() {
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
               {/* Left: Foto do Padroeiro */}
               <div className="sm:col-span-4 flex flex-col items-center sm:items-start gap-3">
-                <span className="block text-xs font-semibold text-zinc-700">
+                <span className="block text-sm font-semibold text-zinc-700">
                   Foto ou Imagem do Padroeiro(a)
                 </span>
 
@@ -128,7 +128,7 @@ export default function EditCommunityPatronPage() {
                   size="sm"
                   disabled={uploadingPatron}
                   onClick={() => patronInputRef.current?.click()}
-                  className="w-full max-w-32 gap-1.5 text-xs cursor-pointer"
+                  className="w-full max-w-32 gap-1.5 text-sm cursor-pointer"
                 >
                   {uploadingPatron ? (
                     <>
@@ -144,7 +144,7 @@ export default function EditCommunityPatronPage() {
                 </Button>
 
                 {patronError && (
-                  <span className="text-xs text-red-600 text-center sm:text-left">
+                  <span className="text-sm text-red-600 text-center sm:text-left">
                     {patronError}
                   </span>
                 )}
@@ -153,7 +153,7 @@ export default function EditCommunityPatronPage() {
               {/* Right: Nome do Padroeiro */}
               <div className="sm:col-span-8 space-y-4">
                 <div>
-                  <label className="block mb-1.5 text-xs font-semibold text-zinc-700">
+                  <label className="block mb-1.5 text-sm font-semibold text-zinc-700">
                     Nome do Padroeiro(a)
                   </label>
                   <InputRoot error={formik.errors.patronName} touched={formik.touched.patronName}>
@@ -180,7 +180,7 @@ export default function EditCommunityPatronPage() {
                 História, Vida e Devoção do Padroeiro(a)
               </h2>
             </div>
-            <p className="text-xs text-zinc-500 leading-relaxed">
+            <p className="text-sm text-zinc-500 leading-relaxed">
               Conte a história de vida do padroeiro(a), virtudes, testemunho de fé e a importância da sua devoção para a comunidade.
             </p>
 

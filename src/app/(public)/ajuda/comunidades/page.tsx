@@ -34,27 +34,27 @@ export default function CommunitiesHelpPage() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 shadow-2xs">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Button asChild variant="ghost" size="sm" className="text-xs -ml-2 text-zinc-600 hover:text-zinc-900">
+            <Button asChild variant="ghost" size="sm" className="text-sm -ml-2 text-zinc-600 hover:text-zinc-900">
               <Link href="/ajuda">
                 <ArrowLeft className="w-4 h-4 mr-1.5" />
                 Voltar à Central de Ajuda
               </Link>
             </Button>
             <div className="h-4 w-px bg-zinc-200 hidden sm:block" />
-            <span className="text-xs font-semibold text-zinc-500 hidden sm:inline">
+            <span className="text-sm font-semibold text-zinc-500 hidden sm:inline">
               Manual de Comunidades, Capelas & Missas
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button asChild variant="outline" size="sm" className="text-xs border-zinc-300 text-zinc-700 hover:bg-zinc-50">
+            <Button asChild variant="outline" size="sm" className="text-sm border-zinc-300 text-zinc-700 hover:bg-zinc-50">
               <Link href="/adicionar-comunidade">
                 <PlusCircle className="w-3.5 h-3.5 mr-1.5 text-zinc-600" />
                 Nova Comunidade
               </Link>
             </Button>
 
-            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-xs">
+            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-sm">
               <Link href="/">
                 Ver Comunidades
               </Link>
@@ -66,7 +66,7 @@ export default function CommunitiesHelpPage() {
       {/* Hero Header */}
       <div className="bg-brand-gradient text-white py-12 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-200 text-xs font-semibold border border-white/15">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-200 text-sm font-semibold border border-white/15">
             <Church className="w-3.5 h-3.5 text-brand-400" />
             <span>Guia Pastoral & Litúrgico</span>
           </div>
@@ -86,12 +86,12 @@ export default function CommunitiesHelpPage() {
         {/* Sticky Table of Contents (Desktop) */}
         <aside className="hidden lg:block">
           <div className="sticky top-24 bg-white rounded-2xl border border-zinc-200/80 p-5 shadow-2xs space-y-3">
-            <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
               <BookOpen className="w-4 h-4 text-brand-700" />
               <span>Neste Manual</span>
             </h3>
 
-            <nav className="space-y-1 text-xs">
+            <nav className="space-y-1 text-sm">
               <a href="#visao-geral" className="block p-1.5 rounded-lg text-zinc-600 hover:text-brand-700 hover:bg-zinc-50 font-medium transition">
                 1. Visão Geral da Rede Paroquial
               </a>
@@ -119,13 +119,13 @@ export default function CommunitiesHelpPage() {
             </nav>
 
             <div className="pt-3 border-t border-zinc-100 flex flex-col gap-2">
-              <Button asChild variant="outline" size="sm" className="w-full justify-center text-xs">
+              <Button asChild variant="outline" size="sm" className="w-full justify-center text-sm">
                 <Link href="/adicionar-comunidade">
                   <PlusCircle className="w-3.5 h-3.5 mr-1.5 text-brand-600" />
                   Cadastrar Capela
                 </Link>
               </Button>
-              <Button asChild size="sm" className="w-full justify-center bg-brand-700 hover:bg-brand-800 text-white text-xs">
+              <Button asChild size="sm" className="w-full justify-center bg-brand-700 hover:bg-brand-800 text-white text-sm">
                 <Link href="/">
                   <Church className="w-3.5 h-3.5 mr-1.5" />
                   Gerenciar Comunidades
@@ -140,7 +140,7 @@ export default function CommunitiesHelpPage() {
           {/* Section 1: Overview */}
           <section id="visao-geral" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 1
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -149,11 +149,11 @@ export default function CommunitiesHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              A Paróquia São José é composta pela <strong>Igreja Matriz</strong> e diversas <strong>Capelas</strong> distribuídas pelos bairros de Caraguatatuba. O módulo de Comunidades do painel (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/</code>) permite que a secretaria organize toda essa estrutura paroquial com precisão litúrgica:
+              A Paróquia São José é composta pela <strong>Igreja Matriz</strong> e diversas <strong>Capelas</strong> distribuídas pelos bairros de Caraguatatuba. O módulo de Comunidades do painel (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/</code>) permite que a secretaria organize toda essa estrutura paroquial com precisão litúrgica:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <Church className="w-3.5 h-3.5 text-brand-700" />
                   Identidade da Capela
@@ -163,7 +163,7 @@ export default function CommunitiesHelpPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-brand-700" />
                   Grade de Missas
@@ -173,7 +173,7 @@ export default function CommunitiesHelpPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-brand-700" />
                   Sincronização no Site
@@ -188,7 +188,7 @@ export default function CommunitiesHelpPage() {
           {/* Section 2: Adding a Community */}
           <section id="cadastro-comunidade" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 2
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -197,36 +197,36 @@ export default function CommunitiesHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              Para cadastrar uma nova comunidade, clique em <strong>"+ Adicionar Comunidade"</strong> na tela inicial do painel ou acesse <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/adicionar-comunidade</code>. O formulário é intuitivo e seguro:
+              Para cadastrar uma nova comunidade, clique em <strong>"+ Adicionar Comunidade"</strong> na tela inicial do painel ou acesse <code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/adicionar-comunidade</code>. O formulário é intuitivo e seguro:
             </p>
 
             <div className="space-y-4">
               <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">A</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">A</span>
                   <span>Nome da Comunidade e Identificador (Slug)</span>
                 </div>
-                <p className="text-xs text-zinc-600 pl-7">
+                <p className="text-sm text-zinc-600 pl-7">
                   Preencha o nome solene da capela (ex: <code>Capela Santo Antônio</code> ou <code>Comunidade Nossa Senhora de Fátima</code>). O sistema gera automaticamente um slug limpo para a URL amigável do site (ex: <code>/santo-antonio</code>).
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">B</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">B</span>
                   <span>Endereço, Bairro e Telefone Local</span>
                 </div>
-                <p className="text-xs text-zinc-600 pl-7">
+                <p className="text-sm text-zinc-600 pl-7">
                   Informe o logradouro, número, bairro e orientações de referência. Caso a comunidade tenha um telefone ou WhatsApp exclusivo dos coordenadores pastorais locais, informe para facilitar a comunicação direta.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">C</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">C</span>
                   <span>Foto de Capa e Lema Pastoral</span>
                 </div>
-                <p className="text-xs text-zinc-600 pl-7">
+                <p className="text-sm text-zinc-600 pl-7">
                   Faça o upload de uma imagem nítida da fachada externa ou do altar da capela (formato horizontal recomendado, 16:9). Adicione também uma frase de acolhida ou lema pastoral que será exibido no topo da página da comunidade no site.
                 </p>
               </div>
@@ -236,7 +236,7 @@ export default function CommunitiesHelpPage() {
           {/* Section 3: Regular Masses */}
           <section id="missas-regulares" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 3
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -245,11 +245,11 @@ export default function CommunitiesHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              As <strong>Missas Regulares</strong> (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/[slug]/adicionar-missa-regular</code>) constituem a espinha dorsal litúrgica da comunidade. São as celebrações que se repetem toda semana no mesmo dia e horário:
+              As <strong>Missas Regulares</strong> (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/[slug]/adicionar-missa-regular</code>) constituem a espinha dorsal litúrgica da comunidade. São as celebrações que se repetem toda semana no mesmo dia e horário:
             </p>
 
             <div className="space-y-4">
-              <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-xs">
+              <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-sm">
                 <div className="font-bold text-zinc-900 flex items-center gap-1.5 text-sm">
                   <Calendar className="w-4 h-4 text-brand-600" />
                   <span>Campos ao Cadastrar Missa Regular:</span>
@@ -262,7 +262,7 @@ export default function CommunitiesHelpPage() {
                 </ul>
               </div>
 
-              <div className="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-xs text-emerald-950 flex items-start gap-2.5">
+              <div className="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-sm text-emerald-950 flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                 <div>
                   <strong>Como o site organiza as missas:</strong> No site público, o sistema calcula automaticamente qual é a próxima missa mais próxima no tempo presente e a exibe com destaque na página inicial, permitindo que o fiel encontre onde ir à missa hoje em segundos.
@@ -274,7 +274,7 @@ export default function CommunitiesHelpPage() {
           {/* Section 4: Devotional Masses */}
           <section id="missas-devocionais" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 4
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -283,10 +283,10 @@ export default function CommunitiesHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              As <strong>Missas Devocionais</strong> (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/[slug]/adicionar-missa-devocional</code>) são celebrações que ocorrem em ciclos devocionais específicos, com forte piedade popular dos paroquianos:
+              As <strong>Missas Devocionais</strong> (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/[slug]/adicionar-missa-devocional</code>) são celebrações que ocorrem em ciclos devocionais específicos, com forte piedade popular dos paroquianos:
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="font-bold text-zinc-900 flex items-center gap-1.5 text-sm">
                   <Flame className="w-4 h-4 text-amber-600" />
@@ -315,7 +315,7 @@ export default function CommunitiesHelpPage() {
           {/* Section 5: Annual Masses and Patron Festivities */}
           <section id="missas-anuais" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 5
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -324,11 +324,11 @@ export default function CommunitiesHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              As <strong>Missas Anuais</strong> (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/[slug]/adicionar-missa-anual</code>) correspondem às celebrações solenes que ocorrem em datas específicas do calendário litúrgico ou civil:
+              As <strong>Missas Anuais</strong> (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/[slug]/adicionar-missa-anual</code>) correspondem às celebrações solenes que ocorrem em datas específicas do calendário litúrgico ou civil:
             </p>
 
             <div className="space-y-4">
-              <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2 text-xs">
+              <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2 text-sm">
                 <span className="font-bold text-zinc-900 block text-sm">Celebrações Solenes Recomendadas para Cadastro:</span>
                 <ul className="space-y-1.5 list-disc pl-5 text-zinc-600">
                   <li><strong>Festa do Padroeiro da Capela:</strong> Missa Solene do dia da padroeira ou padroeiro (ex: 13 de Junho em Santo Antônio; 04 de Outubro em São Francisco).</li>
@@ -339,7 +339,7 @@ export default function CommunitiesHelpPage() {
                 </ul>
               </div>
 
-              <div className="p-3 bg-brand-50 border border-brand-200/80 rounded-xl text-xs text-brand-900 flex items-start gap-2.5">
+              <div className="p-3 bg-brand-50 border border-brand-200/80 rounded-xl text-sm text-brand-900 flex items-start gap-2.5">
                 <Sparkles className="w-4 h-4 text-brand-700 shrink-0 mt-0.5" />
                 <div>
                   <strong>Dica de Organização:</strong> No início de cada ano pastoral, a secretaria pode cadastrar todas as missas anuais previstas no calendário diocesano. Assim, os fiéis encontram os horários especiais com bastante antecedência.
@@ -351,7 +351,7 @@ export default function CommunitiesHelpPage() {
           {/* Section 6: Patron, History and Gallery */}
           <section id="padroeiro-galeria" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 6
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -363,7 +363,7 @@ export default function CommunitiesHelpPage() {
               Cada capela possui sua identidade espiritual e comunitária própria, que pode ser enriquecida pelas subpáginas acessíveis na tela da comunidade:
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
               <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-200 space-y-2">
                 <div className="font-bold text-zinc-900 flex items-center gap-1.5 text-sm">
                   <Heart className="w-4 h-4 text-rose-600" />
@@ -399,7 +399,7 @@ export default function CommunitiesHelpPage() {
           {/* Section 7: Best Practices */}
           <section id="boas-praticas" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 7
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -407,7 +407,7 @@ export default function CommunitiesHelpPage() {
               </h2>
             </div>
 
-            <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-xs">
+            <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-sm">
               <ul className="space-y-2 list-disc pl-5 text-zinc-600">
                 <li><strong>Revisão de Horários no Horário de Verão / Inverno:</strong> Se houver mudança costumeira nas missas da noite (ex: de 19h30 para 19h00), atualize os horários com pelo menos 1 semana de antecedência.</li>
                 <li><strong>Mudanças Temporárias de Celebrante:</strong> Não é obrigatório cadastrar o nome do padre caso haja revezamento frequente entre pároco e vigários; você pode deixar o campo em branco ou preencher <em>"Clero Paroquial"</em>.</li>
@@ -419,7 +419,7 @@ export default function CommunitiesHelpPage() {
           {/* Section 8: FAQ */}
           <section id="faq-comunidades" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 8
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -427,7 +427,7 @@ export default function CommunitiesHelpPage() {
               </h2>
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1">
                 <span className="font-bold text-zinc-900 block text-sm">
                   Como alterar o horário de uma missa já existente?
@@ -460,7 +460,7 @@ export default function CommunitiesHelpPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-xs text-brand-200 mt-auto">
+      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-sm text-brand-200 mt-auto">
         <p className="font-semibold text-white">
           Paróquia São José de Caraguatatuba • Diocese de Caraguatatuba
         </p>

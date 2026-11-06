@@ -49,7 +49,7 @@ export default function EditCommunityAboutPage() {
                 Subtítulo de Destaque (Cabeçalho)
               </h2>
             </div>
-            <p className="text-xs text-zinc-500 leading-relaxed">
+            <p className="text-sm text-zinc-500 leading-relaxed">
               Frase de acolhida ou lema exibido logo abaixo do nome da comunidade no site público.
             </p>
             <Textarea
@@ -69,12 +69,12 @@ export default function EditCommunityAboutPage() {
                 História e Sobre a Comunidade
               </h2>
             </div>
-            <p className="text-xs text-zinc-500 leading-relaxed">
+            <p className="text-sm text-zinc-500 leading-relaxed">
               Apresente a história completa, missão, pastorais e vida comunitária. O texto é exibido com tipografia editorial no site.
             </p>
 
             <div>
-              <label className="block mb-1.5 text-xs font-semibold text-zinc-700">
+              <label className="block mb-1.5 text-sm font-semibold text-zinc-700">
                 Título da Seção
               </label>
               <InputRoot>
@@ -88,7 +88,7 @@ export default function EditCommunityAboutPage() {
             </div>
 
             <div>
-              <label className="block mb-1.5 text-xs font-semibold text-zinc-700">
+              <label className="block mb-1.5 text-sm font-semibold text-zinc-700">
                 Descrição Completa da História
               </label>
               <Textarea
@@ -109,7 +109,7 @@ export default function EditCommunityAboutPage() {
                 Resumo Histórico e Marcos
               </h2>
             </div>
-            <p className="text-xs text-zinc-500 leading-relaxed">
+            <p className="text-sm text-zinc-500 leading-relaxed">
               Marcos cronológicos, data de fundação ou resumo dos momentos mais relevantes da comunidade.
             </p>
             <Textarea

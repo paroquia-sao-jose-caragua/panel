@@ -129,7 +129,7 @@ export default function DevicesPage() {
             <Smartphone className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs text-zinc-500 font-medium uppercase tracking-wider block">
+            <span className="text-sm text-zinc-500 font-medium uppercase tracking-wider block">
               Total Inscritos
             </span>
             <span className="text-2xl font-bold text-zinc-900">{subscriptions.length}</span>
@@ -141,7 +141,7 @@ export default function DevicesPage() {
             <Globe className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs text-zinc-500 font-medium uppercase tracking-wider block">
+            <span className="text-sm text-zinc-500 font-medium uppercase tracking-wider block">
               Site Público (Fiéis)
             </span>
             <span className="text-2xl font-bold text-zinc-900">{siteCount}</span>
@@ -153,7 +153,7 @@ export default function DevicesPage() {
             <Monitor className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs text-zinc-500 font-medium uppercase tracking-wider block">
+            <span className="text-sm text-zinc-500 font-medium uppercase tracking-wider block">
               Painel Administrativo
             </span>
             <span className="text-2xl font-bold text-zinc-900">{panelCount}</span>
@@ -165,7 +165,7 @@ export default function DevicesPage() {
             <UserCheck className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs text-zinc-500 font-medium uppercase tracking-wider block">
+            <span className="text-sm text-zinc-500 font-medium uppercase tracking-wider block">
               Contas Vinculadas
             </span>
             <span className="text-2xl font-bold text-zinc-900">{linkedCount}</span>
@@ -203,7 +203,7 @@ export default function DevicesPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-zinc-600">
-              <thead className="bg-zinc-50 text-xs font-semibold uppercase text-zinc-500 border-b border-zinc-200">
+              <thead className="bg-zinc-50 text-sm font-semibold uppercase text-zinc-500 border-b border-zinc-200">
                 <tr>
                   <th className="px-6 py-3.5">Usuário / Identificação</th>
                   <th className="px-6 py-3.5">Origem</th>
@@ -217,7 +217,7 @@ export default function DevicesPage() {
                   <tr key={device.id} className="hover:bg-zinc-50/50 transition-colors">
                     <td className="px-6 py-4 font-medium text-zinc-900">
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs uppercase shrink-0 border ${
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm uppercase shrink-0 border ${
                           device.userId ? 'bg-purple-100 text-purple-800 border-purple-300' : 'bg-amber-100 text-amber-800 border-amber-300'
                         }`}>
                           {device.userName ? device.userName[0] : 'D'}
@@ -235,30 +235,30 @@ export default function DevicesPage() {
                             )}
                           </div>
                           {device.userEmail ? (
-                            <span className="text-xs text-zinc-500 block font-mono">{device.userEmail}</span>
+                            <span className="text-sm text-zinc-500 block font-mono">{device.userEmail}</span>
                           ) : device.userId ? (
-                            <span className="text-xs text-zinc-400 block font-mono">ID: {device.userId}</span>
+                            <span className="text-sm text-zinc-400 block font-mono">ID: {device.userId}</span>
                           ) : null}
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       {device.origin === 'panel' ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-sm font-semibold bg-blue-50 text-blue-700 border border-blue-200">
                           <Monitor className="w-3 h-3" />
                           Painel
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-sm font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                           <Globe className="w-3 h-3" />
                           Site Público
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-xs font-mono text-zinc-600">
+                    <td className="px-6 py-4 text-sm font-mono text-zinc-600">
                       {device.deviceInfo || 'Navegador Web'}
                     </td>
-                    <td className="px-6 py-4 text-xs text-zinc-500">
+                    <td className="px-6 py-4 text-sm text-zinc-500">
                       {new Date(device.createdAt).toLocaleDateString('pt-BR', {
                         day: '2-digit',
                         month: '2-digit',
@@ -273,7 +273,7 @@ export default function DevicesPage() {
                           asChild
                           variant="outline"
                           size="sm"
-                          className="h-8 px-2.5 text-xs gap-1 text-amber-700 border-amber-200 hover:bg-amber-50 cursor-pointer"
+                          className="h-8 px-2.5 text-sm gap-1 text-amber-700 border-amber-200 hover:bg-amber-50 cursor-pointer"
                         >
                           <Link href={`${ROUTES.SETTINGS.SEND_PUSH}?deviceId=${device.id}`}>
                             <Send className="w-3.5 h-3.5" />
@@ -288,7 +288,7 @@ export default function DevicesPage() {
                             setSelectedDevice(device);
                             setDeleteDialogOpen(true);
                           }}
-                          className="h-8 px-2.5 text-xs gap-1 text-rose-600 border-rose-200 hover:bg-rose-50 cursor-pointer"
+                          className="h-8 px-2.5 text-sm gap-1 text-rose-600 border-rose-200 hover:bg-rose-50 cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                           <span>Desconectar</span>

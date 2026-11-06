@@ -93,7 +93,7 @@ export const ListItem = ({ massSchedule, type, editHref }: ListItemProps) => {
         </div>
 
         <span className="text-md font-medium text-brand-800 mt-2 md:mt-0">
-          {massSchedule.times.map((time) => time.startTime).join(', ')}
+          {massSchedule.startTime}
         </span>
       </div>
 

@@ -122,14 +122,14 @@ export const AppointmentCalendarItem = ({
               )}
             </div>
             {serviceDescription && (
-              <p className="text-xs text-zinc-500 font-serif line-clamp-1 mt-0.5">
+              <p className="text-sm text-zinc-500 font-serif line-clamp-1 mt-0.5">
                 {serviceDescription}
               </p>
             )}
           </div>
 
           {/* Requester & Location */}
-          <div className="md:col-span-4 min-w-0 space-y-1 text-xs">
+          <div className="md:col-span-4 min-w-0 space-y-1 text-sm">
             <div className="flex items-center gap-1.5 text-zinc-800 truncate">
               <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
               <span className="font-semibold text-zinc-900 truncate">
@@ -171,7 +171,7 @@ export const AppointmentCalendarItem = ({
           </div>
 
           {/* Pastoral Agent */}
-          <div className="md:col-span-3 min-w-0 text-xs">
+          <div className="md:col-span-3 min-w-0 text-sm">
             <div className="flex items-center gap-1.5 text-zinc-700 truncate">
               <HeartHandshake className="w-3.5 h-3.5 text-[#B8872E] shrink-0" />
               <span className="font-medium text-zinc-900 truncate">
@@ -234,7 +234,7 @@ export const AppointmentCalendarItem = ({
 
       {/* Requester Notes (if present) */}
       {appointment.requesterNotes && (
-        <div className="w-full pt-2 border-t border-zinc-100 text-xs text-amber-900 bg-amber-50/50 rounded-lg px-2.5 py-1.5 flex items-start gap-1.5">
+        <div className="w-full pt-2 border-t border-zinc-100 text-sm text-amber-900 bg-amber-50/50 rounded-lg px-2.5 py-1.5 flex items-start gap-1.5">
           <span className="font-semibold shrink-0">Observação:</span>
           <span className="line-clamp-1 text-zinc-600">
             {appointment.requesterNotes}
