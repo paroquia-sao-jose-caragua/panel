@@ -68,8 +68,10 @@ export const ROUTES = {
   APPOINTMENTS: {
     HOME: '/agenda-pastoral',
     AGENDA: '/agenda-pastoral/agenda',
+    AGENDA_EDIT: (id: string) => `/agenda-pastoral/agenda/editar/${id}`,
     MANAGE: '/agenda-pastoral/gerenciar',
     LIST: '/agenda-pastoral/solicitacoes',
+    SOLICITACOES_EDIT: (id: string) => `/agenda-pastoral/solicitacoes/editar/${id}`,
     ADD: '/agenda-pastoral/adicionar',
     ADD_WITH_DATE: (date: string) => `/agenda-pastoral/adicionar?date=${date}`,
     EDIT: (id: string) => `/agenda-pastoral/editar/${id}`,
@@ -77,6 +79,7 @@ export const ROUTES = {
     DETAILS: (id: string) => `/agenda-pastoral/${id}`,
     BLOCKS: '/agenda-pastoral/bloqueios',
     ARCHIVE: '/agenda-pastoral/arquivos',
+    ARCHIVE_EDIT: (id: string) => `/agenda-pastoral/arquivos/editar/${id}`,
     ONLINE_SETTINGS: '/agenda-pastoral/atendimentos-online',
   },
   PASTORAL_AGENTS: {

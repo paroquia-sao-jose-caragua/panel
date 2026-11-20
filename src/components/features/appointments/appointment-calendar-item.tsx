@@ -31,6 +31,7 @@ interface AppointmentCalendarItemProps {
   appointment: Appointment;
   onCancel: (appointment: Appointment) => void;
   onOpenWhatsApp?: (appointment: Appointment) => void;
+  onOpenDetails?: (appointment: Appointment) => void;
   isStaff?: boolean;
 }
 
@@ -38,6 +39,7 @@ export const AppointmentCalendarItem = ({
   appointment,
   onCancel,
   onOpenWhatsApp,
+  onOpenDetails,
   isStaff = true,
 }: AppointmentCalendarItemProps) => {
   const isHomeVisit = appointment.service?.category === 'home_visit';
@@ -201,9 +203,18 @@ export const AppointmentCalendarItem = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 shadow-lg">
+              {onOpenDetails && (
+                <DropdownMenuItem
+                  onClick={() => onOpenDetails(appointment)}
+                  className="cursor-pointer"
+                >
+                  <Eye className="w-4 h-4 mr-2 text-zinc-500" />
+                  <span>Ver detalhes</span>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem asChild>
                 <Link
-                  href={ROUTES.APPOINTMENTS.EDIT(appointment.id)}
+                  href={ROUTES.APPOINTMENTS.AGENDA_EDIT(appointment.id)}
                   className="cursor-pointer"
                 >
                   <Pencil className="w-4 h-4 mr-2 text-zinc-500" />

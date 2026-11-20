@@ -55,6 +55,7 @@ import {
   useMyPastoralAgent,
 } from '@/api/appointments/use-appointments';
 import { AppointmentCalendarItem } from '@/components/features/appointments/appointment-calendar-item';
+import { AppointmentDetailsDialog } from '@/components/features/appointments/appointment-details-dialog';
 import {
   AppointmentWhatsAppDialog,
   type WhatsAppTemplateType,
@@ -136,6 +137,9 @@ function AppointmentsAgendaContent() {
     appointment: null,
     template: 'reminder',
   });
+
+  const [selectedAppointmentForDetails, setSelectedAppointmentForDetails] =
+    useState<Appointment | null>(null);
 
   // Rolling list of days (past 60 to next 120 days)
   const daysList = useMemo(() => {
@@ -822,6 +826,9 @@ function AppointmentsAgendaContent() {
                       template: 'reminder',
                     });
                   }}
+                  onOpenDetails={(appointment) => {
+                    setSelectedAppointmentForDetails(appointment);
+                  }}
                   isStaff={isStaffSecretaryOrAdmin}
                 />
               ))}
@@ -973,6 +980,18 @@ function AppointmentsAgendaContent() {
         appointment={whatsAppDialogState.appointment}
         initialTemplate={whatsAppDialogState.template}
         cancellationReason={whatsAppDialogState.cancellationReason}
+      />
+
+      {/* Appointment Details Dialog Modal */}
+      <AppointmentDetailsDialog
+        open={Boolean(selectedAppointmentForDetails)}
+        onOpenChange={(open) => !open && setSelectedAppointmentForDetails(null)}
+        appointment={selectedAppointmentForDetails}
+        editHref={
+          selectedAppointmentForDetails
+            ? ROUTES.APPOINTMENTS.AGENDA_EDIT(selectedAppointmentForDetails.id)
+            : undefined
+        }
       />
     </>
   );

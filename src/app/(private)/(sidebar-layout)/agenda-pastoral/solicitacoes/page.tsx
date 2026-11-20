@@ -64,6 +64,8 @@ import {
   AppointmentWhatsAppDialog,
   type WhatsAppTemplateType,
 } from '@/components/features/appointments/appointment-whatsapp-dialog';
+import { isAppointmentExpired } from '@/utils/appointment';
+import { AppointmentDetailsDialog } from '@/components/features/appointments/appointment-details-dialog';
 
 dayjs.locale('pt-br');
 
@@ -98,6 +100,9 @@ export default function AppointmentsRequestsPage() {
     template: 'confirmation',
   });
 
+  const [selectedAppointmentForDetails, setSelectedAppointmentForDetails] =
+    useState<Appointment | null>(null);
+
   const effectiveAgentId = isPastoralAgent
     ? myAgent?.id
     : selectedAgentId !== 'all'
@@ -110,13 +115,14 @@ export default function AppointmentsRequestsPage() {
     agentId: effectiveAgentId,
   });
 
-  // Filter pending requests by search term and sort by date/time
+  // Filter pending requests by search term and sort by date/time (only future requests)
   const pendingRequests = useMemo(() => {
     if (!appointments) return [];
 
     return appointments
       .filter((app) => {
         if (app.status !== 'pending') return false;
+        if (isAppointmentExpired(app)) return false;
 
         if (searchTerm.trim()) {
           const term = searchTerm.toLowerCase();
@@ -136,6 +142,14 @@ export default function AppointmentsRequestsPage() {
         return (a.startTime || '').localeCompare(b.startTime || '');
       });
   }, [appointments, searchTerm]);
+
+  // Count expired pending requests moved to archive
+  const expiredCount = useMemo(() => {
+    if (!appointments) return 0;
+    return appointments.filter(
+      (app) => app.status === 'pending' && isAppointmentExpired(app)
+    ).length;
+  }, [appointments]);
 
   // Handle confirming appointment
   const handleConfirm = async (appointment: Appointment) => {
@@ -296,7 +310,7 @@ export default function AppointmentsRequestsPage() {
                   Tudo em dia!
                 </h3>
                 <p className="text-sm sm:text-sm text-zinc-500 max-w-md mx-auto">
-                  Não há nenhuma solicitação de atendimento pendente de confirmação no momento.
+                  Não há nenhuma solicitação futura de atendimento pendente de confirmação no momento.
                 </p>
               </div>
             </div>
@@ -478,10 +492,17 @@ export default function AppointmentsRequestsPage() {
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-48 shadow-lg">
+                      <DropdownMenuContent align="end" className="w-52 shadow-lg">
+                        <DropdownMenuItem
+                          onClick={() => setSelectedAppointmentForDetails(req)}
+                          className="cursor-pointer"
+                        >
+                          <Eye className="w-4 h-4 mr-2 text-zinc-500" />
+                          <span>Ver detalhes</span>
+                        </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                           <Link
-                            href={ROUTES.APPOINTMENTS.EDIT(req.id)}
+                            href={ROUTES.APPOINTMENTS.SOLICITACOES_EDIT(req.id)}
                             className="cursor-pointer"
                           >
                             <Pencil className="w-4 h-4 mr-2 text-zinc-500" />
@@ -570,6 +591,18 @@ export default function AppointmentsRequestsPage() {
         appointment={whatsAppDialogState.appointment}
         initialTemplate={whatsAppDialogState.template}
         cancellationReason={whatsAppDialogState.cancellationReason}
+      />
+
+      {/* Appointment Details Dialog Modal */}
+      <AppointmentDetailsDialog
+        open={Boolean(selectedAppointmentForDetails)}
+        onOpenChange={(open) => !open && setSelectedAppointmentForDetails(null)}
+        appointment={selectedAppointmentForDetails}
+        editHref={
+          selectedAppointmentForDetails
+            ? ROUTES.APPOINTMENTS.SOLICITACOES_EDIT(selectedAppointmentForDetails.id)
+            : undefined
+        }
       />
     </>
   );

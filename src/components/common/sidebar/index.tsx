@@ -35,6 +35,7 @@ import { useAppointments, useMyPastoralAgent } from '@/api/appointments/use-appo
 import { ROUTES } from '@/constants/routes';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { isAppointmentExpired } from '@/utils/appointment';
 
 export const AppSidebar = () => {
   const [open, setOpen] = useState(false);
@@ -70,12 +71,17 @@ export const AppSidebar = () => {
     return 'parish';
   }, [pathname, isPastoralAgent]);
 
-  // Query pending appointments to show badge on "Solicitações"
+  // Query pending appointments to show badge on "Solicitações" (only future requests)
   const { appointments: pendingAppointments } = useAppointments({
     status: 'pending',
     agentId: isPastoralAgent ? myAgent?.id : undefined,
   });
-  const pendingCount = pendingAppointments?.length || 0;
+  const pendingCount = useMemo(() => {
+    if (!pendingAppointments) return 0;
+    return pendingAppointments.filter(
+      (app) => app.status === 'pending' && !isAppointmentExpired(app)
+    ).length;
+  }, [pendingAppointments]);
 
   return (
     <Collapsible.Root
@@ -376,7 +382,7 @@ export const AppSidebar = () => {
                 links={[
                   {
                     title: 'Comunidades & Capelas',
-                    href: ROUTES.HOME,
+                    href: ROUTES.COMMUNITIES.HOME,
                   },
                 ]}
                 onLinkClick={handleClose}

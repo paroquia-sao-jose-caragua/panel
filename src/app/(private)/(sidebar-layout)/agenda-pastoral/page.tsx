@@ -19,6 +19,7 @@ import {
   XCircle,
   Plus,
   CheckCircle2,
+  Pencil,
 } from 'lucide-react';
 import { AppHeader } from '@/components/common/header';
 import { TypographyH1 } from '@/components/ui/typography/h1';
@@ -64,6 +65,8 @@ import useAuthStore from '@/stores/useAuthStore';
 import { showAlert } from '@/utils/showAlert';
 import { cn } from '@/lib/utils';
 import { Describe } from '@/components/ui/typography/describe';
+import { isAppointmentExpired } from '@/utils/appointment';
+import { AppointmentDetailsDialog } from '@/components/features/appointments/appointment-details-dialog';
 
 export default function AppointmentsDashboardPage() {
   const { user } = useAuthStore();
@@ -112,12 +115,19 @@ export default function AppointmentsDashboardPage() {
       agentId: effectiveAgentId,
     });
 
-  // Pending requests count
+  // Pending requests count (only future requests)
   const { appointments: pendingAppointments, isPending: isLoadingPending } =
     useAppointments({
       status: 'pending',
       agentId: effectiveAgentId,
     });
+
+  const futurePendingAppointments = useMemo(() => {
+    if (!pendingAppointments) return [];
+    return pendingAppointments.filter(
+      (app) => app.status === 'pending' && !isAppointmentExpired(app)
+    );
+  }, [pendingAppointments]);
 
   // Query all active blocks
   const { data: activeBlocks, isPending: isLoadingBlocks } = useQuery({
@@ -205,6 +215,9 @@ export default function AppointmentsDashboardPage() {
     appointment: null,
     template: 'confirmation',
   });
+
+  const [selectedAppointmentForDetails, setSelectedAppointmentForDetails] =
+    useState<Appointment | null>(null);
 
   // Cancel Appointment state
   const [cancellingAppointment, setCancellingAppointment] =
@@ -374,9 +387,9 @@ export default function AppointmentsDashboardPage() {
                 </h3>
                 <p className="text-sm text-zinc-600 mt-1">
                   <span className="font-semibold text-zinc-900">
-                    {pendingAppointments?.length || 0}
+                    {futurePendingAppointments.length}
                   </span>{' '}
-                  {(pendingAppointments?.length || 0) === 1
+                  {futurePendingAppointments.length === 1
                     ? 'aguardando aprovação'
                     : 'aguardando aprovação'}
                 </p>
@@ -534,12 +547,19 @@ export default function AppointmentsDashboardPage() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-52 rounded-xl p-1 z-50">
+                            <DropdownMenuItem
+                              onClick={() => setSelectedAppointmentForDetails(app)}
+                              className="cursor-pointer text-sm"
+                            >
+                              Ver Detalhes
+                            </DropdownMenuItem>
                             <DropdownMenuItem asChild>
                               <Link
-                                href={ROUTES.APPOINTMENTS.DETAILS(app.id)}
-                                className="cursor-pointer text-sm"
+                                href={ROUTES.APPOINTMENTS.EDIT(app.id)}
+                                className="cursor-pointer text-sm flex items-center gap-2"
                               >
-                                Ver Detalhes
+                                <Pencil className="w-3.5 h-3.5" />
+                                <span>Editar Atendimento</span>
                               </Link>
                             </DropdownMenuItem>
                             {app.requesterPhone && (
@@ -836,6 +856,18 @@ export default function AppointmentsDashboardPage() {
         appointment={whatsAppDialogState.appointment}
         initialTemplate={whatsAppDialogState.template}
         cancellationReason={whatsAppDialogState.cancellationReason}
+      />
+
+      {/* Appointment Details Dialog Modal */}
+      <AppointmentDetailsDialog
+        open={Boolean(selectedAppointmentForDetails)}
+        onOpenChange={(open) => !open && setSelectedAppointmentForDetails(null)}
+        appointment={selectedAppointmentForDetails}
+        editHref={
+          selectedAppointmentForDetails
+            ? ROUTES.APPOINTMENTS.EDIT(selectedAppointmentForDetails.id)
+            : undefined
+        }
       />
     </>
   );

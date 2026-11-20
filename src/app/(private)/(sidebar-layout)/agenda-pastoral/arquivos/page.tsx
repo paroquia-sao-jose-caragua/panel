@@ -15,6 +15,7 @@ import {
   Eye,
   MoreHorizontal,
   Copy,
+  Pencil,
   RotateCcw,
   Phone,
   Home,
@@ -50,10 +51,12 @@ import type { Appointment } from '@/entities/appointment';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
 import { cn } from '@/lib/utils';
+import { isAppointmentExpired } from '@/utils/appointment';
+import { AppointmentDetailsDialog } from '@/components/features/appointments/appointment-details-dialog';
 
 dayjs.locale('pt-br');
 
-type ArchiveFilterType = 'all' | 'completed' | 'cancelled';
+type ArchiveFilterType = 'all' | 'completed' | 'cancelled' | 'expired';
 
 export default function AppointmentsArchivePage() {
   const { user } = useAuthStore();
@@ -69,6 +72,8 @@ export default function AppointmentsArchivePage() {
   const [revertingAppointment, setRevertingAppointment] =
     useState<Appointment | null>(null);
   const [isReverting, setIsReverting] = useState(false);
+  const [selectedAppointmentForDetails, setSelectedAppointmentForDetails] =
+    useState<Appointment | null>(null);
 
   const effectiveAgentId = isPastoralAgent
     ? myAgent?.id
@@ -81,20 +86,26 @@ export default function AppointmentsArchivePage() {
     agentId: effectiveAgentId,
   });
 
-  // Filter ONLY completed and cancelled appointments
+  // Filter completed, cancelled and expired pending appointments
   const archivedAppointments = useMemo(() => {
     if (!appointments) return [];
 
     return appointments
       .filter((app) => {
-        const isArchived =
-          app.status === 'completed' || app.status === 'cancelled';
+        const isCompleted = app.status === 'completed';
+        const isCancelled = app.status === 'cancelled';
+        const isExpired = app.status === 'pending' && isAppointmentExpired(app);
+
+        const isArchived = isCompleted || isCancelled || isExpired;
         if (!isArchived) return false;
 
-        if (statusFilter === 'completed' && app.status !== 'completed') {
+        if (statusFilter === 'completed' && !isCompleted) {
           return false;
         }
-        if (statusFilter === 'cancelled' && app.status !== 'cancelled') {
+        if (statusFilter === 'cancelled' && !isCancelled) {
+          return false;
+        }
+        if (statusFilter === 'expired' && !isExpired) {
           return false;
         }
 
@@ -122,14 +133,17 @@ export default function AppointmentsArchivePage() {
   const counts = useMemo(() => {
     let completed = 0;
     let cancelled = 0;
+    let expired = 0;
     (appointments || []).forEach((app) => {
       if (app.status === 'completed') completed++;
-      if (app.status === 'cancelled') cancelled++;
+      else if (app.status === 'cancelled') cancelled++;
+      else if (app.status === 'pending' && isAppointmentExpired(app)) expired++;
     });
     return {
-      all: completed + cancelled,
+      all: completed + cancelled + expired,
       completed,
       cancelled,
+      expired,
     };
   }, [appointments]);
 
@@ -186,7 +200,7 @@ export default function AppointmentsArchivePage() {
           <div>
             <TypographyH1>Arquivo de Atendimentos</TypographyH1>
             <Describe className="mt-1">
-              Histórico completo de atendimentos realizados e cancelados para consulta e auditoria.
+              Histórico completo de atendimentos realizados, cancelados e solicitações expiradas para consulta e auditoria.
             </Describe>
           </div>
         </div>
@@ -265,6 +279,30 @@ export default function AppointmentsArchivePage() {
                 {counts.cancelled}
               </span>
             </button>
+
+            <button
+              type="button"
+              onClick={() => setStatusFilter('expired')}
+              className={cn(
+                'px-4 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
+                statusFilter === 'expired'
+                  ? 'bg-amber-600 text-white shadow-xs'
+                  : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+              )}
+            >
+              <Clock className="w-3.5 h-3.5" />
+              <span>Expirados</span>
+              <span
+                className={cn(
+                  'text-[11px] px-1.5 py-0.2 rounded-full font-bold',
+                  statusFilter === 'expired'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-zinc-100 text-zinc-600'
+                )}
+              >
+                {counts.expired}
+              </span>
+            </button>
           </div>
 
           {/* Search & Agent Filter Bar */}
@@ -327,6 +365,8 @@ export default function AppointmentsArchivePage() {
               const monthStr = d.format('MMM').toUpperCase();
               const fullDateStr = d.format('dddd, D [de] MMMM [de] YYYY');
               const isCompleted = app.status === 'completed';
+              const isCancelled = app.status === 'cancelled';
+              const isExpired = app.status === 'pending' && isAppointmentExpired(app);
               const isHomeVisit = app.service?.category === 'home_visit';
 
               return (
@@ -363,12 +403,13 @@ export default function AppointmentsArchivePage() {
                       {/* Service Title (md:col-span-5) */}
                       <div className="md:col-span-5 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <Link
-                            href={ROUTES.APPOINTMENTS.DETAILS(app.id)}
-                            className="text-base font-bold text-zinc-900 tracking-tight truncate hover:text-[#11291f] hover:underline"
+                          <button
+                            type="button"
+                            onClick={() => setSelectedAppointmentForDetails(app)}
+                            className="text-base font-bold text-zinc-900 tracking-tight truncate hover:text-[#11291f] hover:underline text-left cursor-pointer"
                           >
                             {app.service?.title || 'Atendimento Pastoral'}
-                          </Link>
+                          </button>
                           {isHomeVisit && (
                             <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 shrink-0">
                               <Home className="w-3 h-3 text-emerald-600" />
@@ -416,15 +457,22 @@ export default function AppointmentsArchivePage() {
                         </div>
 
                         <div>
-                          {isCompleted ? (
+                          {isCompleted && (
                             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                               <CheckCircle2 className="w-3.5 h-3.5" />
                               Realizado
                             </span>
-                          ) : (
+                          )}
+                          {isCancelled && (
                             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">
                               <XCircle className="w-3.5 h-3.5" />
                               Cancelado
+                            </span>
+                          )}
+                          {isExpired && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                              <Clock className="w-3.5 h-3.5 text-amber-600" />
+                              Expirado
                             </span>
                           )}
                         </div>
@@ -444,14 +492,21 @@ export default function AppointmentsArchivePage() {
                             <MoreHorizontal className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48 shadow-lg">
+                        <DropdownMenuContent align="end" className="w-52 shadow-lg">
+                          <DropdownMenuItem
+                            onClick={() => setSelectedAppointmentForDetails(app)}
+                            className="cursor-pointer"
+                          >
+                            <Eye className="w-4 h-4 mr-2 text-zinc-500" />
+                            <span>Ver detalhes</span>
+                          </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link
-                              href={ROUTES.APPOINTMENTS.DETAILS(app.id)}
+                              href={ROUTES.APPOINTMENTS.ARCHIVE_EDIT(app.id)}
                               className="cursor-pointer"
                             >
-                              <Eye className="w-4 h-4 mr-2 text-zinc-500" />
-                              <span>Ver detalhes</span>
+                              <Pencil className="w-4 h-4 mr-2 text-zinc-500" />
+                              <span>Editar atendimento</span>
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem
@@ -461,7 +516,7 @@ export default function AppointmentsArchivePage() {
                             <Copy className="w-4 h-4 mr-2 text-zinc-500" />
                             <span>Copiar link do fiel</span>
                           </DropdownMenuItem>
-                          {!isCompleted && (
+                          {isCancelled && (
                             <>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
@@ -479,10 +534,21 @@ export default function AppointmentsArchivePage() {
                   </div>
 
                   {/* Cancellation Reason note if present */}
-                  {!isCompleted && app.cancellationReason && (
+                  {isCancelled && app.cancellationReason && (
                     <div className="w-full pt-2 border-t border-zinc-100 text-sm text-red-900 bg-red-50/50 rounded-lg px-2.5 py-1.5 flex items-start gap-1.5">
                       <span className="font-semibold shrink-0">Motivo do cancelamento:</span>
                       <span className="text-zinc-600">{app.cancellationReason}</span>
+                    </div>
+                  )}
+
+                  {/* Expired note */}
+                  {isExpired && (
+                    <div className="w-full pt-2 border-t border-zinc-100 text-xs sm:text-sm text-amber-900 bg-amber-50/60 rounded-lg px-2.5 py-1.5 flex items-start gap-1.5">
+                      <span className="font-semibold shrink-0">Observação:</span>
+                      <span className="text-zinc-600">
+                        Solicitação não confirmada a tempo para a data agendada.
+                        {app.requesterNotes ? ` (${app.requesterNotes})` : ''}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -502,6 +568,18 @@ export default function AppointmentsArchivePage() {
         cancelText="Voltar"
         isPending={isReverting}
         onConfirm={handleRevertCancel}
+      />
+
+      {/* Appointment Details Dialog Modal */}
+      <AppointmentDetailsDialog
+        open={Boolean(selectedAppointmentForDetails)}
+        onOpenChange={(open) => !open && setSelectedAppointmentForDetails(null)}
+        appointment={selectedAppointmentForDetails}
+        editHref={
+          selectedAppointmentForDetails
+            ? ROUTES.APPOINTMENTS.ARCHIVE_EDIT(selectedAppointmentForDetails.id)
+            : undefined
+        }
       />
     </>
   );
