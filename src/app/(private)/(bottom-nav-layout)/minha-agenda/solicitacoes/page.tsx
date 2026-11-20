@@ -23,6 +23,7 @@ import { ROUTES } from '@/constants/routes';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { showAlert } from '@/utils/showAlert';
+import { isAppointmentExpired } from '@/utils/appointment';
 import type { Appointment } from '@/entities/appointment';
 
 export default function MinhaAgendaRequestsPage() {
@@ -32,12 +33,12 @@ export default function MinhaAgendaRequestsPage() {
   const [cancellingAppointment, setCancellingAppointment] =
     useState<Appointment | null>(null);
 
-  // Filter ONLY pending appointments
+  // Filter ONLY non-expired pending appointments
   const pendingRequests = useMemo(() => {
     if (!appointments) return [];
 
     return appointments
-      .filter((app) => app.status === 'pending')
+      .filter((app) => app.status === 'pending' && !isAppointmentExpired(app))
       .sort((a, b) => {
         if (a.appointmentDate !== b.appointmentDate) {
           return a.appointmentDate.localeCompare(b.appointmentDate);

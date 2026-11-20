@@ -20,26 +20,30 @@ import { ROUTES } from '@/constants/routes';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { isAppointmentExpired } from '@/utils/appointment';
 import type { Appointment, AppointmentStatus } from '@/entities/appointment';
 
-type ArchiveFilter = 'all' | 'completed' | 'cancelled';
+type ArchiveFilter = 'all' | 'completed' | 'cancelled' | 'expired';
 
 export default function MinhaAgendaArchivePage() {
   const { appointments, isPending } = useAppointments();
   const [filter, setFilter] = useState<ArchiveFilter>('all');
 
-  // Filter ONLY completed and cancelled appointments, sorted most recent first
+  // Filter completed, cancelled and expired pending appointments, sorted most recent first
   const archiveAppointments = useMemo(() => {
     if (!appointments) return [];
 
     return appointments
       .filter((app) => {
-        const isArchived =
-          app.status === 'completed' || app.status === 'cancelled';
+        const isCompleted = app.status === 'completed';
+        const isCancelled = app.status === 'cancelled';
+        const isExpired = app.status === 'pending' && isAppointmentExpired(app);
+        const isArchived = isCompleted || isCancelled || isExpired;
         if (!isArchived) return false;
 
-        if (filter === 'completed') return app.status === 'completed';
-        if (filter === 'cancelled') return app.status === 'cancelled';
+        if (filter === 'completed') return isCompleted;
+        if (filter === 'cancelled') return isCancelled;
+        if (filter === 'expired') return isExpired;
         return true;
       })
       .sort((a, b) => {
@@ -61,7 +65,7 @@ export default function MinhaAgendaArchivePage() {
             Histórico de Atendimentos
           </h2>
           <p className="text-sm text-zinc-500 leading-relaxed">
-            Atendimentos anteriores realizados ou cancelados para simples consulta.
+            Atendimentos anteriores realizados, cancelados ou solicitações expiradas para simples consulta.
           </p>
         </section>
 
@@ -71,7 +75,7 @@ export default function MinhaAgendaArchivePage() {
             type="button"
             onClick={() => setFilter('all')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
+              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none whitespace-nowrap shrink-0',
               filter === 'all'
                 ? 'bg-brand-900 text-white shadow-xs'
                 : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
@@ -84,7 +88,7 @@ export default function MinhaAgendaArchivePage() {
             type="button"
             onClick={() => setFilter('completed')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
+              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none whitespace-nowrap shrink-0',
               filter === 'completed'
                 ? 'bg-emerald-700 text-white shadow-xs'
                 : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
@@ -97,13 +101,26 @@ export default function MinhaAgendaArchivePage() {
             type="button"
             onClick={() => setFilter('cancelled')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
+              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none whitespace-nowrap shrink-0',
               filter === 'cancelled'
                 ? 'bg-red-700 text-white shadow-xs'
                 : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
             )}
           >
             Cancelados
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setFilter('expired')}
+            className={cn(
+              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none whitespace-nowrap shrink-0',
+              filter === 'expired'
+                ? 'bg-amber-600 text-white shadow-xs'
+                : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+            )}
+          >
+            Expirados
           </button>
         </section>
 
@@ -133,6 +150,7 @@ export default function MinhaAgendaArchivePage() {
               const dayStr = d.format('DD');
               const monthStr = d.format('MMM').toUpperCase();
               const isCompleted = app.status === 'completed';
+              const isExpired = app.status === 'pending' && isAppointmentExpired(app);
 
               return (
                 <Link
@@ -180,6 +198,11 @@ export default function MinhaAgendaArchivePage() {
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                             <CheckCircle2 className="w-3 h-3" />
                             Realizado
+                          </span>
+                        ) : isExpired ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                            <Clock className="w-3 h-3 text-amber-600" />
+                            Expirado
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-zinc-100 text-zinc-600 border border-zinc-200">

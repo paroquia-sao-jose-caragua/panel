@@ -7,6 +7,7 @@ import { Home, Calendar, Inbox, User } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
 import { cn } from '@/lib/utils';
 import { useAppointments } from '@/api/appointments/use-appointments';
+import { isAppointmentExpired } from '@/utils/appointment';
 
 export function MinhaAgendaBottomNav() {
   const pathname = usePathname();
@@ -16,7 +17,9 @@ export function MinhaAgendaBottomNav() {
 
   const pendingCount = React.useMemo(() => {
     if (!appointments) return 0;
-    return appointments.filter((a) => a.status === 'pending').length;
+    return appointments.filter(
+      (a) => a.status === 'pending' && !isAppointmentExpired(a)
+    ).length;
   }, [appointments]);
 
   // Guard: Hide bottom nav on internal subpages with back button
