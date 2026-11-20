@@ -59,14 +59,14 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
             <User className="w-4 h-4 text-brand-700" />
             <span>Identificação e Atuação do Agente</span>
           </h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
+          <p className="text-sm text-zinc-500 mt-0.5">
             Informe o nome, título e o papel pastoral desempenhado na paróquia.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-1">
-            <label className="text-xs font-semibold text-zinc-700 block mb-1">
+            <label className="text-sm font-semibold text-zinc-700 block mb-1">
               Título / Tratamento
             </label>
             <Input
@@ -81,7 +81,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
           </div>
 
           <div className="md:col-span-2">
-            <label className="text-xs font-semibold text-zinc-700 block mb-1">
+            <label className="text-sm font-semibold text-zinc-700 block mb-1">
               Nome Completo *
             </label>
             <Input
@@ -91,13 +91,13 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
               className={`h-10 ${errors.name ? 'border-red-500 focus-error' : ''}`}
             />
             {errors.name && (
-              <span className="text-xs text-red-500 mt-1 block">{errors.name}</span>
+              <span className="text-sm text-red-500 mt-1 block">{errors.name}</span>
             )}
           </div>
         </div>
 
         <div>
-          <label className="text-xs font-semibold text-zinc-700 block mb-1">
+          <label className="text-sm font-semibold text-zinc-700 block mb-1">
             Função / Atuação Pastoral *
           </label>
           <Input
@@ -107,7 +107,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
             className={`h-10 ${errors.actingRole ? 'border-red-500 focus-error' : ''}`}
           />
           {errors.actingRole && (
-            <span className="text-xs text-red-500 mt-1 block">{errors.actingRole}</span>
+            <span className="text-sm text-red-500 mt-1 block">{errors.actingRole}</span>
           )}
 
           {/* Sugestões rápidas de papel */}
@@ -132,7 +132,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
           <div>
-            <label className="text-xs font-semibold text-zinc-700 block mb-1 flex items-center gap-1.5">
+            <label className="text-sm font-semibold text-zinc-700 block mb-1 flex items-center gap-1.5">
               <Phone className="w-3.5 h-3.5 text-zinc-400" />
               <span>WhatsApp / Celular com DDD *</span>
             </label>
@@ -143,7 +143,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
               className={`h-10 ${errors.phone ? 'border-red-500 focus-error' : ''}`}
             />
             {errors.phone && (
-              <span className="text-xs text-red-500 mt-1 block">{errors.phone}</span>
+              <span className="text-sm text-red-500 mt-1 block">{errors.phone}</span>
             )}
             <span className="text-[11px] text-zinc-400 mt-1 block">
               Utilizado para notificações e contato direto sobre agendamentos.
@@ -151,7 +151,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-zinc-700 block mb-1 flex items-center gap-1.5">
+            <label className="text-sm font-semibold text-zinc-700 block mb-1 flex items-center gap-1.5">
               <Mail className="w-3.5 h-3.5 text-zinc-400" />
               <span>E-mail (opcional)</span>
             </label>
@@ -166,7 +166,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
         </div>
 
         <div>
-          <label className="text-xs font-semibold text-zinc-700 block mb-1 flex items-center gap-1.5">
+          <label className="text-sm font-semibold text-zinc-700 block mb-1 flex items-center gap-1.5">
             <Building2 className="w-3.5 h-3.5 text-zinc-400" />
             <span>Comunidade de Atuação Principal (opcional)</span>
           </label>
@@ -189,7 +189,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
         </div>
 
         <div className="pt-2 border-t border-zinc-100">
-          <label className="text-xs font-semibold text-zinc-700 block mb-1 flex items-center gap-1.5">
+          <label className="text-sm font-semibold text-zinc-700 block mb-1 flex items-center gap-1.5">
             <KeyRound className="w-3.5 h-3.5 text-zinc-400" />
             <span>Vincular Conta de Usuário do Painel (Opcional)</span>
           </label>
@@ -241,7 +241,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
             <CheckCircle2 className="w-4 h-4 text-brand-700" />
             <span>Serviços Oferecidos por este Agente</span>
           </h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
+          <p className="text-sm text-zinc-500 mt-0.5">
             Selecione quais tipos de atendimento os fiéis poderão agendar com este agente pastoral.
           </p>
         </div>
@@ -252,7 +252,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
             <Skeleton className="h-16 w-full rounded-xl" />
           </div>
         ) : services.length === 0 ? (
-          <div className="text-xs text-zinc-500 italic p-4 text-center border border-dashed border-zinc-200 rounded-xl">
+          <div className="text-sm text-zinc-500 italic p-4 text-center border border-dashed border-zinc-200 rounded-xl">
             Nenhum serviço de agendamento cadastrado.
           </div>
         ) : (
@@ -286,7 +286,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
                         </span>
                       )}
                     </div>
-                    <span className="text-xs text-zinc-500 line-clamp-1">
+                    <span className="text-sm text-zinc-500 line-clamp-1">
                       {svc.description ||
                         (svc.category === 'home_visit'
                           ? 'Visita domiciliar a enfermo'
@@ -314,9 +314,9 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
       <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-4">
         <div className="border-b border-zinc-100 pb-3">
           <h2 className="text-base font-bold text-zinc-900">
-            Regras de Agendamento e Visibilidade
+            Regras de Atendimento e Visibilidade
           </h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
+          <p className="text-sm text-zinc-500 mt-0.5">
             Controle a exibição no site público e o recebimento de novos pedidos.
           </p>
         </div>
@@ -325,9 +325,9 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
           <div className="flex items-center justify-between gap-4 p-3 bg-zinc-50 rounded-xl">
             <div>
               <span className="text-sm font-semibold text-zinc-800 block">
-                Receber Agendamentos Públicos
+                Receber Atendimentos Públicos
               </span>
-              <span className="text-xs text-zinc-500">
+              <span className="text-sm text-zinc-500">
                 Se desativado, o agente não aparece na lista de opções para os fiéis no site.
               </span>
             </div>
@@ -342,7 +342,7 @@ export const AgentInfoStep = ({ values, onChange, errors }: AgentInfoStepProps) 
               <span className="text-sm font-semibold text-zinc-800 block">
                 Agente Ativo no Sistema
               </span>
-              <span className="text-xs text-zinc-500">
+              <span className="text-sm text-zinc-500">
                 Mantenha ativo para que este agente conste nos registros operacionais da paróquia.
               </span>
             </div>

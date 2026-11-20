@@ -1,7 +1,7 @@
 import type { MassSchedule } from '@/entities/MassSchedule';
 import type useTranslator from '@/hooks/use-translator';
 
-export type MassScheduleType = 'ordinary' | 'devotional' | 'annual';
+export type MassScheduleType = 'ordinary' | 'devotional';
 
 interface FormatDescriptionParams {
   massSchedule: MassSchedule;
@@ -15,9 +15,6 @@ export function formatMassScheduleDescription({
   t,
 }: FormatDescriptionParams): string {
   switch (type) {
-    case 'annual':
-      return `Dia ${massSchedule.dayOfMonth} de ${massSchedule.monthOfYear ? t(`month-${massSchedule.monthOfYear}`).toLowerCase() : ''}`;
-
     case 'devotional':
       if (massSchedule.dayOfMonth) {
         return `Dia ${massSchedule.dayOfMonth} de cada mês`;

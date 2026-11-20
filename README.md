@@ -204,15 +204,14 @@ Fluxo geral da aplicação:
 | `/clerigos/editar/[id]`                         | Edição de dados do clérigo.                    |
 | `/avisos`                                       | Gestão de banners e faixa de alerta urgente.   |
 | `/avisos/adicionar`                             | Cadastro de novo banner responsivo.            |
-| `/avisos/alerta/editar`                         | Edição da faixa de aviso urgente.              |
+| `/programacao-e-eventos/faixa-de-alerta/editar`                         | Edição da faixa de aviso urgente.              |
 | `/avisos/editar/[id]`                           | Edição de banner existente.                    |
-| `/agenda`                                       | Visualização da agenda/calendário paroquial.   |
-| `/agenda/adicionar-evento`                      | Cadastro de evento na agenda.                  |
-| `/agenda/evento/[id]/editar`                    | Edição de evento da agenda.                    |
+| `/programacao-paroquial`                                       | Visualização da programação paroquial.   |
+| `/programacao-paroquial/adicionar-evento`                      | Cadastro de evento na agenda.                  |
+| `/programacao-paroquial/evento/[id]/editar`                    | Edição de evento da agenda.                    |
 | `/secretaria`                                   | Dados da secretaria e doações.                 |
 | `/secretaria/editar`                            | Edição dos dados da secretaria de atendimento. |
 | `/secretaria/doacoes`                           | Gestão de contas bancárias e chave PIX.        |
-| `/pastorais`                                    | Área de pastorais.                             |
 
 Algumas telas em `src/app/(private)/(pending-development)` existem como páginas previstas para evolução futura, como blog, galeria, configurações e suporte.
 

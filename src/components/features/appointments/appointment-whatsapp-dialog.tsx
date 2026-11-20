@@ -40,7 +40,7 @@ export function buildWhatsAppConfirmationMessage(
   siteBaseUrl: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
   const formattedDate =
@@ -75,8 +75,8 @@ export function buildWhatsAppCancellationMessage(
   cancellationReason?: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
-  const newBookingUrl = `${cleanBaseUrl}/agendamentos`;
+  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
+  const newBookingUrl = `${cleanBaseUrl}/atendimentos`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
   const formattedDate =
@@ -122,7 +122,7 @@ export function buildWhatsAppReminderMessage(
   siteBaseUrl: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
   const formattedDate =
@@ -198,7 +198,7 @@ export function AppointmentWhatsAppDialog({
   if (!appointment) return null;
 
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
 
   let cleanPhone = (appointment.requesterPhone || '').replace(/\D/g, '');
   if (cleanPhone.length <= 11) {
@@ -244,9 +244,9 @@ export function AppointmentWhatsAppDialog({
                   ? 'Avisar Cancelamento ao Fiel'
                   : template === 'reminder'
                   ? 'Enviar Lembrete de Atendimento'
-                  : 'Agendamento Aprovado! Notificar Fiel'}
+                  : 'Atendimento Aprovado! Notificar Fiel'}
               </DialogTitle>
-              <DialogDescription className="text-xs text-zinc-500 line-clamp-2">
+              <DialogDescription className="text-sm text-zinc-500 line-clamp-2">
                 {template === 'cancellation'
                   ? 'Deseja avisar o fiel sobre o cancelamento pelo WhatsApp com motivo e opções de reagendamento?'
                   : template === 'reminder'
@@ -263,7 +263,7 @@ export function AppointmentWhatsAppDialog({
             <button
               type="button"
               onClick={() => setTemplate('confirmation')}
-              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
+              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-sm font-semibold transition cursor-pointer ${
                 template === 'confirmation'
                   ? 'bg-white text-emerald-800 shadow-2xs border border-emerald-200'
                   : 'text-zinc-600 hover:text-zinc-900'
@@ -276,7 +276,7 @@ export function AppointmentWhatsAppDialog({
             <button
               type="button"
               onClick={() => setTemplate('cancellation')}
-              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
+              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-sm font-semibold transition cursor-pointer ${
                 template === 'cancellation'
                   ? 'bg-white text-rose-800 shadow-2xs border border-rose-200'
                   : 'text-zinc-600 hover:text-zinc-900'
@@ -289,7 +289,7 @@ export function AppointmentWhatsAppDialog({
             <button
               type="button"
               onClick={() => setTemplate('reminder')}
-              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
+              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-sm font-semibold transition cursor-pointer ${
                 template === 'reminder'
                   ? 'bg-white text-blue-800 shadow-2xs border border-blue-200'
                   : 'text-zinc-600 hover:text-zinc-900'
@@ -302,7 +302,7 @@ export function AppointmentWhatsAppDialog({
         )}
 
         {/* Fiel / Atendimento summary card */}
-        <div className="p-3 bg-zinc-50 border border-zinc-200/80 rounded-xl space-y-1.5 text-xs w-full min-w-0">
+        <div className="p-3 bg-zinc-50 border border-zinc-200/80 rounded-xl space-y-1.5 text-sm w-full min-w-0">
           <div className="flex items-center justify-between font-semibold text-zinc-800 gap-2 min-w-0">
             <span className="flex items-center gap-1.5 truncate min-w-0">
               <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
@@ -333,13 +333,13 @@ export function AppointmentWhatsAppDialog({
         {/* Message editor */}
         <div className="space-y-1.5 w-full min-w-0">
           <div className="flex items-center justify-between gap-2 min-w-0">
-            <label className="text-xs font-bold uppercase tracking-wider text-zinc-600 truncate min-w-0">
+            <label className="text-sm font-bold uppercase tracking-wider text-zinc-600 truncate min-w-0">
               Mensagem Pronta (editável)
             </label>
             <button
               type="button"
               onClick={handleCopyMessage}
-              className="inline-flex items-center gap-1 text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer shrink-0"
+              className="inline-flex items-center gap-1 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer shrink-0"
             >
               {copied ? (
                 <>
@@ -359,7 +359,7 @@ export function AppointmentWhatsAppDialog({
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={7}
-            className="text-xs leading-relaxed font-sans bg-white border-zinc-300 resize-none focus:border-brand-500 w-full min-w-0"
+            className="text-sm leading-relaxed font-sans bg-white border-zinc-300 resize-none focus:border-brand-500 w-full min-w-0"
           />
 
           <div className="p-2 bg-zinc-100/70 border border-zinc-200 rounded-lg flex items-center justify-between text-[11px] text-zinc-700 w-full min-w-0 gap-2">
@@ -384,7 +384,7 @@ export function AppointmentWhatsAppDialog({
             href={directWhatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-emerald-700 hover:underline truncate min-w-0"
+            className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-emerald-700 hover:underline truncate min-w-0"
           >
             <ExternalLink className="w-3 h-3 shrink-0" />
             <span className="truncate">Abrir WhatsApp Direto (sem mensagem pronta)</span>

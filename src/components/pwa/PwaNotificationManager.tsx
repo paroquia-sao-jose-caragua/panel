@@ -3,19 +3,19 @@
 import { useEffect, useState } from 'react';
 import { Bell, Download, X } from 'lucide-react';
 import useAuthStore from '@/stores/useAuthStore';
+import { subscribePushNotification } from '@/api/push-subscriptions';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-const DEFAULT_VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY as string;
+const DEFAULT_VAPID_PUBLIC_KEY = process.env
+  .NEXT_PUBLIC_VAPID_PUBLIC_KEY as string;
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -26,13 +26,41 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
+function areKeysEqual(
+  buf1: ArrayBuffer | null | undefined,
+  buf2: Uint8Array
+): boolean {
+  if (!buf1) return false;
+  const a = new Uint8Array(buf1);
+  if (a.length !== buf2.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== buf2[i]) return false;
+  }
+  return true;
+}
+
+function getOrCreateDeviceId(): string {
+  if (typeof window === 'undefined') return '';
+  const STORAGE_KEY = 'paroquia_push_device_id';
+  let deviceId = localStorage.getItem(STORAGE_KEY);
+  if (!deviceId) {
+    deviceId =
+      typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `dev_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    localStorage.setItem(STORAGE_KEY, deviceId);
+  }
+  return deviceId;
+}
+
 export function PwaNotificationManager() {
-  const { user } = useAuthStore();
+  const { user, isLogged } = useAuthStore();
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
-  const [notificationPermission, setNotificationPermission] =
-    useState<NotificationPermission | 'unsupported'>('unsupported');
+  const [notificationPermission, setNotificationPermission] = useState<
+    NotificationPermission | 'unsupported'
+  >('unsupported');
   const [showNotificationBanner, setShowNotificationBanner] = useState(false);
 
   const getDeviceInfo = () => {
@@ -53,40 +81,43 @@ export function PwaNotificationManager() {
   };
 
   const sendSubscriptionToApi = async (subscription: PushSubscription) => {
+    // Só registra a inscrição do painel após o login para garantir a identificação do usuário
+    if (!isLogged || !user?.id) {
+      return;
+    }
+
     const subJson = subscription.toJSON();
     const p256dh = subJson.keys?.p256dh;
     const auth = subJson.keys?.auth;
 
     if (!p256dh || !auth) {
-      console.error('Inscrição Push no Painel incompleta: chaves p256dh ou auth ausentes.');
+      console.error(
+        'Inscrição Push no Painel incompleta: chaves p256dh ou auth ausentes.'
+      );
       return;
     }
 
-    const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
-    const userNameToSave = user?.name || `Usuário Painel (${getDeviceInfo()})`;
+    const userNameToSave = user.name || `Usuário Painel (${getDeviceInfo()})`;
 
     try {
-      const response = await fetch(`${apiBaseUrl}/push-subscriptions`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userName: userNameToSave,
-          userId: user?.id ?? null,
-          origin: 'panel',
-          deviceInfo: getDeviceInfo(),
-          endpoint: subscription.endpoint,
-          keys: { p256dh, auth },
-        }),
+      await subscribePushNotification({
+        userName: userNameToSave,
+        userId: user.id,
+        origin: 'panel',
+        deviceId: getOrCreateDeviceId(),
+        deviceInfo: getDeviceInfo(),
+        endpoint: subscription.endpoint,
+        keys: { p256dh, auth },
       });
-
-      if (!response.ok) {
-        const errText = await response.text();
-        console.error('Erro ao salvar inscrição do painel na API:', response.status, errText);
-      } else {
-        console.log('Inscrição do painel salva com sucesso na API!');
-      }
+      console.log(
+        'Inscrição do painel salva com sucesso na API para o usuário:',
+        user.id
+      );
     } catch (err) {
-      console.error('Falha ao comunicar com a API de notificações do painel:', err);
+      console.error(
+        'Falha ao comunicar com a API de notificações do painel:',
+        err
+      );
     }
   };
 
@@ -119,10 +150,7 @@ export function PwaNotificationManager() {
       }
     };
 
-    window.addEventListener(
-      'beforeinstallprompt',
-      handleBeforeInstallPrompt
-    );
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     return () => {
       window.removeEventListener(
@@ -132,17 +160,43 @@ export function PwaNotificationManager() {
     };
   }, []);
 
-  // Auto-sync subscription if notification permission is already granted
+  // Auto-sync subscription if notification permission is already granted AND user is logged in
   useEffect(() => {
+    if (!isLogged || !user?.id) {
+      return;
+    }
+
     if (
       'Notification' in window &&
       Notification.permission === 'granted' &&
       'serviceWorker' in navigator
     ) {
       navigator.serviceWorker.ready.then(async (registration) => {
-        const applicationServerKey = urlBase64ToUint8Array(DEFAULT_VAPID_PUBLIC_KEY);
+        const applicationServerKey = urlBase64ToUint8Array(
+          DEFAULT_VAPID_PUBLIC_KEY
+        );
 
         let subscription = await registration.pushManager.getSubscription();
+
+        // Se o aparelho já estava inscrito, mas com chave VAPID antiga/diferente, renova automaticamente
+        if (subscription) {
+          const currentKey = subscription.options?.applicationServerKey;
+          const hasKeyMismatch =
+            currentKey && !areKeysEqual(currentKey, applicationServerKey);
+          const storedKey = localStorage.getItem('paroquia_panel_push_vapid_key');
+          const needsRenewal =
+            hasKeyMismatch || (storedKey && storedKey !== DEFAULT_VAPID_PUBLIC_KEY);
+
+          if (needsRenewal) {
+            try {
+              await subscription.unsubscribe();
+              subscription = null;
+            } catch (err) {
+              console.error('Erro ao cancelar inscrição push antiga no painel:', err);
+            }
+          }
+        }
+
         if (!subscription) {
           subscription = await registration.pushManager
             .subscribe({
@@ -150,20 +204,29 @@ export function PwaNotificationManager() {
               applicationServerKey,
             })
             .catch((err) => {
-              console.error('Erro ao obter inscrição push automática no painel:', err);
+              console.error(
+                'Erro ao obter inscrição push automática no painel:',
+                err
+              );
               return null;
             });
         }
 
         if (subscription) {
+          localStorage.setItem('paroquia_panel_push_vapid_key', DEFAULT_VAPID_PUBLIC_KEY);
           await sendSubscriptionToApi(subscription);
         }
       });
     }
-  }, [user]);
+  }, [isLogged, user?.id]);
 
-  // Determine if notification banner should show (Only if install banner is NOT active)
+  // Determine if notification banner should show (Only if install banner is NOT active AND user is logged in)
   useEffect(() => {
+    if (!isLogged || !user?.id) {
+      setShowNotificationBanner(false);
+      return;
+    }
+
     if (!showInstallBanner && 'Notification' in window) {
       if (Notification.permission === 'default') {
         const dismissed = localStorage.getItem('panel_pwa_notif_dismissed');
@@ -172,7 +235,7 @@ export function PwaNotificationManager() {
         }
       }
     }
-  }, [showInstallBanner]);
+  }, [showInstallBanner, isLogged, user?.id]);
 
   const isStandaloneMode = () => {
     if (typeof window === 'undefined') return false;
@@ -191,11 +254,21 @@ export function PwaNotificationManager() {
     if (!deferredPrompt) {
       const ua = navigator.userAgent;
       if (ua.includes('iPhone') || ua.includes('iPad')) {
-        alert("Para instalar o Painel no iOS: toque no botão de Compartilhar ⎋ no Safari e selecione 'Adicionar à Tela de Início' ➕.");
-      } else if (ua.includes('Mac') && ua.includes('Safari') && !ua.includes('Chrome')) {
-        alert("Para instalar o Painel no Safari do Mac: no menu superior, clique em Arquivo > Adicionar ao Dock.");
+        alert(
+          "Para instalar o Painel no iOS: toque no botão de Compartilhar ⎋ no Safari e selecione 'Adicionar à Tela de Início' ➕."
+        );
+      } else if (
+        ua.includes('Mac') &&
+        ua.includes('Safari') &&
+        !ua.includes('Chrome')
+      ) {
+        alert(
+          'Para instalar o Painel no Safari do Mac: no menu superior, clique em Arquivo > Adicionar ao Dock.'
+        );
       } else {
-        alert("Para instalar o Painel: clique no ícone ⊕ na barra de endereço (canto superior direito) ou no menu do navegador (⋮) > Instalar Aplicativo.");
+        alert(
+          'Para instalar o Painel: clique no ícone ⊕ na barra de endereço (canto superior direito) ou no menu do navegador (⋮) > Instalar Aplicativo.'
+        );
       }
       return;
     }
@@ -216,6 +289,7 @@ export function PwaNotificationManager() {
   };
 
   const handleRequestNotification = async () => {
+    if (!isLogged || !user?.id) return;
     if (!('Notification' in window)) return;
 
     try {
@@ -225,9 +299,30 @@ export function PwaNotificationManager() {
 
       if (permission === 'granted' && 'serviceWorker' in navigator) {
         const registration = await navigator.serviceWorker.ready;
-        const applicationServerKey = urlBase64ToUint8Array(DEFAULT_VAPID_PUBLIC_KEY);
+        const applicationServerKey = urlBase64ToUint8Array(
+          DEFAULT_VAPID_PUBLIC_KEY
+        );
 
         let subscription = await registration.pushManager.getSubscription();
+
+        if (subscription) {
+          const currentKey = subscription.options?.applicationServerKey;
+          const hasKeyMismatch =
+            currentKey && !areKeysEqual(currentKey, applicationServerKey);
+          const storedKey = localStorage.getItem('paroquia_panel_push_vapid_key');
+          const needsRenewal =
+            hasKeyMismatch || (storedKey && storedKey !== DEFAULT_VAPID_PUBLIC_KEY);
+
+          if (needsRenewal) {
+            try {
+              await subscription.unsubscribe();
+              subscription = null;
+            } catch (err) {
+              console.error('Erro ao cancelar inscrição push antiga no painel:', err);
+            }
+          }
+        }
+
         if (!subscription) {
           subscription = await registration.pushManager
             .subscribe({
@@ -241,6 +336,7 @@ export function PwaNotificationManager() {
         }
 
         if (subscription) {
+          localStorage.setItem('paroquia_panel_push_vapid_key', DEFAULT_VAPID_PUBLIC_KEY);
           await sendSubscriptionToApi(subscription);
         }
 
@@ -277,21 +373,22 @@ export function PwaNotificationManager() {
               <h4 className="text-sm font-semibold text-zinc-100">
                 Instalar App do Painel
               </h4>
-              <p className="mt-1 text-xs text-zinc-400">
-                Instale o painel como aplicativo no desktop ou celular para acesso rápido.
+              <p className="mt-1 text-sm text-zinc-400">
+                Instale o painel como aplicativo no desktop ou celular para
+                acesso rápido.
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <button
                   type="button"
                   onClick={handleInstallClick}
-                  className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-amber-500 active:scale-95 cursor-pointer"
+                  className="rounded-lg bg-amber-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-amber-500 active:scale-95 cursor-pointer"
                 >
                   Instalar Painel
                 </button>
                 <button
                   type="button"
                   onClick={dismissInstallBanner}
-                  className="rounded-lg px-2 py-1.5 text-xs text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                  className="rounded-lg px-2 py-1.5 text-sm text-zinc-400 hover:text-zinc-200 cursor-pointer"
                 >
                   Depois
                 </button>
@@ -317,21 +414,22 @@ export function PwaNotificationManager() {
               <h4 className="text-sm font-semibold text-zinc-100">
                 Notificações do Painel
               </h4>
-              <p className="mt-1 text-xs text-zinc-400">
-                Receba alertas em tempo real sobre agendamentos, novos eventos e avisos.
+              <p className="mt-1 text-sm text-zinc-400">
+                Receba alertas em tempo real sobre agendamentos, novos eventos e
+                avisos.
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <button
                   type="button"
                   onClick={handleRequestNotification}
-                  className="rounded-lg bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-zinc-100 border border-zinc-600 hover:bg-zinc-700 active:scale-95 cursor-pointer"
+                  className="rounded-lg bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-zinc-100 border border-zinc-600 hover:bg-zinc-700 active:scale-95 cursor-pointer"
                 >
                   Ativar Alertas
                 </button>
                 <button
                   type="button"
                   onClick={dismissNotificationBanner}
-                  className="rounded-lg px-2 py-1.5 text-xs text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                  className="rounded-lg px-2 py-1.5 text-sm text-zinc-400 hover:text-zinc-200 cursor-pointer"
                 >
                   Agora Não
                 </button>
@@ -350,4 +448,3 @@ export function PwaNotificationManager() {
     </>
   );
 }
-

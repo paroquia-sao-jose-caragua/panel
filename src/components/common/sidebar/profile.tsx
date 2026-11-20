@@ -17,7 +17,7 @@ export function Profile() {
           <span className="text-sm font-semibold text-brand-100 truncate">
             {user?.name}
           </span>
-          <span className="truncate text-xs text-brand-300">{user?.email}</span>
+          <span className="truncate text-sm text-brand-300">{user?.email}</span>
         </div>
       </div>
 

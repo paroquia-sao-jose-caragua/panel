@@ -1,4 +1,5 @@
 import { createCommunity } from '@/api/communities/create';
+import { ROUTES } from '@/constants/routes';
 import { useNavigate } from '@/hooks/use-navigate';
 import useChurchSchema from '@/schemas/useChurchSchema';
 import useCommunityStore from '@/stores/useCommunityStore';
@@ -47,7 +48,7 @@ export const useCreateChurch = () => {
           onSuccess: ({ community, statusCode, message }) => {
             if (community && statusCode === 201) {
               setCommunity(community);
-              navigate.push(`/${community.slug}`);
+              navigate.push(ROUTES.COMMUNITIES.DETAILS(community.slug));
             } else {
               showAlert(`Erro ao criar comunidade: ${message}`);
             }

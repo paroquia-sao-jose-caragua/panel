@@ -22,15 +22,16 @@ const buttonVariants = cva(
           'bg-red-600 text-white hover:bg-red-700 focus-visible:border-red-400 focus-visible:ring-4 focus-visible:ring-red-100 shadow-xs dark:bg-red-700 dark:hover:bg-red-800',
         'destructive-subtle':
           'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
-        gold:
+        'destructive-outlined': 'text-rose-600 border-rose-200 hover:bg-rose-50',
+          gold:
           'bg-brand-500 text-brand-900 hover:bg-brand-600 focus-visible:ring-4 focus-visible:ring-brand-200 shadow-xs font-semibold',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
         default:
           'h-9 gap-1.5 px-3 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5',
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2 text-xs in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: 'h-8 gap-1.5 rounded-[min(var(--radius-md),10px)] px-2.5 text-xs in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5',
+        xs: "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2 text-sm in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
+        sm: 'h-8 gap-1.5 rounded-[min(var(--radius-md),10px)] px-2.5 text-sm in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5',
         lg: 'h-11.5 gap-2 px-6 text-sm font-semibold has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
         icon: 'size-9',
         'icon-xs':

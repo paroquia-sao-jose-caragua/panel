@@ -83,10 +83,7 @@ export const MassScheduleExceptionItem = ({
             {/* Horário (sem parecer botão) */}
             <div className="flex items-center gap-1.5 font-mono text-sm sm:text-base font-medium text-zinc-400 line-through">
               <Clock className="w-4 h-4 text-zinc-400" />
-              <span>
-                {schedule.startTime}
-                {schedule.endTime ? ` — ${schedule.endTime}` : ''}
-              </span>
+              <span>{schedule.startTime}</span>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span className="inline-flex items-center text-zinc-400 cursor-help ml-0.5 no-underline">
@@ -116,10 +113,7 @@ export const MassScheduleExceptionItem = ({
 
         {/* Content: Title & Orientations / Reason */}
         <div className="space-y-1.5">
-          <h4
-            className="text-base sm:text-lg font-semibold text-zinc-500 line-through leading-snug"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          >
+          <h4 className="text-base sm:text-lg font-semibold text-zinc-500 line-through leading-snug">
             Santa Missa
             {schedule.massType === 'devotional' && schedule.title
               ? ` Devocional — ${schedule.title}`
@@ -130,7 +124,7 @@ export const MassScheduleExceptionItem = ({
           </h4>
 
           {schedule.exception?.reason && (
-            <div className="inline-flex items-center gap-1.5 text-xs text-rose-700 bg-rose-50/80 border border-rose-200/70 rounded-lg px-2.5 py-1 font-medium">
+            <div className="inline-flex items-center gap-1.5 text-sm text-rose-700 bg-rose-50/80 border border-rose-200/70 rounded-lg px-2.5 py-1 font-medium">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>
                 <strong>Motivo do cancelamento:</strong>{' '}
@@ -140,7 +134,7 @@ export const MassScheduleExceptionItem = ({
           )}
 
           {schedule.orientations && (
-            <p className="text-xs text-zinc-500 font-serif leading-relaxed">
+            <p className="text-sm text-zinc-500 font-serif leading-relaxed">
               {schedule.orientations}
             </p>
           )}
@@ -149,7 +143,7 @@ export const MassScheduleExceptionItem = ({
 
       {/* Card Footer: Location & Reschedule Action */}
       <div className="mt-4 pt-3.5 border-t border-zinc-200/60 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+        <div className="flex items-center gap-1.5 text-sm text-zinc-400">
           <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
           <span className="font-medium text-zinc-500">
             {schedule.community.type === 'parish_church'
@@ -165,7 +159,7 @@ export const MassScheduleExceptionItem = ({
               <Button
                 type="button"
                 size="sm"
-                className="gap-1.5 text-xs h-8 shadow-xs"
+                className="gap-1.5 text-sm h-8 shadow-xs"
               >
                 <CornerRightUpIcon className="w-3.5 h-3.5" />
                 <span>Remarcar</span>
@@ -174,19 +168,18 @@ export const MassScheduleExceptionItem = ({
 
             <DialogContent className="sm:max-w-sm">
               <DialogHeader>
-                <DialogTitle>Remarcar Agendamento</DialogTitle>
+                <DialogTitle>Remarcar Atendimento</DialogTitle>
                 <DialogDescription>
                   Você está prestes a reativar o agendamento recorrente abaixo
                   para esta data. Confirme os dados.
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="mx-4 rounded-xl border border-zinc-200 bg-zinc-50 p-3.5 mb-5 space-y-2 text-xs sm:text-sm">
+              <div className="mx-4 rounded-xl border border-zinc-200 bg-zinc-50 p-3.5 mb-5 space-y-2 text-sm sm:text-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-zinc-500 font-medium">Horário:</span>
                   <span className="font-mono font-semibold text-zinc-900">
                     {schedule.startTime}
-                    {schedule.endTime ? ` — ${schedule.endTime}` : ''}
                   </span>
                 </div>
                 <div className="flex items-start justify-between gap-2">

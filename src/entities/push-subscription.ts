@@ -5,6 +5,7 @@ export type PushSubscriptionEntity = {
   userEmail?: string | null;
   userRole?: string | null;
   origin: 'site' | 'panel';
+  deviceId?: string | null;
   deviceInfo?: string | null;
   endpoint: string;
   p256dh: string;

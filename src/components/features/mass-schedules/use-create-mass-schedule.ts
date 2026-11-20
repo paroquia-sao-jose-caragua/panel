@@ -1,5 +1,6 @@
 import { createMassSchedule } from '@/api/communities/mass-schedules/create';
 import { useCommunity } from '@/api/communities/use-community';
+import { ROUTES } from '@/constants/routes';
 import { useNavigate } from '@/hooks/use-navigate';
 import { useMutation } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -24,7 +25,7 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       isSolemn: false,
       recurrenceType: 'weekly',
       startDate: dayjs().format('YYYY-MM-DD'),
-      times: [],
+      startTime: '',
     } as {
       title?: string;
       isPrecept: boolean;
@@ -32,11 +33,10 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
       recurrenceType: 'weekly' | 'monthly' | 'week-of-month';
       dayOfWeek?: 0 | 2 | 1 | 3 | 4 | 5 | 6;
       dayOfMonth?: number;
-      monthOfYear?: number;
       weekOfMonth?: number;
       startDate: string;
       endDate?: string;
-      times: { startTime: string; endTime?: string }[];
+      startTime: string;
       orientations?: string;
     },
     onSubmit: (values) => {
@@ -49,22 +49,19 @@ export const useCreateMassSchedule = ({ type }: UseCreateMassScheduleProps) => {
           recurrenceType:
             values.recurrenceType === 'week-of-month'
               ? 'monthly'
-              : values.isSolemn
-                ? 'yearly'
-                : values.recurrenceType,
+              : values.recurrenceType,
           dayOfWeek: values?.dayOfWeek,
           dayOfMonth: values?.dayOfMonth,
           weekOfMonth: values?.weekOfMonth,
-          monthOfYear: values?.monthOfYear,
           startDate: values.startDate,
           endDate: values?.endDate,
-          times: values.times,
+          startTime: values.startTime,
           orientations: values?.orientations,
         },
         {
           onSuccess: ({ massSchedule, statusCode, message }) => {
             if (massSchedule) {
-              navigate.replace(`/${community?.slug}`);
+              navigate.replace(ROUTES.COMMUNITIES.DETAILS(community?.slug || ''));
             }
           },
         }

@@ -45,7 +45,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
             <h2 className="font-semibold text-zinc-900 text-base">
               Canais de Contato Direto
             </h2>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Telefone fixo, WhatsApp de atendimento e e-mail institucional
             </p>
           </div>
@@ -53,7 +53,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="block mb-1.5 text-xs font-semibold text-zinc-700">
+            <label className="block mb-1.5 text-sm font-semibold text-zinc-700">
               Telefone Fixo
             </label>
             <InputRoot
@@ -70,7 +70,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
           </div>
 
           <div>
-            <label className="block mb-1.5 text-xs font-semibold text-zinc-700">
+            <label className="block mb-1.5 text-sm font-semibold text-zinc-700">
               WhatsApp de Atendimento
             </label>
             <InputRoot
@@ -87,7 +87,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block mb-1.5 text-xs font-semibold text-zinc-700">
+            <label className="block mb-1.5 text-sm font-semibold text-zinc-700">
               E-mail Oficial da Secretaria
             </label>
             <InputRoot
@@ -114,14 +114,14 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
             <h2 className="font-semibold text-zinc-900 text-base">
               Horário de Atendimento da Secretaria
             </h2>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Informe os dias da semana, turnos matutinos e vespertinos (permite múltiplas linhas)
             </p>
           </div>
         </div>
 
         <div>
-          <label className="block mb-1.5 text-xs font-semibold text-zinc-700">
+          <label className="block mb-1.5 text-sm font-semibold text-zinc-700">
             Horários de Funcionamento (Multilinha)
           </label>
           <Textarea
@@ -145,14 +145,14 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
             <h2 className="font-semibold text-zinc-900 text-base">
               Endereço da Secretaria Paroquial
             </h2>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Localização da sede paroquial onde os fiéis são acolhidos presencialmente
             </p>
           </div>
         </div>
 
         <div>
-          <label className="block mb-1.5 text-xs font-semibold text-zinc-700">
+          <label className="block mb-1.5 text-sm font-semibold text-zinc-700">
             Endereço Completo
           </label>
           <InputRoot
@@ -177,7 +177,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
             <h2 className="font-semibold text-zinc-900 text-base">
               Redes Sociais e Mensageiros
             </h2>
-            <p className="text-xs text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Links oficiais para o site e rodapé conectarem os fiéis às mídias da paróquia
             </p>
           </div>
@@ -185,7 +185,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
 
         <div className="grid grid-cols-1 gap-5">
           <div>
-            <label className="flex items-center gap-1.5 mb-1.5 text-xs font-semibold text-zinc-700">
+            <label className="flex items-center gap-1.5 mb-1.5 text-sm font-semibold text-zinc-700">
               <Instagram className="w-3.5 h-3.5 text-pink-600" />
               <span>Instagram</span>
             </label>
@@ -203,7 +203,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
           </div>
 
           <div>
-            <label className="flex items-center gap-1.5 mb-1.5 text-xs font-semibold text-zinc-700">
+            <label className="flex items-center gap-1.5 mb-1.5 text-sm font-semibold text-zinc-700">
               <Youtube className="w-3.5 h-3.5 text-red-600" />
               <span>YouTube</span>
             </label>
@@ -221,7 +221,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
           </div>
 
           <div>
-            <label className="flex items-center gap-1.5 mb-1.5 text-xs font-semibold text-zinc-700">
+            <label className="flex items-center gap-1.5 mb-1.5 text-sm font-semibold text-zinc-700">
               <Facebook className="w-3.5 h-3.5 text-blue-600" />
               <span>Facebook</span>
             </label>
@@ -239,7 +239,7 @@ export const SecretariatFormStep = ({ formik }: SecretariatFormStepProps) => {
           </div>
 
           <div>
-            <label className="flex items-center gap-1.5 mb-1.5 text-xs font-semibold text-zinc-700">
+            <label className="flex items-center gap-1.5 mb-1.5 text-sm font-semibold text-zinc-700">
               <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
               <span>Link Direto WhatsApp (wa.me)</span>
             </label>

@@ -29,7 +29,7 @@ export default function Login() {
         <div className="pt-2 border-t border-zinc-100 text-center w-full">
           <Link
             href="/ajuda"
-            className="text-xs text-brand-700 hover:text-brand-900 font-medium inline-flex items-center gap-1.5 transition"
+            className="text-sm text-brand-700 hover:text-brand-900 font-medium inline-flex items-center gap-1.5 transition"
           >
             <HelpCircle className="w-3.5 h-3.5" />
             <span>Precisa de ajuda? Acesse a Central de Ajuda</span>

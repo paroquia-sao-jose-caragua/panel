@@ -174,13 +174,10 @@ export const ClergyModal = ({
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h3
-                className="text-xl sm:text-2xl font-semibold text-zinc-900"
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}
-              >
+              <h3 className="text-xl sm:text-2xl font-semibold text-zinc-900">
                 {clergyToEdit ? 'Editar Dados do Clérigo' : 'Adicionar Membro do Clero'}
               </h3>
-              <p className="text-xs text-zinc-500 font-serif">
+              <p className="text-sm text-zinc-500 font-serif">
                 Preencha as informações que serão exibidas na seção do Clero no site público.
               </p>
             </div>
@@ -221,7 +218,7 @@ export const ClergyModal = ({
                 {/* Upload Overlay */}
                 <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white cursor-pointer p-2 text-center">
                   <Upload className="w-6 h-6 mb-1" />
-                  <span className="text-xs font-medium">Trocar Foto</span>
+                  <span className="text-sm font-medium">Trocar Foto</span>
                   <input
                     type="file"
                     accept="image/*"
@@ -232,17 +229,17 @@ export const ClergyModal = ({
               </div>
 
               {uploadProgress !== null && (
-                <span className="text-xs text-[#B8872E] font-medium mt-1">
+                <span className="text-sm text-[#B8872E] font-medium mt-1">
                   Enviando: {uploadProgress}%
                 </span>
               )}
               {uploadError && (
-                <span className="text-xs text-red-600 mt-1 text-center">
+                <span className="text-sm text-red-600 mt-1 text-center">
                   {uploadError}
                 </span>
               )}
 
-              <label className="mt-2 text-xs font-semibold text-[#B8872E] hover:underline cursor-pointer flex items-center gap-1">
+              <label className="mt-2 text-sm font-semibold text-[#B8872E] hover:underline cursor-pointer flex items-center gap-1">
                 <Upload className="w-3.5 h-3.5" />
                 <span>{previewUrl ? 'Alterar foto' : 'Enviar foto'}</span>
                 <input
@@ -258,7 +255,7 @@ export const ClergyModal = ({
             <div className="flex-1 w-full space-y-4">
               {/* Position / Cargo Canônico */}
               <div>
-                <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+                <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
                   Cargo / Posição Canônica *
                 </label>
                 <select
@@ -276,7 +273,7 @@ export const ClergyModal = ({
 
               {/* Nome */}
               <div>
-                <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+                <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
                   Nome Completo *
                 </label>
                 <input
@@ -292,7 +289,7 @@ export const ClergyModal = ({
               {/* Título e Função Exibida */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+                  <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
                     Título / Vocativo
                   </label>
                   <input
@@ -304,7 +301,7 @@ export const ClergyModal = ({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+                  <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
                     Função Exibida no Site
                   </label>
                   <input
@@ -321,7 +318,7 @@ export const ClergyModal = ({
 
           {/* Frase Curta / Introdução */}
           <div>
-            <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+            <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
               Frase de Destaque / Introdução Curta
             </label>
             <input
@@ -335,7 +332,7 @@ export const ClergyModal = ({
 
           {/* Biografia Completa */}
           <div>
-            <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
+            <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1.5">
               Biografia e Trajetória Vocacional
             </label>
             <textarea
@@ -357,7 +354,7 @@ export const ClergyModal = ({
                 className="size-4.5 rounded text-[#18351E] focus:ring-[#B8872E] accent-[#18351E]"
               />
               <div>
-                <span className="text-xs font-semibold text-zinc-900 block">
+                <span className="text-sm font-semibold text-zinc-900 block">
                   Destaque Principal (Pároco)
                 </span>
                 <span className="text-[11px] text-zinc-500">
@@ -367,7 +364,7 @@ export const ClergyModal = ({
             </label>
 
             <div>
-              <label className="block text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-1">
+              <label className="block text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-1">
                 Ordem de Exibição
               </label>
               <input
@@ -388,7 +385,7 @@ export const ClergyModal = ({
               variant="outline"
               onClick={onClose}
               disabled={isSaving}
-              className="rounded-full text-xs"
+              className="rounded-full text-sm"
             >
               Cancelar
             </Button>
@@ -397,7 +394,7 @@ export const ClergyModal = ({
               disabled={!name.trim()}
               isLoading={isSaving}
               loadingText="Salvando..."
-              className="rounded-full text-xs font-semibold px-6 shadow-md"
+              className="rounded-full text-sm font-semibold px-6 shadow-md"
             >
               {clergyToEdit ? 'Salvar Alterações' : 'Cadastrar Clérigo'}
             </Button>

@@ -27,6 +27,7 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { ChurchAvatar } from '../churches/church-avatar';
+import { ROUTES } from '@/constants/routes';
 
 interface ScheduleItemProps {
   schedule: EventSchedule;
@@ -118,10 +119,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
 
         {/* Content: Title & Orientations */}
         <div className="space-y-1">
-          <h4
-            className="text-lg sm:text-xl font-semibold text-zinc-900 leading-snug"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          >
+          <h4 className="text-lg sm:text-xl font-semibold text-zinc-900 leading-snug">
             {isMass ? 'Santa Missa' : schedule.title}
             {schedule.massType === 'devotional' && schedule.title && isMass
               ? ` Devocional — ${schedule.title}`
@@ -132,7 +130,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
           </h4>
 
           {schedule.orientations && (
-            <p className="text-xs sm:text-sm text-zinc-600 font-serif leading-relaxed">
+            <p className="text-sm sm:text-sm text-zinc-600 font-serif leading-relaxed">
               {schedule.orientations}
             </p>
           )}
@@ -141,7 +139,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
 
       {/* Card Footer: Location & Actions */}
       <div className="mt-4 pt-3.5 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+        <div className="flex items-center gap-1.5 text-sm text-zinc-500">
           <MapPin className="w-3.5 h-3.5 text-[#B8872E] shrink-0" />
           <span className="font-medium text-zinc-700">
             {schedule.customLocation
@@ -158,7 +156,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="gap-1.5 text-zinc-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-xs h-8"
+                  className="gap-1.5 text-zinc-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-sm h-8"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Excluir</span>
@@ -167,7 +165,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
 
               <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
-                  <DialogTitle>Excluir Agendamento</DialogTitle>
+                  <DialogTitle>Excluir Atendimento</DialogTitle>
 
                   <DialogDescription>
                     Por favor, confirme os dados abaixo para garantir que está
@@ -175,7 +173,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
                   </DialogDescription>
                 </DialogHeader>
 
-                <div className="mx-4 rounded-xl border border-zinc-200 bg-zinc-50 p-3.5 mb-5 space-y-2 text-xs sm:text-sm">
+                <div className="mx-4 rounded-xl border border-zinc-200 bg-zinc-50 p-3.5 mb-5 space-y-2 text-sm sm:text-sm">
                   <div className="flex items-center justify-between">
                     <span className="text-zinc-500 font-medium">Horário:</span>
                     <span className="font-mono font-semibold text-zinc-900">
@@ -238,10 +236,10 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
             asChild
             variant="outline"
             size="sm"
-            className="gap-1.5 text-xs h-8"
+            className="gap-1.5 text-sm h-8"
           >
             <Link
-              href={`/agenda/evento/${schedule.eventScheduleId}/editar`}
+              href={ROUTES.CALENDAR.EDIT_EVENT(schedule.eventScheduleId)}
             >
               <Pencil className="w-3.5 h-3.5" />
               <span>Editar</span>

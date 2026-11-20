@@ -103,7 +103,7 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
               variant="ghost"
               size="sm"
               onClick={() => setIsOpen(false)}
-              className="rounded-full bg-white/10 hover:bg-white/25 text-white hover:text-white px-3 py-1.5 text-xs font-semibold gap-1.5"
+              className="rounded-full bg-white/10 hover:bg-white/25 text-white hover:text-white px-3 py-1.5 text-sm font-semibold gap-1.5"
             >
               <X className="h-4 w-4" /> Fechar (ESC)
             </Button>

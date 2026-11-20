@@ -32,7 +32,7 @@ export function FullLoading({
           }}
         />
         <div
-          className="absolute h-40 w-40 rounded-full border animate-spin"
+          className="absolute h-40 w-40 rounded-full border-2 animate-spin opacity-25"
           style={{
             borderColor: `${cream}55`,
             borderTopColor: gold,
@@ -42,9 +42,9 @@ export function FullLoading({
         <Image
           src="/loading-icon.png"
           alt="Paróquia São José"
-          width={112}
-          height={112}
-          className="w-28 h-28 z-10 object-contain drop-shadow-md"
+          width={154}
+          height={154}
+          className="w-38 h-38 z-10 object-contain drop-shadow-md"
           priority
         />
       </div>

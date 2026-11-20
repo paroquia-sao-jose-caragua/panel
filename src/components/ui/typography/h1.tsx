@@ -10,7 +10,6 @@ export function TypographyH1({
         'scroll-m-20 pb-2 text-3xl md:text-5xl font-semibold text-zinc-900 leading-tight first:mt-0 font-serif',
         className,
       ])}
-      style={{ fontFamily: "Cormorant Garamond, serif" }}
       {...props}
     />
   );

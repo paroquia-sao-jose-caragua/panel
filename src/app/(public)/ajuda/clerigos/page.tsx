@@ -33,27 +33,27 @@ export default function ClergyHelpPage() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 shadow-2xs">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Button asChild variant="ghost" size="sm" className="text-xs -ml-2 text-zinc-600 hover:text-zinc-900">
+            <Button asChild variant="ghost" size="sm" className="text-sm -ml-2 text-zinc-600 hover:text-zinc-900">
               <Link href="/ajuda">
                 <ArrowLeft className="w-4 h-4 mr-1.5" />
                 Voltar à Central de Ajuda
               </Link>
             </Button>
             <div className="h-4 w-px bg-zinc-200 hidden sm:block" />
-            <span className="text-xs font-semibold text-zinc-500 hidden sm:inline">
+            <span className="text-sm font-semibold text-zinc-500 hidden sm:inline">
               Manual: Gestão de Clérigos & Padres
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button asChild variant="outline" size="sm" className="text-xs border-zinc-300 text-zinc-700 hover:bg-zinc-50">
+            <Button asChild variant="outline" size="sm" className="text-sm border-zinc-300 text-zinc-700 hover:bg-zinc-50">
               <Link href="/clerigos/adicionar">
                 <PlusCircle className="w-3.5 h-3.5 mr-1.5 text-zinc-600" />
                 Novo Clérigo
               </Link>
             </Button>
 
-            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-xs">
+            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-sm">
               <Link href="/clerigos">
                 Ver Clérigos
               </Link>
@@ -65,7 +65,7 @@ export default function ClergyHelpPage() {
       {/* Hero Header */}
       <div className="bg-brand-gradient text-white py-12 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-200 text-xs font-semibold border border-white/15">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-200 text-sm font-semibold border border-white/15">
             <Users className="w-3.5 h-3.5 text-brand-400" />
             <span>Guia Pastoral & Institucional</span>
           </div>
@@ -85,12 +85,12 @@ export default function ClergyHelpPage() {
         {/* Sticky Table of Contents (Desktop) */}
         <aside className="hidden lg:block">
           <div className="sticky top-24 bg-white rounded-2xl border border-zinc-200/80 p-5 shadow-2xs space-y-3">
-            <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
               <BookOpen className="w-4 h-4 text-brand-700" />
               <span>Neste Manual</span>
             </h3>
 
-            <nav className="space-y-1 text-xs">
+            <nav className="space-y-1 text-sm">
               <a href="#visao-geral" className="block p-1.5 rounded-lg text-zinc-600 hover:text-brand-700 hover:bg-zinc-50 font-medium transition">
                 1. Visão Geral do Módulo
               </a>
@@ -115,13 +115,13 @@ export default function ClergyHelpPage() {
             </nav>
 
             <div className="pt-3 border-t border-zinc-100 flex flex-col gap-2">
-              <Button asChild variant="outline" size="sm" className="w-full justify-center text-xs">
+              <Button asChild variant="outline" size="sm" className="w-full justify-center text-sm">
                 <Link href="/clerigos/adicionar">
                   <PlusCircle className="w-3.5 h-3.5 mr-1.5 text-brand-600" />
                   Cadastrar Clérigo
                 </Link>
               </Button>
-              <Button asChild size="sm" className="w-full justify-center bg-brand-700 hover:bg-brand-800 text-white text-xs">
+              <Button asChild size="sm" className="w-full justify-center bg-brand-700 hover:bg-brand-800 text-white text-sm">
                 <Link href="/clerigos">
                   <Users className="w-3.5 h-3.5 mr-1.5" />
                   Gerenciar Clérigos
@@ -136,7 +136,7 @@ export default function ClergyHelpPage() {
           {/* Section 1: Overview */}
           <section id="visao-geral" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 1
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -145,11 +145,11 @@ export default function ClergyHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              O módulo <strong>Clérigos</strong> (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/clerigos</code>) é o espaço onde a secretaria registra as autoridades eclesiásticas que pastoreiam e conduzem a Paróquia São José de Caraguatatuba. Todos os dados cadastrados aqui alimentam com riqueza e beleza a seção pública <em>"Quem nos conduz na fé"</em> no site institucional:
+              O módulo <strong>Clérigos</strong> (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/clerigos</code>) é o espaço onde a secretaria registra as autoridades eclesiásticas que pastoreiam e conduzem a Paróquia São José de Caraguatatuba. Todos os dados cadastrados aqui alimentam com riqueza e beleza a seção pública <em>"Quem nos conduz na fé"</em> no site institucional:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <Crown className="w-3.5 h-3.5 text-amber-600" />
                   Pároco em Destaque
@@ -159,7 +159,7 @@ export default function ClergyHelpPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <Users className="w-3.5 h-3.5 text-brand-700" />
                   Corpo do Clero
@@ -169,7 +169,7 @@ export default function ClergyHelpPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <Church className="w-3.5 h-3.5 text-blue-600" />
                   Autoridades Diocesanas
@@ -184,7 +184,7 @@ export default function ClergyHelpPage() {
           {/* Section 2: Hierarchy & Roles */}
           <section id="cargos-eclesiasticos" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 2
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -196,7 +196,7 @@ export default function ClergyHelpPage() {
               O sistema possui categorias padronizadas de acordo com o direito canônico e a organização paroquial:
             </p>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="p-3 bg-zinc-50 border border-zinc-200 rounded-xl space-y-1">
                   <span className="font-bold text-zinc-900 block">Pároco (Parish Priest)</span>
@@ -231,7 +231,7 @@ export default function ClergyHelpPage() {
           {/* Section 3: Adding Clergy */}
           <section id="cadastrar-clerigo" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 3
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -240,13 +240,13 @@ export default function ClergyHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              Para cadastrar um novo sacerdote ou autoridade, acesse <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/clerigos/adicionar</code> pelo botão <strong>"+ Novo Clérigo"</strong>:
+              Para cadastrar um novo sacerdote ou autoridade, acesse <code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/clerigos/adicionar</code> pelo botão <strong>"+ Novo Clérigo"</strong>:
             </p>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">1</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">1</span>
                   <span>Nome Completo com Título Religioso</span>
                 </div>
                 <p className="text-zinc-600 pl-7">
@@ -256,7 +256,7 @@ export default function ClergyHelpPage() {
 
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">2</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">2</span>
                   <span>Posição Eclesiástica e Título Público</span>
                 </div>
                 <p className="text-zinc-600 pl-7">
@@ -266,7 +266,7 @@ export default function ClergyHelpPage() {
 
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">3</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">3</span>
                   <span>Ordem de Exibição (Numérica)</span>
                 </div>
                 <p className="text-zinc-600 pl-7">
@@ -279,7 +279,7 @@ export default function ClergyHelpPage() {
           {/* Section 4: Main Clergy Member */}
           <section id="clerigo-principal" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 4
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -287,7 +287,7 @@ export default function ClergyHelpPage() {
               </h2>
             </div>
 
-            <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-xl space-y-3 text-xs text-amber-950">
+            <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-xl space-y-3 text-sm text-amber-950">
               <div className="font-bold flex items-center gap-2 text-sm text-amber-900">
                 <Crown className="w-4 h-4 text-amber-700" />
                 <span>O que é a marcação "Clérigo Principal"?</span>
@@ -305,7 +305,7 @@ export default function ClergyHelpPage() {
           {/* Section 5: Photo, Biography & Motto */}
           <section id="foto-biografia" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 5
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -317,7 +317,7 @@ export default function ClergyHelpPage() {
               Para que a apresentação da equipe pastoral seja acolhedora e inspiradora para os fiéis e paroquianos:
             </p>
 
-            <div className="space-y-4 text-xs">
+            <div className="space-y-4 text-sm">
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="font-bold text-zinc-900 flex items-center gap-1.5 text-sm">
                   <ImageIcon className="w-4 h-4 text-brand-600" />
@@ -355,7 +355,7 @@ export default function ClergyHelpPage() {
           {/* Section 6: Editing & Site Sync */}
           <section id="edicao-site" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 6
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -367,7 +367,7 @@ export default function ClergyHelpPage() {
               Para atualizar informações de qualquer clérigo cadastrado:
             </p>
 
-            <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-xs">
+            <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-sm">
               <ol className="space-y-2 list-decimal pl-5 text-zinc-600">
                 <li>Acesse o menu <strong>Clérigos</strong> (<code className="bg-white px-1 py-0.5 rounded border">/clerigos</code>).</li>
                 <li>Clique no botão <strong>"Editar Informações"</strong> no card do membro desejado.</li>
@@ -380,7 +380,7 @@ export default function ClergyHelpPage() {
           {/* Section 7: FAQ */}
           <section id="faq-clerigos" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 7
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -388,7 +388,7 @@ export default function ClergyHelpPage() {
               </h2>
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1">
                 <span className="font-bold text-zinc-900 block text-sm">
                   Qual a diferença entre cadastrar um Clérigo e criar um Usuário do Painel?
@@ -421,7 +421,7 @@ export default function ClergyHelpPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-xs text-brand-200 mt-auto">
+      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-sm text-brand-200 mt-auto">
         <p className="font-semibold text-white">
           Paróquia São José de Caraguatatuba • Diocese de Caraguatatuba
         </p>

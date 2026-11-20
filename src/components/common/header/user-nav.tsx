@@ -7,6 +7,7 @@ import {
   Settings,
   ChevronDown,
   HelpCircle,
+  Calendar,
 } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '@/api/users/logout';
@@ -72,12 +73,12 @@ export function UserNav() {
             className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-brand-500/20 transition-all cursor-pointer border border-zinc-200/80 shadow-2xs"
             aria-label="Menu do Usuário"
           >
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-brand-800 text-brand-100 font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 border border-brand-700 shadow-2xs">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-brand-800 text-brand-100 font-bold text-sm sm:text-sm flex items-center justify-center shrink-0 border border-brand-700 shadow-2xs">
               {initial}
             </div>
 
             <div className="hidden sm:flex flex-col text-left min-w-0">
-              <span className="text-xs font-semibold text-zinc-900 truncate max-w-32">
+              <span className="text-sm font-semibold text-zinc-900 truncate max-w-32">
                 {user?.name}
               </span>
               <span className="text-[10px] text-zinc-500 font-medium">
@@ -104,21 +105,21 @@ export function UserNav() {
                 {getRoleLabel(user?.role)}
               </span>
             </div>
-            <p className="text-xs text-zinc-500 truncate">{user?.email}</p>
+            <p className="text-sm text-zinc-500 truncate">{user?.email}</p>
           </div>
 
           <DropdownMenuSeparator className="my-1 bg-zinc-100" />
 
           {/* Navigation Options Group */}
           <DropdownMenuGroup className="space-y-0.5">
-            {user?.role !== 'pastoral_agent' && (
+            {user?.role === 'pastoral_agent' && (
               <DropdownMenuItem asChild>
                 <Link
-                  href={ROUTES.SETTINGS.HOME}
-                  className="flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-zinc-700 rounded-lg hover:bg-zinc-100 hover:text-zinc-900 transition cursor-pointer"
+                  href={ROUTES.MY_AGENDA.HOME}
+                  className="flex items-center gap-2.5 px-3 py-2 text-sm sm:text-sm font-medium text-emerald-800 rounded-lg hover:bg-emerald-50 transition cursor-pointer"
                 >
-                  <Settings className="w-4 h-4 text-zinc-500" />
-                  <span>Configurações</span>
+                  <Calendar className="w-4 h-4 text-emerald-600" />
+                  <span>Minha Agenda Pastoral</span>
                 </Link>
               </DropdownMenuItem>
             )}
@@ -126,10 +127,10 @@ export function UserNav() {
             <DropdownMenuItem asChild>
               <Link
                 href={ROUTES.HELP.HOME}
-                className="flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-medium text-zinc-700 rounded-lg hover:bg-zinc-100 hover:text-zinc-900 transition cursor-pointer"
+                className="flex items-center gap-2.5 px-3 py-2 text-sm sm:text-sm font-medium text-zinc-700 rounded-lg hover:bg-zinc-100 hover:text-zinc-900 transition cursor-pointer"
               >
                 <HelpCircle className="w-4 h-4 text-brand-600" />
-                <span>Central de Ajuda & Manuais</span>
+                <span>Central de Ajuda</span>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -139,7 +140,7 @@ export function UserNav() {
           {/* Logout Action */}
           <DropdownMenuItem
             onClick={() => setShowLogoutConfirm(true)}
-            className="flex items-center gap-2.5 px-3 py-2 text-xs sm:text-sm font-semibold text-rose-600 rounded-lg hover:bg-rose-50 hover:text-rose-700 transition cursor-pointer"
+            className="flex items-center gap-2.5 px-3 py-2 text-sm sm:text-sm font-semibold text-rose-600 rounded-lg hover:bg-rose-50 hover:text-rose-700 transition cursor-pointer"
           >
             <LogOut className="w-4 h-4 text-rose-500" />
             <span>Sair da Conta</span>

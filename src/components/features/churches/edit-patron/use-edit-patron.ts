@@ -5,6 +5,7 @@ import { showAlert } from '@/utils/showAlert';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { useCommunity } from '@/api/communities/use-community';
+import { ROUTES } from '@/constants/routes';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
@@ -49,7 +50,7 @@ export const useEditPatron = () => {
               setCommunity(updatedCommunity);
               queryClient.invalidateQueries({ queryKey: ['community', community.slug] });
               queryClient.invalidateQueries({ queryKey: ['communities'] });
-              navigate.push(`/${community.slug}`);
+              navigate.push(ROUTES.COMMUNITIES.DETAILS(community.slug));
               showAlert('Dados do padroeiro salvos com sucesso!');
             } else {
               showAlert(`Erro ao salvar dados do padroeiro: ${message || 'Erro desconhecido'}`);

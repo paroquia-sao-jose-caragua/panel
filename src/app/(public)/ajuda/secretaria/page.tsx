@@ -39,27 +39,27 @@ export default function SecretariatHelpPage() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 shadow-2xs">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Button asChild variant="ghost" size="sm" className="text-xs -ml-2 text-zinc-600 hover:text-zinc-900">
+            <Button asChild variant="ghost" size="sm" className="text-sm -ml-2 text-zinc-600 hover:text-zinc-900">
               <Link href="/ajuda">
                 <ArrowLeft className="w-4 h-4 mr-1.5" />
                 Voltar à Central de Ajuda
               </Link>
             </Button>
             <div className="h-4 w-px bg-zinc-200 hidden sm:block" />
-            <span className="text-xs font-semibold text-zinc-500 hidden sm:inline">
+            <span className="text-sm font-semibold text-zinc-500 hidden sm:inline">
               Manual da Secretaria Paroquial & PIX
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button asChild variant="outline" size="sm" className="text-xs border-zinc-300 text-zinc-700 hover:bg-zinc-50">
+            <Button asChild variant="outline" size="sm" className="text-sm border-zinc-300 text-zinc-700 hover:bg-zinc-50">
               <Link href="/secretaria/doacoes">
                 <QrCode className="w-3.5 h-3.5 mr-1.5 text-zinc-600" />
                 Configurar PIX
               </Link>
             </Button>
 
-            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-xs">
+            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-sm">
               <Link href="/secretaria">
                 Ir p/ Secretaria
               </Link>
@@ -71,7 +71,7 @@ export default function SecretariatHelpPage() {
       {/* Hero Header */}
       <div className="bg-brand-gradient text-white py-12 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-200 text-xs font-semibold border border-white/15">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-200 text-sm font-semibold border border-white/15">
             <Building2 className="w-3.5 h-3.5 text-brand-400" />
             <span>Guia Operacional Passo a Passo</span>
           </div>
@@ -91,12 +91,12 @@ export default function SecretariatHelpPage() {
         {/* Sticky Table of Contents (Desktop) */}
         <aside className="hidden lg:block">
           <div className="sticky top-24 bg-white rounded-2xl border border-zinc-200/80 p-5 shadow-2xs space-y-3">
-            <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
               <BookOpen className="w-4 h-4 text-brand-700" />
               <span>Neste Manual</span>
             </h3>
 
-            <nav className="space-y-1 text-xs">
+            <nav className="space-y-1 text-sm">
               <a href="#visao-geral" className="block p-1.5 rounded-lg text-zinc-600 hover:text-brand-700 hover:bg-zinc-50 font-medium transition">
                 1. Visão Geral da Secretaria
               </a>
@@ -124,13 +124,13 @@ export default function SecretariatHelpPage() {
             </nav>
 
             <div className="pt-3 border-t border-zinc-100 flex flex-col gap-2">
-              <Button asChild variant="outline" size="sm" className="w-full justify-center text-xs">
+              <Button asChild variant="outline" size="sm" className="w-full justify-center text-sm">
                 <Link href="/secretaria/editar">
                   <Phone className="w-3.5 h-3.5 mr-1.5 text-brand-600" />
                   Editar Contatos
                 </Link>
               </Button>
-              <Button asChild size="sm" className="w-full justify-center bg-brand-700 hover:bg-brand-800 text-white text-xs">
+              <Button asChild size="sm" className="w-full justify-center bg-brand-700 hover:bg-brand-800 text-white text-sm">
                 <Link href="/secretaria/doacoes">
                   <QrCode className="w-3.5 h-3.5 mr-1.5" />
                   Gerenciar PIX
@@ -145,7 +145,7 @@ export default function SecretariatHelpPage() {
           {/* Section 1: Overview */}
           <section id="visao-geral" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 1
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -154,11 +154,11 @@ export default function SecretariatHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              O módulo <strong>Secretaria</strong> do painel administrativo (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/secretaria</code>) é o centro de controle institucional da Paróquia São José de Caraguatatuba. Todas as informações configuradas aqui são sincronizadas instantaneamente com o site público paroquial:
+              O módulo <strong>Secretaria</strong> do painel administrativo (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/secretaria</code>) é o centro de controle institucional da Paróquia São José de Caraguatatuba. Todas as informações configuradas aqui são sincronizadas instantaneamente com o site público paroquial:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5 text-brand-700" />
                   Atendimento & Balcão
@@ -168,7 +168,7 @@ export default function SecretariatHelpPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <QrCode className="w-3.5 h-3.5 text-brand-700" />
                   PIX & Arrecadação
@@ -178,7 +178,7 @@ export default function SecretariatHelpPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-1 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5">
                   <Instagram className="w-3.5 h-3.5 text-brand-700" />
                   Comunicação Digital
@@ -189,7 +189,7 @@ export default function SecretariatHelpPage() {
               </div>
             </div>
 
-            <div className="p-3 bg-brand-50 border border-brand-200/80 rounded-xl text-xs text-brand-900 flex items-start gap-2.5">
+            <div className="p-3 bg-brand-50 border border-brand-200/80 rounded-xl text-sm text-brand-900 flex items-start gap-2.5">
               <Sparkles className="w-4 h-4 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <strong>Sincronização em Tempo Real:</strong> Quando a secretaria altera o número de telefone, o horário de atendimento ou a chave PIX, o site público atualiza imediatamente no rodapé, na página de <em>Contato</em> (<code className="bg-white px-1 py-0.5 rounded border">/contato</code>) e na página de <em>Quero Contribuir</em> (<code className="bg-white px-1 py-0.5 rounded border">/quero-contribuir</code>).
@@ -200,7 +200,7 @@ export default function SecretariatHelpPage() {
           {/* Section 2: Contact and Location */}
           <section id="dados-contato" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 2
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -209,36 +209,36 @@ export default function SecretariatHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              Para atualizar os canais de contato da paróquia, clique no botão <strong>"Editar Dados de Contato"</strong> ou navegue até <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/secretaria/editar</code>. O formulário é dividido em um assistente de 2 etapas seguras:
+              Para atualizar os canais de contato da paróquia, clique no botão <strong>"Editar Dados de Contato"</strong> ou navegue até <code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/secretaria/editar</code>. O formulário é dividido em um assistente de 2 etapas seguras:
             </p>
 
             <div className="space-y-4">
               <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">A</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">A</span>
                   <span>Telefone Fixo e WhatsApp da Secretaria</span>
                 </div>
-                <p className="text-xs text-zinc-600 pl-7">
+                <p className="text-sm text-zinc-600 pl-7">
                   Informe o telefone fixo para atendimento por voz (ex: <code className="bg-white px-1 py-0.5 rounded border">(12) 3882-0000</code>) e o número de WhatsApp com DDD. Você também pode cadastrar o link direto de atendimento (<code className="bg-white px-1 py-0.5 rounded border">https://wa.me/5512999999999</code>) para que os fiéis iniciem conversas com um clique pelo celular.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">B</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">B</span>
                   <span>E-mail Institucional</span>
                 </div>
-                <p className="text-xs text-zinc-600 pl-7">
+                <p className="text-sm text-zinc-600 pl-7">
                   O endereço eletrônico oficial da paróquia (ex: <code className="bg-white px-1 py-0.5 rounded border">contato@paroquiasaojosecaragua.com.br</code>). É este e-mail que receberá mensagens de pedidos de intenções, dúvidas de sacramentos e solicitações gerais.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">C</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">C</span>
                   <span>Endereço Completo da Matriz</span>
                 </div>
-                <p className="text-xs text-zinc-600 pl-7">
+                <p className="text-sm text-zinc-600 pl-7">
                   Preencha o logradouro, número, bairro e CEP da Igreja Matriz de São José (ex: Rua Benedito Zacarias Arouca, Centro, Caraguatatuba - SP). O site utiliza este endereço para exibir a localização e traçar rotas via Google Maps para os fiéis e turistas.
                 </p>
               </div>
@@ -248,7 +248,7 @@ export default function SecretariatHelpPage() {
           {/* Section 3: Office Hours */}
           <section id="horario-atendimento" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 3
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -260,7 +260,7 @@ export default function SecretariatHelpPage() {
               O campo <strong>Horário de Atendimento</strong> é essencial para informar com clareza quando o balcão da secretaria paroquial está aberto para atendimento presencial e por telefone:
             </p>
 
-            <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-xs">
+            <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-sm">
               <div className="font-bold text-zinc-900 flex items-center gap-1.5 text-sm">
                 <Clock className="w-4 h-4 text-brand-600" />
                 <span>Formatação Recomendada:</span>
@@ -280,7 +280,7 @@ export default function SecretariatHelpPage() {
           {/* Section 4: Social Networks */}
           <section id="redes-sociais" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 4
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -292,7 +292,7 @@ export default function SecretariatHelpPage() {
               Na aba de edição da secretaria, você pode configurar os endereços das redes sociais da paróquia:
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
               <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1">
                 <div className="font-semibold text-zinc-900 flex items-center gap-1.5">
                   <Instagram className="w-4 h-4 text-pink-600" />
@@ -322,7 +322,7 @@ export default function SecretariatHelpPage() {
           {/* Section 5: PIX & QR Code */}
           <section id="configuracao-pix" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 5
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -331,7 +331,7 @@ export default function SecretariatHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              O painel paroquial conta com um sistema próprio e independente para processar contribuições de Dízimo e Doações através do PIX (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/secretaria/doacoes</code>). Não há intermediação nem cobrança de taxas de plataformas terceiras:
+              O painel paroquial conta com um sistema próprio e independente para processar contribuições de Dízimo e Doações através do PIX (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/secretaria/doacoes</code>). Não há intermediação nem cobrança de taxas de plataformas terceiras:
             </p>
 
             <div className="space-y-4">
@@ -340,10 +340,10 @@ export default function SecretariatHelpPage() {
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>1. Seleção do Tipo de Chave</span>
                 </div>
-                <p className="text-xs text-zinc-600">
+                <p className="text-sm text-zinc-600">
                   O painel suporta os quatro tipos oficiais regulamentados pelo Banco Central do Brasil:
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-sm">
                   <div className="p-2 bg-white rounded-lg border text-center font-medium">Telefone / Celular</div>
                   <div className="p-2 bg-white rounded-lg border text-center font-medium">CNPJ da Paróquia</div>
                   <div className="p-2 bg-white rounded-lg border text-center font-medium">E-mail Institucional</div>
@@ -356,16 +356,16 @@ export default function SecretariatHelpPage() {
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>2. Dados do Recebedor (Titular da Conta)</span>
                 </div>
-                <p className="text-xs text-zinc-600">
+                <p className="text-sm text-zinc-600">
                   Preencha exatamente como consta na conta bancária paroquial:
                 </p>
-                <ul className="space-y-1 list-disc pl-5 text-xs text-zinc-600">
+                <ul className="space-y-1 list-disc pl-5 text-sm text-zinc-600">
                   <li><strong>Nome do Favorecido:</strong> Ex: <code>Paróquia São José</code> ou <code>Diocese de Caraguatatuba</code>.</li>
                   <li><strong>Cidade do Favorecido:</strong> Ex: <code>Caraguatatuba</code>.</li>
                 </ul>
               </div>
 
-              <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2 text-xs text-emerald-950">
+              <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2 text-sm text-emerald-950">
                 <div className="font-bold flex items-center gap-1.5 text-sm text-emerald-900">
                   <QrCode className="w-4 h-4 text-emerald-700" />
                   <span>Gerador Automático de PIX Copia e Cola e QR Code</span>
@@ -385,7 +385,7 @@ export default function SecretariatHelpPage() {
           {/* Section 6: Traditional Bank Details */}
           <section id="dados-bancarios" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 6
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -397,7 +397,7 @@ export default function SecretariatHelpPage() {
               Para atender paroquianos, benfeitores idosos ou empresas que preferem realizar transferências bancárias convencionais, o painel permite cadastrar a conta bancária da paróquia:
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1">
                 <span className="font-bold text-zinc-900 block">Identificação Bancária</span>
                 <p className="text-zinc-600">Nome do Banco (ex: Banco Santander / Bradesco / Banco do Brasil), número da Agência com dígito e Conta Corrente com dígito.</p>
@@ -413,7 +413,7 @@ export default function SecretariatHelpPage() {
           {/* Section 7: Receipts and Campaigns */}
           <section id="comprovantes-campanhas" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 7
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -422,10 +422,10 @@ export default function SecretariatHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              Na parte inferior da tela de Doações (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/secretaria/doacoes</code>), você pode configurar os canais de recebimento de comprovantes e os textos institucionais das campanhas:
+              Na parte inferior da tela de Doações (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/secretaria/doacoes</code>), você pode configurar os canais de recebimento de comprovantes e os textos institucionais das campanhas:
             </p>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="font-bold text-zinc-900 flex items-center gap-1.5 text-sm">
                   <Send className="w-4 h-4 text-brand-600" />
@@ -451,7 +451,7 @@ export default function SecretariatHelpPage() {
           {/* Section 8: FAQ */}
           <section id="faq-secretaria" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 8
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -459,7 +459,7 @@ export default function SecretariatHelpPage() {
               </h2>
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1">
                 <span className="font-bold text-zinc-900 block text-sm">
                   A chave PIX cadastrada no painel cobra alguma taxa da paróquia?
@@ -492,7 +492,7 @@ export default function SecretariatHelpPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-xs text-brand-200 mt-auto">
+      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-sm text-brand-200 mt-auto">
         <p className="font-semibold text-white">
           Paróquia São José de Caraguatatuba • Diocese de Caraguatatuba
         </p>

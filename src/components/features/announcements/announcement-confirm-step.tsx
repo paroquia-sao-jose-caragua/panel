@@ -89,7 +89,7 @@ export const AnnouncementConfirmStep = ({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {/* Desktop Preview */}
               <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-zinc-200 bg-zinc-50">
-                <span className="text-xs font-semibold text-zinc-700 flex items-center gap-1">
+                <span className="text-sm font-semibold text-zinc-700 flex items-center gap-1">
                   <Monitor className="w-3.5 h-3.5 text-brand-600" /> Desktop
                 </span>
                 {desktopUrl ? (
@@ -100,13 +100,13 @@ export const AnnouncementConfirmStep = ({
                     className="w-full h-20"
                   />
                 ) : (
-                  <span className="text-xs text-zinc-400 italic py-4">Não enviada</span>
+                  <span className="text-sm text-zinc-400 italic py-4">Não enviada</span>
                 )}
               </div>
 
               {/* Tablet Preview */}
               <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-zinc-200 bg-zinc-50">
-                <span className="text-xs font-semibold text-zinc-700 flex items-center gap-1">
+                <span className="text-sm font-semibold text-zinc-700 flex items-center gap-1">
                   <Tablet className="w-3.5 h-3.5 text-zinc-500" /> Tablet
                 </span>
                 {tabletUrl ? (
@@ -117,13 +117,13 @@ export const AnnouncementConfirmStep = ({
                     className="w-full h-20"
                   />
                 ) : (
-                  <span className="text-xs text-zinc-400 italic py-4">Usa versão Desktop</span>
+                  <span className="text-sm text-zinc-400 italic py-4">Usa versão Desktop</span>
                 )}
               </div>
 
               {/* Mobile Preview */}
               <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-zinc-200 bg-zinc-50">
-                <span className="text-xs font-semibold text-zinc-700 flex items-center gap-1">
+                <span className="text-sm font-semibold text-zinc-700 flex items-center gap-1">
                   <Smartphone className="w-3.5 h-3.5 text-zinc-500" /> Mobile
                 </span>
                 {mobileUrl ? (
@@ -134,7 +134,7 @@ export const AnnouncementConfirmStep = ({
                     className="w-full h-20"
                   />
                 ) : (
-                  <span className="text-xs text-zinc-400 italic py-4">Usa versão Desktop</span>
+                  <span className="text-sm text-zinc-400 italic py-4">Usa versão Desktop</span>
                 )}
               </div>
             </div>

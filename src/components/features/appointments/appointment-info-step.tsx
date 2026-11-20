@@ -123,7 +123,7 @@ export const AppointmentInfoStep = ({
             <Calendar className="w-4 h-4 text-brand-700" />
             <span>Atendimento e Agente Pastoral</span>
           </h2>
-          <Badge variant="outline" className="bg-brand-50 text-brand-800 border-brand-200 text-xs">
+          <Badge variant="outline" className="bg-brand-50 text-brand-800 border-brand-200 text-sm">
             Etapa 1
           </Badge>
         </div>
@@ -144,7 +144,7 @@ export const AppointmentInfoStep = ({
                   <p className="text-sm font-bold text-zinc-900">
                     {myAgent ? `${myAgent.title ? `${myAgent.title} ` : ''}${myAgent.name}` : user?.name}
                   </p>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-sm text-zinc-500">
                     {myAgent?.actingRole || 'Agente Pastoral'} • Agendando em seu próprio nome
                   </p>
                 </div>
@@ -171,7 +171,7 @@ export const AppointmentInfoStep = ({
                   ))}
                 </select>
                 {errors.agentId && (
-                  <p className="text-xs text-rose-500 mt-1 flex items-center gap-1">
+                  <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
                     <AlertCircle className="w-3.5 h-3.5" />
                     <span>{errors.agentId}</span>
                   </p>
@@ -213,7 +213,7 @@ export const AppointmentInfoStep = ({
                   ))}
                 </select>
                 {errors.serviceId && (
-                  <p className="text-xs text-rose-500 mt-1 flex items-center gap-1">
+                  <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
                     <AlertCircle className="w-3.5 h-3.5" />
                     <span>{errors.serviceId}</span>
                   </p>
@@ -222,7 +222,7 @@ export const AppointmentInfoStep = ({
             )}
 
             {selectedService && (
-              <div className="mt-2.5 flex items-center gap-2 flex-wrap text-xs">
+              <div className="mt-2.5 flex items-center gap-2 flex-wrap text-sm">
                 <Badge
                   variant="outline"
                   className={
@@ -264,15 +264,15 @@ export const AppointmentInfoStep = ({
                 ))}
               </select>
             )}
-            <p className="text-xs text-zinc-500 mt-1">
+            <p className="text-sm text-zinc-500 mt-1">
               Local onde o atendimento presencial ocorrerá, ou comunidade de referência.
             </p>
           </div>
 
-          {/* Status do Agendamento */}
+          {/* Status do Atendimento */}
           <div>
             <label className="text-sm font-semibold text-zinc-800 block mb-1.5">
-              {isEdit ? 'Status do Agendamento' : 'Status Inicial'}
+              {isEdit ? 'Status do Atendimento' : 'Status Inicial'}
             </label>
             <select
               value={values.status}
@@ -294,10 +294,10 @@ export const AppointmentInfoStep = ({
                 </>
               )}
             </select>
-            <p className="text-xs text-zinc-500 mt-1">
+            <p className="text-sm text-zinc-500 mt-1">
               {isEdit
                 ? 'Atualize a situação do atendimento conforme o andamento pastoral.'
-                : 'Agendamentos inseridos pelo painel geralmente nascem confirmados.'}
+                : 'Atendimentos inseridos pelo painel geralmente nascem confirmados.'}
             </p>
           </div>
         </div>
@@ -317,7 +317,7 @@ export const AppointmentInfoStep = ({
                 className={errors.appointmentDate ? 'border-rose-400' : ''}
               />
               {errors.appointmentDate && (
-                <p className="text-xs text-rose-500 mt-1 flex items-center gap-1">
+                <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.appointmentDate}</span>
                 </p>
@@ -338,7 +338,7 @@ export const AppointmentInfoStep = ({
                 />
               </div>
               {errors.startTime && (
-                <p className="text-xs text-rose-500 mt-1 flex items-center gap-1">
+                <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.startTime}</span>
                 </p>
@@ -350,12 +350,12 @@ export const AppointmentInfoStep = ({
           {values.agentId && values.appointmentDate && (
             <div className="mt-4 p-4 rounded-xl bg-zinc-50 border border-zinc-200/80 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-600 flex items-center gap-1.5">
+                <span className="text-sm font-bold uppercase tracking-wider text-zinc-600 flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-brand-600" />
                   <span>Horários Livres da Grade na Data</span>
                 </span>
                 {isLoadingSlots && (
-                  <span className="text-xs text-zinc-400">Verificando grade...</span>
+                  <span className="text-sm text-zinc-400">Verificando grade...</span>
                 )}
               </div>
 
@@ -366,7 +366,7 @@ export const AppointmentInfoStep = ({
                   <Skeleton className="h-8 w-20 rounded-lg" />
                 </div>
               ) : availableSlots.length === 0 ? (
-                <p className="text-xs text-zinc-500">
+                <p className="text-sm text-zinc-500">
                   Nenhum horário livre pré-configurado na grade semanal para este dia. Você pode
                   digitar o horário desejado manualmente no campo acima.
                 </p>
@@ -379,7 +379,7 @@ export const AppointmentInfoStep = ({
                         key={`${slot.startTime}-${slot.endTime}`}
                         type="button"
                         onClick={() => onChange('startTime', slot.startTime)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition cursor-pointer flex items-center gap-1.5 ${
+                        className={`px-3 py-1.5 rounded-lg text-sm font-semibold border transition cursor-pointer flex items-center gap-1.5 ${
                           isSelected
                             ? 'bg-brand-700 text-white border-brand-700 shadow-xs ring-2 ring-brand-300'
                             : 'bg-white text-zinc-800 border-zinc-300 hover:border-brand-400 hover:bg-brand-50/50'
@@ -404,7 +404,7 @@ export const AppointmentInfoStep = ({
             <User className="w-4 h-4 text-brand-700" />
             <span>Dados do Solicitante (Fiel ou Familiar)</span>
           </h2>
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-sm text-zinc-500 mt-1">
             Informações de contato de quem está agendando ou solicitando o atendimento.
           </p>
         </div>
@@ -421,7 +421,7 @@ export const AppointmentInfoStep = ({
               className={errors.requesterName ? 'border-rose-400' : ''}
             />
             {errors.requesterName && (
-              <p className="text-xs text-rose-500 mt-1 flex items-center gap-1">
+              <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
                 <AlertCircle className="w-3.5 h-3.5" />
                 <span>{errors.requesterName}</span>
               </p>
@@ -442,7 +442,7 @@ export const AppointmentInfoStep = ({
               />
             </div>
             {errors.requesterPhone && (
-              <p className="text-xs text-rose-500 mt-1 flex items-center gap-1">
+              <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
                 <AlertCircle className="w-3.5 h-3.5" />
                 <span>{errors.requesterPhone}</span>
               </p>
@@ -515,7 +515,7 @@ export const AppointmentInfoStep = ({
               <HeartHandshake className="w-4 h-4 text-purple-700" />
               <span>Dados para Visita Domiciliar ao Enfermo</span>
             </h2>
-            <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-300 text-xs">
+            <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-300 text-sm">
               Visita Pastoral
             </Badge>
           </div>
@@ -532,7 +532,7 @@ export const AppointmentInfoStep = ({
                 className={errors.patientName ? 'border-rose-400 bg-white' : 'bg-white'}
               />
               {errors.patientName && (
-                <p className="text-xs text-rose-500 mt-1 flex items-center gap-1">
+                <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.patientName}</span>
                 </p>
@@ -550,7 +550,7 @@ export const AppointmentInfoStep = ({
                 className={errors.patientAddress ? 'border-rose-400 bg-white' : 'bg-white'}
               />
               {errors.patientAddress && (
-                <p className="text-xs text-rose-500 mt-1 flex items-center gap-1">
+                <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.patientAddress}</span>
                 </p>
@@ -560,7 +560,7 @@ export const AppointmentInfoStep = ({
 
           {/* Condições Clínicas / Espirituais */}
           <div className="p-4 bg-white rounded-xl border border-purple-100 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-purple-900">
+            <h4 className="text-sm font-bold uppercase tracking-wider text-purple-900">
               Condições do Enfermo para a Recepção do Sacramento
             </h4>
 
@@ -572,7 +572,7 @@ export const AppointmentInfoStep = ({
                   onChange={(e) => onChange('isBedridden', e.target.checked)}
                   className="rounded border-zinc-300 text-brand-600 focus:ring-brand-500"
                 />
-                <span className="text-xs font-medium text-zinc-800">Está acamado(a)</span>
+                <span className="text-sm font-medium text-zinc-800">Está acamado(a)</span>
               </label>
 
               <label className="flex items-center gap-2 p-2.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 cursor-pointer">
@@ -582,7 +582,7 @@ export const AppointmentInfoStep = ({
                   onChange={(e) => onChange('canSwallowHost', e.target.checked)}
                   className="rounded border-zinc-300 text-brand-600 focus:ring-brand-500"
                 />
-                <span className="text-xs font-medium text-zinc-800">Consegue engolir hóstia</span>
+                <span className="text-sm font-medium text-zinc-800">Consegue engolir hóstia</span>
               </label>
 
               <label className="flex items-center gap-2 p-2.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 cursor-pointer">
@@ -592,19 +592,19 @@ export const AppointmentInfoStep = ({
                   onChange={(e) => onChange('isLucid', e.target.checked)}
                   className="rounded border-zinc-300 text-brand-600 focus:ring-brand-500"
                 />
-                <span className="text-xs font-medium text-zinc-800">Está consciente / lúcido(a)</span>
+                <span className="text-sm font-medium text-zinc-800">Está consciente / lúcido(a)</span>
               </label>
             </div>
 
             <div>
-              <label className="text-xs font-medium text-zinc-700 block mb-1">
+              <label className="text-sm font-medium text-zinc-700 block mb-1">
                 Observações de Acesso ou Saúde (Ex: campainha, interfone, cuidados especiais)
               </label>
               <Input
                 value={values.patientNotes}
                 onChange={(e) => onChange('patientNotes', e.target.value)}
                 placeholder="Ex: Interfone 102. Chamar no portão pois a campainha está com defeito."
-                className="text-xs bg-zinc-50"
+                className="text-sm bg-zinc-50"
               />
             </div>
           </div>
@@ -618,7 +618,7 @@ export const AppointmentInfoStep = ({
             <ShieldCheck className="w-4 h-4 text-amber-600" />
             <span>Anotações Internas da Secretaria e Agente Pastoral</span>
           </h2>
-          <Badge variant="outline" className="bg-amber-50 text-amber-800 border-amber-200 text-xs">
+          <Badge variant="outline" className="bg-amber-50 text-amber-800 border-amber-200 text-sm">
             Sigiloso / Não visível ao fiel
           </Badge>
         </div>
@@ -633,7 +633,7 @@ export const AppointmentInfoStep = ({
             placeholder="Ex: Agendado presencialmente pela secretaria paroquial. Fiel solicitou atenção especial para unção dos enfermos."
             className="min-h-24 bg-amber-50/20 border-amber-200/80 text-sm"
           />
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-sm text-zinc-500 mt-1">
             Estas anotações são visíveis unicamente para a equipe da secretaria e para o clérigo/agente responsável.
           </p>
         </div>

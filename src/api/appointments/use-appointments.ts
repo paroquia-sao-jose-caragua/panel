@@ -54,7 +54,6 @@ export const useAppointments = (params?: ListAppointmentsParams) => {
       updateAppointmentStatus(updateParams),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['appointments'] });
-      showAlert('Status do atendimento atualizado com sucesso!');
     },
     onError: (err: Error) => {
       showAlert(`Erro ao atualizar status: ${err.message}`);
@@ -392,7 +391,7 @@ export const useDeleteAppointment = () => {
     mutationFn: (id: string) => deleteAppointment(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['appointments'] });
-      showAlert('Agendamento excluído com sucesso!');
+      showAlert('Atendimento excluído com sucesso!');
     },
     onError: (err: Error) => {
       showAlert(`Erro ao excluir agendamento: ${err.message}`);

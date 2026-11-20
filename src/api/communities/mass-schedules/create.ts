@@ -1,22 +1,8 @@
 import { communityApi } from '@/api/utils/communityApi';
+import type { MassSchedule } from '@/entities/MassSchedule';
 
 interface CreateMassScheduleResponse {
-  massSchedule: {
-    id: string;
-    communityId: string;
-    type: 'ordinary' | 'devotional' | 'solemnity';
-    isPrecept: boolean;
-    recurrenceType: 'weekly' | 'monthly' | 'yearly';
-    dayOfWeek?: number;
-    active: boolean;
-    startDate: string;
-    times: {
-      id: string;
-      scheduleId: string;
-      startTime: string;
-      endTime?: string;
-    }[];
-  };
+  massSchedule: MassSchedule;
 }
 
 export const createMassSchedule = async ({
@@ -28,15 +14,14 @@ export const createMassSchedule = async ({
   type: 'ordinary' | 'devotional' | 'solemnity';
   orientations?: string;
   isPrecept: boolean;
-  recurrenceType: 'weekly' | 'monthly' | 'yearly';
+  recurrenceType: 'weekly' | 'monthly';
   dayOfWeek?: number;
   dayOfMonth?: number;
   weekOfMonth?: number;
-  monthOfYear?: number;
   startDate?: string;
   endDate?: string;
   active?: boolean;
-  times: { startTime: string; endTime?: string }[]; // Array de horários no formato "HH:MM"
+  startTime: string; // "HH:MM"
 }) => {
   const result = await communityApi<CreateMassScheduleResponse>(
     `/${communityId}/mass-schedules`,

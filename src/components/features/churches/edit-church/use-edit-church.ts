@@ -8,6 +8,7 @@ import { showAlert } from '@/utils/showAlert';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { useCommunity } from '@/api/communities/use-community';
+import { ROUTES } from '@/constants/routes';
 
 export const useEditChurch = () => {
   const validationSchema = useChurchSchema();
@@ -48,7 +49,7 @@ export const useEditChurch = () => {
               setCommunity(updatedCommunity);
               queryClient.invalidateQueries({ queryKey: ['community', updatedCommunity.slug] });
               queryClient.invalidateQueries({ queryKey: ['communities'] });
-              navigate.push(`/${updatedCommunity.slug}`);
+              navigate.push(ROUTES.COMMUNITIES.DETAILS(updatedCommunity.slug));
               showAlert('Dados principais salvos com sucesso!');
             } else {
               showAlert(`Erro ao salvar comunidade: ${message || 'Erro desconhecido'}`);

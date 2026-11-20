@@ -37,27 +37,27 @@ export default function AnnouncementsHelpPage() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 shadow-2xs">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Button asChild variant="ghost" size="sm" className="text-xs -ml-2 text-zinc-600 hover:text-zinc-900">
+            <Button asChild variant="ghost" size="sm" className="text-sm -ml-2 text-zinc-600 hover:text-zinc-900">
               <Link href="/ajuda">
                 <ArrowLeft className="w-4 h-4 mr-1.5" />
                 Voltar à Central de Ajuda
               </Link>
             </Button>
             <div className="h-4 w-px bg-zinc-200 hidden sm:block" />
-            <span className="text-xs font-semibold text-zinc-500 hidden sm:inline">
+            <span className="text-sm font-semibold text-zinc-500 hidden sm:inline">
               Manual: Banners, Avisos & Alertas Urgentes
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button asChild variant="outline" size="sm" className="text-xs border-zinc-300 text-zinc-700 hover:bg-zinc-50">
-              <Link href="/avisos/alerta/editar">
+            <Button asChild variant="outline" size="sm" className="text-sm border-zinc-300 text-zinc-700 hover:bg-zinc-50">
+              <Link href="/programacao-e-eventos/faixa-de-alerta/editar">
                 <AlertTriangle className="w-3.5 h-3.5 mr-1.5 text-amber-600" />
                 Editar Alerta no Topo
               </Link>
             </Button>
 
-            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-xs">
+            <Button asChild size="sm" className="bg-brand-700 hover:bg-brand-800 text-white text-sm">
               <Link href="/avisos">
                 Ver Todos os Avisos
               </Link>
@@ -69,7 +69,7 @@ export default function AnnouncementsHelpPage() {
       {/* Hero Header */}
       <div className="bg-brand-gradient text-white py-12 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-200 text-xs font-semibold border border-white/15">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-200 text-sm font-semibold border border-white/15">
             <Megaphone className="w-3.5 h-3.5 text-brand-400" />
             <span>Guia de Comunicação & Divulgação Pastoral</span>
           </div>
@@ -89,12 +89,12 @@ export default function AnnouncementsHelpPage() {
         {/* Sticky Table of Contents (Desktop) */}
         <aside className="hidden lg:block">
           <div className="sticky top-24 bg-white rounded-2xl border border-zinc-200/80 p-5 shadow-2xs space-y-3">
-            <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
               <BookOpen className="w-4 h-4 text-brand-700" />
               <span>Neste Manual</span>
             </h3>
 
-            <nav className="space-y-1 text-xs">
+            <nav className="space-y-1 text-sm">
               <a href="#visao-geral" className="block p-1.5 rounded-lg text-zinc-600 hover:text-brand-700 hover:bg-zinc-50 font-medium transition">
                 1. Visão Geral da Comunicação
               </a>
@@ -122,13 +122,13 @@ export default function AnnouncementsHelpPage() {
             </nav>
 
             <div className="pt-3 border-t border-zinc-100 flex flex-col gap-2">
-              <Button asChild variant="outline" size="sm" className="w-full justify-center text-xs">
+              <Button asChild variant="outline" size="sm" className="w-full justify-center text-sm">
                 <Link href="/avisos/adicionar">
                   <PlusCircle className="w-3.5 h-3.5 mr-1.5 text-brand-600" />
                   Novo Banner
                 </Link>
               </Button>
-              <Button asChild size="sm" className="w-full justify-center bg-brand-700 hover:bg-brand-800 text-white text-xs">
+              <Button asChild size="sm" className="w-full justify-center bg-brand-700 hover:bg-brand-800 text-white text-sm">
                 <Link href="/avisos">
                   <Megaphone className="w-3.5 h-3.5 mr-1.5" />
                   Gerenciar Banners
@@ -143,7 +143,7 @@ export default function AnnouncementsHelpPage() {
           {/* Section 1: Overview */}
           <section id="visao-geral" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 1
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -152,11 +152,11 @@ export default function AnnouncementsHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              O módulo <strong>Banners & Avisos</strong> (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/avisos</code>) é a ferramenta de comunicação em tempo real da Paróquia São José. Ele permite que a secretaria transmita orientações urgentes, divulgue eventos da comunidade e mantenha o fiel sempre bem informado:
+              O módulo <strong>Banners & Avisos</strong> (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/avisos</code>) é a ferramenta de comunicação em tempo real da Paróquia São José. Ele permite que a secretaria transmita orientações urgentes, divulgue eventos da comunidade e mantenha o fiel sempre bem informado:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-2 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-2 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5 text-sm">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
                   Faixa de Alerta Superior Fixa
@@ -166,7 +166,7 @@ export default function AnnouncementsHelpPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-2 text-xs">
+              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-2 text-sm">
                 <span className="font-bold text-zinc-900 block flex items-center gap-1.5 text-sm">
                   <Layers className="w-4 h-4 text-brand-700" />
                   Carrossel de Banners da Capa
@@ -181,7 +181,7 @@ export default function AnnouncementsHelpPage() {
           {/* Section 2: Top Alert Bar */}
           <section id="alerta-urgente" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 2
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -190,10 +190,10 @@ export default function AnnouncementsHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              Para ativar ou editar o alerta que aparece no topo do site público, acesse <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/avisos/alerta/editar</code> ou clique no card <strong>"Editar Alerta no Topo"</strong>:
+              Para ativar ou editar o alerta que aparece no topo do site público, acesse <code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/programacao-e-eventos/faixa-de-alerta/editar</code> ou clique no card <strong>"Editar Alerta no Topo"</strong>:
             </p>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -212,7 +212,7 @@ export default function AnnouncementsHelpPage() {
           {/* Section 3: Liturgical Variants & Colors */}
           <section id="variantes-alerta" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 3
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -224,7 +224,7 @@ export default function AnnouncementsHelpPage() {
               O sistema oferece três estilos visuais pré-configurados que se adaptam perfeitamente à gravidade ou solenidade do aviso:
             </p>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               {/* Variant 1: Alert */}
               <div className="p-4 rounded-xl border border-red-200 bg-red-50/50 space-y-2">
                 <div className="flex items-center justify-between">
@@ -278,7 +278,7 @@ export default function AnnouncementsHelpPage() {
           {/* Section 4: Adding Banners */}
           <section id="cadastrar-banner" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 4
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -287,13 +287,13 @@ export default function AnnouncementsHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              Para cadastrar um banner no carrossel, acesse <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/avisos/adicionar</code>:
+              Para cadastrar um banner no carrossel, acesse <code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/avisos/adicionar</code>:
             </p>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">1</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">1</span>
                   <span>Título e Descrição do Evento</span>
                 </div>
                 <p className="text-zinc-600 pl-7">
@@ -303,7 +303,7 @@ export default function AnnouncementsHelpPage() {
 
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">2</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">2</span>
                   <span>Imagem de Alta Qualidade (Arte ou Foto)</span>
                 </div>
                 <p className="text-zinc-600 pl-7">
@@ -313,7 +313,7 @@ export default function AnnouncementsHelpPage() {
 
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-zinc-900">
-                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-xs">3</span>
+                  <span className="w-5 h-5 rounded-full bg-brand-700 text-white flex items-center justify-center text-sm">3</span>
                   <span>Link de Direcionamento (Call to Action)</span>
                 </div>
                 <p className="text-zinc-600 pl-7">
@@ -326,7 +326,7 @@ export default function AnnouncementsHelpPage() {
           {/* Section 5: Reordering Banners */}
           <section id="reordenar-banners" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 5
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -335,10 +335,10 @@ export default function AnnouncementsHelpPage() {
             </div>
 
             <p className="text-sm text-zinc-600">
-              Na listagem de banners (<code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">/avisos</code>), cada card possui setas interativas para subir ou descer a posição na fila:
+              Na listagem de banners (<code className="text-sm bg-zinc-100 px-1 py-0.5 rounded">/avisos</code>), cada card possui setas interativas para subir ou descer a posição na fila:
             </p>
 
-            <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-xs">
+            <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-3 text-sm">
               <div className="flex items-center gap-3">
                 <div className="flex gap-1">
                   <span className="p-1 rounded bg-white border border-zinc-300 text-zinc-700"><ArrowUp className="w-3.5 h-3.5" /></span>
@@ -356,7 +356,7 @@ export default function AnnouncementsHelpPage() {
           {/* Section 6: Expiration */}
           <section id="validade-expiracao" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 6
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -368,7 +368,7 @@ export default function AnnouncementsHelpPage() {
               Para evitar que banners de eventos antigos continuem sendo exibidos após sua realização (como uma quermesse do último sábado ou um retiro que já passou), o painel possui <strong>controle de validade</strong>:
             </p>
 
-            <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2 text-xs text-emerald-950">
+            <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2 text-sm text-emerald-950">
               <div className="font-bold flex items-center gap-2 text-sm text-emerald-900">
                 <Clock className="w-4 h-4 text-emerald-700" />
                 <span>Expiração Inteligente</span>
@@ -382,7 +382,7 @@ export default function AnnouncementsHelpPage() {
           {/* Section 7: Pastoral Cases (Renovations, Cancellations) */}
           <section id="casos-pastorais" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-6">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 7
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -390,7 +390,7 @@ export default function AnnouncementsHelpPage() {
               </h2>
             </div>
 
-            <div className="space-y-4 text-xs">
+            <div className="space-y-4 text-sm">
               <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
                 <div className="font-bold text-zinc-900 flex items-center gap-1.5 text-sm">
                   <Church className="w-4 h-4 text-brand-600" />
@@ -420,7 +420,7 @@ export default function AnnouncementsHelpPage() {
           {/* Section 8: FAQ */}
           <section id="faq-avisos" className="scroll-mt-20 sm:scroll-mt-24 bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+              <span className="w-7 h-7 rounded-lg bg-brand-800 text-white font-bold flex items-center justify-center text-sm shadow-2xs">
                 8
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-950 font-serif">
@@ -428,7 +428,7 @@ export default function AnnouncementsHelpPage() {
               </h2>
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3 text-sm">
               <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1">
                 <span className="font-bold text-zinc-900 block text-sm">
                   Quantos banners posso deixar ativos simultaneamente?
@@ -461,7 +461,7 @@ export default function AnnouncementsHelpPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-xs text-brand-200 mt-auto">
+      <footer className="bg-brand-900 border-t border-brand-800 py-10 px-4 text-center text-sm text-brand-200 mt-auto">
         <p className="font-semibold text-white">
           Paróquia São José de Caraguatatuba • Diocese de Caraguatatuba
         </p>

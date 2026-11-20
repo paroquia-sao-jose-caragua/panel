@@ -66,20 +66,25 @@ const AuthGuardProvider = ({ children }: AuthGuardProviderProps) => {
         const isAllowedForAgent =
           pathname.startsWith('/ajuda') ||
           pathname.startsWith('/central-de-ajuda') ||
-          pathname === '/agendamentos' ||
-          pathname === '/agendamentos/solicitacoes' ||
-          pathname === '/agendamentos/adicionar' ||
-          pathname === '/agendamentos/relatorio' ||
-          pathname.includes('/horarios') ||
-          pathname.includes('/bloqueios');
+          pathname.startsWith('/minha-agenda') ||
+          pathname.startsWith('/agenda-pastoral') ||
+          pathname.startsWith('/atendimentos');
 
         if (!isAllowedForAgent) {
-          navigate.replace('/agendamentos');
+          navigate.replace('/minha-agenda');
           return;
         }
-      } else if (isAuthRoute) {
-        navigate.replace('/');
-        return;
+      } else {
+        // Apenas agentes pastorais podem visualizar e acessar as rotas de /minha-agenda
+        if (pathname.startsWith('/minha-agenda')) {
+          navigate.replace('/agenda-pastoral');
+          return;
+        }
+
+        if (isAuthRoute) {
+          navigate.replace('/dados-institucionais');
+          return;
+        }
       }
     }
 

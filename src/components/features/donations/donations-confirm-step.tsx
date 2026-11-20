@@ -48,7 +48,7 @@ export const DonationsConfirmStep = ({ values }: DonationsConfirmStepProps) => {
         <div className="w-full max-w-2xl divide-y divide-divider mt-2">
           {/* 1. Dados do PIX */}
           <div className="py-4 space-y-3">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block">
               Dados do PIX
             </span>
 
@@ -94,7 +94,7 @@ export const DonationsConfirmStep = ({ values }: DonationsConfirmStepProps) => {
 
           {/* 2. Dados Bancários */}
           <div className="py-4 space-y-3">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block">
               Dados Bancários (TED / DOC)
             </span>
 
@@ -145,7 +145,7 @@ export const DonationsConfirmStep = ({ values }: DonationsConfirmStepProps) => {
 
           {/* 3. Envio de Comprovante */}
           <div className="py-4 space-y-3">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block">
               Envio de Comprovante
             </span>
 
@@ -173,7 +173,7 @@ export const DonationsConfirmStep = ({ values }: DonationsConfirmStepProps) => {
               {values.receiptWhatsappUrl && (
                 <div className="sm:col-span-2 p-3 rounded-xl bg-zinc-50 border border-zinc-100">
                   <span className="text-[11px] text-zinc-400 block font-medium">Link WhatsApp Direto</span>
-                  <span className="text-xs text-zinc-700 truncate block font-mono">
+                  <span className="text-sm text-zinc-700 truncate block font-mono">
                     {values.receiptWhatsappUrl}
                   </span>
                 </div>
@@ -183,7 +183,7 @@ export const DonationsConfirmStep = ({ values }: DonationsConfirmStepProps) => {
 
           {/* 4. Textos da Página */}
           <div className="py-4 space-y-3">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block">
               Textos e Mensagens da Página
             </span>
 
@@ -194,7 +194,7 @@ export const DonationsConfirmStep = ({ values }: DonationsConfirmStepProps) => {
                   {values.title || <span className="text-zinc-400 font-normal italic">Padrão da página</span>}
                 </span>
                 {values.description && (
-                  <p className="text-xs text-zinc-600 mt-1 whitespace-pre-line leading-relaxed">
+                  <p className="text-sm text-zinc-600 mt-1 whitespace-pre-line leading-relaxed">
                     {values.description}
                   </p>
                 )}
@@ -207,7 +207,7 @@ export const DonationsConfirmStep = ({ values }: DonationsConfirmStepProps) => {
                     {values.pastoralCenterTitle || 'Obras do Centro Pastoral'}
                   </span>
                   {values.pastoralCenterDescription && (
-                    <p className="text-xs text-zinc-600 mt-1 whitespace-pre-line leading-relaxed">
+                    <p className="text-sm text-zinc-600 mt-1 whitespace-pre-line leading-relaxed">
                       {values.pastoralCenterDescription}
                     </p>
                   )}

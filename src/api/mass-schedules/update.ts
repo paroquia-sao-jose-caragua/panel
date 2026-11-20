@@ -1,22 +1,8 @@
 import { massSchedulesApi } from '@/api/utils/massSchedulesApi';
+import type { MassSchedule } from '@/entities/MassSchedule';
 
 interface UpdateMassScheduleResponse {
-  massSchedule: {
-    id: string;
-    communityId: string;
-    type: 'ordinary' | 'devotional' | 'solemnity';
-    isPrecept: boolean;
-    recurrenceType: 'weekly' | 'monthly' | 'yearly';
-    dayOfWeek?: number;
-    active: boolean;
-    startDate: string;
-    times: {
-      id: string;
-      scheduleId: string;
-      startTime: string;
-      endTime?: string;
-    }[];
-  };
+  massSchedule: MassSchedule;
   statusCode: number;
   message: string;
 }
@@ -30,15 +16,14 @@ export const updateMassSchedule = async ({
   type: 'ordinary' | 'devotional' | 'solemnity';
   orientations?: string;
   isPrecept: boolean;
-  recurrenceType: 'weekly' | 'monthly' | 'yearly';
+  recurrenceType: 'weekly' | 'monthly';
   dayOfWeek?: number;
   dayOfMonth?: number;
   weekOfMonth?: number;
-  monthOfYear?: number;
   startDate?: string;
   endDate?: string;
   active?: boolean;
-  times: { startTime: string; endTime?: string }[];
+  startTime: string; // "HH:MM"
 }) => {
   const result = await massSchedulesApi<UpdateMassScheduleResponse>(
     `/${massScheduleId}`,

@@ -96,7 +96,7 @@ export const Form = () => {
       <div className="flex items-center justify-end pb-3">
         <Link
           href={ROUTES.AUTH.FORGOT_PASSWORD}
-          className="text-xs font-medium text-brand-700 hover:text-brand-900 hover:underline transition-colors"
+          className="text-sm font-medium text-brand-700 hover:text-brand-900 hover:underline transition-colors"
         >
           {t('forgot-password')}?
         </Link>

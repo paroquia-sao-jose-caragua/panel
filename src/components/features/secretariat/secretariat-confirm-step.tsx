@@ -39,7 +39,7 @@ export const SecretariatConfirmStep = ({
         <div className="w-full max-w-2xl divide-y divide-divider mt-2">
           {/* 1. Canais de Contato */}
           <div className="py-4 space-y-3">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block">
               Canais de Contato Direto
             </span>
 
@@ -78,7 +78,7 @@ export const SecretariatConfirmStep = ({
 
           {/* 2. Horário de Funcionamento */}
           <div className="py-4 space-y-2">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block">
               Horário de Atendimento da Secretaria
             </span>
 
@@ -98,7 +98,7 @@ export const SecretariatConfirmStep = ({
 
           {/* 3. Endereço */}
           <div className="py-4 space-y-2">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block">
               Endereço Físico
             </span>
 
@@ -114,7 +114,7 @@ export const SecretariatConfirmStep = ({
 
           {/* 4. Redes Sociais */}
           <div className="py-4 space-y-3">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider block">
+            <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block">
               Redes Sociais e Mensageiros
             </span>
 
@@ -123,7 +123,7 @@ export const SecretariatConfirmStep = ({
                 <Instagram className="w-4 h-4 text-pink-600 shrink-0" />
                 <div className="min-w-0 flex-1">
                   <span className="text-[11px] text-zinc-400 block font-medium">Instagram</span>
-                  <span className="font-medium text-xs text-zinc-800 truncate block">
+                  <span className="font-medium text-sm text-zinc-800 truncate block">
                     {values.instagramUrl || <span className="text-zinc-400 font-normal italic">Não informado</span>}
                   </span>
                 </div>
@@ -133,7 +133,7 @@ export const SecretariatConfirmStep = ({
                 <Youtube className="w-4 h-4 text-red-600 shrink-0" />
                 <div className="min-w-0 flex-1">
                   <span className="text-[11px] text-zinc-400 block font-medium">YouTube</span>
-                  <span className="font-medium text-xs text-zinc-800 truncate block">
+                  <span className="font-medium text-sm text-zinc-800 truncate block">
                     {values.youtubeUrl || <span className="text-zinc-400 font-normal italic">Não informado</span>}
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export const SecretariatConfirmStep = ({
                 <Facebook className="w-4 h-4 text-blue-600 shrink-0" />
                 <div className="min-w-0 flex-1">
                   <span className="text-[11px] text-zinc-400 block font-medium">Facebook</span>
-                  <span className="font-medium text-xs text-zinc-800 truncate block">
+                  <span className="font-medium text-sm text-zinc-800 truncate block">
                     {values.facebookUrl || <span className="text-zinc-400 font-normal italic">Não informado</span>}
                   </span>
                 </div>
@@ -153,7 +153,7 @@ export const SecretariatConfirmStep = ({
                 <MessageCircle className="w-4 h-4 text-emerald-600 shrink-0" />
                 <div className="min-w-0 flex-1">
                   <span className="text-[11px] text-zinc-400 block font-medium">Link WhatsApp</span>
-                  <span className="font-medium text-xs text-zinc-800 truncate block">
+                  <span className="font-medium text-sm text-zinc-800 truncate block">
                     {values.whatsappUrl || <span className="text-zinc-400 font-normal italic">Não informado</span>}
                   </span>
                 </div>

@@ -98,7 +98,7 @@ export function DatePicker({
           <FieldDescription>{helperText}</FieldDescription>
         </div>
       ) : null}
-      {error && <p className="mt-2 ml-4 text-xs text-red-700">{error}</p>}
+      {error && <p className="mt-2 ml-4 text-sm text-red-700">{error}</p>}
     </div>
   );
 }
