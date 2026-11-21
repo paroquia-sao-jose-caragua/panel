@@ -313,19 +313,6 @@ export default function BloqueiosPage() {
               Controle períodos de férias, compromissos externos e datas em que os agentes pastorais não estarão disponíveis.
             </Describe>
           </div>
-
-          <Button
-            onClick={() => {
-              if (isPastoralAgent && myAgent) {
-                setFormAgentId(myAgent.id);
-              }
-              setIsNewDialogOpen(true);
-            }}
-            className="gap-2 bg-[#11291f] text-white hover:bg-[#1a3d2e] shrink-0 cursor-pointer shadow-xs"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Novo bloqueio</span>
-          </Button>
         </div>
 
         {/* Filter bar by Agent */}
@@ -377,13 +364,6 @@ export default function BloqueiosPage() {
             <p className="text-sm sm:text-sm text-zinc-500 mt-1 max-w-md mx-auto mb-5">
               Não há períodos de indisponibilidade ativos para o filtro selecionado. Quando um sacerdote ou ministro precisar se ausentar, adicione um bloqueio.
             </p>
-            <Button
-              onClick={() => setIsNewDialogOpen(true)}
-              className="bg-[#11291f] text-white hover:bg-[#1a3d2e] gap-1.5 text-sm"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Adicionar Primeiro Bloqueio</span>
-            </Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
