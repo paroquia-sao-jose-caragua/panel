@@ -72,7 +72,7 @@ export function AreaSelector() {
     } else if(area === 'settings') {
       navigate.push(ROUTES.SETTINGS.HOME);
     } else {
-      navigate.push(ROUTES.HOME);
+      navigate.push(ROUTES.COMMUNITIES.HOME);
     }
   };
 
@@ -101,13 +101,13 @@ export function AreaSelector() {
   const getAreaIcon = () => {
     switch (effectiveArea) {
       case 'events':
-        return <CalendarRange className="w-4 h-4 text-[#B8872E] shrink-0" />;
+        return <CalendarRange className="w-4 h-4 text-zinc-500 shrink-0" />;
       case 'agenda':
-        return <CalendarDays className="w-4 h-4 text-emerald-700 shrink-0" />;
+        return <CalendarDays className="w-4 h-4 text-zinc-500 shrink-0" />;
       case 'settings':
         return <Settings className="w-4 h-4 text-zinc-500 shrink-0" />
       default:
-        return <Church className="w-4 h-4 text-brand-700 shrink-0" />;
+        return <Church className="w-4 h-4 text-zinc-500 shrink-0" />;
     }
   };
 
@@ -136,43 +136,7 @@ export function AreaSelector() {
           Módulo
         </DropdownMenuLabel>
 
-        {/* Option 1: Programação & Eventos */}
-        <DropdownMenuItem
-          onClick={() => handleSelectArea('events')}
-          className={cn(
-            'flex items-start gap-3 p-2.5 rounded-xl transition-colors cursor-pointer',
-            effectiveArea === 'events'
-              ? 'bg-amber-50/70 text-amber-950 hover:bg-amber-50'
-              : 'hover:bg-zinc-100 text-zinc-700'
-          )}
-        >
-          <div
-            className={cn(
-              'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5',
-              effectiveArea === 'events'
-                ? 'bg-[#B8872E] text-white'
-                : 'bg-zinc-100 text-zinc-600'
-            )}
-          >
-            <CalendarRange className="w-4 h-4" />
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold leading-tight">
-                Programação & Eventos
-              </span>
-              {effectiveArea === 'events' && (
-                <Check className="w-4 h-4 text-[#B8872E]" />
-              )}
-            </div>
-            <p className="text-sm text-zinc-500 mt-0.5 line-clamp-2">
-              Calendário e comunicação
-            </p>
-          </div>
-        </DropdownMenuItem>
-
-        {/* Option 2: Agenda Pastoral */}
+        {/* Option 1: Agenda Pastoral */}
         <DropdownMenuItem
           onClick={() => handleSelectArea('agenda')}
           className={cn(
@@ -204,6 +168,42 @@ export function AreaSelector() {
             </div>
             <p className="text-sm text-zinc-500 mt-0.5 line-clamp-2">
               Atendimentos e agentes
+            </p>
+          </div>
+        </DropdownMenuItem>
+
+        {/* Option 2: Programação & Eventos */}
+        <DropdownMenuItem
+          onClick={() => handleSelectArea('events')}
+          className={cn(
+            'flex items-start gap-3 p-2.5 rounded-xl transition-colors cursor-pointer',
+            effectiveArea === 'events'
+              ? 'bg-amber-50/70 text-amber-950 hover:bg-amber-50'
+              : 'hover:bg-zinc-100 text-zinc-700'
+          )}
+        >
+          <div
+            className={cn(
+              'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5',
+              effectiveArea === 'events'
+                ? 'bg-[#B8872E] text-white'
+                : 'bg-zinc-100 text-zinc-600'
+            )}
+          >
+            <CalendarRange className="w-4 h-4" />
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold leading-tight">
+                Programação & Eventos
+              </span>
+              {effectiveArea === 'events' && (
+                <Check className="w-4 h-4 text-[#B8872E]" />
+              )}
+            </div>
+            <p className="text-sm text-zinc-500 mt-0.5 line-clamp-2">
+              Calendário e comunicação
             </p>
           </div>
         </DropdownMenuItem>
@@ -245,7 +245,7 @@ export function AreaSelector() {
         </DropdownMenuItem>
 
         {/* Option 4: Comunicação / Pascom (Futuro) */}
-        <div
+        {/* <div
           className="flex items-start gap-3 p-2.5 rounded-xl opacity-60 cursor-not-allowed select-none"
           title="Módulo de blog e publicações da Pascom (em breve)"
         >
@@ -279,7 +279,7 @@ export function AreaSelector() {
               Blog e publicações
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* Option 5: Configurações */}
         <DropdownMenuItem

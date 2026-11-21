@@ -190,7 +190,7 @@ Exigir criação de conta, login e senha afastaria idosos, pessoas em momentos d
 O fiel recebe a resposta e acompanha de 3 formas automáticas e sem atrito:
 1. **WhatsApp Instantâneo**: No momento em que conclui a solicitação, ele recebe uma mensagem no seu WhatsApp confirmando o recebimento. Quando o padre ou a secretaria aprova/confirma, recebe outra mensagem confirmando o horário.
 2. **E-mail com Convite**: Caso informe o e-mail, recebe o comprovante com botão *"Adicionar ao Google Agenda / Apple Calendar (.ics)"*.
-3. **Link de Acompanhamento (Código/Token)**: Ao finalizar no site, é gerado um link seguro (ex.: `site.../atendimentos/acompanhar?token=abc...`) onde ele pode ver o status em tempo real (*Pendente*, *Confirmado*, *Realizado*, *Cancelado*) e cancelar o atendimento caso tenha um imprevisto.
+3. **Link de Acompanhamento (Código/Token)**: Ao finalizar no site, é gerado um link seguro (ex.: `site.../agendamentos/acompanhar?token=abc...`) onde ele pode ver o status em tempo real (*Pendente*, *Confirmado*, *Realizado*, *Cancelado*) e cancelar o atendimento caso tenha um imprevisto.
 
 ---
 
