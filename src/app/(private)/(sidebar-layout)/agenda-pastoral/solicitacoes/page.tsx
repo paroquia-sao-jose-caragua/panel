@@ -219,7 +219,7 @@ export default function AppointmentsRequestsPage() {
       process.env.NEXT_PUBLIC_SITE_BASE_URL ||
       (typeof window !== 'undefined' ? window.location.origin : '');
     const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-    const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
+    const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
 
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(trackingUrl);

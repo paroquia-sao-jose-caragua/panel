@@ -40,7 +40,7 @@ export function buildWhatsAppConfirmationMessage(
   siteBaseUrl: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
   const formattedDate =
@@ -75,7 +75,7 @@ export function buildWhatsAppCancellationMessage(
   cancellationReason?: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
   const newBookingUrl = `${cleanBaseUrl}/atendimentos`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
@@ -122,7 +122,7 @@ export function buildWhatsAppReminderMessage(
   siteBaseUrl: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
 
   const [year, month, day] = (appointment.appointmentDate || '').split('-');
   const formattedDate =
@@ -198,7 +198,7 @@ export function AppointmentWhatsAppDialog({
   if (!appointment) return null;
 
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
-  const trackingUrl = `${cleanBaseUrl}/atendimentos/acompanhar?token=${appointment.accessToken}`;
+  const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
 
   let cleanPhone = (appointment.requesterPhone || '').replace(/\D/g, '');
   if (cleanPhone.length <= 11) {
