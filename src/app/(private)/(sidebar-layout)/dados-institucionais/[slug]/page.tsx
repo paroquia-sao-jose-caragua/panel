@@ -198,7 +198,7 @@ export default function ChurchPage() {
             <Button
               asChild
               variant="outline"
-              size="sm"
+              size="default"
             >
               <Link href={ROUTES.COMMUNITIES.EDIT(community?.slug || '')}>
                 <Pencil className="w-3.5 h-3.5" />
@@ -207,14 +207,14 @@ export default function ChurchPage() {
             </Button>
 
             {community?.slug && (
-              <Button asChild size="sm">
+              <Button asChild size="default">
                 <a
                   href={publicPageUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Ver página no site público</span>
+                  <span>Ver no site público</span>
                 </a>
               </Button>
             )}

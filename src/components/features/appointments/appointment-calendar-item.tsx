@@ -42,10 +42,15 @@ export const AppointmentCalendarItem = ({
   onOpenDetails,
   isStaff = true,
 }: AppointmentCalendarItemProps) => {
-  const isHomeVisit = appointment.service?.category === 'home_visit';
-  const serviceTitle = appointment.service?.title || 'Atendimento Pastoral';
-  const serviceDescription = appointment.service?.description;
-  const requesterName = appointment.requesterName || 'Solicitante';
+  const isCommitment = appointment.kind === 'commitment';
+  const isHomeVisit = !isCommitment && appointment.service?.category === 'home_visit';
+  const serviceTitle = isCommitment
+    ? appointment.title || 'Compromisso Pastoral'
+    : appointment.service?.title || 'Atendimento Pastoral';
+  const serviceDescription = isCommitment
+    ? 'Compromisso interno'
+    : appointment.service?.description;
+  const requesterName = appointment.requesterName || (isCommitment ? 'Agenda interna' : 'Solicitante');
   const communityName =
     appointment.community?.name || 'Comunidade Matriz / Paróquia';
 
@@ -57,6 +62,12 @@ export const AppointmentCalendarItem = ({
 
   // Dot & badge styling according to service category
   const getAccentColor = (title: string, category?: string) => {
+    if (isCommitment) {
+      return {
+        dot: 'bg-sky-600',
+        badgeBg: 'bg-sky-50 text-sky-800 border-sky-200/80',
+      };
+    }
     const lower = `${title} ${category || ''}`.toLowerCase();
     if (lower.includes('confiss')) {
       return {
@@ -197,7 +208,7 @@ export const AppointmentCalendarItem = ({
                 variant="ghost"
                 size="icon-sm"
                 className="h-8 w-8 text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg cursor-pointer"
-                aria-label="Opções do atendimento"
+                aria-label="Opções do agendamento"
               >
                 <MoreHorizontal className="w-4 h-4" />
               </Button>
@@ -236,7 +247,11 @@ export const AppointmentCalendarItem = ({
                 className="text-red-600 focus:text-red-700 focus:bg-red-50 cursor-pointer"
               >
                 <XCircle className="w-4 h-4 mr-2 text-red-500" />
-                <span>Cancelar atendimento</span>
+                <span>
+                  {appointment.kind === 'commitment'
+                    ? 'Cancelar compromisso'
+                    : 'Cancelar atendimento'}
+                </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

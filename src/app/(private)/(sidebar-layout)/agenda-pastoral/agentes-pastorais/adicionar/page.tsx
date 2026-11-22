@@ -98,7 +98,7 @@ export default function AddPastoralAgentPage() {
 
           <div className="flex flex-row items-center gap-4 mt-2">
             <div>
-              <TypographyH1>Adicionar Agente Pastoral</TypographyH1>
+              <TypographyH1 size="form">Adicionar Agente Pastoral</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 Cadastrar novo padre, diácono ou ministro para atendimentos e visitas
               </span>

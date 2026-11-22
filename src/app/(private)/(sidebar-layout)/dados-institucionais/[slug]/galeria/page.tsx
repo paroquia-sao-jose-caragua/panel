@@ -180,16 +180,11 @@ export default function ChurchGalleryPage() {
           <BackButton href={ROUTES.COMMUNITIES.DETAILS(community?.slug || '')} />
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
-            <div className="flex items-center gap-3">
-              <div className="size-11 rounded-xl bg-[#fef8ed] border border-[#D6A64A]/30 flex items-center justify-center text-[#B8872E]">
-                <ImageIcon className="w-6 h-6" />
-              </div>
-              <div>
-                <TypographyH1>Galeria de Fotos</TypographyH1>
-                <span className="text-sm font-medium text-zinc-500">
-                  {community?.name}
-                </span>
-              </div>
+            <div>
+              <TypographyH1 size="form">Galeria de Fotos</TypographyH1>
+              <span className="text-sm font-medium text-zinc-500">
+                {community?.name}
+              </span>
             </div>
 
             <Button

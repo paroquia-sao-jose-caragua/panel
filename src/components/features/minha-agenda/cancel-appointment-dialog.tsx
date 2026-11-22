@@ -80,9 +80,10 @@ export function CancelAppointmentDialog({
           <div className="w-full flex flex-col gap-2.5 mt-6">
             <Button
               type="button"
+              size="lg"
               onClick={handleCancel}
               isLoading={isLoading}
-              className="w-full h-12 text-sm font-semibold rounded-xl bg-brand-900 text-white hover:bg-brand-800 active:scale-[0.99]"
+              className="w-full"
             >
               Sim, cancelar
             </Button>
@@ -90,9 +91,10 @@ export function CancelAppointmentDialog({
             <Button
               type="button"
               variant="outline"
+              size="lg"
               disabled={isLoading}
               onClick={() => onOpenChange(false)}
-              className="w-full h-11 text-sm font-medium rounded-xl border-zinc-300 text-zinc-700 hover:bg-zinc-50 active:scale-[0.99]"
+              className="w-full border-zinc-300 text-zinc-700"
             >
               Voltar
             </Button>

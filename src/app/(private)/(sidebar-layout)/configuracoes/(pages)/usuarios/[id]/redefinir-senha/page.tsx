@@ -59,7 +59,7 @@ export default function ResetUserPasswordPage({ params }: ResetPasswordPageProps
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>{t('admin-reset-password-modal-title')}</TypographyH1>
+              <TypographyH1 size="form">{t('admin-reset-password-modal-title')}</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {user ? `Escolha a forma de redefinir o acesso de ${user.name}` : 'Redefina a senha de acesso do usuário'}
               </span>

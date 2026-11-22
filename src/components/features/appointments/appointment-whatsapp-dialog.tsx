@@ -24,6 +24,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import type { Appointment } from '@/entities/appointment';
+import { useCommunities } from '@/api/communities/use-communities';
+import { getAppointmentLocation } from '@/utils/appointment-location';
 
 export type WhatsAppTemplateType = 'confirmation' | 'cancellation' | 'reminder';
 
@@ -37,7 +39,8 @@ interface AppointmentWhatsAppDialogProps {
 
 export function buildWhatsAppConfirmationMessage(
   appointment: Appointment,
-  siteBaseUrl: string
+  siteBaseUrl: string,
+  locationText?: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
   const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
@@ -49,6 +52,11 @@ export function buildWhatsAppConfirmationMessage(
   const agentTitle = appointment.agent?.title ? `${appointment.agent.title} ` : '';
   const agentName = appointment.agent?.name || 'Agente Pastoral';
   const serviceTitle = appointment.service?.title || 'Atendimento Pastoral';
+  const resolvedLocation =
+    locationText ||
+    appointment.patientAddress ||
+    appointment.community?.name ||
+    'Igreja Matriz São José';
 
   return `Olá, ${appointment.requesterName}! Graça e paz.
 
@@ -59,6 +67,7 @@ Confirmamos que a sua solicitação de agendamento na Paróquia São José foi *
 📅 *Data:* ${formattedDate}
 ⏰ *Horário:* ${appointment.startTime} às ${appointment.endTime}
 👤 *Responsável:* ${agentTitle}${agentName}
+📍 *Local:* ${resolvedLocation}
 
 Você pode acompanhar todos os detalhes da sua solicitação acessando o link abaixo:
 🔗 ${trackingUrl}
@@ -119,7 +128,8 @@ _Paróquia São José de Caraguatatuba_`;
 
 export function buildWhatsAppReminderMessage(
   appointment: Appointment,
-  siteBaseUrl: string
+  siteBaseUrl: string,
+  locationText?: string
 ): string {
   const cleanBaseUrl = (siteBaseUrl || '').replace(/\/$/, '');
   const trackingUrl = `${cleanBaseUrl}/agendamentos/acompanhar?token=${appointment.accessToken}`;
@@ -131,6 +141,11 @@ export function buildWhatsAppReminderMessage(
   const agentTitle = appointment.agent?.title ? `${appointment.agent.title} ` : '';
   const agentName = appointment.agent?.name || 'Agente Pastoral';
   const serviceTitle = appointment.service?.title || 'Atendimento Pastoral';
+  const resolvedLocation =
+    locationText ||
+    appointment.patientAddress ||
+    appointment.community?.name ||
+    'Igreja Matriz São José';
 
   return `Olá, ${appointment.requesterName}! Graça e paz.
 
@@ -141,6 +156,7 @@ Lembramos que você tem um atendimento agendado na Paróquia São José:
 📅 *Data:* ${formattedDate}
 ⏰ *Horário:* ${appointment.startTime} às ${appointment.endTime}
 👤 *Responsável:* ${agentTitle}${agentName}
+📍 *Local:* ${resolvedLocation}
 
 Você pode acompanhar todos os detalhes do seu agendamento no link:
 🔗 ${trackingUrl}
@@ -161,6 +177,7 @@ export function AppointmentWhatsAppDialog({
   const [template, setTemplate] = useState<WhatsAppTemplateType>(initialTemplate);
   const [message, setMessage] = useState('');
   const [copied, setCopied] = useState(false);
+  const { communities } = useCommunities();
 
   const siteBaseUrl =
     process.env.NEXT_PUBLIC_SITE_BASE_URL ||
@@ -182,18 +199,31 @@ export function AppointmentWhatsAppDialog({
   // Generate message based on selected template
   useEffect(() => {
     if (appointment && open) {
+      const locationInfo = getAppointmentLocation(appointment, communities);
       if (template === 'confirmation') {
-        setMessage(buildWhatsAppConfirmationMessage(appointment, siteBaseUrl));
+        setMessage(
+          buildWhatsAppConfirmationMessage(
+            appointment,
+            siteBaseUrl,
+            locationInfo.formatted
+          )
+        );
       } else if (template === 'cancellation') {
         setMessage(
           buildWhatsAppCancellationMessage(appointment, siteBaseUrl, cancellationReason)
         );
       } else if (template === 'reminder') {
-        setMessage(buildWhatsAppReminderMessage(appointment, siteBaseUrl));
+        setMessage(
+          buildWhatsAppReminderMessage(
+            appointment,
+            siteBaseUrl,
+            locationInfo.formatted
+          )
+        );
       }
       setCopied(false);
     }
-  }, [appointment, open, template, siteBaseUrl, cancellationReason]);
+  }, [appointment, communities, open, template, siteBaseUrl, cancellationReason]);
 
   if (!appointment) return null;
 
@@ -259,45 +289,51 @@ export function AppointmentWhatsAppDialog({
 
         {/* Template Selector Tabs - Apenas exibe se o agendamento não for cancelado ou concluído */}
         {appointment?.status !== 'cancelled' && appointment?.status !== 'completed' && (
-          <div className="flex items-center gap-1.5 p-1 bg-zinc-100/90 rounded-xl border border-zinc-200 w-full min-w-0">
-            <button
+          <div className="flex items-center gap-1.5 p-1 bg-zinc-100/90 rounded-full border border-zinc-200 w-full min-w-0">
+            <Button
               type="button"
+              size="sm"
+              variant={template === 'confirmation' ? 'outline' : 'ghost'}
               onClick={() => setTemplate('confirmation')}
-              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-sm font-semibold transition cursor-pointer ${
+              className={`flex-1 min-w-0 ${
                 template === 'confirmation'
-                  ? 'bg-white text-emerald-800 shadow-2xs border border-emerald-200'
+                  ? 'bg-white text-emerald-800 border-emerald-200 hover:bg-white'
                   : 'text-zinc-600 hover:text-zinc-900'
               }`}
             >
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <span className="truncate">Confirmação</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
+              size="sm"
+              variant={template === 'cancellation' ? 'outline' : 'ghost'}
               onClick={() => setTemplate('cancellation')}
-              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-sm font-semibold transition cursor-pointer ${
+              className={`flex-1 min-w-0 ${
                 template === 'cancellation'
-                  ? 'bg-white text-rose-800 shadow-2xs border border-rose-200'
+                  ? 'bg-white text-rose-800 border-rose-200 hover:bg-white'
                   : 'text-zinc-600 hover:text-zinc-900'
               }`}
             >
               <XCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
               <span className="truncate">Cancelamento</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
+              size="sm"
+              variant={template === 'reminder' ? 'outline' : 'ghost'}
               onClick={() => setTemplate('reminder')}
-              className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-sm font-semibold transition cursor-pointer ${
+              className={`flex-1 min-w-0 ${
                 template === 'reminder'
-                  ? 'bg-white text-blue-800 shadow-2xs border border-blue-200'
+                  ? 'bg-white text-blue-800 border-blue-200 hover:bg-white'
                   : 'text-zinc-600 hover:text-zinc-900'
               }`}
             >
               <BellRing className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <span className="truncate">Lembrete</span>
-            </button>
+            </Button>
           </div>
         )}
 
@@ -336,10 +372,12 @@ export function AppointmentWhatsAppDialog({
             <label className="text-sm font-bold uppercase tracking-wider text-zinc-600 truncate min-w-0">
               Mensagem Pronta (editável)
             </label>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={handleCopyMessage}
-              className="inline-flex items-center gap-1 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer shrink-0"
+              className="h-auto px-2 py-1 text-zinc-600 hover:text-zinc-900 shrink-0"
             >
               {copied ? (
                 <>
@@ -352,7 +390,7 @@ export function AppointmentWhatsAppDialog({
                   <span>Copiar texto</span>
                 </>
               )}
-            </button>
+            </Button>
           </div>
 
           <Textarea

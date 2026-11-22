@@ -73,7 +73,7 @@ export default function MinhaAgendaHomePage() {
               </div>
               <div>
                 <h2 className="text-base font-bold text-zinc-900">
-                  Atendimentos de hoje
+                  Agendamentos de hoje
                 </h2>
                 <p className="text-[11px] text-zinc-500 font-medium">
                   {todayFormatted}
@@ -104,10 +104,10 @@ export default function MinhaAgendaHomePage() {
 
               <div className="space-y-1.5">
                 <p className="text-base font-bold text-zinc-900 font-serif">
-                  Nenhum atendimento para hoje
+                  Nenhum agendamento para hoje
                 </p>
                 <p className="text-sm text-zinc-500 max-w-xs mx-auto leading-relaxed">
-                  Você não possui atendimentos agendados para a data de hoje.
+                  Você não possui agendamentos para a data de hoje.
                   Aproveite para conferir os próximos dias na sua agenda completa.
                 </p>
               </div>
@@ -149,7 +149,7 @@ export default function MinhaAgendaHomePage() {
           >
             <Link href={ROUTES.MY_AGENDA.NEW}>
               <CalendarPlus className="w-5 h-5 text-brand-300" />
-              <span>Agendar atendimento</span>
+              <span>Novo agendamento</span>
             </Link>
           </Button>
         </section>

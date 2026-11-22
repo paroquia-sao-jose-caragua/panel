@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import useAuthStore from '@/stores/useAuthStore';
 import { ROUTES } from '@/constants/routes';
+import { Button } from '@/components/ui/button';
 
 interface MinhaAgendaHeaderProps {
   isHome?: boolean;
@@ -70,14 +71,16 @@ export function MinhaAgendaHeader({
     <header className="sticky top-0 z-30 bg-brand-900 text-white shadow-sm border-b border-brand-800">
       <div className="max-w-lg mx-auto flex items-center justify-between px-3 py-3 min-h-14">
         {!hideBackButton ? (
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-sm"
             onClick={handleBack}
             aria-label="Voltar"
-            className="p-1.5 -ml-1 text-white hover:text-brand-300 rounded-full hover:bg-brand-800 transition active:scale-95 cursor-pointer"
+            className="-ml-1 text-white hover:text-brand-300 hover:bg-brand-800"
           >
             <ChevronLeft className="w-6 h-6" />
-          </button>
+          </Button>
         ) : (
           <div className="w-8" />
         )}

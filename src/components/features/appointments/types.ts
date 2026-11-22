@@ -1,6 +1,9 @@
-import type { AppointmentStatus } from '@/entities/appointment';
+import type { AppointmentKind, AppointmentStatus } from '@/entities/appointment';
 
 export interface AppointmentFormValues {
+  kind?: AppointmentKind;
+  title?: string;
+  durationMinutes?: number;
   agentId: string;
   serviceId: string;
   communityId: string | null;

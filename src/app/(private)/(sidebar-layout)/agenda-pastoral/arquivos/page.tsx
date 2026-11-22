@@ -198,9 +198,9 @@ export default function AppointmentsArchivePage() {
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <TypographyH1>Arquivo de Atendimentos</TypographyH1>
+            <TypographyH1>Arquivo de Agendamentos</TypographyH1>
             <Describe className="mt-1">
-              Histórico completo de atendimentos realizados, cancelados e solicitações expiradas para consulta e auditoria.
+              Histórico completo de agendamentos realizados, cancelados e solicitações expiradas para consulta e auditoria.
             </Describe>
           </div>
         </div>
@@ -209,14 +209,16 @@ export default function AppointmentsArchivePage() {
         <div className="space-y-4 mb-6">
           {/* Status Filter Chips */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            <button
+            <Button
               type="button"
+              size="sm"
+              variant={statusFilter === 'all' ? 'default' : 'outline'}
               onClick={() => setStatusFilter('all')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
+                'shadow-2xs',
                 statusFilter === 'all'
-                  ? 'bg-[#11291f] text-white shadow-xs'
-                  : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+                  ? 'bg-[#11291f] hover:bg-[#1a3d2e] text-white'
+                  : 'text-zinc-600'
               )}
             >
               <span>Todos</span>
@@ -230,16 +232,18 @@ export default function AppointmentsArchivePage() {
               >
                 {counts.all}
               </span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
+              size="sm"
+              variant={statusFilter === 'completed' ? 'default' : 'outline'}
               onClick={() => setStatusFilter('completed')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
+                'shadow-2xs',
                 statusFilter === 'completed'
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+                  ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
+                  : 'text-zinc-600'
               )}
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
@@ -254,16 +258,16 @@ export default function AppointmentsArchivePage() {
               >
                 {counts.completed}
               </span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
+              size="sm"
+              variant={statusFilter === 'cancelled' ? 'destructive' : 'outline'}
               onClick={() => setStatusFilter('cancelled')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
-                statusFilter === 'cancelled'
-                  ? 'bg-red-700 text-white shadow-xs'
-                  : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+                'shadow-2xs',
+                statusFilter === 'cancelled' ? 'bg-red-700 hover:bg-red-800' : 'text-zinc-600'
               )}
             >
               <XCircle className="w-3.5 h-3.5" />
@@ -278,16 +282,18 @@ export default function AppointmentsArchivePage() {
               >
                 {counts.cancelled}
               </span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
+              size="sm"
+              variant={statusFilter === 'expired' ? 'default' : 'outline'}
               onClick={() => setStatusFilter('expired')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5 shadow-2xs',
+                'shadow-2xs',
                 statusFilter === 'expired'
-                  ? 'bg-amber-600 text-white shadow-xs'
-                  : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+                  ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                  : 'text-zinc-600'
               )}
             >
               <Clock className="w-3.5 h-3.5" />
@@ -302,7 +308,7 @@ export default function AppointmentsArchivePage() {
               >
                 {counts.expired}
               </span>
-            </button>
+            </Button>
           </div>
 
           {/* Search & Agent Filter Bar */}
@@ -354,7 +360,7 @@ export default function AppointmentsArchivePage() {
                   Nenhum registro encontrado
                 </h3>
                 <p className="text-sm sm:text-sm text-zinc-500 max-w-md mx-auto">
-                  Não há atendimentos no arquivo com os filtros selecionados.
+                  Não há agendamentos no arquivo com os filtros selecionados.
                 </p>
               </div>
             </div>
@@ -403,13 +409,14 @@ export default function AppointmentsArchivePage() {
                       {/* Service Title (md:col-span-5) */}
                       <div className="md:col-span-5 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <button
-                            type="button"
-                            onClick={() => setSelectedAppointmentForDetails(app)}
-                            className="text-base font-bold text-zinc-900 tracking-tight truncate hover:text-[#11291f] hover:underline text-left cursor-pointer"
+                          <Link
+                            href={ROUTES.APPOINTMENTS.DETAILS(app.id)}
+                            className="text-base font-bold text-zinc-900 tracking-tight truncate hover:text-[#11291f] hover:underline text-left"
                           >
-                            {app.service?.title || 'Atendimento Pastoral'}
-                          </button>
+                            {app.kind === 'commitment'
+                              ? app.title || 'Compromisso Pastoral'
+                              : app.service?.title || 'Atendimento Pastoral'}
+                          </Link>
                           {isHomeVisit && (
                             <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 shrink-0">
                               <Home className="w-3 h-3 text-emerald-600" />
@@ -487,18 +494,20 @@ export default function AppointmentsArchivePage() {
                             variant="ghost"
                             size="icon-sm"
                             className="h-8 w-8 text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg cursor-pointer"
-                            aria-label="Ações do atendimento"
+                            aria-label="Ações do agendamento"
                           >
                             <MoreHorizontal className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-52 shadow-lg">
-                          <DropdownMenuItem
-                            onClick={() => setSelectedAppointmentForDetails(app)}
-                            className="cursor-pointer"
-                          >
-                            <Eye className="w-4 h-4 mr-2 text-zinc-500" />
-                            <span>Ver detalhes</span>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href={ROUTES.APPOINTMENTS.DETAILS(app.id)}
+                              className="cursor-pointer"
+                            >
+                              <Eye className="w-4 h-4 mr-2 text-zinc-500" />
+                              <span>Ver detalhes</span>
+                            </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link
@@ -506,7 +515,11 @@ export default function AppointmentsArchivePage() {
                               className="cursor-pointer"
                             >
                               <Pencil className="w-4 h-4 mr-2 text-zinc-500" />
-                              <span>Editar atendimento</span>
+                              <span>
+                                {app.kind === 'commitment'
+                                  ? 'Editar compromisso'
+                                  : 'Editar atendimento'}
+                              </span>
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem
@@ -562,24 +575,16 @@ export default function AppointmentsArchivePage() {
       <ConfirmDialog
         open={Boolean(revertingAppointment)}
         onOpenChange={(open) => !open && setRevertingAppointment(null)}
-        title="Restaurar Atendimento"
-        description={`Deseja reverter o cancelamento e confirmar novamente o atendimento de "${revertingAppointment?.requesterName}"?`}
+        title="Restaurar Agendamento"
+        description={
+          revertingAppointment?.kind === 'commitment'
+            ? `Deseja reverter o cancelamento e confirmar novamente o compromisso "${revertingAppointment?.title || 'Compromisso'}"?`
+            : `Deseja reverter o cancelamento e confirmar novamente o atendimento de "${revertingAppointment?.requesterName}"?`
+        }
         confirmText="Sim, Restaurar"
         cancelText="Voltar"
         isPending={isReverting}
         onConfirm={handleRevertCancel}
-      />
-
-      {/* Appointment Details Dialog Modal */}
-      <AppointmentDetailsDialog
-        open={Boolean(selectedAppointmentForDetails)}
-        onOpenChange={(open) => !open && setSelectedAppointmentForDetails(null)}
-        appointment={selectedAppointmentForDetails}
-        editHref={
-          selectedAppointmentForDetails
-            ? ROUTES.APPOINTMENTS.ARCHIVE_EDIT(selectedAppointmentForDetails.id)
-            : undefined
-        }
       />
     </>
   );

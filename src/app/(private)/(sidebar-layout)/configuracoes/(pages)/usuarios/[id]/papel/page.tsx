@@ -59,7 +59,7 @@ export default function EditRolePage({ params }: EditRolePageProps) {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>{t('change-role')}</TypographyH1>
+              <TypographyH1 size="form">{t('change-role')}</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {user ? `Atualize as permissões de acesso de ${user.name}` : 'Atualize as permissões de acesso do usuário'}
               </span>

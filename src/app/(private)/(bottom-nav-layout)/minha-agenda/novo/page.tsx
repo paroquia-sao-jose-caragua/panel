@@ -36,12 +36,13 @@ interface FormErrors {
   time?: string;
   serviceId?: string;
   requesterName?: string;
+  title?: string;
 }
 
 export default function MinhaAgendaNovoPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const initialDate = searchParams?.get('date') || dayjs().format('YYYY-MM-DD');
+  const initialDate = searchParams?.get('date') || '';
 
   const { user } = useAuthStore();
   const { agent: myAgent, isPending: isAgentPending } = useMyPastoralAgent();
@@ -50,6 +51,9 @@ export default function MinhaAgendaNovoPage() {
   const { createAppointment, isCreating } = useCreateAppointment();
 
   // Form states
+  const [kind, setKind] = useState<'appointment' | 'commitment'>('appointment');
+  const [commitmentTitle, setCommitmentTitle] = useState('');
+  const [durationMinutes, setDurationMinutes] = useState(60);
   const [appointmentDate, setAppointmentDate] = useState(initialDate);
   const [timeMode, setTimeMode] = useState<'available' | 'custom'>('available');
   const [selectedSlotTime, setSelectedSlotTime] = useState('');
@@ -100,17 +104,23 @@ export default function MinhaAgendaNovoPage() {
 
     if (!selectedTime) {
       newErrors.time =
-        timeMode === 'available'
+        timeMode === 'available' && kind === 'appointment'
           ? 'Por favor, selecione um dos horários disponíveis abaixo.'
-          : 'Por favor, informe o horário do atendimento (ex: 14:30).';
+          : 'Por favor, informe o horário (ex: 14:30).';
     }
 
-    if (!serviceId) {
-      newErrors.serviceId = 'Por favor, selecione o tipo de atendimento pastoral.';
-    }
+    if (kind === 'commitment') {
+      if (!commitmentTitle.trim() || commitmentTitle.trim().length < 2) {
+        newErrors.title = 'Por favor, informe o título do compromisso.';
+      }
+    } else {
+      if (!serviceId) {
+        newErrors.serviceId = 'Por favor, selecione o tipo de atendimento pastoral.';
+      }
 
-    if (!requesterName.trim()) {
-      newErrors.requesterName = 'Por favor, informe o nome completo do solicitante.';
+      if (!requesterName.trim()) {
+        newErrors.requesterName = 'Por favor, informe o nome completo do solicitante.';
+      }
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -119,11 +129,13 @@ export default function MinhaAgendaNovoPage() {
       // Focus and scroll to the first field with an error
       setTimeout(() => {
         let targetId = '';
-        if (newErrors.date) {
+        if (newErrors.title) {
+          targetId = 'commitment-title';
+        } else if (newErrors.date) {
           targetId = 'new-appointment-date';
         } else if (newErrors.time) {
           targetId =
-            timeMode === 'custom'
+            timeMode === 'custom' || kind === 'commitment'
               ? 'custom-appointment-time'
               : 'slots-container';
         } else if (newErrors.serviceId) {
@@ -148,17 +160,32 @@ export default function MinhaAgendaNovoPage() {
     setErrors({});
 
     try {
-      await createAppointment({
-        agentId,
-        serviceId,
-        communityId: communityId || null,
-        appointmentDate,
-        startTime: selectedTime,
-        requesterName: requesterName.trim(),
-        requesterPhone: requesterPhone.trim() || '(12) 99999-9999',
-        requesterNotes: notes.trim() || null,
-        status: 'confirmed',
-      });
+      if (kind === 'commitment') {
+        await createAppointment({
+          kind: 'commitment',
+          title: commitmentTitle.trim(),
+          agentId,
+          communityId: communityId || null,
+          appointmentDate,
+          startTime: selectedTime,
+          durationMinutes: Math.max(15, Number(durationMinutes) || 60),
+          requesterNotes: notes.trim() || null,
+          status: 'confirmed',
+        });
+      } else {
+        await createAppointment({
+          kind: 'appointment',
+          agentId,
+          serviceId,
+          communityId: communityId || null,
+          appointmentDate,
+          startTime: selectedTime,
+          requesterName: requesterName.trim(),
+          requesterPhone: requesterPhone.trim() || '(12) 99999-9999',
+          requesterNotes: notes.trim() || null,
+          status: 'confirmed',
+        });
+      }
 
       router.push(ROUTES.MY_AGENDA.SCHEDULE_WITH_DATE(appointmentDate));
     } catch {
@@ -168,10 +195,80 @@ export default function MinhaAgendaNovoPage() {
 
   return (
     <div className="flex flex-col flex-1">
-      <MinhaAgendaHeader title="Novo Atendimento" />
+      <MinhaAgendaHeader
+        title={kind === 'commitment' ? 'Novo Compromisso' : 'Novo Atendimento'}
+      />
 
       <div className="px-4 pt-4 pb-28">
         <form noValidate onSubmit={handleSubmit} className="space-y-6">
+          {/* Kind Switcher: Atendimento vs Compromisso */}
+          <div className="grid grid-cols-2 gap-2">
+            <Button
+              type="button"
+              size="lg"
+              variant={kind === 'appointment' ? 'default' : 'outline'}
+              onClick={() => {
+                setKind('appointment');
+                setTimeMode('available');
+                setErrors({});
+              }}
+              className="w-full"
+            >
+              Atendimento
+            </Button>
+            <Button
+              type="button"
+              size="lg"
+              variant={kind === 'commitment' ? 'default' : 'outline'}
+              onClick={() => {
+                setKind('commitment');
+                setTimeMode('custom');
+                setErrors({});
+              }}
+              className="w-full"
+            >
+              Compromisso
+            </Button>
+          </div>
+
+          {kind === 'commitment' && (
+            <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
+              <div className="flex items-center gap-2">
+                <Tag className="w-4 h-4 text-brand-800" />
+                <h2 className="text-sm font-bold text-zinc-900">
+                  Título do compromisso *
+                </h2>
+              </div>
+
+              <div>
+                <Input
+                  id="commitment-title"
+                  type="text"
+                  value={commitmentTitle}
+                  onChange={(e) => {
+                    setCommitmentTitle(e.target.value);
+                    if (errors.title) {
+                      setErrors((prev) => ({ ...prev, title: undefined }));
+                    }
+                  }}
+                  placeholder="Ex.: Reunião do CPP, Missa na Matriz, Formação..."
+                  className={cn(
+                    'h-11 rounded-xl text-sm transition-colors',
+                    errors.title ? 'border-red-500 focus-visible:ring-red-500' : ''
+                  )}
+                />
+                {errors.title && (
+                  <p className="text-sm text-red-600 font-medium flex items-center gap-1.5 mt-1.5">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{errors.title}</span>
+                  </p>
+                )}
+                <p className="text-xs text-zinc-500 mt-1.5">
+                  Bloqueia sua agenda neste horário sem aparecer nas categorias do site.
+                </p>
+              </div>
+            </div>
+          )}
           {/* Section 1: Data e Horário */}
           <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-4">
             <div className="flex items-center gap-2">
@@ -217,47 +314,41 @@ export default function MinhaAgendaNovoPage() {
               )}
             </div>
 
-            {/* Mode Switcher Chips */}
-            <div className="flex items-center gap-2 pt-1">
-              <button
-                type="button"
-                onClick={() => {
-                  setTimeMode('available');
-                  if (errors.time) {
-                    setErrors((prev) => ({ ...prev, time: undefined }));
-                  }
-                }}
-                className={cn(
-                  'px-3 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
-                  timeMode === 'available'
-                    ? 'bg-brand-900 text-white shadow-xs'
-                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
-                )}
-              >
-                Horário disponível
-              </button>
+            {/* Mode Switcher Chips (apenas para Atendimento) */}
+            {kind === 'appointment' && (
+              <div className="flex items-center gap-2 pt-1">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={timeMode === 'available' ? 'default' : 'secondary'}
+                  onClick={() => {
+                    setTimeMode('available');
+                    if (errors.time) {
+                      setErrors((prev) => ({ ...prev, time: undefined }));
+                    }
+                  }}
+                >
+                  Horário disponível
+                </Button>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setTimeMode('custom');
-                  if (errors.time) {
-                    setErrors((prev) => ({ ...prev, time: undefined }));
-                  }
-                }}
-                className={cn(
-                  'px-3 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none',
-                  timeMode === 'custom'
-                    ? 'bg-brand-900 text-white shadow-xs'
-                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
-                )}
-              >
-                Horário específico
-              </button>
-            </div>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={timeMode === 'custom' ? 'default' : 'secondary'}
+                  onClick={() => {
+                    setTimeMode('custom');
+                    if (errors.time) {
+                      setErrors((prev) => ({ ...prev, time: undefined }));
+                    }
+                  }}
+                >
+                  Horário específico
+                </Button>
+              </div>
+            )}
 
             {/* Slots or Custom Input */}
-            {timeMode === 'available' ? (
+            {kind === 'appointment' && timeMode === 'available' ? (
               <div
                 id="slots-container"
                 tabIndex={-1}
@@ -299,9 +390,11 @@ export default function MinhaAgendaNovoPage() {
                     {slots.map((slot) => {
                       const isSelected = selectedSlotTime === slot.startTime;
                       return (
-                        <button
+                        <Button
                           key={slot.startTime}
                           type="button"
+                          size="sm"
+                          variant={isSelected ? 'default' : 'outline'}
                           onClick={() => {
                             setSelectedSlotTime(slot.startTime);
                             if (errors.time) {
@@ -309,14 +402,12 @@ export default function MinhaAgendaNovoPage() {
                             }
                           }}
                           className={cn(
-                            'py-2 px-1 text-center rounded-xl text-sm font-bold transition-all cursor-pointer border select-none',
-                            isSelected
-                              ? 'bg-brand-900 text-white border-brand-900 shadow-xs ring-2 ring-brand-300'
-                              : 'bg-zinc-50 text-zinc-800 border-zinc-200 hover:bg-zinc-100 hover:border-zinc-300'
+                            'w-full font-bold',
+                            isSelected ? 'ring-2 ring-brand-300' : ''
                           )}
                         >
                           {slot.startTime}
-                        </button>
+                        </Button>
                       );
                     })}
                   </div>
@@ -361,12 +452,52 @@ export default function MinhaAgendaNovoPage() {
                     <span>{errors.time}</span>
                   </p>
                 )}
+
+                {kind === 'commitment' && (
+                  <div className="pt-4 space-y-2">
+                    <label className="text-sm font-semibold text-zinc-700 block">
+                      Duração *
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: '30 min', mins: 30 },
+                        { label: '1 hora', mins: 60 },
+                        { label: '1h 30min', mins: 90 },
+                        { label: '2 horas', mins: 120 },
+                        { label: '3 horas', mins: 180 },
+                      ].map((opt) => (
+                        <Button
+                          key={opt.mins}
+                          type="button"
+                          size="sm"
+                          variant={durationMinutes === opt.mins ? 'default' : 'secondary'}
+                          onClick={() => setDurationMinutes(opt.mins)}
+                        >
+                          {opt.label}
+                        </Button>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-2 pt-1">
+                      <Input
+                        type="number"
+                        min={15}
+                        max={720}
+                        step={5}
+                        value={durationMinutes}
+                        onChange={(e) => setDurationMinutes(Number(e.target.value) || 30)}
+                        className="h-10 w-28 rounded-xl text-sm"
+                      />
+                      <span className="text-xs text-zinc-500">minutos</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          {/* Section 2: Tipo de Atendimento */}
-          <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
+          {/* Section 2: Tipo de Atendimento (apenas para Atendimento) */}
+          {kind === 'appointment' && (
+            <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
             <div className="flex items-center gap-2">
               <Tag className="w-4 h-4 text-brand-800" />
               <h2 className="text-sm font-bold text-zinc-900">
@@ -413,7 +544,8 @@ export default function MinhaAgendaNovoPage() {
                 )}
               </div>
             )}
-          </div>
+            </div>
+          )}
 
           {/* Section 3: Comunidade (Opcional) */}
           <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
@@ -438,8 +570,9 @@ export default function MinhaAgendaNovoPage() {
             </select>
           </div>
 
-          {/* Section 4: Nome do Solicitante */}
-          <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
+          {/* Section 4: Nome do Solicitante (apenas para Atendimento) */}
+          {kind === 'appointment' && (
+            <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
             <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-brand-800" />
               <h2 className="text-sm font-bold text-zinc-900">
@@ -499,7 +632,8 @@ export default function MinhaAgendaNovoPage() {
                 />
               </div>
             </div>
-          </div>
+            </div>
+          )}
 
           {/* Section 5: Observações */}
           <div className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
@@ -533,7 +667,7 @@ export default function MinhaAgendaNovoPage() {
                 isLoading={isCreating}
                 className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-md active:scale-[0.99] cursor-pointer"
               >
-                Agendar atendimento
+                {kind === 'commitment' ? 'Salvar compromisso' : 'Agendar atendimento'}
               </Button>
             </div>
           </div>

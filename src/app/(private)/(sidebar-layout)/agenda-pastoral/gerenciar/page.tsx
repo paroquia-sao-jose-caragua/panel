@@ -299,7 +299,7 @@ export default function AppointmentsManagePage() {
                   </Button>
                 </div>
 
-                {/* Card 3: Novo Atendimento */}
+                {/* Card 3: Novo Agendamento */}
                 <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
                   <div className="space-y-3">
                     <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
@@ -307,7 +307,7 @@ export default function AppointmentsManagePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
-                        Novo Atendimento
+                        Novo Agendamento
                       </h3>
                       <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Agende diretamente um atendimento presencial ou visita domiciliar com um paroquiano.
@@ -445,7 +445,7 @@ export default function AppointmentsManagePage() {
                   </Button>
                 </div>
 
-                {/* Card 3: Novo Atendimento */}
+                {/* Card 3: Novo Agendamento */}
                 <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
                   <div className="space-y-3">
                     <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
@@ -453,7 +453,7 @@ export default function AppointmentsManagePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
-                        Novo Atendimento
+                        Novo Agendamento
                       </h3>
                       <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
                         Registre um agendamento para um fiel que ligou ou compareceu pessoalmente na secretaria.

@@ -6,7 +6,6 @@ import {
   LogOut,
   Settings,
   ChevronDown,
-  HelpCircle,
   Calendar,
 } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
@@ -111,31 +110,23 @@ export function UserNav() {
           <DropdownMenuSeparator className="my-1 bg-zinc-100" />
 
           {/* Navigation Options Group */}
-          <DropdownMenuGroup className="space-y-0.5">
-            {user?.role === 'pastoral_agent' && (
-              <DropdownMenuItem asChild>
-                <Link
-                  href={ROUTES.MY_AGENDA.HOME}
-                  className="flex items-center gap-2.5 px-3 py-2 text-sm sm:text-sm font-medium text-emerald-800 rounded-lg hover:bg-emerald-50 transition cursor-pointer"
-                >
-                  <Calendar className="w-4 h-4 text-emerald-600" />
-                  <span>Minha Agenda Pastoral</span>
-                </Link>
-              </DropdownMenuItem>
-            )}
+          {user?.role === 'pastoral_agent' && (
+            <>
+              <DropdownMenuGroup className="space-y-0.5">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={ROUTES.MY_AGENDA.HOME}
+                    className="flex items-center gap-2.5 px-3 py-2 text-sm sm:text-sm font-medium text-emerald-800 rounded-lg hover:bg-emerald-50 transition cursor-pointer"
+                  >
+                    <Calendar className="w-4 h-4 text-emerald-600" />
+                    <span>Minha Agenda Pastoral</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
 
-            <DropdownMenuItem asChild>
-              <Link
-                href={ROUTES.HELP.HOME}
-                className="flex items-center gap-2.5 px-3 py-2 text-sm sm:text-sm font-medium text-zinc-700 rounded-lg hover:bg-zinc-100 hover:text-zinc-900 transition cursor-pointer"
-              >
-                <HelpCircle className="w-4 h-4 text-brand-600" />
-                <span>Central de Ajuda</span>
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-
-          <DropdownMenuSeparator className="my-1 bg-zinc-100" />
+              <DropdownMenuSeparator className="my-1 bg-zinc-100" />
+            </>
+          )}
 
           {/* Logout Action */}
           <DropdownMenuItem

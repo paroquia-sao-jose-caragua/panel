@@ -57,7 +57,7 @@ export default function EditChurchPage() {
             <CoverImage url={community?.coverUrl} className="h-20 w-24" />
 
             <div>
-              <TypographyH1>Editar Igreja</TypographyH1>
+              <TypographyH1 size="form">Editar Igreja</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {community?.name}
               </span>

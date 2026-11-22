@@ -26,7 +26,7 @@ export const Root = ({ error, touched, helperText, ...props }: RootProps) => {
       <div>
         <div
           className={twMerge(
-            'flex w-full items-center gap-2 rounded-lg border px-3 py-2.5 bg-white',
+            'flex w-full items-center gap-2 rounded-xl border px-3 py-2.5 bg-white',
             'focus-within:border-brand-300 focus-within:ring-4 focus-within:ring-brand-100',
             ...(showError ? ['border-red-700'] : ['border-input']),
             props.className

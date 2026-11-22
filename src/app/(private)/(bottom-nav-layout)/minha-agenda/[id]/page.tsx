@@ -22,6 +22,8 @@ import {
   useAppointment,
   useAppointments,
 } from '@/api/appointments/use-appointments';
+import { useCommunities } from '@/api/communities/use-communities';
+import { getAppointmentLocation } from '@/utils/appointment-location';
 import { MinhaAgendaHeader } from '@/components/features/minha-agenda/top-header';
 import { CancelAppointmentDialog } from '@/components/features/minha-agenda/cancel-appointment-dialog';
 import { ROUTES } from '@/constants/routes';
@@ -41,6 +43,10 @@ export default function MinhaAgendaDetalhesPage({
 
   const { appointment, isPending, refetch } = useAppointment(id);
   const { updateStatus, isUpdatingStatus } = useAppointments();
+  const { communities } = useCommunities();
+  const locationInfo = appointment
+    ? getAppointmentLocation(appointment, communities)
+    : null;
 
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
@@ -137,7 +143,7 @@ export default function MinhaAgendaDetalhesPage({
   if (isPending) {
     return (
       <div className="flex flex-col flex-1">
-        <MinhaAgendaHeader title="Detalhes do Atendimento" />
+        <MinhaAgendaHeader title="Detalhes do Agendamento" />
         <div className="p-4 space-y-4">
           <Skeleton className="h-64 w-full rounded-3xl" />
           <Skeleton className="h-32 w-full rounded-2xl" />
@@ -149,11 +155,11 @@ export default function MinhaAgendaDetalhesPage({
   if (!appointment) {
     return (
       <div className="flex flex-col flex-1">
-        <MinhaAgendaHeader title="Detalhes do Atendimento" />
+        <MinhaAgendaHeader title="Detalhes do Agendamento" />
         <div className="p-8 text-center space-y-3">
           <AlertCircle className="w-12 h-12 text-zinc-400 mx-auto" />
           <p className="text-base font-semibold text-zinc-800">
-            Atendimento não encontrado
+            Agendamento não encontrado
           </p>
           <Button
             variant="outline"
@@ -168,13 +174,16 @@ export default function MinhaAgendaDetalhesPage({
   }
 
   const isConfirmed = appointment.status === 'confirmed';
+  const isCommitment = appointment.kind === 'commitment';
   const isPendingStatus = appointment.status === 'pending';
   const isArchived =
     appointment.status === 'completed' || appointment.status === 'cancelled';
 
   return (
     <div className="flex flex-col flex-1">
-      <MinhaAgendaHeader title="Detalhes do Atendimento" />
+      <MinhaAgendaHeader
+        title={isCommitment ? 'Detalhes do Compromisso' : 'Detalhes do Atendimento'}
+      />
 
       <div className="px-4 pt-4 pb-12 space-y-5">
         {/* Main Details Card (Screen 4 visual) */}
@@ -187,7 +196,9 @@ export default function MinhaAgendaDetalhesPage({
           {/* Service Title */}
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-zinc-900 font-serif">
-              {appointment.service?.title || 'Atendimento Pastoral'}
+              {isCommitment
+                ? appointment.title || 'Compromisso Pastoral'
+                : appointment.service?.title || 'Atendimento Pastoral'}
             </h2>
           </div>
 
@@ -208,13 +219,18 @@ export default function MinhaAgendaDetalhesPage({
               </span>
             </div>
 
-            <div className="flex items-center gap-3">
-              <MapPin className="w-4 h-4 text-zinc-400 shrink-0" />
-              <span>
-                {appointment.community?.name ||
-                  appointment.patientAddress ||
-                  'Comunidade Matriz'}
-              </span>
+            <div className="flex items-start gap-3">
+              <MapPin className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
+              <div className="min-w-0">
+                <span className="font-medium text-zinc-900 block">
+                  {locationInfo?.label || 'Igreja Matriz São José'}
+                </span>
+                {locationInfo?.address && (
+                  <span className="text-xs text-zinc-500 block mt-0.5">
+                    {locationInfo.address}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -223,42 +239,44 @@ export default function MinhaAgendaDetalhesPage({
         </section>
 
         {/* Requester Info Card */}
-        <section className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
-          <h3 className="text-sm font-bold text-zinc-900">
-            Informações do Solicitante
-          </h3>
+        {(!isCommitment || Boolean(appointment.requesterName)) && (
+          <section className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-3">
+            <h3 className="text-sm font-bold text-zinc-900">
+              Informações do Solicitante
+            </h3>
 
-          <div className="space-y-2 text-sm text-zinc-700">
-            <div className="flex items-center justify-between py-1 border-b border-zinc-100">
-              <span className="text-sm text-zinc-500 font-medium">Nome</span>
-              <span className="font-semibold text-zinc-900">
-                {appointment.requesterName}
-              </span>
+            <div className="space-y-2 text-sm text-zinc-700">
+              <div className="flex items-center justify-between py-1 border-b border-zinc-100">
+                <span className="text-sm text-zinc-500 font-medium">Nome</span>
+                <span className="font-semibold text-zinc-900">
+                  {appointment.requesterName}
+                </span>
+              </div>
+
+              {appointment.requesterPhone && (
+                <div className="flex items-center justify-between py-1 border-b border-zinc-100">
+                  <span className="text-sm text-zinc-500 font-medium">
+                    Telefone / WhatsApp
+                  </span>
+                  <span className="font-mono text-zinc-800">
+                    {appointment.requesterPhone}
+                  </span>
+                </div>
+              )}
+
+              {appointment.patientName && (
+                <div className="flex items-center justify-between py-1 border-b border-zinc-100">
+                  <span className="text-sm text-zinc-500 font-medium">
+                    Pessoa a ser visitada
+                  </span>
+                  <span className="font-medium text-zinc-800">
+                    {appointment.patientName}
+                  </span>
+                </div>
+              )}
             </div>
-
-            {appointment.requesterPhone && (
-              <div className="flex items-center justify-between py-1 border-b border-zinc-100">
-                <span className="text-sm text-zinc-500 font-medium">
-                  Telefone / WhatsApp
-                </span>
-                <span className="font-mono text-zinc-800">
-                  {appointment.requesterPhone}
-                </span>
-              </div>
-            )}
-
-            {appointment.patientName && (
-              <div className="flex items-center justify-between py-1 border-b border-zinc-100">
-                <span className="text-sm text-zinc-500 font-medium">
-                  Pessoa a ser visitada
-                </span>
-                <span className="font-medium text-zinc-800">
-                  {appointment.patientName}
-                </span>
-              </div>
-            )}
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Observações Section */}
         <section className="bg-white rounded-2xl p-5 border border-zinc-200/90 shadow-2xs space-y-2">
@@ -286,23 +304,28 @@ export default function MinhaAgendaDetalhesPage({
             {/* Mark as Completed */}
             <Button
               type="button"
+              size="lg"
               onClick={handleMarkAsCompleted}
               isLoading={isCompleting}
-              className="w-full h-12 rounded-2xl bg-emerald-800 hover:bg-emerald-700 text-white font-semibold text-sm shadow-xs"
+              className="w-full bg-emerald-800 hover:bg-emerald-700 text-white shadow-xs"
             >
               <Check className="w-4 h-4 mr-2" />
               Marcar como Realizado
             </Button>
 
             {/* Cancel Button */}
-            <button
+            <Button
               type="button"
+              variant="destructive-outlined"
+              size="lg"
               onClick={() => setShowCancelDialog(true)}
-              className="w-full h-12 rounded-2xl border border-red-200 bg-white hover:bg-red-50/60 text-red-600 font-semibold text-sm transition-all active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+              className="w-full bg-white shadow-2xs"
             >
               <span>✕</span>
-              <span>Cancelar atendimento</span>
-            </button>
+              <span>
+                {isCommitment ? 'Cancelar compromisso' : 'Cancelar atendimento'}
+              </span>
+            </Button>
           </section>
         )}
 
@@ -310,29 +333,32 @@ export default function MinhaAgendaDetalhesPage({
           <section className="space-y-3 pt-2">
             <Button
               type="button"
+              size="lg"
               onClick={handleConfirmPending}
               isLoading={isUpdatingStatus}
-              className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-sm"
+              className="w-full shadow-sm"
             >
               <Check className="w-4 h-4 mr-2 text-emerald-400" />
-              Confirmar Atendimento
+              {isCommitment ? 'Confirmar Compromisso' : 'Confirmar Atendimento'}
             </Button>
 
-            <button
+            <Button
               type="button"
+              variant="destructive-outlined"
+              size="lg"
               onClick={() => setShowCancelDialog(true)}
-              className="w-full h-12 rounded-2xl border border-red-200 bg-white hover:bg-red-50 text-red-600 font-semibold text-sm transition-all flex items-center justify-center gap-2"
+              className="w-full bg-white"
             >
               <span>✕</span>
               <span>Recusar solicitação</span>
-            </button>
+            </Button>
           </section>
         )}
 
         {isArchived && (
           <section className="p-4 rounded-2xl bg-zinc-100 text-center text-sm text-zinc-500 font-medium">
-            Este atendimento está arquivado como histórico e não pode mais ser
-            alterado.
+            Este {isCommitment ? 'compromisso' : 'atendimento'} está arquivado
+            como histórico e não pode mais ser alterado.
           </section>
         )}
       </div>

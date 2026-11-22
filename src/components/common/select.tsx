@@ -14,7 +14,7 @@ export interface SelectProps extends SelectPrimitive.SelectProps {
 function Select({ children, placeholder, ...props }: SelectProps) {
   return (
     <SelectPrimitive.Root {...props}>
-      <SelectPrimitive.Trigger className="flex h-11.5 w-full items-center justify-between gap-2 rounded-lg border border-input px-3 py-2 outline-none focus:border-brand-300 focus:ring-4 focus:ring-brand-100 data-placeholder:text-zinc-600 bg-white">
+      <SelectPrimitive.Trigger className="flex h-11.5 w-full items-center justify-between gap-2 rounded-xl border border-input px-3 py-2 outline-none focus:border-brand-300 focus:ring-4 focus:ring-brand-100 data-placeholder:text-zinc-600 bg-white">
         <SelectPrimitive.Value
           className="text-zinc-900"
           placeholder={placeholder}
@@ -29,7 +29,7 @@ function Select({ children, placeholder, ...props }: SelectProps) {
           side="bottom"
           position="popper"
           sideOffset={8}
-          className="animate-slide-down-and-fade z-50 w-(--radix-select-trigger-width) overflow-hidden rounded-lg border border-input bg-white shadow-sm"
+          className="animate-slide-down-and-fade z-50 w-(--radix-select-trigger-width) overflow-hidden rounded-xl border border-input bg-white shadow-sm"
         >
           <SelectPrimitive.Viewport className="max-h-60 overflow-y-auto">
             {children}

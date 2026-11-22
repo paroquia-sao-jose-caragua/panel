@@ -152,7 +152,7 @@ export default function EditClergyPage({
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Editar Dados do Clérigo</TypographyH1>
+              <TypographyH1 size="form">Editar Dados do Clérigo</TypographyH1>
             </div>
           </div>
         </div>

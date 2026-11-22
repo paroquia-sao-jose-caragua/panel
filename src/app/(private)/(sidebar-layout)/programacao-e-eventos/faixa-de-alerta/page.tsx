@@ -368,14 +368,16 @@ export default function UrgentAlertPage() {
                   </span>
                 </span>
                 {urgentAlert?.hasModal && (
-                  <button
+                  <Button
                     type="button"
+                    variant="link"
+                    size="sm"
                     onClick={() => setModalPreviewOpen(true)}
-                    className="font-semibold text-brand-700 hover:text-brand-800 hover:underline cursor-pointer flex items-center gap-1 shrink-0"
+                    className="h-auto p-0 font-semibold text-brand-700 hover:text-brand-800 shrink-0"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>Testar clique na faixa</span>
-                  </button>
+                  </Button>
                 )}
               </div>
 

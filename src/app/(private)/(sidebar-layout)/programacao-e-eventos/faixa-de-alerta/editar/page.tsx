@@ -153,7 +153,7 @@ export default function EditUrgentAlertPage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Editar Faixa de Alerta</TypographyH1>
+              <TypographyH1 size="form">Editar Faixa de Alerta</TypographyH1>
               <span className="text-sm sm:text-sm text-zinc-500 font-medium">
                 Configure a mensagem em destaque e a janela de detalhes para avisos importantes.
               </span>

@@ -12,7 +12,10 @@ import { Separator } from '@/components/ui/separator';
 import { Step } from '@/components/ui/stepper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
-import { AppointmentInfoStep } from '@/components/features/appointments/appointment-info-step';
+import {
+  AppointmentInfoStep,
+  focusFirstAppointmentError,
+} from '@/components/features/appointments/appointment-info-step';
 import { AppointmentConfirmStep } from '@/components/features/appointments/appointment-confirm-step';
 import type { AppointmentFormValues } from '@/components/features/appointments/types';
 import type { Appointment } from '@/entities/appointment';
@@ -25,10 +28,6 @@ import {
 } from '@/api/appointments/use-appointments';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
-import {
-  AppointmentWhatsAppDialog,
-  type WhatsAppTemplateType,
-} from '@/components/features/appointments/appointment-whatsapp-dialog';
 
 export interface AppointmentEditViewProps {
   appointmentId: string;
@@ -54,26 +53,6 @@ export const AppointmentEditView = ({
   const [activeStep, setActiveStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
-    open: boolean;
-    appointment: Appointment | null;
-    template: WhatsAppTemplateType;
-    cancellationReason?: string;
-  }>({
-    open: false,
-    appointment: null,
-    template: 'confirmation',
-  });
-
-  const handleWhatsAppDialogClose = useCallback(
-    (open: boolean) => {
-      setWhatsAppDialogState((prev) => ({ ...prev, open }));
-      if (!open) {
-        router.replace(backHref);
-      }
-    },
-    [router, backHref]
-  );
 
   const [values, setValues] = useState<AppointmentFormValues>({
     agentId: '',
@@ -149,33 +128,41 @@ export const AppointmentEditView = ({
       if (!effectiveAgentId) {
         newErrors.agentId = 'Selecione o agente pastoral responsável';
       }
-      if (!values.serviceId) {
-        newErrors.serviceId = 'Selecione a categoria / tipo de atendimento';
-      }
       if (!values.appointmentDate) {
-        newErrors.appointmentDate = 'Informe a data do atendimento';
+        newErrors.appointmentDate = 'Informe a data';
       }
       if (!values.startTime) {
         newErrors.startTime = 'Informe o horário de início';
       }
-      if (!values.requesterName.trim()) {
-        newErrors.requesterName = 'Nome do solicitante é obrigatório';
-      }
-      if (!values.requesterPhone.trim()) {
-        newErrors.requesterPhone = 'WhatsApp / Telefone é obrigatório';
-      }
 
-      if (selectedService?.requiresAddress) {
-        if (!values.patientName.trim()) {
-          newErrors.patientName = 'Nome do enfermo é obrigatório para visitas';
+      if (values.kind === 'commitment') {
+        if (!values.title || values.title.trim().length < 2) {
+          newErrors.title = 'Informe o título do compromisso';
         }
-        if (!values.patientAddress.trim()) {
-          newErrors.patientAddress = 'Endereço completo da visita é obrigatório';
+      } else {
+        if (!values.serviceId) {
+          newErrors.serviceId = 'Selecione a categoria / tipo de atendimento';
+        }
+        if (!values.requesterName.trim()) {
+          newErrors.requesterName = 'Nome do solicitante é obrigatório';
+        }
+        if (!values.requesterPhone.trim()) {
+          newErrors.requesterPhone = 'WhatsApp / Telefone é obrigatório';
+        }
+
+        if (selectedService?.requiresAddress) {
+          if (!values.patientName.trim()) {
+            newErrors.patientName = 'Nome do enfermo é obrigatório para visitas';
+          }
+          if (!values.patientAddress.trim()) {
+            newErrors.patientAddress = 'Endereço completo da visita é obrigatório';
+          }
         }
       }
 
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
+        focusFirstAppointmentError(newErrors);
         return;
       }
 
@@ -229,28 +216,9 @@ export const AppointmentEditView = ({
       isStaff;
 
     if (wasPendingApproved && appointment) {
-      setWhatsAppDialogState({
-        open: true,
-        appointment: {
-          ...appointment,
-          ...values,
-          agentId: effectiveAgentId,
-          id: appointmentId,
-        },
-        template: 'confirmation',
-      });
+      router.replace(ROUTES.APPOINTMENTS.WHATSAPP(appointmentId, 'confirmation'));
     } else if (wasCancelled && appointment) {
-      setWhatsAppDialogState({
-        open: true,
-        appointment: {
-          ...appointment,
-          ...values,
-          agentId: effectiveAgentId,
-          id: appointmentId,
-        },
-        template: 'cancellation',
-        cancellationReason: 'Houve um imprevisto na agenda pastoral',
-      });
+      router.replace(ROUTES.APPOINTMENTS.WHATSAPP(appointmentId, 'cancellation'));
     } else {
       router.replace(backHref);
     }
@@ -287,7 +255,7 @@ export const AppointmentEditView = ({
     }
     links.push({
       key: 'editar',
-      title: 'Editar Atendimento',
+      title: 'Editar Agendamento',
     });
     return links;
   }, [breadcrumbSection]);
@@ -302,13 +270,19 @@ export const AppointmentEditView = ({
 
           <div className="flex flex-row items-center gap-4 mt-2">
             <div>
-              <TypographyH1>Editar Atendimento</TypographyH1>
+              <TypographyH1 size="form">
+                {appointment?.kind === 'commitment'
+                  ? 'Editar Compromisso'
+                  : appointment
+                    ? 'Editar Atendimento'
+                    : 'Editar Agendamento'}
+              </TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {isLoadingAppointment
                   ? 'Carregando dados do agendamento...'
                   : appointment
-                  ? `${appointment.requesterName} • ${appointment.appointmentDate} às ${appointment.startTime}`
-                  : 'Atendimento não encontrado'}
+                  ? `${appointment.kind === 'commitment' ? appointment.title || 'Compromisso' : appointment.requesterName} • ${appointment.appointmentDate} às ${appointment.startTime}`
+                  : 'Agendamento não encontrado'}
               </span>
             </div>
           </div>
@@ -320,7 +294,7 @@ export const AppointmentEditView = ({
           <Step
             variant={activeStep === 1 ? 'active' : activeStep > 1 ? 'completed' : 'pending'}
             step={1}
-            label="Dados do Atendimento"
+            label="Dados do Agendamento"
           />
           <Step
             variant={activeStep === 2 ? 'active' : activeStep > 2 ? 'completed' : 'pending'}
@@ -339,7 +313,7 @@ export const AppointmentEditView = ({
         ) : !appointment ? (
           <div className="border border-dashed border-zinc-300 rounded-2xl p-12 text-center bg-zinc-50/50">
             <CalendarX className="w-12 h-12 text-zinc-300 mx-auto mb-3" />
-            <h3 className="text-lg font-semibold text-zinc-800">Atendimento não encontrado</h3>
+            <h3 className="text-lg font-semibold text-zinc-800">Agendamento não encontrado</h3>
             <p className="text-sm text-zinc-500 mt-1 max-w-md mx-auto">
               O agendamento solicitado não foi localizado ou você não tem permissão para acessá-lo.
             </p>
@@ -409,7 +383,7 @@ export const AppointmentEditView = ({
                   Gerenciamento do Registro
                 </span>
                 <p className="text-sm text-zinc-400 mt-0.5">
-                  Excluir este agendamento removerá permanentemente o atendimento da base de dados da paróquia.
+                  Excluir este agendamento removerá permanentemente o registro da base de dados da paróquia.
                 </p>
               </div>
 
@@ -421,26 +395,34 @@ export const AppointmentEditView = ({
                 className="text-sm text-zinc-400 hover:text-red-600 hover:bg-red-50 gap-1.5 h-8 px-3 transition-colors cursor-pointer shrink-0"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Excluir Atendimento</span>
+                <span>
+                  {appointment.kind === 'commitment'
+                    ? 'Excluir Compromisso'
+                    : 'Excluir Atendimento'}
+                </span>
               </Button>
             </div>
 
             <DeleteConfirmationDialog
               open={confirmDelete}
               onOpenChange={setConfirmDelete}
-              title="Excluir Atendimento"
-              itemName={appointment.requesterName || 'Atendimento'}
-              description={`Tem certeza que deseja excluir o agendamento de "${appointment.requesterName}" em ${appointment.appointmentDate}? Esta ação é irreversível.`}
+              title={
+                appointment.kind === 'commitment'
+                  ? 'Excluir Compromisso'
+                  : 'Excluir Atendimento'
+              }
+              itemName={
+                appointment.kind === 'commitment'
+                  ? appointment.title || 'Compromisso'
+                  : appointment.requesterName || 'Atendimento'
+              }
+              description={`Tem certeza que deseja excluir o agendamento "${
+                appointment.kind === 'commitment'
+                  ? appointment.title || 'Compromisso'
+                  : appointment.requesterName
+              }" em ${appointment.appointmentDate}? Esta ação é irreversível.`}
               isPending={isDeleting}
               onConfirm={handleDelete}
-            />
-
-            <AppointmentWhatsAppDialog
-              open={whatsAppDialogState.open}
-              onOpenChange={handleWhatsAppDialogClose}
-              appointment={whatsAppDialogState.appointment}
-              initialTemplate={whatsAppDialogState.template}
-              cancellationReason={whatsAppDialogState.cancellationReason}
             />
           </>
         )}
