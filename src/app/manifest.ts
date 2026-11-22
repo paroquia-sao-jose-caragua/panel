@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Painel de gestão administrativa e pastoral da Paróquia São José de Caraguatatuba - SP.",
     start_url: "/",
     display: "standalone",
-    background_color: "#f8f0e7",
-    theme_color: "#18181b",
+    background_color: "#18351e",
+    theme_color: "#18351e",
     orientation: "portrait",
     scope: "/",
     icons: [
