@@ -1,6 +1,6 @@
 // Service Worker - Paróquia São José Painel Administrativo PWA & Web Push Notifications
 
-const CACHE_NAME = "paroquia-panel-cache-v1";
+const CACHE_NAME = "paroquia-panel-cache-v2";
 const STATIC_ASSETS = [
   "/",
   "/manifest.webmanifest",
