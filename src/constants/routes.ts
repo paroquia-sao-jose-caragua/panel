@@ -77,7 +77,15 @@ export const ROUTES = {
     EDIT: (id: string) => `/agenda-pastoral/editar/${id}`,
     REPORT: '/agenda-pastoral/relatorio',
     DETAILS: (id: string) => `/agenda-pastoral/${id}`,
+    WHATSAPP: (
+      id: string,
+      template?: 'confirmation' | 'cancellation' | 'reminder'
+    ) =>
+      template
+        ? `/agenda-pastoral/${id}/whatsapp?template=${template}`
+        : `/agenda-pastoral/${id}/whatsapp`,
     BLOCKS: '/agenda-pastoral/bloqueios',
+    BLOCKS_ADD: '/agenda-pastoral/bloqueios/adicionar',
     ARCHIVE: '/agenda-pastoral/arquivos',
     ARCHIVE_EDIT: (id: string) => `/agenda-pastoral/arquivos/editar/${id}`,
     ONLINE_SETTINGS: '/agenda-pastoral/atendimentos-online',

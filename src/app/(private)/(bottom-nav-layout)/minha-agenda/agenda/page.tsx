@@ -25,6 +25,7 @@ import { ROUTES } from '@/constants/routes';
 import { MinhaAgendaHeader } from '@/components/features/minha-agenda/top-header';
 import { AppointmentCard } from '@/components/features/minha-agenda/appointment-card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 function MinhaAgendaScheduleContent() {
@@ -353,39 +354,45 @@ function MinhaAgendaScheduleContent() {
         <section className="bg-white rounded-2xl p-4 border border-zinc-200/90 shadow-2xs space-y-3 overflow-hidden">
           {/* Header with Chevrons and dynamic month title */}
           <div className="flex items-center justify-between px-1">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={handlePrevDay}
               aria-label="Dia anterior"
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 transition active:scale-95 cursor-pointer"
+              className="text-zinc-500 hover:text-zinc-800"
             >
               <ChevronLeft className="w-5 h-5" />
-            </button>
+            </Button>
 
             <div className="flex items-center gap-2">
               <span className="text-base font-bold text-zinc-900 tracking-tight capitalize">
                 {monthTitle}
               </span>
               {!isCurrentSelectedToday && (
-                <button
+                <Button
                   type="button"
+                  variant="outline"
+                  size="xs"
                   onClick={handleGoToToday}
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 border border-brand-200/80 px-2 py-0.5 rounded-full transition active:scale-95 cursor-pointer"
+                  className="text-brand-800 bg-brand-50 hover:bg-brand-100 border-brand-200/80"
                 >
                   <ArrowLeft className="w-2.5 h-2.5 text-brand-700" />
                   <span>Hoje</span>
-                </button>
+                </Button>
               )}
             </div>
 
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={handleNextDay}
               aria-label="Próximo dia"
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 transition active:scale-95 cursor-pointer"
+              className="text-zinc-500 hover:text-zinc-800"
             >
               <ChevronRight className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
 
           {/* Horizontally Rolling Weekday Strip */}

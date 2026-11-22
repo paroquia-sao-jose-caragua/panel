@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
@@ -21,17 +22,8 @@ import { TypographyH1 } from '@/components/ui/typography/h1';
 import { Describe } from '@/components/ui/typography/describe';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
 import { Select, SelectItem } from '@/components/common/select';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dialog';
 import { BackButton } from '@/components/common/back-button';
 import {
@@ -40,19 +32,17 @@ import {
 } from '@/api/appointments/use-appointments';
 import {
   getAgentBlockedDates,
-  addAgentBlockedDate,
   removeAgentBlockedDate,
 } from '@/api/appointments/agents';
-import type { AgentBlockedDate, PastoralAgent } from '@/entities/pastoral-agent';
+import type { AgentBlockedDate } from '@/entities/pastoral-agent';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
 import { showAlert } from '@/utils/showAlert';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
 
 export default function BloqueiosPage() {
   const searchParams = useSearchParams();
-  const shouldOpenNew = searchParams.get('novo') === 'true';
   const queryAgentId = searchParams.get('agentId');
 
   const { user } = useAuthStore();
@@ -111,20 +101,6 @@ export default function BloqueiosPage() {
     if (selectedAgentId === 'all') return allBlocks;
     return allBlocks.filter((b) => b.agentId === selectedAgentId);
   }, [allBlocks, selectedAgentId]);
-
-  // Modal State for New Block
-  const [isNewDialogOpen, setIsNewDialogOpen] = useState(shouldOpenNew);
-  const [formAgentId, setFormAgentId] = useState<string>(
-    isPastoralAgent && myAgent ? myAgent.id : (queryAgentId || '')
-  );
-  const [startDate, setStartDate] = useState(dayjs().format('YYYY-MM-DD'));
-  const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DD'));
-  const [timeMode, setTimeMode] = useState<'all_day' | 'specific_time'>('all_day');
-  const [startTime, setStartTime] = useState('08:00');
-  const [endTime, setEndTime] = useState('12:00');
-  const [reason, setReason] = useState('Férias');
-  const [customReason, setCustomReason] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Delete State
   const [blockToDelete, setBlockToDelete] = useState<{
@@ -196,65 +172,6 @@ export default function BloqueiosPage() {
     return groups;
   }, [displayedBlocks]);
 
-  const handleCreateBlock = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const effectiveAgent = isPastoralAgent && myAgent ? myAgent.id : formAgentId;
-
-    if (!effectiveAgent) {
-      showAlert('Selecione um agente pastoral.');
-      return;
-    }
-    if (!startDate || !endDate) {
-      showAlert('Informe as datas de início e término.');
-      return;
-    }
-
-    const start = dayjs(startDate);
-    const end = dayjs(endDate);
-
-    if (end.isBefore(start)) {
-      showAlert('A data final não pode ser anterior à data inicial.');
-      return;
-    }
-
-    const finalReason =
-      reason === 'Outro'
-        ? customReason.trim() || 'Compromisso externo'
-        : reason;
-
-    setIsSubmitting(true);
-    try {
-      // Loop through all dates in range
-      const diffDays = end.diff(start, 'day');
-      const datesToBlock: string[] = [];
-
-      for (let i = 0; i <= diffDays; i++) {
-        datesToBlock.push(start.add(i, 'day').format('YYYY-MM-DD'));
-      }
-
-      await Promise.all(
-        datesToBlock.map((dateStr) =>
-          addAgentBlockedDate(effectiveAgent, {
-            blockedDate: dateStr,
-            startTime: timeMode === 'specific_time' ? startTime : null,
-            endTime: timeMode === 'specific_time' ? endTime : null,
-            reason: finalReason,
-          })
-        )
-      );
-
-      await queryClient.invalidateQueries({ queryKey: ['all-blocked-dates'] });
-      showAlert('Bloqueio cadastrado com sucesso!');
-      setIsNewDialogOpen(false);
-      setCustomReason('');
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Falha ao salvar bloqueio';
-      showAlert(`Erro ao salvar bloqueio: ${msg}`);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const handleDeleteGroup = async () => {
     if (!blockToDelete) return;
     setIsDeleting(true);
@@ -313,6 +230,13 @@ export default function BloqueiosPage() {
               Controle períodos de férias, compromissos externos e datas em que os agentes pastorais não estarão disponíveis.
             </Describe>
           </div>
+
+          <Button asChild size="sm" className="gap-1.5 shrink-0 self-start sm:self-center">
+            <Link href={ROUTES.APPOINTMENTS.BLOCKS_ADD}>
+              <Plus className="w-4 h-4" />
+              <span>Novo Bloqueio</span>
+            </Link>
+          </Button>
         </div>
 
         {/* Filter bar by Agent */}
@@ -458,183 +382,6 @@ export default function BloqueiosPage() {
           </div>
         )}
       </main>
-
-      {/* Dialog: Novo Bloqueio */}
-      <Dialog open={isNewDialogOpen} onOpenChange={setIsNewDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 font-serif text-xl">
-              <CalendarOff className="w-5 h-5 text-purple-600" />
-              <span>Bloquear Disponibilidade</span>
-            </DialogTitle>
-            <DialogDescription>
-              Selecione o agente pastoral, o intervalo de datas e o motivo para suspender a disponibilidade na agenda.
-            </DialogDescription>
-          </DialogHeader>
-
-          <form onSubmit={handleCreateBlock} className="space-y-4 pt-1">
-            {/* Agente Selector */}
-            {!isPastoralAgent && (
-              <div>
-                <label className="text-sm font-semibold text-zinc-700 block mb-1">
-                  Agente Pastoral *
-                </label>
-                <Select
-                  name="modalAgentId"
-                  value={formAgentId}
-                  onValueChange={(val) => setFormAgentId(val)}
-                  placeholder="Selecione o padre ou ministro"
-                >
-                  {(agents || []).map((agent) => (
-                    <SelectItem
-                      key={agent.id}
-                      value={agent.id}
-                      text={`${agent.title ? `${agent.title} ` : ''}${agent.name}`}
-                    />
-                  ))}
-                </Select>
-              </div>
-            )}
-
-            {/* Date Range: De ... Até */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm font-semibold text-zinc-700 block mb-1">
-                  A partir de *
-                </label>
-                <Input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-semibold text-zinc-700 block mb-1">
-                  Até *
-                </label>
-                <Input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Time Mode: Dia inteiro vs Horário Específico */}
-            <div>
-              <label className="text-sm font-semibold text-zinc-700 block mb-1.5">
-                Horário
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setTimeMode('all_day')}
-                  className={cn(
-                    'p-2.5 rounded-xl border text-sm font-semibold transition-all cursor-pointer text-center',
-                    timeMode === 'all_day'
-                      ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
-                      : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50'
-                  )}
-                >
-                  ○ Dia inteiro
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setTimeMode('specific_time')}
-                  className={cn(
-                    'p-2.5 rounded-xl border text-sm font-semibold transition-all cursor-pointer text-center',
-                    timeMode === 'specific_time'
-                      ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
-                      : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50'
-                  )}
-                >
-                  ○ Horário específico
-                </button>
-              </div>
-            </div>
-
-            {/* Specific Times if selected */}
-            {timeMode === 'specific_time' && (
-              <div className="grid grid-cols-2 gap-3 p-3 bg-zinc-50 rounded-xl border border-zinc-100">
-                <div>
-                  <label className="text-[11px] font-semibold text-zinc-600 block mb-1">
-                    Horário Inicial
-                  </label>
-                  <Input
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[11px] font-semibold text-zinc-600 block mb-1">
-                    Horário Final
-                  </label>
-                  <Input
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Reason */}
-            <div>
-              <label className="text-sm font-semibold text-zinc-700 block mb-1">
-                Motivo do Bloqueio *
-              </label>
-              <Select
-                name="reasonSelect"
-                value={reason}
-                onValueChange={(val) => setReason(val)}
-                placeholder="Selecione o motivo"
-              >
-                <SelectItem value="Férias" text="Férias" />
-                <SelectItem value="Retiro Espiritual" text="Retiro Espiritual" />
-                <SelectItem value="Compromisso Externo" text="Compromisso Externo" />
-                <SelectItem value="Recesso Paroquial" text="Recesso Paroquial" />
-                <SelectItem value="Imprevisto / Saúde" text="Imprevisto / Saúde" />
-                <SelectItem value="Outro" text="Outro motivo (digitar)" />
-              </Select>
-
-              {reason === 'Outro' && (
-                <Input
-                  className="mt-2"
-                  placeholder="Especifique o motivo do bloqueio..."
-                  value={customReason}
-                  onChange={(e) => setCustomReason(e.target.value)}
-                  required
-                />
-              )}
-            </div>
-
-            <DialogFooter className="pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsNewDialogOpen(false)}
-                disabled={isSubmitting}
-              >
-                Cancelar
-              </Button>
-              <Button
-                type="submit"
-                className="bg-[#11291f] text-white hover:bg-[#1a3d2e]"
-                isLoading={isSubmitting}
-                loadingText="Bloqueando período..."
-              >
-                Bloquear período
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
 
       {/* Delete Confirmation */}
       <DeleteConfirmationDialog

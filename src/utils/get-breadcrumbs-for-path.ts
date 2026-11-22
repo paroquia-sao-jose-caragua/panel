@@ -543,6 +543,29 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
     ];
   }
   if (
+    cleanPath === ROUTES.APPOINTMENTS.BLOCKS_ADD ||
+    cleanPath === '/agenda-pastoral/bloqueios/adicionar'
+  ) {
+    return [
+      {
+        key: 'agendamentos',
+        href: ROUTES.APPOINTMENTS.HOME,
+        title: 'Agenda Pastoral',
+        icon: 'calendar-check',
+      },
+      {
+        key: 'bloqueios',
+        href: ROUTES.APPOINTMENTS.BLOCKS,
+        title: 'Bloqueios',
+      },
+      {
+        key: 'bloqueios-adicionar',
+        href: ROUTES.APPOINTMENTS.BLOCKS_ADD,
+        title: 'Novo Bloqueio',
+      },
+    ];
+  }
+  if (
     cleanPath === ROUTES.APPOINTMENTS.BLOCKS ||
     cleanPath === '/atendimentos/bloqueios'
   ) {
@@ -615,7 +638,7 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
       {
         key: 'adicionar',
         href: ROUTES.APPOINTMENTS.ADD,
-        title: 'Novo Atendimento',
+        title: 'Novo Agendamento',
       },
     ];
   }
@@ -674,6 +697,24 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
     ];
   }
   if (
+    cleanPath.endsWith('/whatsapp') &&
+    cleanPath.startsWith('/agenda-pastoral/')
+  ) {
+    return [
+      {
+        key: 'agendamentos',
+        href: ROUTES.APPOINTMENTS.HOME,
+        title: 'Agenda Pastoral',
+        icon: 'calendar-check',
+      },
+      {
+        key: 'whatsapp',
+        href: cleanPath,
+        title: 'Notificar via WhatsApp',
+      },
+    ];
+  }
+  if (
     cleanPath.includes('/editar/') &&
     (cleanPath.startsWith('/agenda-pastoral') ||
       cleanPath.startsWith('/atendimentos'))
@@ -690,7 +731,7 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
         href: ROUTES.APPOINTMENTS.LIST,
         title: 'Solicitações',
       },
-      { key: 'editar', href: '#', title: 'Editar Atendimento' },
+      { key: 'editar', href: '#', title: 'Editar Agendamento' },
     ];
   }
 

@@ -61,7 +61,7 @@ export default function EditOrdinaryMassPage() {
             <CoverImage url={community?.coverUrl} className="h-20 w-24" />
 
             <div>
-              <TypographyH1>Editar Missa Cotidiana</TypographyH1>
+              <TypographyH1 size="form">Editar Missa Cotidiana</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {community?.name}
               </span>

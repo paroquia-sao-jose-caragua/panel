@@ -35,6 +35,8 @@ import { Badge } from '@/components/ui/badge';
 import type { Appointment, AppointmentStatus } from '@/entities/appointment';
 import { showAlert } from '@/utils/showAlert';
 import { isAppointmentExpired } from '@/utils/appointment';
+import { useCommunities } from '@/api/communities/use-communities';
+import { getAppointmentLocation } from '@/utils/appointment-location';
 
 dayjs.locale('pt-br');
 
@@ -53,6 +55,11 @@ export const AppointmentDetailsDialog = ({
   editHref,
   onOpenWhatsApp,
 }: AppointmentDetailsDialogProps) => {
+  const { communities } = useCommunities();
+  const locationInfo = useMemo(
+    () => (appointment ? getAppointmentLocation(appointment, communities) : null),
+    [appointment, communities]
+  );
   const formattedDate = useMemo(() => {
     if (!appointment?.appointmentDate) return '';
     const d = dayjs(appointment.appointmentDate).locale('pt-br');
@@ -177,7 +184,9 @@ export const AppointmentDetailsDialog = ({
             <div>
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                  Serviço Pastoral
+                  {appointment.kind === 'commitment'
+                    ? 'Compromisso Pastoral'
+                    : 'Serviço Pastoral'}
                 </span>
                 {isHomeVisit && (
                   <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
@@ -187,7 +196,9 @@ export const AppointmentDetailsDialog = ({
                 )}
               </div>
               <h3 className="text-lg font-bold text-zinc-900 font-serif">
-                {appointment.service?.title || 'Atendimento Pastoral'}
+                {appointment.kind === 'commitment'
+                  ? appointment.title || 'Compromisso Pastoral'
+                  : appointment.service?.title || 'Atendimento Pastoral'}
               </h3>
               {appointment.service?.description && (
                 <p className="text-xs text-zinc-600 font-serif mt-0.5 leading-relaxed">
@@ -220,11 +231,16 @@ export const AppointmentDetailsDialog = ({
                 </span>
                 <div className="flex items-start gap-1.5 font-semibold text-zinc-900">
                   <MapPin className="w-3.5 h-3.5 text-[#B8872E] shrink-0 mt-0.5" />
-                  <span>
-                    {isHomeVisit && appointment.patientAddress
-                      ? appointment.patientAddress
-                      : appointment.community?.name || 'Comunidade Matriz'}
-                  </span>
+                  <div>
+                    <span className="block">
+                      {locationInfo?.label || 'Igreja Matriz São José'}
+                    </span>
+                    {locationInfo?.address && (
+                      <span className="text-[11px] font-normal text-zinc-500 block mt-0.5">
+                        {locationInfo.address}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -251,58 +267,60 @@ export const AppointmentDetailsDialog = ({
           </div>
 
           {/* Requester Information */}
-          <div className="bg-white border border-zinc-200/80 rounded-2xl p-4 sm:p-5 space-y-3">
-            <div className="flex items-center gap-2 pb-2 border-b border-zinc-100">
-              <User className="w-4 h-4 text-zinc-600" />
-              <h4 className="text-sm font-bold text-zinc-900">
-                Dados do Solicitante
-              </h4>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
-                  Nome
-                </span>
-                <p className="font-semibold text-zinc-900 mt-0.5">
-                  {appointment.requesterName}
-                </p>
+          {(appointment.kind !== 'commitment' || Boolean(appointment.requesterName)) && (
+            <div className="bg-white border border-zinc-200/80 rounded-2xl p-4 sm:p-5 space-y-3">
+              <div className="flex items-center gap-2 pb-2 border-b border-zinc-100">
+                <User className="w-4 h-4 text-zinc-600" />
+                <h4 className="text-sm font-bold text-zinc-900">
+                  Dados do Solicitante
+                </h4>
               </div>
 
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
-                  Vínculo / Parentesco
-                </span>
-                <p className="font-medium text-zinc-700 mt-0.5">
-                  {appointment.requesterRelationship || 'O próprio fiel'}
-                </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
+                    Nome
+                  </span>
+                  <p className="font-semibold text-zinc-900 mt-0.5">
+                    {appointment.requesterName}
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
+                    Vínculo / Parentesco
+                  </span>
+                  <p className="font-medium text-zinc-700 mt-0.5">
+                    {appointment.requesterRelationship || 'O próprio fiel'}
+                  </p>
+                </div>
+
+                {appointment.requesterPhone && (
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
+                      WhatsApp / Telefone
+                    </span>
+                    <div className="flex items-center gap-1.5 font-mono text-zinc-800 mt-0.5">
+                      <Phone className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                      <span>{appointment.requesterPhone}</span>
+                    </div>
+                  </div>
+                )}
+
+                {appointment.requesterEmail && (
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
+                      E-mail
+                    </span>
+                    <div className="flex items-center gap-1.5 text-zinc-700 mt-0.5 truncate">
+                      <Mail className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                      <span className="truncate">{appointment.requesterEmail}</span>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              {appointment.requesterPhone && (
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
-                    WhatsApp / Telefone
-                  </span>
-                  <div className="flex items-center gap-1.5 font-mono text-zinc-800 mt-0.5">
-                    <Phone className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                    <span>{appointment.requesterPhone}</span>
-                  </div>
-                </div>
-              )}
-
-              {appointment.requesterEmail && (
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
-                    E-mail
-                  </span>
-                  <div className="flex items-center gap-1.5 text-zinc-700 mt-0.5 truncate">
-                    <Mail className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                    <span className="truncate">{appointment.requesterEmail}</span>
-                  </div>
-                </div>
-              )}
             </div>
-          </div>
+          )}
 
           {/* Patient info if home visit or exists */}
           {(isHomeVisit || appointment.patientName) && (
@@ -427,7 +445,7 @@ export const AppointmentDetailsDialog = ({
                     onOpenWhatsApp(appointment);
                   } else {
                     window.open(
-                      `https://wa.me/55${appointment.requesterPhone.replace(/\D/g, '')}`,
+                      `https://wa.me/55${(appointment.requesterPhone || '').replace(/\D/g, '')}`,
                       '_blank'
                     );
                   }
@@ -442,7 +460,7 @@ export const AppointmentDetailsDialog = ({
 
           <div className="flex items-center gap-2 justify-end">
             {editHref && (
-              <Button asChild size="sm" className="rounded-xl text-xs font-semibold bg-[#11291f] text-white hover:bg-[#1a3d2e] gap-1.5">
+              <Button asChild size="sm" className="text-xs font-semibold gap-1.5">
                 <Link href={editHref} onClick={() => onOpenChange(false)}>
                   <Pencil className="w-3.5 h-3.5" />
                   <span>Editar atendimento</span>
@@ -455,7 +473,7 @@ export const AppointmentDetailsDialog = ({
               variant="outline"
               size="sm"
               onClick={() => onOpenChange(false)}
-              className="rounded-xl text-xs font-semibold"
+              className="text-xs font-semibold"
             >
               Fechar
             </Button>

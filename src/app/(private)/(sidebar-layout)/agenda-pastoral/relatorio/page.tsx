@@ -226,15 +226,15 @@ export default function AppointmentsReportPage() {
   // Copy WhatsApp plain text schedule
   const handleCopyWhatsApp = () => {
     if (totalCount === 0) {
-      showAlert('Não há atendimentos no período selecionado para exportar.');
+      showAlert('Não há agendamentos no período selecionado para exportar.');
       return;
     }
 
-    let text = `📋 *PAUTA DE ATENDIMENTOS PASTORAIS*\n`;
+    let text = `📋 *PAUTA DE AGENDAMENTOS PASTORAIS*\n`;
     text += `*Paróquia São José de Caraguatatuba*\n`;
     text += `📅 Período: ${formatDisplayDate(dates.startDate)} até ${formatDisplayDate(dates.endDate)}\n`;
     text += `👤 Atendente: ${currentAgentName}\n`;
-    text += `📊 Total de Atendimentos: ${totalCount}\n\n`;
+    text += `📊 Total de Agendamentos: ${totalCount}\n\n`;
 
     Object.entries(groupedByDate).forEach(([dateStr, items]) => {
       text += `━━━━━━━━━━━━━━━━━━━━\n`;
@@ -248,9 +248,17 @@ export default function AppointmentsReportPage() {
           : null;
 
         text += `${idx + 1}. 🕒 *${item.startTime} - ${item.endTime}*\n`;
-        text += `   👤 *Fiel:* ${item.requesterName}\n`;
-        text += `   📞 *Telefone:* ${item.requesterPhone}\n`;
-        text += `   ✝️ *Atendimento:* ${item.service?.title || 'Atendimento Pastoral'}\n`;
+        if (item.kind === 'commitment') {
+          text += `   📌 *Compromisso:* ${item.title || 'Compromisso Pastoral'}\n`;
+        } else {
+          if (item.requesterName) {
+            text += `   👤 *Fiel:* ${item.requesterName}\n`;
+          }
+          if (item.requesterPhone) {
+            text += `   📞 *Telefone:* ${item.requesterPhone}\n`;
+          }
+          text += `   ✝️ *Atendimento:* ${item.service?.title || 'Atendimento Pastoral'}\n`;
+        }
         if (agentDisplayName) {
           text += `   🙏 *Agente Pastoral:* ${agentDisplayName}\n`;
         }
@@ -282,7 +290,7 @@ export default function AppointmentsReportPage() {
 
     navigator.clipboard.writeText(text);
     setCopied(true);
-    showAlert('Pauta de atendimentos copiada para a área de transferência!');
+    showAlert('Pauta de agendamentos copiada para a área de transferência!');
     setTimeout(() => setCopied(false), 3000);
   };
 
@@ -329,13 +337,13 @@ export default function AppointmentsReportPage() {
             {
               key: 'agendamentos-hub',
               href: ROUTES.APPOINTMENTS.HOME,
-              title: 'Atendimentos',
+              title: 'Agenda Pastoral',
               icon: Calendar,
             },
             {
               key: 'relatorio',
               href: ROUTES.APPOINTMENTS.REPORT,
-              title: 'Pauta de Atendimentos',
+              title: 'Pauta de Agendamentos',
             },
           ]}
         />
@@ -346,9 +354,9 @@ export default function AppointmentsReportPage() {
         <div className="print-hidden space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <TypographyH1>Pauta de Atendimentos</TypographyH1>
+              <TypographyH1>Pauta de Agendamentos</TypographyH1>
               <Describe className="mt-1">
-                Gere e imprima a pauta dos atendimentos pastorais por período com campos de controle presencial para o Padre.
+                Gere e imprima a pauta dos agendamentos pastorais por período com campos de controle presencial para o Padre.
               </Describe>
             </div>
 
@@ -405,18 +413,15 @@ export default function AppointmentsReportPage() {
                   { id: 'this_month', label: 'Este Mês' },
                   { id: 'custom', label: 'Personalizado' },
                 ].map((item) => (
-                  <button
+                  <Button
                     key={item.id}
                     type="button"
+                    size="sm"
+                    variant={preset === item.id ? 'default' : 'secondary'}
                     onClick={() => handlePresetChange(item.id as PeriodPreset)}
-                    className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer ${
-                      preset === item.id
-                        ? 'bg-brand-700 text-white shadow-xs'
-                        : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80'
-                    }`}
                   >
                     {item.label}
-                  </button>
+                  </Button>
                 ))}
               </div>
 
@@ -563,7 +568,7 @@ export default function AppointmentsReportPage() {
 
               <div className="text-center sm:text-right shrink-0">
                 <span className="inline-block px-3 py-1 bg-zinc-100 text-zinc-800 font-bold text-sm uppercase tracking-wider rounded border border-zinc-200">
-                  Pauta de Atendimentos
+                  Pauta de Agendamentos
                 </span>
                 <p className="text-sm text-zinc-500 mt-1.5">
                   Emissão: {new Date().toLocaleDateString('pt-BR')} às{' '}
@@ -589,7 +594,7 @@ export default function AppointmentsReportPage() {
 
               <div className="space-y-1 sm:text-right">
                 <div>
-                  <span className="font-semibold text-zinc-600">Total de Atendimentos: </span>
+                  <span className="font-semibold text-zinc-600">Total de Agendamentos: </span>
                   <span className="font-bold text-zinc-900">{totalCount} agendamento(s)</span>
                 </div>
                 <div>
@@ -615,7 +620,7 @@ export default function AppointmentsReportPage() {
             <div className="py-12 text-center space-y-2 border border-dashed border-zinc-200 rounded-xl">
               <Calendar className="w-10 h-10 text-zinc-300 mx-auto" />
               <h3 className="text-base font-semibold text-zinc-800">
-                Nenhum atendimento encontrado para este período
+                Nenhum agendamento encontrado para este período
               </h3>
               <p className="text-sm text-zinc-500 max-w-md mx-auto">
                 Não constam agendamentos registrados entre {formatDisplayDate(dates.startDate)} e{' '}
@@ -638,7 +643,7 @@ export default function AppointmentsReportPage() {
                       </span>
                     </div>
                     <span className="text-sm font-semibold text-zinc-600">
-                      {items.length} atendimento(s)
+                      {items.length} {items.length === 1 ? 'agendamento' : 'agendamentos'}
                     </span>
                   </div>
 
@@ -661,7 +666,9 @@ export default function AppointmentsReportPage() {
                               </span>
 
                               <span className="font-bold text-sm text-zinc-900">
-                                {app.service?.title || 'Atendimento Pastoral'}
+                                {app.kind === 'commitment'
+                                  ? app.title || 'Compromisso Pastoral'
+                                  : app.service?.title || 'Atendimento Pastoral'}
                               </span>
 
                               {isHomeVisit && (

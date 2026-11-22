@@ -150,7 +150,7 @@ export default function EditAnnouncementPage({
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Editar Banner / Aviso</TypographyH1>
+              <TypographyH1 size="form">Editar Banner / Aviso</TypographyH1>
             </div>
           </div>
         </div>

@@ -18,10 +18,12 @@ export function AppointmentCard({
   appointment,
   showDate = false,
 }: AppointmentCardProps) {
+  const isCommitment = appointment.kind === 'commitment';
   // Service category or title styling
-  const serviceTitle =
-    appointment.service?.title || 'Atendimento Pastoral';
-  const requesterName = appointment.requesterName || 'Solicitante';
+  const serviceTitle = isCommitment
+    ? appointment.title || 'Compromisso Pastoral'
+    : appointment.service?.title || 'Atendimento Pastoral';
+  const requesterName = appointment.requesterName || null;
   const communityName =
     appointment.community?.name || 'Comunidade Matriz / Paróquia';
 
@@ -36,7 +38,14 @@ export function AppointmentCard({
   }, [appointment.appointmentDate]);
 
   // Color accents based on service or default
-  const getAccentColor = (title: string) => {
+  const getAccentColor = (title: string, commitment: boolean) => {
+    if (commitment) {
+      return {
+        dot: 'bg-sky-600',
+        line: 'border-sky-200',
+        badgeBg: 'bg-sky-50 text-sky-800',
+      };
+    }
     const lower = title.toLowerCase();
     if (lower.includes('confiss')) {
       return {
@@ -66,7 +75,7 @@ export function AppointmentCard({
     };
   };
 
-  const accent = getAccentColor(serviceTitle);
+  const accent = getAccentColor(serviceTitle, isCommitment);
 
   return (
     <Link
@@ -95,18 +104,27 @@ export function AppointmentCard({
           </div>
 
           {/* Service Title */}
-          <h3 className="text-base font-bold text-zinc-900 tracking-tight leading-snug truncate">
-            {serviceTitle}
-          </h3>
+          <div className="flex items-center gap-2 min-w-0">
+            <h3 className="text-base font-bold text-zinc-900 tracking-tight leading-snug truncate">
+              {serviceTitle}
+            </h3>
+            {isCommitment && (
+              <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-50 text-sky-800 border border-sky-200">
+                Compromisso
+              </span>
+            )}
+          </div>
 
           {/* Requester & Location */}
           <div className="flex flex-col gap-0.5 mt-1 text-sm text-zinc-600">
-            <div className="flex items-center gap-1.5 truncate">
-              <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-              <span className="font-medium text-zinc-800 truncate">
-                {requesterName}
-              </span>
-            </div>
+            {requesterName && (
+              <div className="flex items-center gap-1.5 truncate">
+                <User className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                <span className="font-medium text-zinc-800 truncate">
+                  {requesterName}
+                </span>
+              </div>
+            )}
 
             <div className="flex items-center gap-1.5 truncate">
               <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />

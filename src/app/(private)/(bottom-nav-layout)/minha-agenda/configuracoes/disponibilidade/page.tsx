@@ -345,29 +345,33 @@ export default function MinhaDisponibilidadePage() {
                         </div>
 
                         {day.intervals.length > 1 && (
-                          <button
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="icon-sm"
                             onClick={() =>
                               handleRemoveInterval(day.dayOfWeek, interval.id)
                             }
-                            className="p-2 text-zinc-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition cursor-pointer mt-4"
+                            className="text-zinc-400 hover:text-red-600 hover:bg-red-50 mt-4"
                             title="Remover intervalo"
                           >
                             <Trash2 className="w-4 h-4" />
-                          </button>
+                          </Button>
                         )}
                       </div>
                     ))}
 
                     {/* Add Interval Button */}
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
+                      size="sm"
                       onClick={() => handleAddInterval(day.dayOfWeek)}
-                      className="text-sm font-semibold text-emerald-800 hover:text-emerald-900 inline-flex items-center gap-1 pt-1 cursor-pointer"
+                      className="text-emerald-800 hover:text-emerald-900 hover:bg-emerald-50 px-2"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Adicionar outro intervalo neste dia</span>
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -380,9 +384,10 @@ export default function MinhaDisponibilidadePage() {
           <div className="max-w-lg mx-auto">
             <Button
               type="button"
+              size="lg"
               onClick={handleSave}
               isLoading={isSavingAvailabilities}
-              className="w-full h-12 rounded-2xl bg-brand-900 hover:bg-brand-800 text-white font-semibold text-sm shadow-md active:scale-[0.99] gap-2 cursor-pointer"
+              className="w-full shadow-md gap-2"
             >
               <Save className="w-4 h-4 text-brand-300" />
               <span>Salvar disponibilidade</span>

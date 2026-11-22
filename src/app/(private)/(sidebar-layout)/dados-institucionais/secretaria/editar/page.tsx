@@ -108,7 +108,7 @@ export default function EditSecretariatPage() {
 
           <div className="flex flex-row items-center gap-4 mt-1">
             <div>
-              <TypographyH1>Editar Contato e Secretaria</TypographyH1>
+              <TypographyH1 size="form">Editar Contato e Secretaria</TypographyH1>
               <span className="text-sm sm:text-sm text-zinc-500 font-medium">
                 Atualize os canais de atendimento, horários de expediente e redes sociais
               </span>

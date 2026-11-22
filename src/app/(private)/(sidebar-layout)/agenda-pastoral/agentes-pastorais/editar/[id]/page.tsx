@@ -134,7 +134,7 @@ export default function EditPastoralAgentPage({
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
             <div>
-              <TypographyH1>Editar Agente Pastoral</TypographyH1>
+              <TypographyH1 size="form">Editar Agente Pastoral</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {agent?.name ? `${agent.title ? `${agent.title} ` : ''}${agent.name}` : 'Carregando dados...'}
               </span>

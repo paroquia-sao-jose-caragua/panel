@@ -90,7 +90,7 @@ export default function AddAppointmentServicePage() {
 
           <div className="flex flex-row items-center gap-4 mt-2">
             <div>
-              <TypographyH1>Nova Categoria de Atendimento</TypographyH1>
+              <TypographyH1 size="form">Nova Categoria de Atendimento</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 Cadastrar novo tipo de serviço, sacramento ou acolhimento para agendamentos
               </span>

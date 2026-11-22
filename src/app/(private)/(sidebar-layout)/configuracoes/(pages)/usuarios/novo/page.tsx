@@ -42,7 +42,7 @@ export default function NewUserPage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>{t('new-user')}</TypographyH1>
+              <TypographyH1 size="form">{t('new-user')}</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 Cadastre um novo usuário e defina seu papel de acesso ao painel.
               </span>

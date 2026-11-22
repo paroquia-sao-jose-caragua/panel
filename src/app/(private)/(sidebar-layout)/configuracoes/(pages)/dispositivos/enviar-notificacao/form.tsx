@@ -243,15 +243,17 @@ export const SendPushForm = () => {
               <span className="text-sm font-semibold uppercase text-zinc-500">
                 Dispositivos Disponíveis
               </span>
-              <button
+              <Button
                 type="button"
+                variant="link"
+                size="sm"
                 onClick={toggleSelectAllCustom}
-                className="text-sm text-amber-700 font-medium hover:underline cursor-pointer"
+                className="h-auto p-0 text-amber-700 font-medium"
               >
                 {selectedDeviceIds.length === subscriptions.length
                   ? 'Desmarcar Todos'
                   : 'Selecionar Todos'}
-              </button>
+              </Button>
             </div>
 
             {isLoadingDevices ? (

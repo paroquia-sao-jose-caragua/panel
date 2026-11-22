@@ -48,11 +48,7 @@ import {
   useAppointment,
   useAppointments,
 } from '@/api/appointments/use-appointments';
-import {
-  AppointmentWhatsAppDialog,
-  type WhatsAppTemplateType,
-} from '@/components/features/appointments/appointment-whatsapp-dialog';
-import type { Appointment, AppointmentStatus } from '@/entities/appointment';
+import type { AppointmentStatus } from '@/entities/appointment';
 import { ROUTES } from '@/constants/routes';
 import { showAlert } from '@/utils/showAlert';
 import { isAppointmentExpired } from '@/utils/appointment';
@@ -77,18 +73,6 @@ export default function AppointmentDetailsPage({
 
   // Complete state
   const [isCompleting, setIsCompleting] = useState(false);
-
-  // WhatsApp Dialog state
-  const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
-    open: boolean;
-    appointment: Appointment | null;
-    template: WhatsAppTemplateType;
-    cancellationReason?: string;
-  }>({
-    open: false,
-    appointment: null,
-    template: 'confirmation',
-  });
 
   const formattedDate = useMemo(() => {
     if (!appointment?.appointmentDate) return '';
@@ -123,7 +107,7 @@ export default function AppointmentDetailsPage({
         id: appointment.id,
         status: 'confirmed',
       });
-      showAlert('Atendimento confirmado com sucesso!');
+      showAlert('Agendamento confirmado com sucesso!');
       refetch();
     } catch {
       // Handled in mutation hook
@@ -138,7 +122,7 @@ export default function AppointmentDetailsPage({
         id: appointment.id,
         status: 'completed',
       });
-      showAlert('Atendimento marcado como Realizado!');
+      showAlert('Agendamento marcado como Realizado!');
       refetch();
     } catch {
       // Handled
@@ -163,7 +147,7 @@ export default function AppointmentDetailsPage({
       showAlert(
         appointment.status === 'pending'
           ? 'Solicitação de atendimento recusada.'
-          : 'Atendimento cancelado com sucesso.'
+          : 'Agendamento cancelado com sucesso.'
       );
 
       setIsCancelDialogOpen(false);
@@ -243,7 +227,7 @@ export default function AppointmentDetailsPage({
           <div className="bg-white border border-dashed border-zinc-200 rounded-2xl p-12 text-center space-y-3">
             <AlertCircle className="w-12 h-12 text-zinc-400 mx-auto" />
             <h2 className="text-lg font-bold text-zinc-900">
-              Atendimento não encontrado
+              Agendamento não encontrado
             </h2>
             <p className="text-sm text-zinc-500 max-w-sm mx-auto">
               O agendamento solicitado não foi encontrado ou não está mais disponível no sistema.
@@ -258,6 +242,7 @@ export default function AppointmentDetailsPage({
   }
 
   const isConfirmed = appointment.status === 'confirmed';
+  const isCommitment = appointment.kind === 'commitment';
   const isPendingStatus = appointment.status === 'pending';
   const isHomeVisit = appointment.service?.category === 'home_visit';
 
@@ -274,7 +259,7 @@ export default function AppointmentDetailsPage({
           {
             key: 'detalhes',
             href: ROUTES.APPOINTMENTS.DETAILS(id),
-            title: 'Detalhes do Atendimento',
+            title: isCommitment ? 'Detalhes do Compromisso' : 'Detalhes do Atendimento',
           },
         ]}
       />
@@ -286,7 +271,9 @@ export default function AppointmentDetailsPage({
             <BackButton href={ROUTES.APPOINTMENTS.HOME} />
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
-                <TypographyH1>Detalhes do Atendimento</TypographyH1>
+                <TypographyH1>
+                  {isCommitment ? 'Detalhes do Compromisso' : 'Detalhes do Atendimento'}
+                </TypographyH1>
                 {renderStatusBadge(appointment.status)}
               </div>
               <Describe className="mt-0.5">
@@ -310,20 +297,20 @@ export default function AppointmentDetailsPage({
 
             {appointment.requesterPhone && (
               <Button
-                type="button"
+                asChild
                 variant="outline"
                 size="sm"
-                onClick={() =>
-                  setWhatsAppDialogState({
-                    open: true,
-                    appointment,
-                    template: isConfirmed ? 'reminder' : 'confirmation',
-                  })
-                }
-                className="rounded-xl text-xs sm:text-sm font-semibold text-emerald-800 border-emerald-200 hover:bg-emerald-50 shadow-2xs gap-1.5"
+                className="text-xs sm:text-sm font-semibold text-emerald-800 border-emerald-200 hover:bg-emerald-50 shadow-2xs gap-1.5"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Notificar WhatsApp</span>
+                <Link
+                  href={ROUTES.APPOINTMENTS.WHATSAPP(
+                    appointment.id,
+                    isConfirmed ? 'reminder' : 'confirmation'
+                  )}
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Notificar WhatsApp</span>
+                </Link>
               </Button>
             )}
 
@@ -359,7 +346,9 @@ export default function AppointmentDetailsPage({
           <div className="p-4 bg-red-50/70 border border-red-200/90 rounded-2xl text-xs sm:text-sm text-red-900 flex items-start gap-3 shadow-2xs">
             <XCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold">Atendimento cancelado / recusado.</p>
+              <p className="font-bold">
+                {isCommitment ? 'Compromisso cancelado.' : 'Atendimento cancelado / recusado.'}
+              </p>
               {appointment.cancellationReason && (
                 <p className="text-zinc-700 mt-0.5">
                   <span className="font-semibold">Motivo informado:</span> {appointment.cancellationReason}
@@ -379,7 +368,7 @@ export default function AppointmentDetailsPage({
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                      Serviço Pastoral
+                      {isCommitment ? 'Compromisso Pastoral' : 'Serviço Pastoral'}
                     </span>
                     {isHomeVisit && (
                       <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
@@ -389,7 +378,9 @@ export default function AppointmentDetailsPage({
                     )}
                   </div>
                   <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 font-serif">
-                    {appointment.service?.title || 'Atendimento Pastoral'}
+                    {isCommitment
+                      ? appointment.title || 'Compromisso Pastoral'
+                      : appointment.service?.title || 'Atendimento Pastoral'}
                   </h2>
                   {appointment.service?.description && (
                     <p className="text-sm text-zinc-600 font-serif leading-relaxed">
@@ -421,7 +412,7 @@ export default function AppointmentDetailsPage({
                 {/* Local */}
                 <div className="space-y-1">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block">
-                    Local de Atendimento
+                    {isCommitment ? 'Local do Compromisso' : 'Local de Atendimento'}
                   </span>
                   <div className="flex items-start gap-2 font-semibold text-zinc-900">
                     <MapPin className="w-4 h-4 text-[#B8872E] shrink-0 mt-0.5" />
@@ -639,23 +630,27 @@ export default function AppointmentDetailsPage({
                 <div className="space-y-2">
                   <Button
                     type="button"
+                    size="lg"
                     onClick={handleConfirmAppointment}
                     disabled={isUpdatingStatus}
-                    className="w-full h-11 rounded-xl bg-[#11291f] text-white hover:bg-[#1a3d2e] font-semibold text-sm shadow-xs cursor-pointer gap-2"
+                    className="w-full shadow-xs gap-2"
                   >
                     <Check className="w-4 h-4 text-emerald-400" />
-                    <span>Confirmar Atendimento</span>
+                    <span>
+                      {isCommitment ? 'Confirmar Compromisso' : 'Confirmar Atendimento'}
+                    </span>
                   </Button>
 
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="destructive-outlined"
+                    size="lg"
                     onClick={() => {
                       setIsCancelDialogOpen(true);
                       setCancellationReason('');
                     }}
                     disabled={isUpdatingStatus}
-                    className="w-full h-11 rounded-xl border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200 font-semibold text-sm cursor-pointer gap-2"
+                    className="w-full gap-2"
                   >
                     <X className="w-4 h-4 text-red-500" />
                     <span>Recusar Solicitação</span>
@@ -667,11 +662,12 @@ export default function AppointmentDetailsPage({
                 <div className="space-y-2">
                   <Button
                     type="button"
+                    size="lg"
                     onClick={handleMarkAsCompleted}
                     disabled={isCompleting}
                     isLoading={isCompleting}
                     loadingText="Concluindo..."
-                    className="w-full h-11 rounded-xl bg-emerald-800 text-white hover:bg-emerald-700 font-semibold text-sm shadow-xs cursor-pointer gap-2"
+                    className="w-full bg-emerald-800 text-white hover:bg-emerald-700 shadow-xs gap-2"
                   >
                     <CheckCircle2 className="w-4 h-4 text-emerald-200" />
                     <span>Marcar como Realizado</span>
@@ -679,28 +675,31 @@ export default function AppointmentDetailsPage({
 
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="destructive-outlined"
+                    size="lg"
                     onClick={() => {
                       setIsCancelDialogOpen(true);
                       setCancellationReason('');
                     }}
-                    className="w-full h-11 rounded-xl border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200 font-semibold text-sm cursor-pointer gap-2"
+                    className="w-full gap-2"
                   >
                     <XCircle className="w-4 h-4 text-red-500" />
-                    <span>Cancelar Atendimento</span>
+                    <span>
+                      {isCommitment ? 'Cancelar Compromisso' : 'Cancelar Atendimento'}
+                    </span>
                   </Button>
                 </div>
               )}
 
               {appointment.status === 'completed' && (
                 <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 text-center text-xs text-emerald-900 font-medium">
-                  Este atendimento foi concluído e consta no arquivo como realizado.
+                  Este {isCommitment ? 'compromisso' : 'atendimento'} foi concluído e consta no arquivo como realizado.
                 </div>
               )}
 
               {appointment.status === 'cancelled' && (
                 <div className="p-3.5 rounded-xl bg-red-50/70 border border-red-200/80 text-center text-xs text-red-900 font-medium">
-                  Este atendimento foi cancelado e está registrado no arquivo.
+                  Este {isCommitment ? 'compromisso' : 'atendimento'} foi cancelado e está registrado no arquivo.
                 </div>
               )}
 
@@ -729,14 +728,28 @@ export default function AppointmentDetailsPage({
             <DialogTitle>
               {isPendingStatus
                 ? 'Recusar Solicitação de Atendimento'
-                : 'Cancelar Atendimento'}
+                : isCommitment
+                  ? 'Cancelar Compromisso'
+                  : 'Cancelar Atendimento'}
             </DialogTitle>
             <DialogDescription>
-              Informe o motivo do cancelamento do atendimento de{' '}
-              <strong className="text-zinc-900">
-                {appointment.requesterName}
-              </strong>
-              .
+              {isCommitment ? (
+                <>
+                  Informe o motivo do cancelamento do compromisso{' '}
+                  <strong className="text-zinc-900">
+                    {appointment.title || 'Compromisso'}
+                  </strong>
+                  .
+                </>
+              ) : (
+                <>
+                  Informe o motivo do cancelamento do atendimento de{' '}
+                  <strong className="text-zinc-900">
+                    {appointment.requesterName}
+                  </strong>
+                  .
+                </>
+              )}
             </DialogDescription>
           </DialogHeader>
 
@@ -773,17 +786,6 @@ export default function AppointmentDetailsPage({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* WhatsApp Dialog */}
-      <AppointmentWhatsAppDialog
-        open={whatsAppDialogState.open}
-        onOpenChange={(open) =>
-          setWhatsAppDialogState((prev) => ({ ...prev, open }))
-        }
-        appointment={whatsAppDialogState.appointment}
-        initialTemplate={whatsAppDialogState.template}
-        cancellationReason={whatsAppDialogState.cancellationReason}
-      />
     </>
   );
 }

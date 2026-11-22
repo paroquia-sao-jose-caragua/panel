@@ -18,7 +18,7 @@ export default function ChangePasswordPage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>{t('change-password')}</TypographyH1>
+              <TypographyH1 size="form">{t('change-password')}</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 {t('change-password-desc')}
               </span>

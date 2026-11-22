@@ -12,7 +12,6 @@ import {
   Shield,
   Phone,
   Mail,
-  HelpCircle,
 } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { useMyPastoralAgent } from '@/api/appointments/use-appointments';
@@ -20,6 +19,7 @@ import { logout } from '@/api/users/logout';
 import { MinhaAgendaHeader } from '@/components/features/minha-agenda/top-header';
 import { ROUTES } from '@/constants/routes';
 import { ConfirmDialog } from '@/components/common/dialog/confirm-dialog';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { showAlert } from '@/utils/showAlert';
 import useAuthStore from '@/stores/useAuthStore';
@@ -148,37 +148,18 @@ export default function MinhaAgendaPerfilPage() {
           </div>
         </section>
 
-        {/* Section: Ajuda & Suporte */}
-        <section className="bg-white rounded-2xl border border-zinc-200/90 shadow-2xs divide-y divide-zinc-100 overflow-hidden">
-          <Link
-            href={ROUTES.HELP.APPOINTMENTS}
-            className="flex items-center justify-between p-4 hover:bg-zinc-50 transition active:scale-[0.99] group cursor-pointer"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-700 flex items-center justify-center">
-                <HelpCircle className="w-4 h-4" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-zinc-900">
-                  Manual do Agente Pastoral
-                </h4>
-                <p className="text-sm text-zinc-500">Dúvidas sobre a agenda</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-zinc-400" />
-          </Link>
-        </section>
-
         {/* Section: Logout */}
         <section className="pt-2">
-          <button
+          <Button
             type="button"
+            variant="destructive-outlined"
+            size="lg"
             onClick={() => setShowLogoutConfirm(true)}
-            className="w-full h-12 rounded-2xl border border-red-200 bg-white hover:bg-red-50 text-red-600 font-semibold text-sm transition-all active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+            className="w-full bg-white shadow-2xs"
           >
             <LogOut className="w-4 h-4 text-red-500" />
             <span>Sair da conta</span>
-          </button>
+          </Button>
         </section>
       </div>
 

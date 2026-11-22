@@ -16,7 +16,7 @@ export default function SendPushNotificationPage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Enviar Notificação Push</TypographyH1>
+              <TypographyH1 size="form">Enviar Notificação Push</TypographyH1>
               <span className="text-md font-medium text-zinc-600">
                 Envie comunicados, avisos de missas ou alertas administrativos em tempo real para os dispositivos conectados.
               </span>

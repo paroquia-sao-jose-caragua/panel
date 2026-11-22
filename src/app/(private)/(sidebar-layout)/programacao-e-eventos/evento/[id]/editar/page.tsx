@@ -47,7 +47,7 @@ export default function EditEventSchedulePage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Editar Evento</TypographyH1>
+              <TypographyH1 size="form">Editar Evento</TypographyH1>
             </div>
           </div>
         </div>

@@ -210,29 +210,33 @@ export default function AnnouncementsPage() {
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 w-full md:w-auto">
                         {/* Botões de Reordenação */}
                         <div className="flex sm:flex-col items-center gap-1 shrink-0 bg-zinc-50 p-1 rounded-xl border border-zinc-100">
-                          <button
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="icon-sm"
                             onClick={() => handleMove(fullIndex, 'up')}
                             disabled={fullIndex === 0 || reorderMutation.isPending}
-                            className="p-1.5 text-zinc-400 hover:text-zinc-700 disabled:opacity-30 disabled:hover:text-zinc-400 transition-colors cursor-pointer rounded-lg hover:bg-zinc-200/50"
+                            className="text-zinc-400 hover:text-zinc-700"
                             title="Mover para cima"
                           >
                             <ArrowUp className="w-4 h-4" />
-                          </button>
+                          </Button>
                           <span className="text-sm font-bold text-zinc-500 px-1">
                             {fullIndex + 1}
                           </span>
-                          <button
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="icon-sm"
                             onClick={() => handleMove(fullIndex, 'down')}
                             disabled={
                               fullIndex === announcements.length - 1 || reorderMutation.isPending
                             }
-                            className="p-1.5 text-zinc-400 hover:text-zinc-700 disabled:opacity-30 disabled:hover:text-zinc-400 transition-colors cursor-pointer rounded-lg hover:bg-zinc-200/50"
+                            className="text-zinc-400 hover:text-zinc-700"
                             title="Mover para baixo"
                           >
                             <ArrowDown className="w-4 h-4" />
-                          </button>
+                          </Button>
                         </div>
 
                         {/* Prévia da Capa */}

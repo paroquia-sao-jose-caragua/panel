@@ -269,30 +269,24 @@ function NovoBloqueioContent() {
             </div>
 
             <div className="grid grid-cols-2 gap-2.5">
-              <button
+              <Button
                 type="button"
+                size="default"
+                variant={timeMode === 'full_day' ? 'default' : 'outline'}
                 onClick={() => setTimeMode('full_day')}
-                className={cn(
-                  'py-2 px-3 rounded-xl text-sm font-semibold transition-all cursor-pointer border select-none',
-                  timeMode === 'full_day'
-                    ? 'bg-brand-900 text-white border-brand-900 shadow-xs'
-                    : 'bg-zinc-50 text-zinc-700 border-zinc-200 hover:bg-zinc-100'
-                )}
+                className="w-full"
               >
                 Dia inteiro
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                size="default"
+                variant={timeMode === 'specific' ? 'default' : 'outline'}
                 onClick={() => setTimeMode('specific')}
-                className={cn(
-                  'py-2 px-3 rounded-xl text-sm font-semibold transition-all cursor-pointer border select-none',
-                  timeMode === 'specific'
-                    ? 'bg-brand-900 text-white border-brand-900 shadow-xs'
-                    : 'bg-zinc-50 text-zinc-700 border-zinc-200 hover:bg-zinc-100'
-                )}
+                className="w-full"
               >
                 Horário específico
-              </button>
+              </Button>
             </div>
 
             {timeMode === 'specific' && (

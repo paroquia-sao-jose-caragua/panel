@@ -103,7 +103,7 @@ export default function AddClergyPage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Adicionar Membro do Clero</TypographyH1>
+              <TypographyH1 size="form">Adicionar Membro do Clero</TypographyH1>
             </div>
           </div>
         </div>

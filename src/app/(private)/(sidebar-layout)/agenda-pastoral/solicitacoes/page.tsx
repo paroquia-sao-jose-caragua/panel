@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   CalendarCheck,
   CheckCircle2,
@@ -60,16 +61,12 @@ import {
 import type { Appointment } from '@/entities/appointment';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
-import {
-  AppointmentWhatsAppDialog,
-  type WhatsAppTemplateType,
-} from '@/components/features/appointments/appointment-whatsapp-dialog';
 import { isAppointmentExpired } from '@/utils/appointment';
-import { AppointmentDetailsDialog } from '@/components/features/appointments/appointment-details-dialog';
 
 dayjs.locale('pt-br');
 
 export default function AppointmentsRequestsPage() {
+  const router = useRouter();
   const { user } = useAuthStore();
   const isPastoralAgent = user?.role === 'pastoral_agent';
   const isStaffSecretaryOrAdmin =
@@ -88,20 +85,6 @@ export default function AppointmentsRequestsPage() {
   const [processingAppointmentId, setProcessingAppointmentId] = useState<
     string | null
   >(null);
-
-  const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
-    open: boolean;
-    appointment: Appointment | null;
-    template: WhatsAppTemplateType;
-    cancellationReason?: string;
-  }>({
-    open: false,
-    appointment: null,
-    template: 'confirmation',
-  });
-
-  const [selectedAppointmentForDetails, setSelectedAppointmentForDetails] =
-    useState<Appointment | null>(null);
 
   const effectiveAgentId = isPastoralAgent
     ? myAgent?.id
@@ -163,14 +146,7 @@ export default function AppointmentsRequestsPage() {
       showAlert('Atendimento confirmado com sucesso!');
 
       if (isStaffSecretaryOrAdmin) {
-        setWhatsAppDialogState({
-          open: true,
-          appointment: {
-            ...appointment,
-            status: 'confirmed',
-          },
-          template: 'confirmation',
-        });
+        router.push(ROUTES.APPOINTMENTS.WHATSAPP(appointment.id, 'confirmation'));
       }
     } finally {
       setProcessingAppointmentId(null);
@@ -191,23 +167,13 @@ export default function AppointmentsRequestsPage() {
         cancellationReason: finalReason,
       });
 
-      const appointmentCancelled: Appointment = {
-        ...cancellingAppointment,
-        status: 'cancelled',
-        cancellationReason: finalReason,
-      };
-
+      const cancelledId = cancellingAppointment.id;
       setCancellingAppointment(null);
       setCancellationReason('');
       showAlert('Solicitação de atendimento recusada.');
 
       if (isStaffSecretaryOrAdmin) {
-        setWhatsAppDialogState({
-          open: true,
-          appointment: appointmentCancelled,
-          template: 'cancellation',
-          cancellationReason: finalReason,
-        });
+        router.push(ROUTES.APPOINTMENTS.WHATSAPP(cancelledId, 'cancellation'));
       }
     } finally {
       setProcessingAppointmentId(null);
@@ -454,29 +420,28 @@ export default function AppointmentsRequestsPage() {
                     <div className="flex items-center gap-2.5 flex-wrap">
                       <Button
                         type="button"
-                        variant="outline"
+                        variant="destructive-outlined"
                         size="sm"
                         disabled={isBusy}
                         onClick={() => {
                           setCancellingAppointment(req);
                           setCancellationReason('');
                         }}
-                        className="h-10 px-4 text-sm font-semibold rounded-xl border-zinc-300 text-zinc-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200 cursor-pointer shadow-2xs"
                       >
-                        <X className="w-3.5 h-3.5 mr-1 text-red-500" />
+                        <X className="w-3.5 h-3.5" />
                         <span>Recusar</span>
                       </Button>
 
                       <Button
                         type="button"
-                        size="sm"
+                        size="default"
                         disabled={isBusy}
                         isLoading={isBusy}
                         loadingText="Confirmando..."
                         onClick={() => handleConfirm(req)}
-                        className="h-10 px-4 text-sm font-semibold rounded-xl bg-[#11291f] text-white hover:bg-[#1a3d2e] cursor-pointer shadow-2xs"
+                        className="shadow-2xs"
                       >
-                        <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" />
+                        <Check className="w-3.5 h-3.5" />
                         <span>Confirmar atendimento</span>
                       </Button>
                     </div>
@@ -485,20 +450,22 @@ export default function AppointmentsRequestsPage() {
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="outline"
-                          size="icon-xs"
-                          className="hidden sm:flex h-8 w-8 text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg cursor-pointer shrink-0"
+                          size="icon-sm"
+                          className="hidden sm:flex text-zinc-400 hover:text-zinc-800 shrink-0"
                           aria-label="Mais opções"
                         >
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-52 shadow-lg">
-                        <DropdownMenuItem
-                          onClick={() => setSelectedAppointmentForDetails(req)}
-                          className="cursor-pointer"
-                        >
-                          <Eye className="w-4 h-4 mr-2 text-zinc-500" />
-                          <span>Ver detalhes</span>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href={ROUTES.APPOINTMENTS.DETAILS(req.id)}
+                            className="cursor-pointer"
+                          >
+                            <Eye className="w-4 h-4 mr-2 text-zinc-500" />
+                            <span>Ver detalhes</span>
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                           <Link
@@ -581,29 +548,6 @@ export default function AppointmentsRequestsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* WhatsApp Dialog */}
-      <AppointmentWhatsAppDialog
-        open={whatsAppDialogState.open}
-        onOpenChange={(open) =>
-          setWhatsAppDialogState((prev) => ({ ...prev, open }))
-        }
-        appointment={whatsAppDialogState.appointment}
-        initialTemplate={whatsAppDialogState.template}
-        cancellationReason={whatsAppDialogState.cancellationReason}
-      />
-
-      {/* Appointment Details Dialog Modal */}
-      <AppointmentDetailsDialog
-        open={Boolean(selectedAppointmentForDetails)}
-        onOpenChange={(open) => !open && setSelectedAppointmentForDetails(null)}
-        appointment={selectedAppointmentForDetails}
-        editHref={
-          selectedAppointmentForDetails
-            ? ROUTES.APPOINTMENTS.SOLICITACOES_EDIT(selectedAppointmentForDetails.id)
-            : undefined
-        }
-      />
     </>
   );
 }

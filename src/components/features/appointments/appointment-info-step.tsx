@@ -13,6 +13,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -24,7 +25,36 @@ import {
 } from '@/api/appointments/use-appointments';
 import { useCommunities } from '@/api/communities/use-communities';
 import useAuthStore from '@/stores/useAuthStore';
+import { showAlert } from '@/utils/showAlert';
 import type { AppointmentFormValues } from './types';
+
+const FIELD_ERROR_IDS: Array<[string, string]> = [
+  ['agentId', 'appointment-agent-id'],
+  ['title', 'appointment-title'],
+  ['serviceId', 'appointment-service-id'],
+  ['appointmentDate', 'appointment-date'],
+  ['startTime', 'appointment-start-time'],
+  ['requesterName', 'appointment-requester-name'],
+  ['requesterPhone', 'appointment-requester-phone'],
+  ['patientName', 'appointment-patient-name'],
+  ['patientAddress', 'appointment-patient-address'],
+];
+
+export function focusFirstAppointmentError(errors: Record<string, string>) {
+  setTimeout(() => {
+    for (const [key, elementId] of FIELD_ERROR_IDS) {
+      if (errors[key]) {
+        const el = document.getElementById(elementId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.focus();
+        }
+        break;
+      }
+    }
+  }, 50);
+  showAlert('Por favor, preencha os campos obrigatórios destacados em vermelho.');
+}
 
 interface AppointmentInfoStepProps {
   values: AppointmentFormValues;
@@ -114,14 +144,42 @@ export const AppointmentInfoStep = ({
     return new Date().toISOString().split('T')[0];
   }, []);
 
+  const isCommitment = values.kind === 'commitment';
+
   return (
     <div className="space-y-8">
+      {/* Seletor de Tipo (Atendimento vs Compromisso) */}
+      {!isEdit && (
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            type="button"
+            size="lg"
+            variant={!isCommitment ? 'default' : 'outline'}
+            onClick={() => onChange('kind', 'appointment')}
+            className="w-full"
+          >
+            Atendimento de Fiel
+          </Button>
+          <Button
+            type="button"
+            size="lg"
+            variant={isCommitment ? 'default' : 'outline'}
+            onClick={() => onChange('kind', 'commitment')}
+            className="w-full"
+          >
+            Compromisso (Reunião, Missa, Formação)
+          </Button>
+        </div>
+      )}
+
       {/* 1. Atendimento e Agente Pastoral */}
       <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-6">
         <div className="border-b border-zinc-100 pb-3 flex items-center justify-between">
           <h2 className="text-base font-bold text-zinc-900 flex items-center gap-2">
             <Calendar className="w-4 h-4 text-brand-700" />
-            <span>Atendimento e Agente Pastoral</span>
+            <span>
+              {isCommitment ? 'Compromisso e Agente Pastoral' : 'Atendimento e Agente Pastoral'}
+            </span>
           </h2>
           <Badge variant="outline" className="bg-brand-50 text-brand-800 border-brand-200 text-sm">
             Etapa 1
@@ -154,6 +212,7 @@ export const AppointmentInfoStep = ({
             ) : (
               <div>
                 <select
+                  id="appointment-agent-id"
                   value={values.agentId}
                   onChange={(e) => onChange('agentId', e.target.value)}
                   className={`w-full h-11 px-3.5 rounded-xl border text-sm bg-white text-zinc-800 transition ${
@@ -180,67 +239,89 @@ export const AppointmentInfoStep = ({
             )}
           </div>
 
-          {/* Tipo de Atendimento / Serviço */}
-          <div>
-            <label className="text-sm font-semibold text-zinc-800 block mb-1.5">
-              Tipo de Atendimento / Serviço <span className="text-rose-500">*</span>
-            </label>
+          {/* Tipo de Atendimento / Serviço OU Título do Compromisso */}
+          {isCommitment ? (
+            <div>
+              <label className="text-sm font-semibold text-zinc-800 block mb-1.5">
+                Título do Compromisso <span className="text-rose-500">*</span>
+              </label>
+              <Input
+                id="appointment-title"
+                value={values.title || ''}
+                onChange={(e) => onChange('title', e.target.value)}
+                placeholder="Ex.: Reunião do CPP, Missa na Matriz, Formação..."
+                className={errors.title ? 'border-rose-400' : ''}
+              />
+              {errors.title && (
+                <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  <span>{errors.title}</span>
+                </p>
+              )}
+            </div>
+          ) : (
+            <div>
+              <label className="text-sm font-semibold text-zinc-800 block mb-1.5">
+                Tipo de Atendimento / Serviço <span className="text-rose-500">*</span>
+              </label>
 
-            {isLoadingServices ? (
-              <Skeleton className="h-10 w-full rounded-xl" />
-            ) : (
-              <div>
-                <select
-                  value={values.serviceId}
-                  onChange={(e) => onChange('serviceId', e.target.value)}
-                  disabled={!values.agentId && !isPastoralAgent}
-                  className={`w-full h-11 px-3.5 rounded-xl border text-sm bg-white text-zinc-800 transition disabled:bg-zinc-100 disabled:text-zinc-400 ${
-                    errors.serviceId
-                      ? 'border-rose-400 focus:ring-rose-200'
-                      : 'border-zinc-300 focus:border-brand-500'
-                  }`}
-                >
-                  <option value="">
-                    {!values.agentId && !isPastoralAgent
-                      ? 'Primeiro selecione o agente pastoral...'
-                      : 'Selecione a categoria do serviço...'}
-                  </option>
-                  {availableServices.map((service) => (
-                    <option key={service.id} value={service.id}>
-                      {service.title} ({service.defaultDurationMinutes} min)
-                      {service.category === 'home_visit' ? ' — Visita Domiciliar' : ''}
+              {isLoadingServices ? (
+                <Skeleton className="h-10 w-full rounded-xl" />
+              ) : (
+                <div>
+                  <select
+                    id="appointment-service-id"
+                    value={values.serviceId}
+                    onChange={(e) => onChange('serviceId', e.target.value)}
+                    disabled={!values.agentId && !isPastoralAgent}
+                    className={`w-full h-11 px-3.5 rounded-xl border text-sm bg-white text-zinc-800 transition disabled:bg-zinc-100 disabled:text-zinc-400 ${
+                      errors.serviceId
+                        ? 'border-rose-400 focus:ring-rose-200'
+                        : 'border-zinc-300 focus:border-brand-500'
+                    }`}
+                  >
+                    <option value="">
+                      {!values.agentId && !isPastoralAgent
+                        ? 'Primeiro selecione o agente pastoral...'
+                        : 'Selecione a categoria do serviço...'}
                     </option>
-                  ))}
-                </select>
-                {errors.serviceId && (
-                  <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    <span>{errors.serviceId}</span>
-                  </p>
-                )}
-              </div>
-            )}
+                    {availableServices.map((service) => (
+                      <option key={service.id} value={service.id}>
+                        {service.title} ({service.defaultDurationMinutes} min)
+                        {service.category === 'home_visit' ? ' — Visita Domiciliar' : ''}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.serviceId && (
+                    <p className="text-sm text-rose-500 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      <span>{errors.serviceId}</span>
+                    </p>
+                  )}
+                </div>
+              )}
 
-            {selectedService && (
-              <div className="mt-2.5 flex items-center gap-2 flex-wrap text-sm">
-                <Badge
-                  variant="outline"
-                  className={
-                    selectedService.category === 'home_visit'
-                      ? 'bg-purple-50 text-purple-800 border-purple-200'
-                      : 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                  }
-                >
-                  {selectedService.category === 'home_visit'
-                    ? 'Visita Domiciliar a Enfermo'
-                    : 'Atendimento Presencial'}
-                </Badge>
-                <span className="text-zinc-500">
-                  Duração estimada: <strong>{selectedService.defaultDurationMinutes} minutos</strong>
-                </span>
-              </div>
-            )}
-          </div>
+              {selectedService && (
+                <div className="mt-2.5 flex items-center gap-2 flex-wrap text-sm">
+                  <Badge
+                    variant="outline"
+                    className={
+                      selectedService.category === 'home_visit'
+                        ? 'bg-purple-50 text-purple-800 border-purple-200'
+                        : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                    }
+                  >
+                    {selectedService.category === 'home_visit'
+                      ? 'Visita Domiciliar a Enfermo'
+                      : 'Atendimento Presencial'}
+                  </Badge>
+                  <span className="text-zinc-500">
+                    Duração estimada: <strong>{selectedService.defaultDurationMinutes} minutos</strong>
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Comunidade / Local */}
           <div>
@@ -265,14 +346,18 @@ export const AppointmentInfoStep = ({
               </select>
             )}
             <p className="text-sm text-zinc-500 mt-1">
-              Local onde o atendimento presencial ocorrerá, ou comunidade de referência.
+              Local onde o compromisso ocorrerá.
             </p>
           </div>
 
           {/* Status do Atendimento */}
           <div>
             <label className="text-sm font-semibold text-zinc-800 block mb-1.5">
-              {isEdit ? 'Status do Atendimento' : 'Status Inicial'}
+              {isEdit
+                ? isCommitment
+                  ? 'Status do Compromisso'
+                  : 'Status do Atendimento'
+                : 'Status Inicial'}
             </label>
             <select
               value={values.status}
@@ -282,7 +367,7 @@ export const AppointmentInfoStep = ({
               className="w-full h-11 px-3.5 rounded-xl border border-zinc-300 text-sm bg-white text-zinc-800 focus:border-brand-500"
             >
               <option value="confirmed">
-                Confirmado (Recomendado — já alinhado com o clérigo/solicitante)
+                Confirmado (já alinhado com o clérigo)
               </option>
               <option value="pending">
                 Pendente (Aguardando confirmação posterior)
@@ -294,11 +379,6 @@ export const AppointmentInfoStep = ({
                 </>
               )}
             </select>
-            <p className="text-sm text-zinc-500 mt-1">
-              {isEdit
-                ? 'Atualize a situação do atendimento conforme o andamento pastoral.'
-                : 'Atendimentos inseridos pelo painel geralmente nascem confirmados.'}
-            </p>
           </div>
         </div>
 
@@ -307,9 +387,11 @@ export const AppointmentInfoStep = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="text-sm font-semibold text-zinc-800 block mb-1.5">
-                Data do Atendimento <span className="text-rose-500">*</span>
+                {isCommitment ? 'Data do Compromisso' : 'Data do Atendimento'}{' '}
+                <span className="text-rose-500">*</span>
               </label>
               <Input
+                id="appointment-date"
                 type="date"
                 min={isEdit ? undefined : todayStr}
                 value={values.appointmentDate}
@@ -331,6 +413,7 @@ export const AppointmentInfoStep = ({
               <div className="relative">
                 <Clock className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <Input
+                  id="appointment-start-time"
                   type="time"
                   value={values.startTime}
                   onChange={(e) => onChange('startTime', e.target.value)}
@@ -345,6 +428,48 @@ export const AppointmentInfoStep = ({
               )}
             </div>
           </div>
+
+          {/* Duração livre para Compromisso */}
+          {isCommitment && (
+            <div className="mt-4 space-y-2">
+              <label className="text-sm font-semibold text-zinc-800 block">
+                Duração do Compromisso *
+              </label>
+              <div className="flex flex-wrap items-center gap-2">
+                {[
+                  { label: '30 min', mins: 30 },
+                  { label: '1 hora', mins: 60 },
+                  { label: '1h 30min', mins: 90 },
+                  { label: '2 horas', mins: 120 },
+                  { label: '3 horas', mins: 180 },
+                ].map((opt) => (
+                  <Button
+                    key={opt.mins}
+                    type="button"
+                    size="sm"
+                    variant={(values.durationMinutes || 60) === opt.mins ? 'default' : 'outline'}
+                    onClick={() => onChange('durationMinutes', opt.mins)}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+                <div className="flex items-center gap-2 ml-1">
+                  <Input
+                    type="number"
+                    min={15}
+                    max={720}
+                    step={5}
+                    value={values.durationMinutes || 60}
+                    onChange={(e) =>
+                      onChange('durationMinutes', Number(e.target.value) || 30)
+                    }
+                    className="h-9 w-24 text-sm"
+                  />
+                  <span className="text-xs text-zinc-500">min</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Available Slots Chips */}
           {values.agentId && values.appointmentDate && (
@@ -375,19 +500,17 @@ export const AppointmentInfoStep = ({
                   {availableSlots.map((slot) => {
                     const isSelected = values.startTime === slot.startTime;
                     return (
-                      <button
+                      <Button
                         key={`${slot.startTime}-${slot.endTime}`}
                         type="button"
+                        size="sm"
+                        variant={isSelected ? 'default' : 'outline'}
                         onClick={() => onChange('startTime', slot.startTime)}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-semibold border transition cursor-pointer flex items-center gap-1.5 ${
-                          isSelected
-                            ? 'bg-brand-700 text-white border-brand-700 shadow-xs ring-2 ring-brand-300'
-                            : 'bg-white text-zinc-800 border-zinc-300 hover:border-brand-400 hover:bg-brand-50/50'
-                        }`}
+                        className={isSelected ? 'ring-2 ring-brand-300' : ''}
                       >
                         {isSelected && <CheckCircle2 className="w-3.5 h-3.5" />}
                         <span>{slot.startTime} às {slot.endTime}</span>
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>
@@ -397,7 +520,8 @@ export const AppointmentInfoStep = ({
         </div>
       </div>
 
-      {/* 2. Dados do Solicitante */}
+      {/* 2. Dados do Solicitante (apenas para Atendimento) */}
+      {!isCommitment && (
       <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-6">
         <div className="border-b border-zinc-100 pb-3">
           <h2 className="text-base font-bold text-zinc-900 flex items-center gap-2">
@@ -415,6 +539,7 @@ export const AppointmentInfoStep = ({
               Nome Completo do Solicitante <span className="text-rose-500">*</span>
             </label>
             <Input
+              id="appointment-requester-name"
               value={values.requesterName}
               onChange={(e) => onChange('requesterName', e.target.value)}
               placeholder="Ex: Maria das Graças Oliveira"
@@ -435,6 +560,7 @@ export const AppointmentInfoStep = ({
             <div className="relative">
               <Phone className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <Input
+                id="appointment-requester-phone"
                 value={values.requesterPhone}
                 onChange={(e) => onChange('requesterPhone', e.target.value)}
                 placeholder="Ex: (12) 99876-5432"
@@ -477,18 +603,20 @@ export const AppointmentInfoStep = ({
             {/* Quick chips */}
             <div className="flex flex-wrap gap-1.5 mt-2">
               {COMMON_RELATIONSHIPS.map((rel) => (
-                <button
+                <Button
                   key={rel}
                   type="button"
+                  size="xs"
+                  variant={values.requesterRelationship === rel ? 'secondary' : 'outline'}
                   onClick={() => onChange('requesterRelationship', rel)}
-                  className={`text-[11px] px-2 py-0.5 rounded-md border transition cursor-pointer ${
+                  className={
                     values.requesterRelationship === rel
                       ? 'bg-brand-50 text-brand-800 border-brand-300 font-semibold'
-                      : 'bg-zinc-50 text-zinc-600 border-zinc-200 hover:bg-zinc-100'
-                  }`}
+                      : 'text-zinc-600'
+                  }
                 >
                   {rel}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -506,9 +634,25 @@ export const AppointmentInfoStep = ({
           />
         </div>
       </div>
+      )}
+
+      {/* Observações para Compromisso */}
+      {isCommitment && (
+        <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-3">
+          <label className="text-sm font-semibold text-zinc-800 block">
+            Observações do Compromisso (opcional)
+          </label>
+          <Textarea
+            value={values.requesterNotes}
+            onChange={(e) => onChange('requesterNotes', e.target.value)}
+            placeholder="Detalhes sobre local, pauta da reunião ou observações..."
+            className="min-h-20"
+          />
+        </div>
+      )}
 
       {/* 3. Dados do Paciente e Endereço (Apenas se Visita Domiciliar / Requer Endereço) */}
-      {selectedService?.requiresAddress && (
+      {!isCommitment && selectedService?.requiresAddress && (
         <div className="bg-purple-50/50 p-6 rounded-2xl border border-purple-200 shadow-xs space-y-6">
           <div className="border-b border-purple-200/80 pb-3 flex items-center justify-between">
             <h2 className="text-base font-bold text-purple-950 flex items-center gap-2">
@@ -526,6 +670,7 @@ export const AppointmentInfoStep = ({
                 Nome do Enfermo / Idoso <span className="text-rose-500">*</span>
               </label>
               <Input
+                id="appointment-patient-name"
                 value={values.patientName}
                 onChange={(e) => onChange('patientName', e.target.value)}
                 placeholder="Ex: José Benedito da Silva"
@@ -544,6 +689,7 @@ export const AppointmentInfoStep = ({
                 Endereço Completo da Visita <span className="text-rose-500">*</span>
               </label>
               <Input
+                id="appointment-patient-address"
                 value={values.patientAddress}
                 onChange={(e) => onChange('patientAddress', e.target.value)}
                 placeholder="Rua, número, bairro, complemento e referência"

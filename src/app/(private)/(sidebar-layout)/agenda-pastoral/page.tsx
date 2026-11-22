@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import {
@@ -41,7 +42,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Select, SelectItem } from '@/components/common/select';
 import { Input } from '@/components/ui/input';
 import { FieldGroup } from '@/components/ui/field';
 import {
@@ -50,27 +50,18 @@ import {
   useAppointmentServices,
   useMyPastoralAgent,
 } from '@/api/appointments/use-appointments';
-import {
-  AppointmentWhatsAppDialog,
-  type WhatsAppTemplateType,
-} from '@/components/features/appointments/appointment-whatsapp-dialog';
-import {
-  getAgentBlockedDates,
-  addAgentBlockedDate,
-} from '@/api/appointments/agents';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getAgentBlockedDates } from '@/api/appointments/agents';
+import { useQuery } from '@tanstack/react-query';
 import type { Appointment } from '@/entities/appointment';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
-import { showAlert } from '@/utils/showAlert';
 import { cn } from '@/lib/utils';
 import { Describe } from '@/components/ui/typography/describe';
 import { isAppointmentExpired } from '@/utils/appointment';
-import { AppointmentDetailsDialog } from '@/components/features/appointments/appointment-details-dialog';
 
 export default function AppointmentsDashboardPage() {
+  const router = useRouter();
   const { user } = useAuthStore();
-  const queryClient = useQueryClient();
 
   const isPastoralAgent = user?.role === 'pastoral_agent';
   const isStaffSecretaryOrAdmin =
@@ -204,38 +195,11 @@ export default function AppointmentsDashboardPage() {
     }));
   }, [upcomingAppointments]);
 
-  // WhatsApp Dialog state
-  const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
-    open: boolean;
-    appointment: Appointment | null;
-    template: WhatsAppTemplateType;
-    cancellationReason?: string;
-  }>({
-    open: false,
-    appointment: null,
-    template: 'confirmation',
-  });
-
-  const [selectedAppointmentForDetails, setSelectedAppointmentForDetails] =
-    useState<Appointment | null>(null);
-
   // Cancel Appointment state
   const [cancellingAppointment, setCancellingAppointment] =
     useState<Appointment | null>(null);
   const [cancellationReason, setCancellationReason] = useState('');
   const [isCancelling, setIsCancelling] = useState(false);
-
-  // Quick Block Dialog state
-  const [isQuickBlockOpen, setIsQuickBlockOpen] = useState(false);
-  const [quickBlockAgentId, setQuickBlockAgentId] = useState('');
-  const [quickBlockStartDate, setQuickBlockStartDate] = useState(
-    dayjs().format('YYYY-MM-DD')
-  );
-  const [quickBlockEndDate, setQuickBlockEndDate] = useState(
-    dayjs().format('YYYY-MM-DD')
-  );
-  const [quickBlockReason, setQuickBlockReason] = useState('Férias');
-  const [isSubmittingQuickBlock, setIsSubmittingQuickBlock] = useState(false);
 
   const handleCancelSubmit = async () => {
     if (!cancellingAppointment) return;
@@ -250,72 +214,15 @@ export default function AppointmentsDashboardPage() {
         cancellationReason: finalReason,
       });
 
-      const appointmentCancelled: Appointment = {
-        ...cancellingAppointment,
-        status: 'cancelled',
-        cancellationReason: finalReason,
-      };
-
+      const cancelledId = cancellingAppointment.id;
       setCancellingAppointment(null);
       setCancellationReason('');
 
       if (isStaffSecretaryOrAdmin) {
-        setWhatsAppDialogState({
-          open: true,
-          appointment: appointmentCancelled,
-          template: 'cancellation',
-          cancellationReason: finalReason,
-        });
+        router.push(ROUTES.APPOINTMENTS.WHATSAPP(cancelledId, 'cancellation'));
       }
     } finally {
       setIsCancelling(false);
-    }
-  };
-
-  const handleSaveQuickBlock = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const effectiveAgent = isPastoralAgent && myAgent ? myAgent.id : quickBlockAgentId;
-
-    if (!effectiveAgent) {
-      showAlert('Selecione um agente pastoral.');
-      return;
-    }
-
-    const start = dayjs(quickBlockStartDate);
-    const end = dayjs(quickBlockEndDate);
-
-    if (end.isBefore(start)) {
-      showAlert('A data final não pode ser anterior à data inicial.');
-      return;
-    }
-
-    setIsSubmittingQuickBlock(true);
-    try {
-      const diffDays = end.diff(start, 'day');
-      const datesToBlock: string[] = [];
-
-      for (let i = 0; i <= diffDays; i++) {
-        datesToBlock.push(start.add(i, 'day').format('YYYY-MM-DD'));
-      }
-
-      await Promise.all(
-        datesToBlock.map((d) =>
-          addAgentBlockedDate(effectiveAgent, {
-            blockedDate: d,
-            reason: quickBlockReason,
-          })
-        )
-      );
-
-      await queryClient.invalidateQueries({ queryKey: ['active-blocks-count'] });
-      await queryClient.invalidateQueries({ queryKey: ['all-blocked-dates'] });
-      showAlert('Bloqueio adicionado com sucesso!');
-      setIsQuickBlockOpen(false);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Falha ao salvar bloqueio';
-      showAlert(`Erro ao salvar bloqueio: ${msg}`);
-    } finally {
-      setIsSubmittingQuickBlock(false);
     }
   };
 
@@ -359,8 +266,8 @@ export default function AppointmentsDashboardPage() {
                     {todayAppointments.length}
                   </span>{' '}
                   {todayAppointments.length === 1
-                    ? 'atendimento confirmado'
-                    : 'atendimentos confirmados'}
+                    ? 'agendamento confirmado'
+                    : 'agendamentos confirmados'}
                 </p>
               </div>
             </div>
@@ -445,14 +352,14 @@ export default function AppointmentsDashboardPage() {
                 <div className="flex items-center gap-3">
                   <Calendar className="w-5 h-5 text-zinc-700 shrink-0" />
                   <h2 className="text-xl font-bold text-zinc-900 font-serif">
-                    Atendimentos de hoje
+                    Agendamentos de hoje
                   </h2>
                   <Badge
                     variant="secondary"
                     className="bg-zinc-100 text-zinc-600 text-sm px-2.5 py-0.5 rounded-full font-medium"
                   >
                     {todayAppointments.length}{' '}
-                    {todayAppointments.length === 1 ? 'atendimento' : 'atendimentos'}
+                    {todayAppointments.length === 1 ? 'agendamento' : 'agendamentos'}
                   </Badge>
                 </div>
 
@@ -475,14 +382,14 @@ export default function AppointmentsDashboardPage() {
                   <div className="p-8 flex items-center justify-center gap-3">
                     <Spinner className="w-5 h-5 text-zinc-600" />
                     <span className="text-sm text-zinc-500">
-                      Carregando atendimentos de hoje...
+                      Carregando agendamentos de hoje...
                     </span>
                   </div>
                 ) : todayAppointments.length === 0 ? (
                   <div className="p-10 text-center space-y-2">
                     <CheckCircle2 className="w-10 h-10 text-emerald-500/70 mx-auto" />
                     <h4 className="text-md font-bold text-zinc-800">
-                      Nenhum atendimento confirmado para hoje
+                      Nenhum agendamento confirmado para hoje
                     </h4>
                     <p className="text-sm text-zinc-500 max-w-sm mx-auto">
                       A agenda de hoje está livre de compromissos confirmados. Aproveite para verificar a fila de solicitações.
@@ -494,7 +401,10 @@ export default function AppointmentsDashboardPage() {
                       ? `${app.agent.title ? `${app.agent.title} ` : ''}${app.agent.name}`
                       : 'Agente Pastoral';
 
-                    const serviceTitle = app.service?.title || 'Atendimento Pastoral';
+                    const serviceTitle =
+                      app.kind === 'commitment'
+                        ? app.title || 'Compromisso Pastoral'
+                        : app.service?.title || 'Atendimento Pastoral';
 
                     return (
                       <div
@@ -547,11 +457,13 @@ export default function AppointmentsDashboardPage() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-52 rounded-xl p-1 z-50">
-                            <DropdownMenuItem
-                              onClick={() => setSelectedAppointmentForDetails(app)}
-                              className="cursor-pointer text-sm"
-                            >
-                              Ver Detalhes
+                            <DropdownMenuItem asChild>
+                              <Link
+                                href={ROUTES.APPOINTMENTS.DETAILS(app.id)}
+                                className="cursor-pointer text-sm"
+                              >
+                                Ver Detalhes
+                              </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
                               <Link
@@ -559,36 +471,32 @@ export default function AppointmentsDashboardPage() {
                                 className="cursor-pointer text-sm flex items-center gap-2"
                               >
                                 <Pencil className="w-3.5 h-3.5" />
-                                <span>Editar Atendimento</span>
+                                <span>
+                                  {app.kind === 'commitment'
+                                    ? 'Editar Compromisso'
+                                    : 'Editar Atendimento'}
+                                </span>
                               </Link>
                             </DropdownMenuItem>
                             {app.requesterPhone && (
                               <>
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    setWhatsAppDialogState({
-                                      open: true,
-                                      appointment: app,
-                                      template: 'confirmation',
-                                    })
-                                  }
-                                  className="cursor-pointer text-sm flex items-center gap-2 text-emerald-700"
-                                >
-                                  <MessageCircle className="w-3.5 h-3.5" />
-                                  <span>Enviar WhatsApp</span>
+                                <DropdownMenuItem asChild>
+                                  <Link
+                                    href={ROUTES.APPOINTMENTS.WHATSAPP(app.id, 'confirmation')}
+                                    className="cursor-pointer text-sm flex items-center gap-2 text-emerald-700"
+                                  >
+                                    <MessageCircle className="w-3.5 h-3.5" />
+                                    <span>Enviar WhatsApp</span>
+                                  </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    setWhatsAppDialogState({
-                                      open: true,
-                                      appointment: app,
-                                      template: 'reminder',
-                                    })
-                                  }
-                                  className="cursor-pointer text-sm flex items-center gap-2 text-emerald-700"
-                                >
-                                  <MessageCircle className="w-3.5 h-3.5" />
-                                  <span>Enviar Lembrete</span>
+                                <DropdownMenuItem asChild>
+                                  <Link
+                                    href={ROUTES.APPOINTMENTS.WHATSAPP(app.id, 'reminder')}
+                                    className="cursor-pointer text-sm flex items-center gap-2 text-emerald-700"
+                                  >
+                                    <MessageCircle className="w-3.5 h-3.5" />
+                                    <span>Enviar Lembrete</span>
+                                  </Link>
                                 </DropdownMenuItem>
                               </>
                             )}
@@ -601,7 +509,11 @@ export default function AppointmentsDashboardPage() {
                               className="cursor-pointer text-sm flex items-center gap-2 text-rose-600 focus:text-rose-700"
                             >
                               <XCircle className="w-3.5 h-3.5" />
-                              <span>Cancelar Atendimento</span>
+                              <span>
+                                {app.kind === 'commitment'
+                                  ? 'Cancelar Compromisso'
+                                  : 'Cancelar Atendimento'}
+                              </span>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -630,16 +542,13 @@ export default function AppointmentsDashboardPage() {
               </div>
 
               <Button
-                onClick={() => {
-                  if (isPastoralAgent && myAgent) {
-                    setQuickBlockAgentId(myAgent.id);
-                  }
-                  setIsQuickBlockOpen(true);
-                }}
-                className="bg-[#11291f] text-white hover:bg-[#1a3d2e] rounded-xl px-4 py-2.5 text-sm font-semibold shadow-xs shrink-0 self-start sm:self-center cursor-pointer gap-1.5"
+                asChild
+                className="shadow-xs shrink-0 self-start sm:self-center gap-1.5"
               >
-                <Plus className="w-4 h-4" />
-                <span>Novo bloqueio</span>
+                <Link href={ROUTES.APPOINTMENTS.BLOCKS_ADD}>
+                  <Plus className="w-4 h-4" />
+                  <span>Novo bloqueio</span>
+                </Link>
               </Button>
             </div>
           </div>
@@ -688,108 +597,6 @@ export default function AppointmentsDashboardPage() {
           </div>
         </div>
       </main>
-
-      {/* Quick Block Dialog */}
-      <Dialog open={isQuickBlockOpen} onOpenChange={setIsQuickBlockOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 font-serif text-xl">
-              <CalendarPlus className="w-5 h-5 text-emerald-800" />
-              <span>Novo Bloqueio de Período</span>
-            </DialogTitle>
-            <DialogDescription>
-              Suspenda a disponibilidade na agenda para férias ou compromissos.
-            </DialogDescription>
-          </DialogHeader>
-
-          <form onSubmit={handleSaveQuickBlock} className="space-y-4 pt-1">
-            {!isPastoralAgent && (
-              <div>
-                <label className="text-sm font-semibold text-zinc-700 block mb-1">
-                  Agente Pastoral *
-                </label>
-                <Select
-                  name="quickAgent"
-                  value={quickBlockAgentId}
-                  onValueChange={(val) => setQuickBlockAgentId(val)}
-                  placeholder="Selecione o padre ou ministro"
-                >
-                  {(agents || []).map((ag) => (
-                    <SelectItem
-                      key={ag.id}
-                      value={ag.id}
-                      text={`${ag.title ? `${ag.title} ` : ''}${ag.name}`}
-                    />
-                  ))}
-                </Select>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm font-semibold text-zinc-700 block mb-1">
-                  A partir de *
-                </label>
-                <Input
-                  type="date"
-                  value={quickBlockStartDate}
-                  onChange={(e) => setQuickBlockStartDate(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-semibold text-zinc-700 block mb-1">
-                  Até *
-                </label>
-                <Input
-                  type="date"
-                  value={quickBlockEndDate}
-                  onChange={(e) => setQuickBlockEndDate(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-sm font-semibold text-zinc-700 block mb-1">
-                Motivo *
-              </label>
-              <Select
-                name="quickReason"
-                placeholder="Selecione o motivo"
-                value={quickBlockReason}
-                onValueChange={(val) => setQuickBlockReason(val)}
-              >
-                <SelectItem value="Férias" text="Férias" />
-                <SelectItem value="Retiro Espiritual" text="Retiro Espiritual" />
-                <SelectItem value="Compromisso Externo" text="Compromisso Externo" />
-                <SelectItem value="Recesso Paroquial" text="Recesso Paroquial" />
-                <SelectItem value="Outro motivo" text="Outro motivo" />
-              </Select>
-            </div>
-
-            <DialogFooter className="pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsQuickBlockOpen(false)}
-                disabled={isSubmittingQuickBlock}
-              >
-                Cancelar
-              </Button>
-              <Button
-                type="submit"
-                className="bg-[#11291f] text-white hover:bg-[#1a3d2e]"
-                isLoading={isSubmittingQuickBlock}
-                loadingText="Salvando..."
-              >
-                Bloquear período
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
 
       {/* Cancellation Dialog */}
       <Dialog
@@ -846,29 +653,6 @@ export default function AppointmentsDashboardPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* WhatsApp Dialog */}
-      <AppointmentWhatsAppDialog
-        open={whatsAppDialogState.open}
-        onOpenChange={(open) =>
-          setWhatsAppDialogState((prev) => ({ ...prev, open }))
-        }
-        appointment={whatsAppDialogState.appointment}
-        initialTemplate={whatsAppDialogState.template}
-        cancellationReason={whatsAppDialogState.cancellationReason}
-      />
-
-      {/* Appointment Details Dialog Modal */}
-      <AppointmentDetailsDialog
-        open={Boolean(selectedAppointmentForDetails)}
-        onOpenChange={(open) => !open && setSelectedAppointmentForDetails(null)}
-        appointment={selectedAppointmentForDetails}
-        editHref={
-          selectedAppointmentForDetails
-            ? ROUTES.APPOINTMENTS.EDIT(selectedAppointmentForDetails.id)
-            : undefined
-        }
-      />
     </>
   );
 }

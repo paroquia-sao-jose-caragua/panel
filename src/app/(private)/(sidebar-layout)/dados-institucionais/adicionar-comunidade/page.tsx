@@ -58,7 +58,7 @@ export default function AddChurchPage() {
 
           <div className="flex flex-row items-center gap-4">
             <div>
-              <TypographyH1>Adicionar Igreja</TypographyH1>
+              <TypographyH1 size="form">Adicionar Igreja</TypographyH1>
             </div>
           </div>
         </div>

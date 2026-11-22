@@ -63,10 +63,16 @@ export const AppointmentConfirmStep = ({
         <div className="border-b border-zinc-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <span className="text-sm font-semibold text-brand-700 uppercase tracking-wider">
-              {isEdit ? 'Revisão das Alterações' : 'Revisão do Atendimento'}
+              {isEdit
+                ? 'Revisão das Alterações'
+                : values.kind === 'commitment'
+                ? 'Revisão do Compromisso'
+                : 'Revisão do Atendimento'}
             </span>
             <h2 className="text-xl font-bold text-zinc-900 mt-0.5">
-              {service?.title || 'Atendimento Pastoral'}
+              {values.kind === 'commitment'
+                ? `${values.title || 'Compromisso'} (${values.durationMinutes || 60} min)`
+                : service?.title || 'Atendimento Pastoral'}
             </h2>
           </div>
 
@@ -248,9 +254,16 @@ export const AppointmentConfirmStep = ({
       <div className="p-4 rounded-xl bg-brand-50 border border-brand-200/80 text-brand-900 text-sm leading-relaxed flex items-start gap-3">
         <CheckCircle2 className="w-5 h-5 text-brand-700 shrink-0 mt-0.5" />
         <div>
-          <span className="font-bold block">Pronto para agendar o atendimento</span>
-          Revise as informações acima com atenção. Ao clicar em &quot;Confirmar e Criar Atendimento&quot;,
-          o atendimento será registrado no sistema e ficará visível na listagem da secretaria e na agenda do agente pastoral.
+          <span className="font-bold block">
+            {values.kind === 'commitment'
+              ? 'Pronto para agendar o compromisso'
+              : 'Pronto para agendar o atendimento'}
+          </span>
+          Revise as informações acima com atenção. Ao clicar em &quot;
+          {values.kind === 'commitment'
+            ? 'Confirmar e Criar Compromisso'
+            : 'Confirmar e Criar Atendimento'}
+          &quot;, o {values.kind === 'commitment' ? 'compromisso' : 'atendimento'} será registrado no sistema e ficará visível na listagem da secretaria e na agenda do agente pastoral.
         </div>
       </div>
     </div>

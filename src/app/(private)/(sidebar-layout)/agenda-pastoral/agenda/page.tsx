@@ -9,7 +9,7 @@ import React, {
   Suspense,
 } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { ptBR } from 'react-day-picker/locale';
@@ -55,11 +55,6 @@ import {
   useMyPastoralAgent,
 } from '@/api/appointments/use-appointments';
 import { AppointmentCalendarItem } from '@/components/features/appointments/appointment-calendar-item';
-import { AppointmentDetailsDialog } from '@/components/features/appointments/appointment-details-dialog';
-import {
-  AppointmentWhatsAppDialog,
-  type WhatsAppTemplateType,
-} from '@/components/features/appointments/appointment-whatsapp-dialog';
 import type { Appointment } from '@/entities/appointment';
 import { ROUTES } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
@@ -68,6 +63,7 @@ import { cn } from '@/lib/utils';
 dayjs.locale('pt-br');
 
 function AppointmentsAgendaContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const queryDate = searchParams?.get('date');
 
@@ -126,20 +122,6 @@ function AppointmentsAgendaContent() {
   const [processingAppointmentId, setProcessingAppointmentId] = useState<
     string | null
   >(null);
-
-  const [whatsAppDialogState, setWhatsAppDialogState] = useState<{
-    open: boolean;
-    appointment: Appointment | null;
-    template: WhatsAppTemplateType;
-    cancellationReason?: string;
-  }>({
-    open: false,
-    appointment: null,
-    template: 'reminder',
-  });
-
-  const [selectedAppointmentForDetails, setSelectedAppointmentForDetails] =
-    useState<Appointment | null>(null);
 
   // Rolling list of days (past 60 to next 120 days)
   const daysList = useMemo(() => {
@@ -435,22 +417,12 @@ function AppointmentsAgendaContent() {
         cancellationReason: finalReason,
       });
 
-      const appointmentCancelled: Appointment = {
-        ...cancellingAppointment,
-        status: 'cancelled',
-        cancellationReason: finalReason,
-      };
-
+      const cancelledId = cancellingAppointment.id;
       setCancellingAppointment(null);
       setCancellationReason('');
 
       if (isStaffSecretaryOrAdmin) {
-        setWhatsAppDialogState({
-          open: true,
-          appointment: appointmentCancelled,
-          template: 'cancellation',
-          cancellationReason: finalReason,
-        });
+        router.push(ROUTES.APPOINTMENTS.WHATSAPP(cancelledId, 'cancellation'));
       }
     } finally {
       setProcessingAppointmentId(null);
@@ -476,14 +448,25 @@ function AppointmentsAgendaContent() {
       />
 
       <main className="max-w-325 w-full px-4 pt-4 pb-16 lg:col-start-2 lg:px-8 lg:pt-8 mx-auto">
-        {/* 1. Header: Title, Subtitle, and ONLY "+ Novo atendimento" on the right */}
+        {/* 1. Header: Title, Subtitle, and "+ Novo agendamento" on the right */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <TypographyH1>Agenda de Atendimentos</TypographyH1>
+            <TypographyH1>Agendamentos</TypographyH1>
             <Describe className="mt-1">
-              Visualização cronológica dos atendimentos confirmados distribuídos por dia e horário.
+              Visualização cronológica dos agendamentos confirmados distribuídos por dia e horário.
             </Describe>
           </div>
+
+          <Button
+            asChild
+            size="sm"
+            className="gap-1.5 h-9 text-sm cursor-pointer shadow-2xs bg-[#11291f] text-white hover:bg-[#1a3d2e] shrink-0 self-start sm:self-center"
+          >
+            <Link href={ROUTES.APPOINTMENTS.ADD}>
+              <Plus className="w-3.5 h-3.5" />
+              <span>Novo agendamento</span>
+            </Link>
+          </Button>
         </div>
 
         {/* 2. Horizontal Date Strip Navigation */}
@@ -491,37 +474,43 @@ function AppointmentsAgendaContent() {
           {/* Top Bar of Date Strip: Month title, chevrons, today button, calendar popover, and secondary filters */}
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon-sm"
                 onClick={handlePrevDay}
                 aria-label="Dia anterior"
-                className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition active:scale-95 cursor-pointer"
+                className="text-zinc-500 hover:text-zinc-900"
               >
                 <ChevronLeft className="w-5 h-5" />
-              </button>
+              </Button>
 
               <span className="text-base sm:text-lg font-bold text-zinc-900 tracking-tight capitalize font-serif">
                 {monthTitle}
               </span>
 
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon-sm"
                 onClick={handleNextDay}
                 aria-label="Próximo dia"
-                className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition active:scale-95 cursor-pointer"
+                className="text-zinc-500 hover:text-zinc-900"
               >
                 <ChevronRight className="w-5 h-5" />
-              </button>
+              </Button>
 
               {!isCurrentSelectedToday && (
-                <button
+                <Button
                   type="button"
+                  variant="outline"
+                  size="xs"
                   onClick={handleGoToToday}
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 border border-brand-200/80 px-2.5 py-0.5 rounded-full transition active:scale-95 cursor-pointer ml-1"
+                  className="text-brand-800 bg-brand-50 hover:bg-brand-100 border-brand-200/80 ml-1"
                 >
                   <ArrowLeft className="w-2.5 h-2.5 text-brand-700" />
                   <span>Hoje</span>
-                </button>
+                </Button>
               )}
 
               {/* Popover to jump directly to any date */}
@@ -530,13 +519,15 @@ function AppointmentsAgendaContent() {
                 onOpenChange={setOpenCalendarPicker}
               >
                 <PopoverTrigger asChild>
-                  <button
+                  <Button
                     type="button"
-                    className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition cursor-pointer"
+                    variant="ghost"
+                    size="icon-sm"
+                    className="text-zinc-400 hover:text-zinc-800"
                     title="Escolher uma data específica"
                   >
                     <CalendarIcon className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
@@ -583,14 +574,16 @@ function AppointmentsAgendaContent() {
 
           {/* Rolling Days Strip */}
           <div className="relative flex items-center gap-1.5">
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="icon-sm"
               onClick={handlePrevDay}
               aria-label="Dia anterior"
-              className="hidden sm:flex shrink-0 w-8 h-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 transition shadow-2xs cursor-pointer active:scale-95"
+              className="hidden sm:flex shrink-0 text-zinc-500 hover:text-zinc-900 shadow-2xs"
             >
               <ChevronLeft className="w-4 h-4" />
-            </button>
+            </Button>
 
             <div
               ref={scrollContainerRef}
@@ -682,14 +675,16 @@ function AppointmentsAgendaContent() {
               />
             </div>
 
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="icon-sm"
               onClick={handleNextDay}
               aria-label="Próximo dia"
-              className="hidden sm:flex shrink-0 w-8 h-8 items-center justify-center rounded-xl border border-zinc-200/80 bg-white text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 transition shadow-2xs cursor-pointer active:scale-95"
+              className="hidden sm:flex shrink-0 text-zinc-500 hover:text-zinc-900 shadow-2xs"
             >
               <ChevronRight className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         </section>
 
@@ -707,15 +702,17 @@ function AppointmentsAgendaContent() {
                   {agents?.find((a) => a.id === filters.agentId)?.name ||
                     'Agente'}
                 </span>
-                <button
+                <Button
                   type="button"
-                  className="text-zinc-400 hover:text-zinc-800 ml-1 cursor-pointer"
+                  variant="ghost"
+                  size="icon-xs"
+                  className="text-zinc-400 hover:text-zinc-800 ml-0.5"
                   onClick={() =>
                     setFilters((prev) => ({ ...prev, agentId: undefined }))
                   }
                 >
                   <X className="h-3 w-3" />
-                </button>
+                </Button>
               </div>
             )}
 
@@ -726,29 +723,33 @@ function AppointmentsAgendaContent() {
                   {services?.find((s) => s.id === filters.serviceId)?.title ||
                     'Categoria'}
                 </span>
-                <button
+                <Button
                   type="button"
-                  className="text-zinc-400 hover:text-zinc-800 ml-1 cursor-pointer"
+                  variant="ghost"
+                  size="icon-xs"
+                  className="text-zinc-400 hover:text-zinc-800 ml-0.5"
                   onClick={() =>
                     setFilters((prev) => ({ ...prev, serviceId: undefined }))
                   }
                 >
                   <X className="h-3 w-3" />
-                </button>
+                </Button>
               </div>
             )}
 
-            <button
+            <Button
               type="button"
+              variant="link"
+              size="sm"
               onClick={handleClearFilter}
-              className="text-sm text-brand-800 font-semibold hover:underline ml-1 cursor-pointer"
+              className="h-auto p-0 text-brand-800 font-semibold ml-1"
             >
               Limpar todos
-            </button>
+            </Button>
           </div>
         )}
 
-        {/* 5. Conteúdo do Dia: Header outside cards with title, count, and "+ Adicionar atendimento" */}
+        {/* 5. Conteúdo do Dia: Header outside cards with title and count */}
         <section className="mt-8 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-200/80">
             <div>
@@ -766,25 +767,14 @@ function AppointmentsAgendaContent() {
               </div>
               <p className="text-sm sm:text-sm text-zinc-500 font-medium mt-0.5">
                 {dayAppointments.length === 0
-                  ? '0 atendimentos confirmados'
+                  ? '0 agendamentos confirmados'
                   : `${dayAppointments.length} ${
                       dayAppointments.length === 1
-                        ? 'atendimento confirmado'
-                        : 'atendimentos confirmados'
+                        ? 'agendamento confirmado'
+                        : 'agendamentos confirmados'
                     }`}
               </p>
             </div>
-
-            <Button
-              asChild
-              size="sm"
-              className="gap-1.5 h-9 text-sm cursor-pointer shadow-2xs bg-[#11291f] text-white hover:bg-[#1a3d2e] shrink-0 self-start sm:self-center"
-            >
-              <Link href={ROUTES.APPOINTMENTS.ADD_WITH_DATE(selectedDate)}>
-                <Plus className="w-3.5 h-3.5" />
-                <span>Adicionar atendimento</span>
-              </Link>
-            </Button>
           </div>
 
           {/* Appointments of Selected Day */}
@@ -801,7 +791,7 @@ function AppointmentsAgendaContent() {
               </div>
               <div className="space-y-1">
                 <h3 className="text-base font-semibold text-zinc-900">
-                  Nenhum atendimento confirmado nesta data
+                  Nenhum agendamento confirmado nesta data
                 </h3>
                 <p className="text-sm sm:text-sm text-zinc-500 max-w-md mx-auto">
                   Os horários livres continuam disponíveis conforme sua grade semanal.
@@ -820,14 +810,12 @@ function AppointmentsAgendaContent() {
                     setCancellationReason('');
                   }}
                   onOpenWhatsApp={(appointment) => {
-                    setWhatsAppDialogState({
-                      open: true,
-                      appointment,
-                      template: 'reminder',
-                    });
+                    router.push(
+                      ROUTES.APPOINTMENTS.WHATSAPP(appointment.id, 'reminder')
+                    );
                   }}
                   onOpenDetails={(appointment) => {
-                    setSelectedAppointmentForDetails(appointment);
+                    router.push(ROUTES.APPOINTMENTS.DETAILS(appointment.id));
                   }}
                   isStaff={isStaffSecretaryOrAdmin}
                 />
@@ -843,7 +831,7 @@ function AppointmentsAgendaContent() {
           <DialogHeader>
             <DialogTitle>Filtros da Agenda</DialogTitle>
             <DialogDescription>
-              Filtre os atendimentos por agente pastoral responsável ou categoria de atendimento.
+              Filtre os agendamentos por agente pastoral responsável ou categoria de atendimento.
             </DialogDescription>
           </DialogHeader>
 
@@ -927,13 +915,29 @@ function AppointmentsAgendaContent() {
       >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Cancelar Atendimento</DialogTitle>
+            <DialogTitle>
+              {cancellingAppointment?.kind === 'commitment'
+                ? 'Cancelar Compromisso'
+                : 'Cancelar Atendimento'}
+            </DialogTitle>
             <DialogDescription>
-              Informe o motivo do cancelamento do atendimento de{' '}
-              <strong className="text-zinc-900">
-                {cancellingAppointment?.requesterName || 'Fiel'}
-              </strong>
-              .
+              {cancellingAppointment?.kind === 'commitment' ? (
+                <>
+                  Informe o motivo do cancelamento do compromisso{' '}
+                  <strong className="text-zinc-900">
+                    {cancellingAppointment?.title || 'Compromisso'}
+                  </strong>
+                  .
+                </>
+              ) : (
+                <>
+                  Informe o motivo do cancelamento do atendimento de{' '}
+                  <strong className="text-zinc-900">
+                    {cancellingAppointment?.requesterName || 'Fiel'}
+                  </strong>
+                  .
+                </>
+              )}
             </DialogDescription>
           </DialogHeader>
 
@@ -970,29 +974,6 @@ function AppointmentsAgendaContent() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* WhatsApp Dialog */}
-      <AppointmentWhatsAppDialog
-        open={whatsAppDialogState.open}
-        onOpenChange={(open) =>
-          setWhatsAppDialogState((prev) => ({ ...prev, open }))
-        }
-        appointment={whatsAppDialogState.appointment}
-        initialTemplate={whatsAppDialogState.template}
-        cancellationReason={whatsAppDialogState.cancellationReason}
-      />
-
-      {/* Appointment Details Dialog Modal */}
-      <AppointmentDetailsDialog
-        open={Boolean(selectedAppointmentForDetails)}
-        onOpenChange={(open) => !open && setSelectedAppointmentForDetails(null)}
-        appointment={selectedAppointmentForDetails}
-        editHref={
-          selectedAppointmentForDetails
-            ? ROUTES.APPOINTMENTS.AGENDA_EDIT(selectedAppointmentForDetails.id)
-            : undefined
-        }
-      />
     </>
   );
 }

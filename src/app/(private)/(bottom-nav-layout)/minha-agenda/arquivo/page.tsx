@@ -19,6 +19,7 @@ import { MinhaAgendaHeader } from '@/components/features/minha-agenda/top-header
 import { ROUTES } from '@/constants/routes';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { isAppointmentExpired } from '@/utils/appointment';
 import type { Appointment, AppointmentStatus } from '@/entities/appointment';
@@ -56,72 +57,76 @@ export default function MinhaAgendaArchivePage() {
 
   return (
     <div className="flex flex-col flex-1">
-      <MinhaAgendaHeader title="Arquivo de Atendimentos" />
+      <MinhaAgendaHeader title="Arquivo de Agendamentos" />
 
       <div className="px-4 pt-4 pb-8 space-y-5">
         {/* Intro */}
         <section className="space-y-1">
           <h2 className="text-xl font-bold tracking-tight text-zinc-900 font-serif">
-            Histórico de Atendimentos
+            Histórico de Agendamentos
           </h2>
           <p className="text-sm text-zinc-500 leading-relaxed">
-            Atendimentos anteriores realizados, cancelados ou solicitações expiradas para simples consulta.
+            Agendamentos anteriores realizados, cancelados ou solicitações expiradas para simples consulta.
           </p>
         </section>
 
         {/* Filter Chips */}
         <section className="flex items-center gap-2 overflow-x-auto pb-1">
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant={filter === 'all' ? 'default' : 'outline'}
             onClick={() => setFilter('all')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none whitespace-nowrap shrink-0',
-              filter === 'all'
-                ? 'bg-brand-900 text-white shadow-xs'
-                : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+              'shrink-0',
+              filter === 'all' ? 'bg-brand-900 hover:bg-brand-800 text-white' : 'text-zinc-600'
             )}
           >
             Todos
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant={filter === 'completed' ? 'default' : 'outline'}
             onClick={() => setFilter('completed')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none whitespace-nowrap shrink-0',
+              'shrink-0',
               filter === 'completed'
-                ? 'bg-emerald-700 text-white shadow-xs'
-                : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+                ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
+                : 'text-zinc-600'
             )}
           >
             Realizados
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant={filter === 'cancelled' ? 'destructive' : 'outline'}
             onClick={() => setFilter('cancelled')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none whitespace-nowrap shrink-0',
-              filter === 'cancelled'
-                ? 'bg-red-700 text-white shadow-xs'
-                : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+              'shrink-0',
+              filter === 'cancelled' ? 'bg-red-700 hover:bg-red-800' : 'text-zinc-600'
             )}
           >
             Cancelados
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
+            size="sm"
+            variant={filter === 'expired' ? 'default' : 'outline'}
             onClick={() => setFilter('expired')}
             className={cn(
-              'px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all cursor-pointer select-none whitespace-nowrap shrink-0',
+              'shrink-0',
               filter === 'expired'
-                ? 'bg-amber-600 text-white shadow-xs'
-                : 'bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50'
+                ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                : 'text-zinc-600'
             )}
           >
             Expirados
-          </button>
+          </Button>
         </section>
 
         {/* Items List */}

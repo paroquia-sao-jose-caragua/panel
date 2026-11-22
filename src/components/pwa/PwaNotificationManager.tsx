@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Bell, Download, X } from 'lucide-react';
 import useAuthStore from '@/stores/useAuthStore';
 import { subscribePushNotification } from '@/api/push-subscriptions';
+import { Button } from '@/components/ui/button';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -378,29 +379,34 @@ export function PwaNotificationManager() {
                 acesso rápido.
               </p>
               <div className="mt-3 flex items-center gap-2">
-                <button
+                <Button
                   type="button"
+                  size="sm"
                   onClick={handleInstallClick}
-                  className="rounded-lg bg-amber-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-amber-500 active:scale-95 cursor-pointer"
+                  className="bg-amber-600 text-white hover:bg-amber-500"
                 >
                   Instalar Painel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={dismissInstallBanner}
-                  className="rounded-lg px-2 py-1.5 text-sm text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                  className="text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
                 >
                   Depois
-                </button>
+                </Button>
               </div>
             </div>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-xs"
               onClick={dismissInstallBanner}
-              className="text-zinc-400 hover:text-zinc-200 cursor-pointer"
+              className="text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
             >
               <X className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
         </div>
       ) : showNotificationBanner && notificationPermission === 'default' ? (
@@ -419,29 +425,35 @@ export function PwaNotificationManager() {
                 avisos.
               </p>
               <div className="mt-3 flex items-center gap-2">
-                <button
+                <Button
                   type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={handleRequestNotification}
-                  className="rounded-lg bg-zinc-800 px-3 py-1.5 text-sm font-semibold text-zinc-100 border border-zinc-600 hover:bg-zinc-700 active:scale-95 cursor-pointer"
+                  className="bg-zinc-800 text-zinc-100 border-zinc-600 hover:bg-zinc-700 hover:text-zinc-100"
                 >
                   Ativar Alertas
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={dismissNotificationBanner}
-                  className="rounded-lg px-2 py-1.5 text-sm text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                  className="text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
                 >
                   Agora Não
-                </button>
+                </Button>
               </div>
             </div>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-xs"
               onClick={dismissNotificationBanner}
-              className="text-zinc-400 hover:text-zinc-200 cursor-pointer"
+              className="text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
             >
               <X className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
         </div>
       ) : null}

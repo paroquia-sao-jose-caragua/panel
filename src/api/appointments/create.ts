@@ -1,12 +1,19 @@
 import { api } from '../utils/api';
-import type { Appointment, AppointmentStatus, PatientConditions } from '@/entities/appointment';
+import type {
+  Appointment,
+  AppointmentKind,
+  AppointmentStatus,
+  PatientConditions,
+} from '@/entities/appointment';
 
 export interface CreateAppointmentInput {
+  kind?: AppointmentKind;
+  title?: string | null;
   agentId: string;
-  serviceId: string;
+  serviceId?: string | null;
   communityId?: string | null;
-  requesterName: string;
-  requesterPhone: string;
+  requesterName?: string | null;
+  requesterPhone?: string | null;
   requesterEmail?: string | null;
   requesterRelationship?: string | null;
   patientName?: string | null;
@@ -14,6 +21,8 @@ export interface CreateAppointmentInput {
   patientConditions?: PatientConditions | null;
   appointmentDate: string; // "YYYY-MM-DD"
   startTime: string; // "HH:mm"
+  endTime?: string | null; // "HH:mm"
+  durationMinutes?: number | null;
   requesterNotes?: string | null;
   status?: AppointmentStatus;
   privatePastoralNotes?: string | null;

@@ -130,7 +130,7 @@ export default function EditAppointmentServicePage({
 
           <div className="flex flex-row items-center gap-4 mt-2">
             <div>
-              <TypographyH1>
+              <TypographyH1 size="form">
                 {isLoadingServices && !service ? 'Carregando Categoria...' : `Editar: ${values.title || 'Categoria'}`}
               </TypographyH1>
               <span className="text-md font-medium text-zinc-600">
