@@ -123,9 +123,9 @@ export default function UrgentAlertPage() {
     },
     solemnity: {
       barBg:
-        'bg-gradient-to-r from-[#523912] via-[#6e4e1a] to-[#523912] text-[#fff8ed] border-b border-amber-500/40',
-      badgeBg: 'bg-[#4a3411] text-amber-200 border-amber-400/40',
-      buttonBg: 'bg-[#f4d068] text-[#3a270a] hover:bg-[#fae088]',
+        'bg-gradient-to-r from-[#b6852a] via-[#d6a64a] to-[#b6852a] text-[#fffdf7] border-b border-[#9a6d1c]/50',
+      badgeBg: 'bg-[#8f6418] text-[#fff8e6] border-[#f2d08a]/40',
+      buttonBg: 'bg-[#fff8e6] text-[#634515] hover:bg-white',
       label: 'Solenidade / Festa',
       colorBadge: 'bg-amber-50 text-amber-800 border-amber-200',
       icon: Sparkles,
