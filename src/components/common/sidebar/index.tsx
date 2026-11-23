@@ -21,6 +21,7 @@ import {
   Globe,
   Lock,
   Smartphone,
+  Bell,
 } from 'lucide-react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { Button } from '@/components/ui/button';
@@ -358,6 +359,18 @@ export const AppSidebar = () => {
                   {
                     title: 'Faixa de Alerta',
                     href: ROUTES.ANNOUNCEMENTS.ALERT,
+                  },
+                ]}
+                onLinkClick={handleClose}
+              />
+              <NavItem
+                title="Mural de Avisos"
+                icon={Bell}
+                exactMatch
+                links={[
+                  {
+                    title: 'Mural de Avisos',
+                    href: ROUTES.NOTICES.HOME,
                   },
                 ]}
                 onLinkClick={handleClose}

@@ -49,6 +49,11 @@ export const ROUTES = {
     ALERT: '/programacao-e-eventos/faixa-de-alerta',
     EDIT_ALERT: '/programacao-e-eventos/faixa-de-alerta/editar',
   },
+  NOTICES: {
+    HOME: '/programacao-e-eventos/mural-de-avisos',
+    ADD: '/programacao-e-eventos/mural-de-avisos/adicionar',
+    EDIT: (id: string) => `/programacao-e-eventos/mural-de-avisos/editar/${id}`,
+  },
   CALENDAR: {
     HOME: '/programacao-e-eventos',
     VIEW: '/programacao-e-eventos/calendario',
