@@ -136,35 +136,14 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
           </div>
         </div>
 
-        {/* Categoria / Estilo */}
+        {/* Categoria / Cor da Faixa */}
         <div>
-          <FieldLabel className="mb-2 block">Estilo Visual & Categoria</FieldLabel>
+          <FieldLabel className="mb-2 block">Cor da Faixa &amp; Categoria</FieldLabel>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <button
               type="button"
-              onClick={() => onChange('variant', 'alert')}
-              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1.5 ${
-                values.variant === 'alert'
-                  ? 'border-red-500 bg-red-50/50 ring-2 ring-red-500/20 shadow-xs'
-                  : 'border-gray-200 hover:border-gray-300 bg-white'
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-red-700 font-bold text-sm">
-                  <AlertTriangle className="w-4 h-4 text-red-600" />
-                  Alerta Urgente
-                </div>
-                {values.variant === 'alert' && <CheckCircle2 className="w-4 h-4 text-red-600" />}
-              </div>
-              <p className="text-sm text-zinc-500">
-                Avisos que demandam atenção imediata, como cancelamentos ou alterações de emergência.
-              </p>
-            </button>
-
-            <button
-              type="button"
               onClick={() => onChange('variant', 'info')}
-              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1.5 ${
+              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1.5 cursor-pointer ${
                 values.variant === 'info'
                   ? 'border-emerald-600 bg-emerald-50/50 ring-2 ring-emerald-600/20 shadow-xs'
                   : 'border-gray-200 hover:border-gray-300 bg-white'
@@ -172,20 +151,43 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-sm">
+                  <span className="w-3 h-3 rounded-full bg-[#153422] shrink-0" />
                   <Info className="w-4 h-4 text-emerald-700" />
                   Comunicado Paroquial
                 </div>
                 {values.variant === 'info' && <CheckCircle2 className="w-4 h-4 text-emerald-700" />}
               </div>
               <p className="text-sm text-zinc-500">
-                Informações gerais da secretaria, cursos, horários ou recados importantes da comunidade.
+                Cor verde padrão. Informações gerais da secretaria, cursos, horários ou recados da comunidade.
+              </p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onChange('variant', 'alert')}
+              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1.5 cursor-pointer ${
+                values.variant === 'alert'
+                  ? 'border-red-500 bg-red-50/50 ring-2 ring-red-500/20 shadow-xs'
+                  : 'border-gray-200 hover:border-gray-300 bg-white'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-red-700 font-bold text-sm">
+                  <span className="w-3 h-3 rounded-full bg-[#85261d] shrink-0" />
+                  <AlertTriangle className="w-4 h-4 text-red-600" />
+                  Alerta Urgente
+                </div>
+                {values.variant === 'alert' && <CheckCircle2 className="w-4 h-4 text-red-600" />}
+              </div>
+              <p className="text-sm text-zinc-500">
+                Cor vermelha. Avisos que demandam atenção imediata, como cancelamentos ou alterações de emergência.
               </p>
             </button>
 
             <button
               type="button"
               onClick={() => onChange('variant', 'solemnity')}
-              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1.5 ${
+              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1.5 cursor-pointer ${
                 values.variant === 'solemnity'
                   ? 'border-amber-500 bg-amber-50/50 ring-2 ring-amber-500/20 shadow-xs'
                   : 'border-gray-200 hover:border-gray-300 bg-white'
@@ -193,13 +195,14 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-amber-900 font-bold text-sm">
+                  <span className="w-3 h-3 rounded-full bg-[#6e4e1a] shrink-0" />
                   <Sparkles className="w-4 h-4 text-amber-600" />
                   Solenidade / Festa
                 </div>
                 {values.variant === 'solemnity' && <CheckCircle2 className="w-4 h-4 text-amber-600" />}
               </div>
               <p className="text-sm text-zinc-500">
-                Festas de Padroeiros, Novenas, Semana Santa, Natal e celebrações especiais.
+                Cor dourada. Festas de Padroeiros, Novenas, Semana Santa, Natal e celebrações especiais.
               </p>
             </button>
           </div>

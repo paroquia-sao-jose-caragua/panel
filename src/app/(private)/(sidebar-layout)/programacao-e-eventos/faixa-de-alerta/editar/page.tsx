@@ -32,7 +32,7 @@ export default function EditUrgentAlertPage() {
   const [values, setValues] = useState<UrgentAlertFormValues>({
     active: false,
     text: '',
-    variant: 'alert',
+    variant: 'info',
     startsAt: '',
     endsAt: '',
     hasModal: false,
@@ -55,7 +55,7 @@ export default function EditUrgentAlertPage() {
       setValues({
         active: item.active ?? false,
         text: item.text ?? '',
-        variant: item.variant ?? 'alert',
+        variant: item.variant ?? 'info',
         startsAt: item.startsAt ? item.startsAt.substring(0, 16) : '',
         endsAt: item.endsAt ? item.endsAt.substring(0, 16) : '',
         hasModal: item.hasModal ?? false,
