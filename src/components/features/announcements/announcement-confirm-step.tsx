@@ -12,6 +12,7 @@ interface AnnouncementConfirmStepProps extends AnnouncementFormValues {
 
 export const AnnouncementConfirmStep = ({
   mode = 'add',
+  displayMode,
   title,
   badgeText,
   description,
@@ -48,28 +49,39 @@ export const AnnouncementConfirmStep = ({
         </div>
 
         <div className="w-full max-w-xl divide-y divide-divider mt-2">
-          {badgeText && (
+          {displayMode === 'image_only' || (!title?.trim() && !description?.trim()) ? (
             <div className="grid grid-cols-3 gap-4 py-3 items-center">
-              <span className="text-zinc-600 text-sm">Badge / Rótulo</span>
-              <span className="col-span-2 text-right font-medium text-sm text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full w-fit ml-auto border border-amber-200">
-                {badgeText}
+              <span className="text-zinc-600 text-sm">Formato</span>
+              <span className="col-span-2 text-right font-semibold text-zinc-900 text-sm">
+                Somente Imagem (sem texto sobreposto)
               </span>
             </div>
+          ) : (
+            <>
+              {badgeText && (
+                <div className="grid grid-cols-3 gap-4 py-3 items-center">
+                  <span className="text-zinc-600 text-sm">Badge / Rótulo</span>
+                  <span className="col-span-2 text-right font-medium text-sm text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full w-fit ml-auto border border-amber-200">
+                    {badgeText}
+                  </span>
+                </div>
+              )}
+
+              <div className="grid grid-cols-3 gap-4 py-3 items-center">
+                <span className="text-zinc-600 text-sm">Título</span>
+                <span className="col-span-2 text-right font-semibold text-zinc-900 text-sm">
+                  {title}
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1 py-3">
+                <span className="text-zinc-600 text-sm">Descrição</span>
+                <p className="text-zinc-800 text-sm bg-zinc-50 p-3 rounded-xl border border-zinc-100 mt-1 leading-relaxed">
+                  {description}
+                </p>
+              </div>
+            </>
           )}
-
-          <div className="grid grid-cols-3 gap-4 py-3 items-center">
-            <span className="text-zinc-600 text-sm">Título</span>
-            <span className="col-span-2 text-right font-semibold text-zinc-900 text-sm">
-              {title}
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-1 py-3">
-            <span className="text-zinc-600 text-sm">Descrição</span>
-            <p className="text-zinc-800 text-sm bg-zinc-50 p-3 rounded-xl border border-zinc-100 mt-1 leading-relaxed">
-              {description}
-            </p>
-          </div>
 
           {(actionText || actionUrl) && (
             <div className="grid grid-cols-3 gap-4 py-3 items-center">
@@ -112,7 +124,7 @@ export const AnnouncementConfirmStep = ({
                 {tabletUrl ? (
                   <ImageLightbox
                     src={tabletUrl}
-                    label="Capa Tablet (1024x600)"
+                    label="Capa Tablet (1024x560)"
                     size="sm"
                     className="w-full h-20"
                   />
@@ -129,7 +141,7 @@ export const AnnouncementConfirmStep = ({
                 {mobileUrl ? (
                   <ImageLightbox
                     src={mobileUrl}
-                    label="Capa Mobile (800x800)"
+                    label="Capa Mobile (1080x1080)"
                     size="sm"
                     className="w-full h-20"
                   />

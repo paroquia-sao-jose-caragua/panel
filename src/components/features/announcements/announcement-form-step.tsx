@@ -26,6 +26,7 @@ import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dia
 import { Button } from '@/components/ui/button';
 
 export interface AnnouncementFormValues {
+  displayMode: 'with_text' | 'image_only';
   title: string;
   badgeText: string;
   description: string;
@@ -135,7 +136,50 @@ export const AnnouncementFormStep = ({
         </div>
       )}
 
-      {/* Card 1: Identificação do Banner */}
+      {/* Seletor de Tipo do Banner */}
+      <div className="grid grid-cols-2 gap-2">
+        <Button
+          type="button"
+          size="lg"
+          variant={values.displayMode !== 'image_only' ? 'default' : 'outline'}
+          onClick={() => onChange('displayMode', 'with_text')}
+          className="w-full"
+        >
+          Imagem com Texto
+        </Button>
+        <Button
+          type="button"
+          size="lg"
+          variant={values.displayMode === 'image_only' ? 'default' : 'outline'}
+          onClick={() => onChange('displayMode', 'image_only')}
+          className="w-full"
+        >
+          Somente Imagem
+        </Button>
+      </div>
+
+      {values.displayMode === 'image_only' ? (
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-3">
+          <div>
+            <FieldLabel htmlFor="actionUrl" className="font-semibold text-zinc-900">
+              Link ao clicar na imagem (Opcional)
+            </FieldLabel>
+            <span className="block text-zinc-600 text-sm mt-1">
+              Como este banner exibirá apenas a arte pronta, nenhum texto ou sombra será colocado sobre ela.
+            </span>
+          </div>
+          <InputRoot>
+            <InputControl
+              name="actionUrl"
+              value={values.actionUrl}
+              onChange={(e) => onChange('actionUrl', e.target.value)}
+              placeholder="Ex: /agenda ou https://..."
+            />
+          </InputRoot>
+        </div>
+      ) : (
+        <>
+          {/* Card 1: Identificação do Banner */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
         <div>
           <FieldLabel htmlFor="title" className="flex items-center gap-2 font-semibold text-zinc-900">
@@ -239,6 +283,8 @@ export const AnnouncementFormStep = ({
           </div>
         </div>
       </div>
+        </>
+      )}
 
       {/* Card 3: Imagens Responsivas */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
@@ -248,7 +294,7 @@ export const AnnouncementFormStep = ({
             Imagens Responsivas (Múltiplos Formatos)
           </FieldLabel>
           <span className="block text-zinc-600 text-sm mt-1">
-            Envie imagens otimizadas para cada tipo de tela. A capa Desktop deve ter as dimensões recomendadas de <strong>1440x632</strong>.
+            Envie imagens otimizadas para cada tipo de tela: Desktop (<strong>1440x632</strong>), Tablet (<strong>1024x560</strong>) e Mobile (<strong>1080x1080</strong>).
           </span>
         </div>
 
@@ -275,9 +321,9 @@ export const AnnouncementFormStep = ({
                 <div className="shrink-0 flex flex-col items-center gap-1">
                   <ImageLightbox
                     src={desktopUrl}
-                    label="Capa Desktop"
+                    label="Capa Desktop (1440x632)"
                     size="md"
-                    className="h-24 w-36 rounded-xl border border-zinc-200 shadow-sm"
+                    className="h-auto w-48 aspect-[1440/632] rounded-xl border border-zinc-200 shadow-sm"
                   />
                   <span className="text-[10px] text-zinc-500 font-medium">Clique para expandir</span>
                 </div>
@@ -306,7 +352,7 @@ export const AnnouncementFormStep = ({
           <div className={`p-4 rounded-xl border transition-colors ${values.coverTabletId ? 'border-emerald-200 bg-emerald-50/30' : 'border-gray-200 bg-zinc-50/50'}`}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-zinc-800 flex items-center gap-2">
-                <Tablet className="w-4 h-4 text-zinc-500" /> Versão Tablet (Opcional)
+                <Tablet className="w-4 h-4 text-zinc-500" /> Versão Tablet (1024x560 - Opcional)
               </span>
               {values.coverTabletId && (
                 <div className="flex items-center gap-2">
@@ -332,9 +378,9 @@ export const AnnouncementFormStep = ({
                 <div className="shrink-0 flex flex-col items-center gap-1">
                   <ImageLightbox
                     src={tabletUrl}
-                    label="Capa Tablet"
+                    label="Capa Tablet (1024x560)"
                     size="md"
-                    className="h-24 w-36 rounded-xl border border-zinc-200 shadow-sm"
+                    className="h-auto w-40 aspect-[1024/560] rounded-xl border border-zinc-200 shadow-sm"
                   />
                   <span className="text-[10px] text-zinc-500 font-medium">Clique para expandir</span>
                 </div>
@@ -360,7 +406,7 @@ export const AnnouncementFormStep = ({
           <div className={`p-4 rounded-xl border transition-colors ${values.coverMobileId ? 'border-emerald-200 bg-emerald-50/30' : 'border-gray-200 bg-zinc-50/50'}`}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-zinc-800 flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-zinc-500" /> Versão Mobile (Opcional)
+                <Smartphone className="w-4 h-4 text-zinc-500" /> Versão Mobile (1080x1080 - Opcional)
               </span>
               {values.coverMobileId && (
                 <div className="flex items-center gap-2">
@@ -386,9 +432,9 @@ export const AnnouncementFormStep = ({
                 <div className="shrink-0 flex flex-col items-center gap-1">
                   <ImageLightbox
                     src={mobileUrl}
-                    label="Capa Mobile"
+                    label="Capa Mobile (1080x1080)"
                     size="md"
-                    className="h-24 w-24 rounded-xl border border-zinc-200 shadow-sm"
+                    className="h-auto w-24 aspect-square rounded-xl border border-zinc-200 shadow-sm"
                   />
                   <span className="text-[10px] text-zinc-500 font-medium">Clique para expandir</span>
                 </div>

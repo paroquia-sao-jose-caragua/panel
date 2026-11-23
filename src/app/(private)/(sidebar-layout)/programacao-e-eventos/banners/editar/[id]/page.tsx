@@ -32,6 +32,7 @@ export default function EditAnnouncementPage({
   const [confirmDeleteAnnouncement, setConfirmDeleteAnnouncement] = useState(false);
 
   const [values, setValues] = useState<AnnouncementFormValues>({
+    displayMode: 'with_text',
     title: '',
     badgeText: '',
     description: '',
@@ -53,7 +54,9 @@ export default function EditAnnouncementPage({
     if (data?.announcements) {
       const item = data.announcements.find((a) => a.id === id);
       if (item) {
+        const isImageOnly = !item.title?.trim() && !item.description?.trim();
         setValues({
+          displayMode: isImageOnly ? 'image_only' : 'with_text',
           title: item.title,
           badgeText: item.badgeText || '',
           description: item.description,
@@ -106,11 +109,13 @@ export default function EditAnnouncementPage({
 
   const handleNextStep = useCallback(() => {
     const newErrors: Record<string, string> = {};
-    if (!values.title.trim()) {
-      newErrors.title = 'Título é obrigatório';
-    }
-    if (!values.description.trim()) {
-      newErrors.description = 'Descrição é obrigatória';
+    if (values.displayMode !== 'image_only') {
+      if (!values.title.trim()) {
+        newErrors.title = 'Título é obrigatório';
+      }
+      if (!values.description.trim()) {
+        newErrors.description = 'Descrição é obrigatória';
+      }
     }
     if (!values.coverDesktopId) {
       newErrors.coverDesktopId = 'Imagem para Desktop é obrigatória';
@@ -129,11 +134,12 @@ export default function EditAnnouncementPage({
   }, []);
 
   const handleSubmit = useCallback(() => {
+    const isImageOnly = values.displayMode === 'image_only';
     editMutation.mutate({
-      title: values.title,
-      badgeText: values.badgeText || null,
-      description: values.description,
-      actionText: values.actionText || null,
+      title: isImageOnly ? '' : values.title,
+      badgeText: isImageOnly ? null : values.badgeText || null,
+      description: isImageOnly ? '' : values.description,
+      actionText: isImageOnly ? null : values.actionText || null,
       actionUrl: values.actionUrl || null,
       coverDesktopId: values.coverDesktopId,
       coverTabletId: values.coverTabletId || null,

@@ -279,8 +279,14 @@ export default function AnnouncementsPage() {
                               )}
                             </span>
                           </div>
-                          <h4 className="font-semibold text-zinc-900 text-base">{item.title}</h4>
-                          <p className="text-sm text-zinc-500 line-clamp-2">{item.description}</p>
+                          <h4 className="font-semibold text-zinc-900 text-base">
+                            {item.title?.trim() ? item.title : 'Banner somente imagem'}
+                          </h4>
+                          <p className="text-sm text-zinc-500 line-clamp-2">
+                            {item.description?.trim()
+                              ? item.description
+                              : 'Exibição direta da arte sem texto sobreposto.'}
+                          </p>
                           {item.actionText && (
                             <div className="flex items-center gap-1 text-sm text-brand-600 font-medium pt-1">
                               <span>Botão: {item.actionText}</span>
