@@ -26,6 +26,7 @@ import { DeleteConfirmationDialog } from '@/components/common/dialog/confirm-dia
 import { Button } from '@/components/ui/button';
 
 export interface AnnouncementFormValues {
+  displayMode: 'with_text' | 'image_only';
   title: string;
   badgeText: string;
   description: string;
@@ -135,7 +136,50 @@ export const AnnouncementFormStep = ({
         </div>
       )}
 
-      {/* Card 1: Identificação do Banner */}
+      {/* Seletor de Tipo do Banner */}
+      <div className="grid grid-cols-2 gap-2">
+        <Button
+          type="button"
+          size="lg"
+          variant={values.displayMode !== 'image_only' ? 'default' : 'outline'}
+          onClick={() => onChange('displayMode', 'with_text')}
+          className="w-full"
+        >
+          Imagem com Texto
+        </Button>
+        <Button
+          type="button"
+          size="lg"
+          variant={values.displayMode === 'image_only' ? 'default' : 'outline'}
+          onClick={() => onChange('displayMode', 'image_only')}
+          className="w-full"
+        >
+          Somente Imagem
+        </Button>
+      </div>
+
+      {values.displayMode === 'image_only' ? (
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-3">
+          <div>
+            <FieldLabel htmlFor="actionUrl" className="font-semibold text-zinc-900">
+              Link ao clicar na imagem (Opcional)
+            </FieldLabel>
+            <span className="block text-zinc-600 text-sm mt-1">
+              Como este banner exibirá apenas a arte pronta, nenhum texto ou sombra será colocado sobre ela.
+            </span>
+          </div>
+          <InputRoot>
+            <InputControl
+              name="actionUrl"
+              value={values.actionUrl}
+              onChange={(e) => onChange('actionUrl', e.target.value)}
+              placeholder="Ex: /agenda ou https://..."
+            />
+          </InputRoot>
+        </div>
+      ) : (
+        <>
+          {/* Card 1: Identificação do Banner */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
         <div>
           <FieldLabel htmlFor="title" className="flex items-center gap-2 font-semibold text-zinc-900">
@@ -239,6 +283,8 @@ export const AnnouncementFormStep = ({
           </div>
         </div>
       </div>
+        </>
+      )}
 
       {/* Card 3: Imagens Responsivas */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4">
