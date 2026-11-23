@@ -246,7 +246,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
               <img
                 src={imageUrl}
                 alt={values.modalTitle || 'Cartaz'}
-                className="w-full h-64 sm:h-80 object-cover"
+                className="w-full h-auto block"
               />
             </div>
           )}

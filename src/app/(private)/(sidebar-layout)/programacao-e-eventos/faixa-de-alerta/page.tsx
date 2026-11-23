@@ -606,7 +606,7 @@ export default function UrgentAlertPage() {
       {/* Modal Preview Dialog */}
       {urgentAlert?.hasModal && (
         <Dialog open={modalPreviewOpen} onOpenChange={setModalPreviewOpen}>
-          <DialogContent className="max-w-lg p-0 overflow-hidden rounded-2xl">
+          <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto p-0 rounded-2xl">
             <DialogHeader className="text-left space-y-2">
               <DialogTitle className="text-xl font-bold text-zinc-900 leading-tight">
                 {urgentAlert.modalTitle || 'Comunicado Paroquial'}
@@ -618,11 +618,11 @@ export default function UrgentAlertPage() {
  
             <div className="px-6 pb-6 space-y-4">
               {urgentAlert.modalImageId && (
-                <div className="rounded-xl overflow-hidden border border-zinc-200 bg-zinc-100 max-h-64 flex items-center justify-center">
+                <div className="w-full rounded-xl overflow-hidden border border-zinc-200 bg-zinc-100">
                   <img
                     src={getImageUrl(urgentAlert.modalImageId)}
                     alt={urgentAlert.modalTitle || 'Cartaz'}
-                    className="w-full h-full object-contain"
+                    className="w-full h-auto block"
                   />
                 </div>
               )}
