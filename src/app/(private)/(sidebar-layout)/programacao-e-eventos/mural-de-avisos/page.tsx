@@ -47,11 +47,11 @@ export default function NoticesPage() {
     mutationFn: (id: string) => deleteNotice(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notices'] });
-      showAlert('Aviso excluído com sucesso.', 'success');
+      showAlert('Aviso excluído com sucesso.');
       setNoticeToDelete(null);
     },
     onError: () => {
-      showAlert('Não foi possível excluir o aviso.', 'error');
+      showAlert('Não foi possível excluir o aviso.');
     },
   });
 
@@ -278,7 +278,7 @@ export default function NoticesPage() {
             deleteMutation.mutate(noticeToDelete.id);
           }
         }}
-        isLoading={deleteMutation.isPending}
+        isPending={deleteMutation.isPending}
       />
     </>
   );

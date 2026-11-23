@@ -83,11 +83,11 @@ export default function EditNoticePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notices'] });
       queryClient.invalidateQueries({ queryKey: ['notice', id] });
-      showAlert('Aviso atualizado com sucesso!', 'success');
+      showAlert('Aviso atualizado com sucesso!');
       router.replace(ROUTES.NOTICES.HOME);
     },
     onError: (err: Error) => {
-      showAlert(err?.message || 'Erro ao atualizar aviso.', 'error');
+      showAlert(err?.message || 'Erro ao atualizar aviso.');
     },
   });
 

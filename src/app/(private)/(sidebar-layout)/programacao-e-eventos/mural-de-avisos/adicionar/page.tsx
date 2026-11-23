@@ -52,11 +52,11 @@ export default function AddNoticePage() {
     mutationFn: createNotice,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notices'] });
-      showAlert('Aviso publicado com sucesso!', 'success');
+      showAlert('Aviso publicado com sucesso!');
       router.replace(ROUTES.NOTICES.HOME);
     },
     onError: (err: Error) => {
-      showAlert(err?.message || 'Erro ao publicar aviso.', 'error');
+      showAlert(err?.message || 'Erro ao publicar aviso.');
     },
   });
 
