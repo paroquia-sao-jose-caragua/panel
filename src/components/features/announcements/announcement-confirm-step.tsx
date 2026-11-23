@@ -124,7 +124,7 @@ export const AnnouncementConfirmStep = ({
                 {tabletUrl ? (
                   <ImageLightbox
                     src={tabletUrl}
-                    label="Capa Tablet (1024x600)"
+                    label="Capa Tablet (1024x560)"
                     size="sm"
                     className="w-full h-20"
                   />
@@ -141,7 +141,7 @@ export const AnnouncementConfirmStep = ({
                 {mobileUrl ? (
                   <ImageLightbox
                     src={mobileUrl}
-                    label="Capa Mobile (800x800)"
+                    label="Capa Mobile (1080x1080)"
                     size="sm"
                     className="w-full h-20"
                   />
