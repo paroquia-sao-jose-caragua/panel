@@ -57,7 +57,7 @@ export const UrgentAlertConfirmStep: React.FC<UrgentAlertConfirmStepProps> = ({ 
     },
     solemnity: {
       barBg:
-        'bg-gradient-to-r from-[#523912] via-[#6e4e1a] to-[#523912] text-[#fff8ed] border-b border-amber-500/40',
+        'bg-gradient-to-r from-[#b6852a] via-[#d6a64a] to-[#b6852a] text-[#fffdf7] border-b border-[#9a6d1c]/50',
       badgeBg: 'bg-[#4a3411] text-amber-200 border-amber-400/40',
       buttonBg: 'bg-[#f4d068] text-[#3a270a]',
     },

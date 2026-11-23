@@ -56,7 +56,7 @@ const variantBarStyles: Record<UrgentAlertVariant, string> = {
   info:
     'bg-gradient-to-r from-[#0f2617] via-[#153422] to-[#0f2617] text-[#f4efe6] border-b border-emerald-700/30',
   solemnity:
-    'bg-gradient-to-r from-[#523912] via-[#6e4e1a] to-[#523912] text-[#fff8ed] border-b border-amber-500/40',
+    'bg-gradient-to-r from-[#b6852a] via-[#d6a64a] to-[#b6852a] text-[#fffdf7] border-b border-[#9a6d1c]/50',
 };
 
 export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
@@ -195,7 +195,7 @@ export const UrgentAlertFormStep: React.FC<UrgentAlertFormStepProps> = ({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-amber-900 font-bold text-sm">
-                  <span className="w-3 h-3 rounded-full bg-[#6e4e1a] shrink-0" />
+                  <span className="w-3 h-3 rounded-full bg-[#d6a64a] shrink-0" />
                   <Sparkles className="w-4 h-4 text-amber-600" />
                   Solenidade / Festa
                 </div>
