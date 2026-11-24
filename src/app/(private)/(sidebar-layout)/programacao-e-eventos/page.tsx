@@ -230,8 +230,8 @@ export default function EventsAndProgrammingHomePage() {
                   <div>
                     <h3 className="text-xl font-bold text-zinc-900 font-serif">
                       {isViewingToday
-                        ? 'Programação de hoje'
-                        : `Programação de ${dayjs(selectedDate).locale('pt-br').format('D [de] MMMM')}`}
+                        ? 'Hoje'
+                        : `${dayjs(selectedDate).locale('pt-br').format('D [de] MMMM')}`}
                     </h3>
                   </div>
                 </div>
@@ -308,8 +308,8 @@ export default function EventsAndProgrammingHomePage() {
                         </div>
 
                         {/* Título & Comunidade */}
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-sm text-zinc-900 truncate">
+                        <div className="flex-1 min-w-0 flex items-center justify-between">
+                          <h4 className="font-semibold text-md text-zinc-900 truncate">
                             {schedule.title || (isMass ? 'Missa' : 'Celebração')}
                           </h4>
                           <p className="text-sm text-zinc-500 truncate mt-0.5 flex items-center gap-1.5">
@@ -323,31 +323,6 @@ export default function EventsAndProgrammingHomePage() {
                                 </span>
                               )}
                           </p>
-                        </div>
-
-                        {/* Badge Recorrente / Evento */}
-                        <div className="hidden sm:block shrink-0">
-                          {isMass ? (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
-                              Recorrente
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-purple-50 text-purple-800 border border-purple-200/80">
-                              Evento
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Community Pill on the Right */}
-                        <div className="shrink-0">
-                          <span
-                            className={cn(
-                              'inline-block text-[11px] sm:text-sm font-medium px-3 py-1 rounded-full whitespace-nowrap',
-                              pill.className
-                            )}
-                          >
-                            {pill.label}
-                          </span>
                         </div>
                       </div>
                     );
