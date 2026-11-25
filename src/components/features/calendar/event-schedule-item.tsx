@@ -28,6 +28,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { ChurchAvatar } from '../churches/church-avatar';
 import { ROUTES } from '@/constants/routes';
+import { formatScheduleTitle } from '@/utils/formatScheduleTitle';
 
 interface ScheduleItemProps {
   schedule: EventSchedule;
@@ -120,13 +121,7 @@ export const EventScheduleItem = ({ schedule }: ScheduleItemProps) => {
         {/* Content: Title & Orientations */}
         <div className="space-y-1">
           <h4 className="text-lg sm:text-xl font-semibold text-zinc-900 leading-snug">
-            {isMass ? 'Santa Missa' : schedule.title}
-            {schedule.massType === 'devotional' && schedule.title && isMass
-              ? ` Devocional — ${schedule.title}`
-              : ''}
-            {schedule.massType === 'solemnity' && schedule.title && isMass
-              ? ` Solene — ${schedule.title}`
-              : ''}
+            {formatScheduleTitle(schedule)}
           </h4>
 
           {schedule.orientations && (

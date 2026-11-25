@@ -4,7 +4,7 @@ import {
   Control as InputControl,
   Prefix as InputPrefix,
 } from '@/components/common/input';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { findAddressByZipCode } from '@/api/zip-code';
 import { Spinner } from '@/components/ui/spinner';
@@ -13,7 +13,6 @@ import type { useCreateChurch } from './churches/add-church/use-create-church';
 import type { useEditChurch } from './churches/edit-church/use-edit-church';
 import { FieldSection } from '../ui/field-section';
 import type { useCreateEventSchedule } from './event-schedules/use-create-event-schedule';
-import type { FormikProps } from 'formik';
 
 interface FormAddressProps {
   formik: ReturnType<
@@ -25,18 +24,21 @@ interface FormAddressProps {
   description?: string;
 }
 
+const formatZipCode = (value: string) => {
+  const digits = stringUtils.removeNonDigits(value).slice(0, 8);
+  if (digits.length > 5) {
+    return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+  }
+  return digits;
+};
+
 export const FullAddressForm = ({
   formik,
   isOptional,
   description,
 }: FormAddressProps) => {
-  const [lastValidatedAddress, setLastValidatedAddress] = React.useState({
-    zipCode: '',
-    street: '',
-    district: '',
-    city: '',
-    state: '',
-  });
+  const lastSearchedZipCodeRef = useRef<string>('');
+  const [lookupError, setLookupError] = useState<string | null>(null);
 
   const { isPending, mutate } = useMutation({
     mutationFn: findAddressByZipCode,
@@ -44,47 +46,68 @@ export const FullAddressForm = ({
   });
 
   const handleSearchAddress = useCallback(
-    (currentZipCode: string) => {
-      const zipCode = stringUtils.removeNonDigits(currentZipCode);
+    (currentZipCode: string, force = false) => {
+      const zipCode = stringUtils.removeNonDigits(currentZipCode).slice(0, 8);
 
       if (zipCode.length !== 8) {
+        setLookupError(null);
         return;
       }
 
-      if (zipCode === lastValidatedAddress.zipCode) {
-        formik.setFieldValue('street', lastValidatedAddress.street);
-        formik.setFieldValue('district', lastValidatedAddress.district);
-
+      if (!force && zipCode === lastSearchedZipCodeRef.current) {
         return;
       }
+
+      lastSearchedZipCodeRef.current = zipCode;
+      setLookupError(null);
 
       mutate(zipCode, {
         onSuccess: (response) => {
           if (response.data) {
-            setLastValidatedAddress({
-              zipCode,
-              street: response.data.street,
-              district: response.data.district,
-              city: response.data.city,
-              state: response.data.state,
-            });
-
-            formik.setFieldValue('street', response.data.street);
-            formik.setFieldValue('district', response.data.district);
-
-            formik.submitForm();
+            if (response.data.street) {
+              formik.setFieldValue('street', response.data.street);
+            }
+            if (response.data.district) {
+              formik.setFieldValue('district', response.data.district);
+            }
+            if (response.data.city) {
+              formik.setFieldValue('city', response.data.city);
+            }
+            if (response.data.state) {
+              formik.setFieldValue('state', response.data.state);
+            }
+            return;
           }
+
+          if (response.error) {
+            setLookupError(
+              response.error.message ||
+                'CEP não encontrado. Você pode preencher o endereço manualmente.'
+            );
+          }
+        },
+        onError: () => {
+          setLookupError(
+            'Não foi possível buscar o CEP. Você pode preencher o endereço manualmente.'
+          );
         },
       });
     },
-    [formik, mutate, lastValidatedAddress]
+    [formik, mutate]
   );
 
   const handleChangeZipCode = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      formik.handleChange(e);
+      const formatted = formatZipCode(e.target.value);
+      const digits = stringUtils.removeNonDigits(formatted);
 
-      handleSearchAddress(e.target.value);
+      if (digits.length < 8) {
+        lastSearchedZipCodeRef.current = '';
+        setLookupError(null);
+      }
+
+      formik.setFieldValue('zipCode', formatted);
+      handleSearchAddress(formatted);
     },
     [formik, handleSearchAddress]
   );
@@ -103,20 +126,35 @@ export const FullAddressForm = ({
         <InputRoot
           touched={formik.touched.zipCode}
           error={formik.errors.zipCode}
+          helperText={lookupError ?? undefined}
         >
           <InputControl
             name="zipCode"
             type="text"
+            inputMode="numeric"
+            maxLength={9}
+            placeholder="00000-000"
             value={formik.values.zipCode}
             onChange={handleChangeZipCode}
-            onBlur={(e) => handleSearchAddress(e.target.value)}
+            onBlur={(e) => {
+              formik.handleBlur(e);
+              handleSearchAddress(e.target.value);
+            }}
           />
           <InputPrefix>
-            {isPending ? (
-              <Spinner className="h-5 w-5 text-zinc-400" />
-            ) : (
-              <SearchIcon className="h-5 w-5 text-zinc-400" />
-            )}
+            <button
+              type="button"
+              onClick={() => handleSearchAddress(formik.values.zipCode, true)}
+              disabled={isPending}
+              aria-label="Buscar endereço pelo CEP"
+              className="flex items-center justify-center text-zinc-400 hover:text-zinc-600 transition-colors cursor-pointer disabled:cursor-default"
+            >
+              {isPending ? (
+                <Spinner className="h-5 w-5 text-zinc-400" />
+              ) : (
+                <SearchIcon className="h-5 w-5" />
+              )}
+            </button>
           </InputPrefix>
         </InputRoot>
       </div>

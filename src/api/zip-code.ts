@@ -5,7 +5,7 @@ interface BrasilApiResponseData {
   neighborhood: string;
   street: string;
   service: string;
-  location: {
+  location?: {
     type: string;
     coordinates: {
       longitude: string;
@@ -14,62 +14,122 @@ interface BrasilApiResponseData {
   };
 }
 
-const addressMapper = (data: BrasilApiResponseData) => ({
+interface ViaCepResponseData {
+  cep?: string;
+  logradouro?: string;
+  bairro?: string;
+  localidade?: string;
+  uf?: string;
+  erro?: boolean | string;
+}
+
+export interface ZipCodeAddressData {
+  zipCode: string;
+  state: string;
+  city: string;
+  district: string;
+  street: string;
+}
+
+const brasilApiMapper = (data: BrasilApiResponseData): ZipCodeAddressData => ({
   zipCode: data.cep,
-  state: data.state,
-  city: data.city,
-  district: data.neighborhood,
-  street: data.street,
+  state: data.state || '',
+  city: data.city || '',
+  district: data.neighborhood || '',
+  street: data.street || '',
 });
 
-export const findAddressByZipCode = async (zipCode: string) => {
+const viaCepMapper = (data: ViaCepResponseData): ZipCodeAddressData => ({
+  zipCode: data.cep || '',
+  state: data.uf || '',
+  city: data.localidade || '',
+  district: data.bairro || '',
+  street: data.logradouro || '',
+});
+
+const fetchWithTimeout = async (url: string, timeoutMs = 6000) => {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 3000); // Cancela após 3 segundos
-  console.log('zipCode')
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
   try {
-    const response = await fetch(
-      `https://brasilapi.com.br/api/cep/v2/${zipCode}`,
-      {
-        method: 'GET',
-        signal: controller.signal, // Passa o sinal para o fetch
-      }
+    return await fetch(url, {
+      method: 'GET',
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+};
+
+export const findAddressByZipCode = async (zipCode: string) => {
+  const cleanZipCode = zipCode.replace(/\D/g, '');
+
+  if (cleanZipCode.length !== 8) {
+    return {
+      error: {
+        message: 'CEP inválido',
+      },
+      responseStatusCode: 400,
+    };
+  }
+
+  // 1. Primary provider: BrasilAPI v2
+  try {
+    const response = await fetchWithTimeout(
+      `https://brasilapi.com.br/api/cep/v2/${cleanZipCode}`,
+      6000
     );
 
-    clearTimeout(timeoutId); // Limpa o timeout se a resposta for recebida a tempo
-
-    const data = (await response.json()) as BrasilApiResponseData;
-
     if (response.status === 200) {
+      const data = (await response.json()) as BrasilApiResponseData;
+
       return {
         success: {
           message: 'Address found',
         },
-        data: addressMapper(data),
+        data: brasilApiMapper(data),
         responseStatusCode: 200,
       };
     }
+  } catch {
+    // Fall through to ViaCEP fallback
+  }
 
-    if (response.status === 404) {
+  // 2. Fallback provider: ViaCEP
+  try {
+    const response = await fetchWithTimeout(
+      `https://viacep.com.br/ws/${cleanZipCode}/json/`,
+      6000
+    );
+
+    if (response.status === 200) {
+      const data = (await response.json()) as ViaCepResponseData;
+
+      if (!data.erro) {
+        return {
+          success: {
+            message: 'Address found',
+          },
+          data: viaCepMapper(data),
+          responseStatusCode: 200,
+        };
+      }
+
       return {
         error: {
-          message: 'Address not found',
+          message: 'CEP não encontrado',
         },
         responseStatusCode: 404,
       };
     }
-
-    return {
-      error: {
-        message: 'Internal server error',
-      },
-      responseStatusCode: 500,
-    };
-  } catch (error) {
-    return {
-      error: {
-        message: 'Internal server error',
-      },
-      responseStatusCode: 500,
-    };
+  } catch {
+    // Fall through to generic error
   }
+
+  return {
+    error: {
+      message: 'Não foi possível consultar o CEP no momento',
+    },
+    responseStatusCode: 500,
+  };
 };

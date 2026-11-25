@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { listCalendarSchedules } from '@/api/calendar/list';
 import { ROUTES } from '@/constants/routes';
+import { formatScheduleTitle } from '@/utils/formatScheduleTitle';
 import { cn } from '@/lib/utils';
 
 export default function EventsAndProgrammingHomePage() {
@@ -230,8 +231,8 @@ export default function EventsAndProgrammingHomePage() {
                   <div>
                     <h3 className="text-xl font-bold text-zinc-900 font-serif">
                       {isViewingToday
-                        ? 'Programação de hoje'
-                        : `Programação de ${dayjs(selectedDate).locale('pt-br').format('D [de] MMMM')}`}
+                        ? 'Hoje'
+                        : `${dayjs(selectedDate).locale('pt-br').format('D [de] MMMM')}`}
                     </h3>
                   </div>
                 </div>
@@ -294,9 +295,6 @@ export default function EventsAndProgrammingHomePage() {
               {!isLoadingCalendar && todaySchedules.length > 0 && (
                 <div className="divide-y divide-zinc-100">
                   {todaySchedules.map((schedule, idx) => {
-                    const isMass = schedule.type === 'mass';
-                    const pill = getCommunityPillData(schedule.community.name);
-
                     return (
                       <div
                         key={`${selectedDate}-${schedule.type}-${idx}`}
@@ -308,9 +306,9 @@ export default function EventsAndProgrammingHomePage() {
                         </div>
 
                         {/* Título & Comunidade */}
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-sm text-zinc-900 truncate">
-                            {schedule.title || (isMass ? 'Missa' : 'Celebração')}
+                        <div className="flex-1 min-w-0 flex items-center justify-between">
+                          <h4 className="font-semibold text-md text-zinc-900 truncate">
+                            {formatScheduleTitle(schedule)}
                           </h4>
                           <p className="text-sm text-zinc-500 truncate mt-0.5 flex items-center gap-1.5">
                             <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
@@ -323,31 +321,6 @@ export default function EventsAndProgrammingHomePage() {
                                 </span>
                               )}
                           </p>
-                        </div>
-
-                        {/* Badge Recorrente / Evento */}
-                        <div className="hidden sm:block shrink-0">
-                          {isMass ? (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
-                              Recorrente
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-purple-50 text-purple-800 border border-purple-200/80">
-                              Evento
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Community Pill on the Right */}
-                        <div className="shrink-0">
-                          <span
-                            className={cn(
-                              'inline-block text-[11px] sm:text-sm font-medium px-3 py-1 rounded-full whitespace-nowrap',
-                              pill.className
-                            )}
-                          >
-                            {pill.label}
-                          </span>
                         </div>
                       </div>
                     );
