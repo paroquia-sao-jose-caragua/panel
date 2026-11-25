@@ -30,7 +30,11 @@ export const InfoFormStep = ({ formik }: EditInfoFormStepProps) => {
   const fileError = files.find((f) => f.state === 'error');
 
   return (
-    <form autoComplete="off" className="flex w-full flex-col gap-8">
+    <form
+      autoComplete="off"
+      onSubmit={(e) => e.preventDefault()}
+      className="flex w-full flex-col gap-8"
+    >
       {/* Cover Image Section */}
       <FieldSection
         title="Foto da Igreja (Capa)"

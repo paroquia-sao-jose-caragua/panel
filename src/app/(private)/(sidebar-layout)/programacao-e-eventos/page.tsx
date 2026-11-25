@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { listCalendarSchedules } from '@/api/calendar/list';
 import { ROUTES } from '@/constants/routes';
+import { formatScheduleTitle } from '@/utils/formatScheduleTitle';
 import { cn } from '@/lib/utils';
 
 export default function EventsAndProgrammingHomePage() {
@@ -294,9 +295,6 @@ export default function EventsAndProgrammingHomePage() {
               {!isLoadingCalendar && todaySchedules.length > 0 && (
                 <div className="divide-y divide-zinc-100">
                   {todaySchedules.map((schedule, idx) => {
-                    const isMass = schedule.type === 'mass';
-                    const pill = getCommunityPillData(schedule.community.name);
-
                     return (
                       <div
                         key={`${selectedDate}-${schedule.type}-${idx}`}
@@ -310,7 +308,7 @@ export default function EventsAndProgrammingHomePage() {
                         {/* Título & Comunidade */}
                         <div className="flex-1 min-w-0 flex items-center justify-between">
                           <h4 className="font-semibold text-md text-zinc-900 truncate">
-                            {schedule.title || (isMass ? 'Missa' : 'Celebração')}
+                            {formatScheduleTitle(schedule)}
                           </h4>
                           <p className="text-sm text-zinc-500 truncate mt-0.5 flex items-center gap-1.5">
                             <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />

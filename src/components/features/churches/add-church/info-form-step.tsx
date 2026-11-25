@@ -25,7 +25,11 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
   const fileError = files.find((f) => f.state === 'error');
 
   return (
-    <form autoComplete="off" className="flex w-full flex-col gap-8">
+    <form
+      autoComplete="off"
+      onSubmit={(e) => e.preventDefault()}
+      className="flex w-full flex-col gap-8"
+    >
       <FieldSection
         title="Foto da Igreja"
         description="Recomendamos uma imagem retangular de pelo menos 400x300px"

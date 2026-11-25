@@ -46,6 +46,7 @@ export const InfoFormStep = ({ formik }: InfoStepProps) => {
   return (
     <form
       id="add-ordinary-mass"
+      onSubmit={(e) => e.preventDefault()}
       className="flex w-full flex-col gap-8 divide-y divide-divider"
     >
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-4 pb-5">
