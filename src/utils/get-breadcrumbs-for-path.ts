@@ -180,6 +180,21 @@ export function getBreadcrumbsForPath(pathname: string): BreadcrumbLinkItem[] {
       },
     ];
   }
+  if (cleanPath === ROUTES.SETTINGS.SITE_VISITS) {
+    return [
+      {
+        key: 'settings',
+        href: ROUTES.SETTINGS.HOME,
+        title: 'Configurações',
+        icon: 'settings',
+      },
+      {
+        key: 'acessos-site',
+        href: ROUTES.SETTINGS.SITE_VISITS,
+        title: 'Acessos ao Site',
+      },
+    ];
+  }
 
   // ==========================================
   // 2. DADOS INSTITUCIONAIS

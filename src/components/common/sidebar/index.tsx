@@ -22,6 +22,7 @@ import {
   Lock,
   Smartphone,
   Bell,
+  BarChart3,
 } from 'lucide-react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { Button } from '@/components/ui/button';
@@ -483,6 +484,22 @@ export const AppSidebar = () => {
                     {
                       title: 'Dispositivos Conectados',
                       href: ROUTES.SETTINGS.DEVICES,
+                    },
+                  ]}
+                  onLinkClick={handleClose}
+                />
+              )}
+
+              {(currentUser?.role === 'admin' ||
+                currentUser?.role === 'secretary' ||
+                currentUser?.role === 'user') && (
+                <NavItem
+                  title="Acessos ao Site"
+                  icon={BarChart3}
+                  links={[
+                    {
+                      title: 'Acessos ao Site',
+                      href: ROUTES.SETTINGS.SITE_VISITS,
                     },
                   ]}
                   onLinkClick={handleClose}
