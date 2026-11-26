@@ -3,6 +3,9 @@ import { api } from '../utils/api';
 export interface DailyVisitCount {
   date: string;
   count: number;
+  uniqueCount: number;
+  totalCount: number;
+  pageViews: number;
 }
 
 export interface TopEntryPath {
@@ -21,6 +24,14 @@ export interface SiteVisitStats {
   last7DaysCount: number;
   currentMonthCount: number;
   totalCount: number;
+  todayAccessCount: number;
+  last7DaysAccessCount: number;
+  currentMonthAccessCount: number;
+  totalAccessCount: number;
+  todayPageViews: number;
+  last7DaysPageViews: number;
+  currentMonthPageViews: number;
+  totalPageViews: number;
   periodDays: number;
   dailySeries: DailyVisitCount[];
   deviceBreakdown: DeviceBreakdown;
