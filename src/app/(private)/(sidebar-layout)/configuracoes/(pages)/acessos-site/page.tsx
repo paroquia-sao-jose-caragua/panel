@@ -19,6 +19,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -82,7 +83,9 @@ export default function SiteVisitsPage() {
     return (stats?.dailySeries || []).map((item) => ({
       date: item.date,
       label: formatShortDate(item.date),
-      visitas: item.count,
+      acessos: item.totalCount ?? item.count,
+      unicos: item.uniqueCount ?? item.count,
+      paginas: item.pageViews ?? item.count,
     }));
   }, [stats?.dailySeries]);
 
@@ -160,8 +163,9 @@ export default function SiteVisitsPage() {
           <div>
             <TypographyH1>Acessos ao Site</TypographyH1>
             <Describe className="mt-1">
-              Visitantes únicos reais por dia no site público da Paróquia São
-              José (sem rastreamento pessoal e com filtro automático de robôs).
+              Acessos totais, visitantes únicos e páginas mais lidas no site
+              público (contabilizados após 5s de permanência, sem dados pessoais
+              e com filtro automático de robôs).
             </Describe>
           </div>
 
@@ -203,7 +207,7 @@ export default function SiteVisitsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {isPending ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={`skeleton-summary-kpi-${i}`} className="h-24 rounded-2xl" />
+              <Skeleton key={i} className="h-28 rounded-2xl" />
             ))
           ) : (
             <>
@@ -211,12 +215,16 @@ export default function SiteVisitsPage() {
                 <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
                   <Users className="w-6 h-6" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                    Hoje
+                    Hoje (Acessos)
                   </span>
                   <p className="text-2xl font-bold text-zinc-900 leading-tight mt-0.5">
-                    {stats?.todayCount ?? 0}
+                    {stats?.todayAccessCount ?? 0}
+                  </p>
+                  <p className="text-xs text-zinc-500 mt-1 truncate">
+                    {stats?.todayCount ?? 0} únicos · {stats?.todayPageViews ?? 0}{' '}
+                    páginas
                   </p>
                 </div>
               </div>
@@ -225,12 +233,16 @@ export default function SiteVisitsPage() {
                 <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 shrink-0">
                   <TrendingUp className="w-6 h-6" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
                     Últimos 7 dias
                   </span>
                   <p className="text-2xl font-bold text-zinc-900 leading-tight mt-0.5">
-                    {stats?.last7DaysCount ?? 0}
+                    {stats?.last7DaysAccessCount ?? 0}
+                  </p>
+                  <p className="text-xs text-zinc-500 mt-1 truncate">
+                    {stats?.last7DaysCount ?? 0} únicos ·{' '}
+                    {stats?.last7DaysPageViews ?? 0} páginas
                   </p>
                 </div>
               </div>
@@ -239,12 +251,16 @@ export default function SiteVisitsPage() {
                 <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 shrink-0">
                   <Calendar className="w-6 h-6" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
                     Neste mês
                   </span>
                   <p className="text-2xl font-bold text-zinc-900 leading-tight mt-0.5">
-                    {stats?.currentMonthCount ?? 0}
+                    {stats?.currentMonthAccessCount ?? 0}
+                  </p>
+                  <p className="text-xs text-zinc-500 mt-1 truncate">
+                    {stats?.currentMonthCount ?? 0} únicos ·{' '}
+                    {stats?.currentMonthPageViews ?? 0} páginas
                   </p>
                 </div>
               </div>
@@ -253,12 +269,16 @@ export default function SiteVisitsPage() {
                 <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-700 shrink-0">
                   <Globe className="w-6 h-6" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
                     Total acumulado
                   </span>
                   <p className="text-2xl font-bold text-zinc-900 leading-tight mt-0.5">
-                    {stats?.totalCount ?? 0}
+                    {stats?.totalAccessCount ?? 0}
+                  </p>
+                  <p className="text-xs text-zinc-500 mt-1 truncate">
+                    {stats?.totalCount ?? 0} únicos · {stats?.totalPageViews ?? 0}{' '}
+                    páginas
                   </p>
                 </div>
               </div>
@@ -273,10 +293,11 @@ export default function SiteVisitsPage() {
               <BarChart3 className="w-5 h-5 text-[#B8872E]" />
               <div>
                 <h2 className="text-lg font-bold text-zinc-900">
-                  Evolução diária de visitantes únicos
+                  Evolução diária de acessos
                 </h2>
                 <p className="text-xs text-zinc-500">
-                  Últimos {days} dias (1 contagem única por visitante/dia)
+                  Últimos {days} dias — comparativo entre acessos totais,
+                  visitantes únicos e visualizações de páginas
                 </p>
               </div>
             </div>
@@ -316,17 +337,29 @@ export default function SiteVisitsPage() {
                       boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
                       fontSize: '13px',
                     }}
-                    formatter={(value) => [
-                      `${value} ${Number(value) === 1 ? 'visitante único' : 'visitantes únicos'}`,
-                      'Acessos',
-                    ]}
                     labelFormatter={(label) => `Dia ${label}`}
                   />
+                  <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }} />
                   <Bar
-                    dataKey="visitas"
+                    dataKey="acessos"
+                    name="Acessos totais"
+                    fill="#B8872E"
+                    radius={[5, 5, 0, 0]}
+                    maxBarSize={24}
+                  />
+                  <Bar
+                    dataKey="unicos"
+                    name="Visitantes únicos"
                     fill="#18351E"
-                    radius={[6, 6, 0, 0]}
-                    maxBarSize={36}
+                    radius={[5, 5, 0, 0]}
+                    maxBarSize={24}
+                  />
+                  <Bar
+                    dataKey="paginas"
+                    name="Páginas vistas"
+                    fill="#3b82f6"
+                    radius={[5, 5, 0, 0]}
+                    maxBarSize={24}
                   />
                 </BarChart>
               </ResponsiveContainer>
@@ -343,7 +376,7 @@ export default function SiteVisitsPage() {
                 Acessos por dispositivo
               </h2>
               <p className="text-xs text-zinc-500">
-                Distribuição nos últimos {days} dias
+                Distribuição dos acessos nos últimos {days} dias
               </p>
             </div>
 
@@ -411,14 +444,14 @@ export default function SiteVisitsPage() {
             )}
           </div>
 
-          {/* Top Entry Paths */}
+          {/* Top Pages */}
           <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4">
             <div className="pb-3 border-b border-zinc-100">
               <h2 className="text-lg font-bold text-zinc-900">
-                Páginas de entrada mais acessadas
+                Páginas mais acessadas
               </h2>
               <p className="text-xs text-zinc-500">
-                Principais portas de entrada nos últimos {days} dias
+                Páginas com pelo menos 5s de leitura nos últimos {days} dias
               </p>
             </div>
 
@@ -430,7 +463,7 @@ export default function SiteVisitsPage() {
               </div>
             ) : !stats?.topPaths?.length ? (
               <div className="py-8 text-center text-sm text-zinc-500">
-                Ainda não há acessos registrados neste período.
+                Ainda não há visualizações registradas neste período.
               </div>
             ) : (
               <div className="space-y-3">
