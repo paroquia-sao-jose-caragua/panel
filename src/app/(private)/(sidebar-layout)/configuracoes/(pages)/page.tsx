@@ -6,6 +6,7 @@ import {
   Lock,
   Users,
   Smartphone,
+  BarChart3,
   ChevronRight
 } from 'lucide-react';
 import useAuthStore from '@/stores/useAuthStore';
@@ -133,6 +134,34 @@ export default function SettingsHubPage() {
             </Link>
           </Button>
         </div>
+
+        {/* Card 4: Acessos ao Site */}
+        {(currentUser?.role === 'admin' ||
+          currentUser?.role === 'secretary' ||
+          currentUser?.role === 'user') && (
+          <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 shadow-2xs flex flex-col justify-between space-y-4 hover:border-brand-300 transition group">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                <BarChart3 className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-zinc-900 group-hover:text-brand-700 transition">
+                  Acessos ao Site
+                </h3>
+                <p className="text-sm text-zinc-500 mt-1 leading-relaxed">
+                  Acompanhe o número de visitantes únicos reais, dispositivos e páginas mais acessadas no site público.
+                </p>
+              </div>
+            </div>
+
+            <Button asChild variant="outline" size="sm" className="w-full justify-between gap-2 border-zinc-200">
+              <Link href={ROUTES.SETTINGS.SITE_VISITS}>
+                <span>Acessar</span>
+                <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition" />
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </main>
     </>

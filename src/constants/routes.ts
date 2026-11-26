@@ -17,6 +17,7 @@ export const ROUTES = {
     EDIT_USER_ROLE: (id: string) => `/configuracoes/usuarios/${id}/papel`,
     DEVICES: '/configuracoes/dispositivos',
     SEND_PUSH: '/configuracoes/dispositivos/enviar-notificacao',
+    SITE_VISITS: '/configuracoes/acessos-site',
   },
   COMMUNITIES: {
     HOME: '/dados-institucionais',
